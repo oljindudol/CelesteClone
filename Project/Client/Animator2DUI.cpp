@@ -91,8 +91,6 @@ void Animator2DUI::render_update()
 			ImGui::PopStyleColor(3);
 
 
-
-
 			ImGui::SameLine();
 			if (ImGui::Button(("EDIT##" + std::to_string(i)).c_str()))
 			{
@@ -104,11 +102,11 @@ void Animator2DUI::render_update()
 				pEdit->Activate();
 			}
 
-			ImGui::SameLine();
-			if (ImGui::Button(("DEL##" + std::to_string(i)).c_str()))
-			{
-				delanim.push_back(p.first);
-			}
+			//ImGui::SameLine();
+			//if (ImGui::Button(("DEL##" + std::to_string(i)).c_str()))
+			//{
+			//	delanim.push_back(p.first);
+			//}
 
 
 			ImGui::SameLine();

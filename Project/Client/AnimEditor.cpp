@@ -190,9 +190,8 @@ void AnimEditor::render_update()
     }
 
     //==================== 2. 재생기=====================
-    ImGui::BeginChild("Animation Veiw", ImVec2(500, 500), true);
-
-
+    auto winsize = ImVec2(500, 500);
+    ImGui::BeginChild("Animation Veiw", winsize, true);
 
     if (0 != vecFrm.size())
     {
@@ -202,24 +201,32 @@ void AnimEditor::render_update()
         auto aw = (float)vecFrm[m_curframe].pFrameTex->GetWidth();
         auto ah = (float)vecFrm[m_curframe].pFrameTex->GetHeight();
 
-        auto slice = ImVec2(vecFrm[m_curframe].vSlice.x, vecFrm[m_curframe].vSlice.y);
-        auto slicesize = ImVec2(300, int(slice.y * (float(300) / float(slice.x))));
-        auto lt = vecFrm[m_curframe].vLeftTop;
-        auto uv = ImVec2(lt.x / aw, lt.y / ah);
+        auto imgsize = ImVec2(vecFrm[m_curframe].pFrameTex.Get()->GetWidth(), vecFrm[m_curframe].pFrameTex.Get()->GetHeight());
+        ImVec2 slicesize;
+        if (imgsize.x > imgsize.y)
+        {
+            slicesize = ImVec2(300, int(imgsize.y * (300.f / float(imgsize.x))));
+        }
+        else
+        {
+            slicesize = ImVec2(int(imgsize.x * (300.f / float(imgsize.y))), 300);
+        }
+        
+        //auto lt = vecFrm[m_curframe].vLeftTop;
+        //auto uv = ImVec2(lt.x / aw, lt.y / ah);
 
         // 가운데 정렬을 위한 여백 계산
-        //float window_centerx = ImGui::GetWindowSize().x / 3.0f;
-        //float window_centery = ImGui::GetWindowSize().y / 3.0f;
-        //float image_halfx = targetpair.second->m_AtlasTex.Get()->GetWidth()* slice.x / 2.0f;
-        //float image_halfy = targetpair.second->m_AtlasTex.Get()->GetHeight() * slice.y / 2.0f;
-        //ImGui::SetCursorPosX(window_centerx - image_halfx);
-        //ImGui::SetCursorPosY(window_centery - image_halfy);
+        float window_centerx = ImGui::GetContentRegionAvail().x / 2.0f;
+        float window_centery = ImGui::GetContentRegionAvail().y / 2.0f;
+        float image_halfx = slicesize.x / 2.0f;
+        float image_halfy = slicesize.y / 2.0f;
+        ImGui::SetCursorPosX(window_centerx - image_halfx);
+        ImGui::SetCursorPosY(window_centery - image_halfy);
 
-        ImGui::SetCursorPosX(80);
-        ImGui::SetCursorPosY(60);
+        //ImGui::SetCursorPosX(100);
+        //ImGui::SetCursorPosY(100);
 
-
-        ImGui::Image(imimid, slicesize, ImVec2(lt.x, lt.y), ImVec2(lt.x, lt.y) + slice);
+        ImGui::Image(imimid, slicesize,  ImVec2(0.f, 0.02f), ImVec2(1.f, 1.f));
     }
     ImGui::EndChild();
 
@@ -255,9 +262,9 @@ void AnimEditor::render_update()
             ImGui::NewLine();
             currentPosition = 0;
         }
-
+        
         ImGui::PushID(i);
-        if (ImGui::ImageButton(imimid, slicesize, ImVec2(lt.x, lt.y), ImVec2(lt.x, lt.y) + slice))
+        if (ImGui::ImageButton(imimid, slicesize, ImVec2(0.f, 0.02f), ImVec2(1.f, 1.f)))
         {
             m_selectedfrm[i] = !m_selectedfrm[i];
         }
