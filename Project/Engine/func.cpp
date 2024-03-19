@@ -169,3 +169,34 @@ void LoadWString(wstring& _str, FILE* _FILE)
 	_str = szBuff;
 }
 
+std::vector<std::filesystem::path> getFoldersFromDirectory(const std::string& path) {
+	std::vector<std::filesystem::path> fileList;
+	for (const auto& entry : std::filesystem::directory_iterator(path)) {
+		if (std::filesystem::is_directory(entry)) {
+			fileList.push_back(entry.path());
+		}
+	}
+
+	std::sort(fileList.begin(), fileList.end(),
+		[](const std::filesystem::path& a, const std::filesystem::path& b) {
+			return a.filename() < b.filename();
+		});
+
+	return fileList;
+}
+
+std::vector<std::filesystem::path> getImagesFromDirectory(const std::string& path) {
+	std::vector<std::filesystem::path> fileList;
+	for (const auto& entry : std::filesystem::directory_iterator(path)) {
+		if (entry.path().extension() == ".jpg" || entry.path().extension() == ".png") {
+			fileList.push_back(entry.path());
+		}
+	}
+
+	std::sort(fileList.begin(), fileList.end(),
+		[](const std::filesystem::path& a, const std::filesystem::path& b) {
+			return a.filename() < b.filename();
+		});
+
+	return fileList;
+}

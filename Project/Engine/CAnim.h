@@ -10,6 +10,8 @@ struct tAnimFrm
     Vec2    vOffset;
     Vec2    vBackground;
     float   Duration;
+    Ptr<CTexture>       pFrameTex;
+
 };
 
 class CAnimator2D;
@@ -45,6 +47,7 @@ public:
     void Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop
         , Vec2 _vSliceSize, Vec2 _vOffset, Vec2 _vBackground, int _FrmCount, float _FPS);
 
+    void CreateFromFolder(CAnimator2D* _Animator, const wstring& _Path , float _FPS);
 
     void SaveToFile(FILE* _File);
     void LoadFromFile(FILE* _File);

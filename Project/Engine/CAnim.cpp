@@ -6,6 +6,8 @@
 #include "CDevice.h"
 #include "CConstBuffer.h"
 
+
+
 CAnim::CAnim()
 	: m_Animator(nullptr)
 	, m_CurFrmIdx(0)
@@ -64,7 +66,9 @@ void CAnim::UpdateData()
 	pCB->UpdateData();
 
 	// 아틀라스 텍스쳐 t10 에 바인딩
-	m_AtlasTex->UpdateData(10);
+	//m_AtlasTex->UpdateData(10);
+
+	m_vecFrm[m_CurFrmIdx].pFrameTex->UpdateData(10);
 }
 
 void CAnim::Clear()
@@ -99,6 +103,40 @@ void CAnim::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop
 
 		m_vecFrm.push_back(frm);
 	}
+}
+
+void CAnim::CreateFromFolder(CAnimator2D* _Animator, const wstring& _Path, float _FPS)
+{
+	tAnimFrm frm = {};
+	m_Animator = _Animator;
+
+	string s;
+	s.assign(_Path.begin(),_Path.end());
+
+	static const std::filesystem::path base_path = CPathMgr::GetContentPath();
+
+	auto images = getImagesFromDirectory(s);
+
+	for (int i = 0; i < images.size(); ++i)
+	{
+		tAnimFrm frm = {};
+
+		std::filesystem::path relative_path = std::filesystem::relative(images[i], base_path);
+
+		Ptr<CTexture> pFrameTex = CAssetMgr::GetInst()->Load<CTexture>(relative_path, relative_path);
+
+		frm.pFrameTex = pFrameTex;
+
+		frm.vSlice = Vec2(1.f, 1.f);
+		frm.vLeftTop = Vec2(0.f,0.f);
+		frm.vOffset = Vec2(0.f,0.f);
+		frm.Duration = 1.f / _FPS;
+
+		frm.vBackground = Vec2(1.f,1.f);
+
+		m_vecFrm.push_back(frm);
+	}
+
 }
 
 void CAnim::SaveToFile(FILE* _File)

@@ -78,11 +78,7 @@ void Animator2DUI::render_update()
 			string s;
 			s.assign(p.first.begin(), p.first.end());
 
-			//이부분 구조개선필요
-			auto srv = p.second->m_AtlasTex->GetSRV();
-			auto imimid = (ImTextureID)srv.Get();
-			auto aw = (float)p.second->m_AtlasTex->GetWidth();
-			auto ah = (float)p.second->m_AtlasTex->GetHeight();
+
 
 			ImVec4 buttonColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -114,8 +110,24 @@ void Animator2DUI::render_update()
 				delanim.push_back(p.first);
 			}
 
+
+			ImGui::SameLine();
+			if (ImGui::Button(("PLAY##" + std::to_string(i)).c_str()))
+			{
+				auto to = GetTargetObject();
+				auto animator = (CAnimator2D*) to->GetComponent(COMPONENT_TYPE::ANIMATOR2D);
+				animator->Play(p.first);
+			}
+
 			for (auto& f : p.second->GetVecFrm())
 			{
+				//파일방식으로 개선
+				auto srv = f.pFrameTex->GetSRV();
+				auto imimid = (ImTextureID)srv.Get();
+				auto aw = (float)f.pFrameTex->GetWidth();
+				auto ah = (float)f.pFrameTex->GetHeight();
+
+
 				auto slicesize = ImVec2(f.vSlice.x * aw, f.vSlice.y * ah) / 5;
 				auto slice = ImVec2(f.vSlice.x, f.vSlice.y);
 				auto lt = f.vLeftTop;

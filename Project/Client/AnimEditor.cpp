@@ -3,19 +3,6 @@
 
 
 
-namespace fs = std::filesystem;
-
-std::vector<fs::path> getFilesInDirectory(const std::string& path) {
-    std::vector<fs::path> fileList;
-    for (const auto& entry : fs::directory_iterator(path)) {
-        if (entry.is_directory() || entry.path().extension() == ".jpg" || entry.path().extension() == ".png") {
-            fileList.push_back(entry.path());
-        }
-    }
-    return fileList;
-}
-
-
 AnimEditor::AnimEditor()
     : UI("Edit Anim", "##AnimEditor")
     , m_TargetGO(nullptr)
@@ -205,15 +192,15 @@ void AnimEditor::render_update()
     //==================== 2. 재생기=====================
     ImGui::BeginChild("Animation Veiw", ImVec2(500, 500), true);
 
-    //이부분 구조개선필요
-    auto srv = targetpair.second->m_AtlasTex->GetSRV();
-    auto imimid = (ImTextureID)srv.Get();
-    auto aw = (float)targetpair.second->m_AtlasTex->GetWidth();
-    auto ah = (float)targetpair.second->m_AtlasTex->GetHeight();
+
 
     if (0 != vecFrm.size())
     {
-
+        //파일방식으로 개선
+        auto srv = vecFrm[m_curframe].pFrameTex->GetSRV();
+        auto imimid = (ImTextureID)srv.Get();
+        auto aw = (float)vecFrm[m_curframe].pFrameTex->GetWidth();
+        auto ah = (float)vecFrm[m_curframe].pFrameTex->GetHeight();
 
         auto slice = ImVec2(vecFrm[m_curframe].vSlice.x, vecFrm[m_curframe].vSlice.y);
         auto slicesize = ImVec2(300, int(slice.y * (float(300) / float(slice.x))));
@@ -251,6 +238,11 @@ void AnimEditor::render_update()
     float currentPosition = 0; // 현재 이미지를 그리기 시작할 x 위치
 
     for (int i = 0; i < vecFrm.size(); ++i) {
+        auto srv = vecFrm[i].pFrameTex->GetSRV();
+        auto imimid = (ImTextureID)srv.Get();
+        auto aw = (float)vecFrm[i].pFrameTex->GetWidth();
+        auto ah = (float)vecFrm[i].pFrameTex->GetHeight();
+
 
         auto slice = ImVec2(vecFrm[i].vSlice.x, vecFrm[i].vSlice.y);
         int w = 100;
