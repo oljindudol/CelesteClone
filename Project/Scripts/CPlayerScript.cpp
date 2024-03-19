@@ -13,7 +13,7 @@ CPlayerScript::CPlayerScript()
 	: CScript(PLAYERSCRIPT)
 	, m_Speed(500.f)
 {
-	AddScriptParam(SCRIPT_PARAM::FLOAT, "Player Speed", &m_Speed);
+
 }
 
 CPlayerScript::~CPlayerScript()
@@ -33,9 +33,10 @@ void CPlayerScript::begin()
 	Animator2D()->Create(L"MOVE_DOWN", pAltasTex, Vec2(0.f, 520.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 10, 20);
 	Animator2D()->Create(L"MOVE_LEFT", pAltasTex, Vec2(0.f, 650.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 10, 20);
 	Animator2D()->Create(L"MOVE_RIGHT", pAltasTex, Vec2(0.f, 910.f), Vec2(120.f, 130.f), Vec2(0.f, 0.f), Vec2(200.f, 200.f), 10, 20);
-
 	GetRenderComponent()->GetDynamicMaterial();
 
+	auto a = Animator2D();
+	Animator2D()->Play(L"MOVE_UP");
 	//m_Missile = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"MissilePrefab");
 	//m_Missile = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\missile.pref", L"prefab\\missile.pref");
 }
@@ -45,6 +46,8 @@ void CPlayerScript::tick()
 	Vec3 vPos = Transform()->GetRelativePos();
 	Vec3 vRot = Transform()->GetRelativeRotation();
 
+
+	auto a = Animator2D();
 	if (KEY_PRESSED(KEY::UP))
 		vPos.y += DT * m_Speed;	
 	if (KEY_TAP(KEY::UP))

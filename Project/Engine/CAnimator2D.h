@@ -33,5 +33,8 @@ public:
     CAnimator2D();
     CAnimator2D(const CAnimator2D& _OriginAnimator);
     ~CAnimator2D();
+
+public:
+    auto& GetMapAnim() { return m_mapAnim; }
 };
 

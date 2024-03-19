@@ -24,11 +24,12 @@ private:
     int                 m_CurFrmIdx;
     bool                m_bFinish;
 
-    Ptr<CTexture>       m_AtlasTex;
 
     float               m_AccTime;
 
 public:
+    Ptr<CTexture>       m_AtlasTex;
+
     void finaltick();
     void UpdateData();
 
@@ -52,6 +53,10 @@ public:
     CAnim();
     CAnim(const CAnim& _OriginAnim);
     ~CAnim();
+
+public:
+    auto& GetVecFrm() { return m_vecFrm; }
+    void SetVecFrm(vector<tAnimFrm> _vecFrm) { m_vecFrm = _vecFrm; }
 
     friend class CAnimator2D;
 };

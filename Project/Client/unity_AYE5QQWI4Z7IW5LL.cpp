@@ -3,6 +3,9 @@
 #include "C:\CelesteClone\Project\Client\Animator2DUI.cpp"
 
 
+#include "C:\CelesteClone\Project\Client\AnimEditor.cpp"
+
+
 #include "C:\CelesteClone\Project\Client\AssetUI.cpp"
 
 

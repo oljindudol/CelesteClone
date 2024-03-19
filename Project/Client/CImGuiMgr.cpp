@@ -16,11 +16,12 @@
 #include "Outliner.h"
 #include "MenuUI.h"
 #include "ListUI.h"
+#include "AnimEditor.h"
 
 #include "ParamUI.h"
 
 CImGuiMgr::CImGuiMgr()
-    : m_bDemoUI(true)
+    : m_bDemoUI(false)
     , m_hNotify(nullptr)
 {
 
@@ -192,6 +193,11 @@ void CImGuiMgr::create_ui()
     // List
     pUI = new ListUI;
     AddUI(pUI->GetID(), pUI);
+
+    // AnimEditor
+    pUI = new AnimEditor;
+    AddUI(pUI->GetID(), pUI);
+    
 }
 
 void CImGuiMgr::observe_content()

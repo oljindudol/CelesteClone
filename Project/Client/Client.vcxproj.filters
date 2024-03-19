@@ -265,6 +265,9 @@
     <ClInclude Include="ScriptUI.h">
       <Filter>02. UI\3. Inspector\ComponentUI\Script</Filter>
     </ClInclude>
+    <ClInclude Include="AnimEditor.h">
+      <Filter>02. UI\3. Inspector\ComponentUI\Animator2D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -406,6 +409,9 @@
     </ClCompile>
     <ClCompile Include="ScriptUI.cpp">
       <Filter>02. UI\3. Inspector\ComponentUI\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimEditor.cpp">
+      <Filter>02. UI\3. Inspector\ComponentUI\Animator2D</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
