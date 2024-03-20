@@ -31,13 +31,21 @@ private:
 
 public:
     void SetTileAtlas(Ptr<CTexture> _Atlas, Vec2 _TilePixelSize);
-    Ptr<CTexture> GetTileAtlas() { return m_TileAtlas; }
+    auto& GetTileAtlas() { return m_TileAtlas; }
 
     void SetFace(UINT _FaceX, UINT _FaceY);
     UINT GetFaceX() { return m_FaceX; }
     UINT GetFaceY() { return m_FaceY; }
 
     void SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx);
+
+    Vec2 GetTileSize() {
+        return m_vTileRenderSize;
+    }
+
+    void SetTileSize(Vec2 _vTileRenderSize) {
+        m_vTileRenderSize = _vTileRenderSize;
+    }
 
 
 public:

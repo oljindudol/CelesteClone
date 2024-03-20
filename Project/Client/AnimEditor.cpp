@@ -34,8 +34,6 @@ void AnimEditor::render_update()
     }
 
 
-
-
     ImGui::SetNextWindowPos(pos, ImGuiCond_FirstUseEver);
     ImGui::SetNextItemWidth(150);
     if (ImGui::BeginCombo("##combo", items[m_targetidx].c_str())) {

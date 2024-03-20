@@ -10,9 +10,9 @@
 
 CTileMap::CTileMap()
 	: CRenderComponent(COMPONENT_TYPE::TILEMAP)
-	, m_FaceX(2)
-	, m_FaceY(2)
-	, m_vTileRenderSize(Vec2(128.f, 128.f))	
+	, m_FaceX(40)
+	, m_FaceY(23)
+	, m_vTileRenderSize(Vec2(8.f, 8.f))	
 	, m_TileInfoBuffer(nullptr)
 {
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
@@ -58,7 +58,7 @@ void CTileMap::finaltick()
 void CTileMap::render()
 {	
 	// 재질에 아틀라스 텍스쳐 전달.
-	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_TileAtlas);
+	GetMaterial()->SetTexParam(TEX_PARAM::TEXARR_0, m_TileAtlas);
 	
 	// 타일의 가로 세로 개수
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, m_FaceX);

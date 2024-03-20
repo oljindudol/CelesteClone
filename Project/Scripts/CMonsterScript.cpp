@@ -7,7 +7,7 @@
 CMonsterScript::CMonsterScript()
 	: CScript(MONSTERSCRIPT)
 	, m_DetectRange(400.f)
-	, m_Speed(200.f)
+	, m_Speed(50.f)
 {
 }
 

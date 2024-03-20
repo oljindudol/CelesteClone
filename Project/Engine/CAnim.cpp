@@ -13,6 +13,7 @@ CAnim::CAnim()
 	, m_CurFrmIdx(0)
 	, m_bFinish(false)
 	, m_AccTime(0.f)
+	, m_iRoop(0)
 {
 }
 

@@ -23,12 +23,13 @@ void TileMapUI::render_update()
 	ComponentUI::render_update();
 
 
+	//============= 1. 타일갯수 =============
+
 	static int Face[2];
 	Face[0] = (int)GetTargetObject()->TileMap()->GetFaceX();
 	Face[1] = (int)GetTargetObject()->TileMap()->GetFaceY();
 
-
-	ImGui::Text("Face"); ImGui::SameLine();  ImGui::DragInt2("##Face X", Face);
+	ImGui::Text("Face"); ImGui::SameLine();  ImGui::DragInt2("##Face", Face);
 
 	int min = 1;
 
@@ -42,9 +43,7 @@ void TileMapUI::render_update()
 		Face[1] = min;
 	}
 
-
 	GetTargetObject()->TileMap()->SetFace((UINT)Face[0], (UINT)Face[1]);
-
 
 	for (int i = 0; i < Face[1]; ++i)
 	{
@@ -54,11 +53,27 @@ void TileMapUI::render_update()
 		}
 	}
 
-	//vRot.ToRadian();
-	//GetTargetObject()->Transform()->SetRelativePos(vPos);
-	//GetTargetObject()->Transform()->SetRelativeScale(vScale);
-	//GetTargetObject()->Transform()->SetRelativeRotation(vRot);
 
+	//============= 2. 타일 크기 =============
+	static float TileSize[2];
+	TileSize[0] = GetTargetObject()->TileMap()->GetTileSize().x;
+	TileSize[1] = GetTargetObject()->TileMap()->GetTileSize().y;
+
+	ImGui::Text("TileSize"); ImGui::SameLine();  ImGui::DragFloat2("##TileSize", TileSize);
+
+	int minsize = 1.f;
+
+	if (Face[0] < minsize)
+	{
+		TileSize[0] = minsize;
+	}
+
+	if (TileSize[1] < minsize)
+	{
+		TileSize[1] = minsize;
+	}
+
+	GetTargetObject()->TileMap()->SetTileSize(Vec2(TileSize[0], TileSize[1]));
 
 }
 

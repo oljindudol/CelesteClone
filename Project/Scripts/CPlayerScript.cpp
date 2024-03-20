@@ -11,7 +11,7 @@
 
 CPlayerScript::CPlayerScript()
 	: CScript(PLAYERSCRIPT)
-	, m_Speed(500.f)
+	, m_Speed(100.f)
 {
 
 }
@@ -46,7 +46,7 @@ void CPlayerScript::begin()
 	GetRenderComponent()->GetDynamicMaterial();
 
 	auto a = Animator2D();
-	Animator2D()->Play(L"bigfall");
+	Animator2D()->Play(L"launch");
 	//m_Missile = CAssetMgr::GetInst()->FindAsset<CPrefab>(L"MissilePrefab");
 	//m_Missile = CAssetMgr::GetInst()->Load<CPrefab>(L"prefab\\missile.pref", L"prefab\\missile.pref");
 }

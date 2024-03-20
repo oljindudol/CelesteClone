@@ -34,6 +34,14 @@ void Animator2DUI::render_update()
 
 	map<wstring, CAnim*>& refMapAnim = pAnimator2D->GetMapAnim();
 
+	if (0 == refMapAnim.size())
+	{
+		return;
+	}
+
+	SetSize(ImVec2(0.f, refMapAnim.size()*20));
+
+
 	//이전 오브젝트와 현재오브젝트가 다르다면, 재할당
 	if (pPrevTarget != pTarget)
 	{
@@ -55,11 +63,60 @@ void Animator2DUI::render_update()
 	{
 	}
 
+	auto to = GetTargetObject();
+	auto animator = (CAnimator2D*)to->GetComponent(COMPONENT_TYPE::ANIMATOR2D);
+	auto curanim = animator->GetCurAnim();
+	vector<std::pair<wstring, CAnim*>> vec;
 
-	if (ImGui::Button("ADD"))
+	int curanimidx=0;
+	int iteridx = 0;
+	for (auto& p : refMapAnim)
 	{
+		if (curanim == p.second)
+		{
+			curanimidx = iteridx;
+		}
+		vec.push_back(p);
+		++iteridx;
 	}
-	vector<wstring> delanim;
+
+	if (ImGui::Button("Prev"))
+	{
+		animator->Play(vec[(curanimidx + refMapAnim.size() - 1) % refMapAnim.size()].first);
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("Next"))
+	{
+		animator->Play(vec[(curanimidx + 1) % refMapAnim.size()].first);
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("EDIT##this"))
+	{
+		AnimEditor* pEdit = (AnimEditor*)CImGuiMgr::GetInst()->FindUI("##AnimEditor");
+		CGameObject* pTarget = GetTargetObject();
+		pEdit->initialize();
+		pEdit->SetpGO(pTarget);
+		pEdit->SetTargetIdx(curanimidx);
+		pEdit->Activate();
+	}
+
+	ImGui::SameLine();
+	ImGui::Text(("(" + std::to_string(curanimidx + 1) + "/" + std::to_string(refMapAnim.size()) + ")").c_str());
+
+
+	string CurAnimName;
+	CurAnimName.assign(vec[curanimidx].first.begin(), vec[curanimidx].first.end());
+	
+	ImGui::Text(CurAnimName.c_str());
+
+
+	//if (ImGui::Button("ADD"))
+	//{
+	//}
+	//삭제용 벡터
+	//vector<wstring> delanim;
 
 	if (ImGui::BeginTable("split2", 1, ImGuiTableFlags_Resizable | ImGuiTableFlags_NoSavedSettings | ImGuiTableFlags_Borders))
 	{
@@ -77,8 +134,6 @@ void Animator2DUI::render_update()
 
 			string s;
 			s.assign(p.first.begin(), p.first.end());
-
-
 
 			ImVec4 buttonColor = ImVec4(0.0f, 0.0f, 0.0f, 0.0f);
 
@@ -101,6 +156,9 @@ void Animator2DUI::render_update()
 				pEdit->SetTargetIdx(i);
 				pEdit->Activate();
 			}
+
+
+
 
 			//ImGui::SameLine();
 			//if (ImGui::Button(("DEL##" + std::to_string(i)).c_str()))
@@ -126,7 +184,7 @@ void Animator2DUI::render_update()
 				auto ah = (float)f.pFrameTex->GetHeight();
 
 
-				auto slicesize = ImVec2(f.vSlice.x * aw, f.vSlice.y * ah) / 5;
+				auto slicesize = ImVec2(f.vSlice.x * aw, f.vSlice.y * ah) ;
 				auto slice = ImVec2(f.vSlice.x, f.vSlice.y);
 				auto lt = f.vLeftTop;
 				auto uv = ImVec2(lt.x / aw, lt.y / ah);
@@ -139,10 +197,10 @@ void Animator2DUI::render_update()
 		}
 
 		ImGui::EndTable();
-		//먼가릭남음
-		for (auto& ws : delanim)
-		{
-			refMapAnim.erase(ws);
-		}
+		////먼가릭남음
+		//for (auto& ws : delanim)
+		//{
+		//	refMapAnim.erase(ws);
+		//}
 	}
 }

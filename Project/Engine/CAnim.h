@@ -26,7 +26,8 @@ private:
     int                 m_CurFrmIdx;
     bool                m_bFinish;
 
-
+    // -1 루프안함, 루프할 프레임
+    int            m_iRoop;
     float               m_AccTime;
 
 public:
@@ -39,7 +40,7 @@ public:
     void Reset()
     {
         m_bFinish = false;
-        m_CurFrmIdx = 0;
+        m_CurFrmIdx = m_iRoop;
         m_AccTime = 0.f;
     }
 

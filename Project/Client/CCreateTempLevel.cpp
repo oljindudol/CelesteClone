@@ -108,7 +108,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->AddComponent(new CTransform);
 	pCamObj->AddComponent(new CCamera);
 
-	pCamObj->Transform()->SetRelativePos(Vec3(0.5f, 0.f, 0.f));
+	pCamObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 410.f));
 	pCamObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
 
 	pCamObj->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
@@ -124,7 +124,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->AddComponent(new CTransform);
 	pCamObj->AddComponent(new CCamera);
 
-	pCamObj->Transform()->SetRelativePos(Vec3(0.5f, 0.f, 0.f));
+	pCamObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	pCamObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
 
 	pCamObj->Camera()->SetCameraPriority(1);
@@ -172,18 +172,18 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CTileMap);
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 800.f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 501.f));
 
 	Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"TileAtlasTex", L"texture\\TILE.bmp");
 	pObj->TileMap()->SetTileAtlas(pTileAtlas, Vec2(64.f, 64.f));
 
 	pTempLevel->AddObject(pObj, L"Tile", false);
-	pObj->TileMap()->SetFace(1, 1);
-	for (int i = 0; i < 1; ++i)
+	pObj->TileMap()->SetFace(40, 23);
+	for (int i = 0; i < 23; ++i)
 	{
-		for (int j = 0; j < 1; ++j)
+		for (int j = 0; j < 40; ++j)
 		{
-			pObj->TileMap()->SetTileIndex(i, j, i * 1 + j);
+			pObj->TileMap()->SetTileIndex(i, j, i * 40 + j);
 		}
 	}
 
@@ -199,7 +199,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CMissileScript);
 
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
-	pObj->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
+	pObj->Transform()->SetRelativeScale(Vec3(32.f, 32.f, 1.f));
 
 	pObj->Collider2D()->SetAbsolute(true);
 	pObj->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
@@ -223,7 +223,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CMonsterScript);
 
 	pObj->Transform()->SetRelativePos(Vec3(500.f, 0.f, 500.f));
-	pObj->Transform()->SetRelativeScale(Vec3(200.f, 200.f, 1.f));
+	pObj->Transform()->SetRelativeScale(Vec3(32.f, 32.f, 1.f));
 
 	pObj->Collider2D()->SetAbsolute(true);
 	pObj->Collider2D()->SetOffsetScale(Vec2(120.f, 120.f));
@@ -231,7 +231,7 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
-	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\badline.png", L"texture\\badline.png"));
+	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\badline.png", L"texture\\badline.png"));
 
 	pObj->StateMachine()->SetFSM(CAssetMgr::GetInst()->FindAsset<CFSM>(L"NormalMonsterFSM"));
 

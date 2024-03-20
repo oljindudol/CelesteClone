@@ -125,6 +125,9 @@
     <Filter Include="02. UI\3. Inspector\ComponentUI\Script">
       <UniqueIdentifier>{be25e58a-0a74-4344-8769-f0a1de4e97b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. UI\7. EditorGeneral">
+      <UniqueIdentifier>{cd63cd1b-b05f-49c3-bb8f-f66184daea70}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -270,6 +273,9 @@
     </ClInclude>
     <ClInclude Include="TileMapUI.h">
       <Filter>02. UI\3. Inspector\ComponentUI\TileMap</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorGeneral.h">
+      <Filter>02. UI\7. EditorGeneral</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -418,6 +424,9 @@
     </ClCompile>
     <ClCompile Include="TileMapUI.cpp">
       <Filter>02. UI\3. Inspector\ComponentUI\TileMap</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorGeneral.cpp">
+      <Filter>02. UI\7. EditorGeneral</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

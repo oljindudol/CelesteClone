@@ -30,6 +30,9 @@ public:
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
+
+    CAnim* GetCurAnim() { return m_CurAnim; }
+
     CLONE(CAnimator2D);
 public:
     CAnimator2D();

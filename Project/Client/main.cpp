@@ -65,8 +65,9 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     HACCEL hAccelTable = LoadAccelerators(hInstance, MAKEINTRESOURCE(IDC_CLIENT));
     MSG msg;
 
-    // CEngine 초기화 실패 -> 프로그램 종료
-    if (FAILED(CEngine::GetInst()->init(hWnd, Vec2(1280, 768))))
+    // CEngine 초기화 실패 -> 프로그램 종료  720 x4 1080 x6
+    if (FAILED(CEngine::GetInst()->init(hWnd, Vec2(1280, 720))))
+    //if (FAILED(CEngine::GetInst()->init(hWnd, Vec2(1280, 720))))
     {
         MessageBox(nullptr, L"CEngine 초기화 실패", L"초기화 실패", MB_OK);
         return 0;

@@ -2,7 +2,7 @@
 #include "CCameraMoveScript.h"
 
 CCameraMoveScript::CCameraMoveScript()
-	: m_CamSpeed(1000.f)
+	: m_CamSpeed(200.f)
 	, CScript(-1)
 {
 }
@@ -38,7 +38,7 @@ void CCameraMoveScript::tick()
 	if (KEY_PRESSED(KEY::_1))
 	{
 		if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)		
-			Camera()->SetScale(Camera()->GetScale() + DT_ENGINE * 2.5f);
+			Camera()->SetScale(Camera()->GetScale() + DT_ENGINE * 0.1f);
 		else
 			Camera()->SetFOV(Camera()->GetFOV() + DT_ENGINE * 2.f);
 	}
@@ -46,7 +46,7 @@ void CCameraMoveScript::tick()
 	if (KEY_PRESSED(KEY::_2))
 	{
 		if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
-			Camera()->SetScale(Camera()->GetScale() - DT_ENGINE * 2.5f);
+			Camera()->SetScale(Camera()->GetScale() - DT_ENGINE * 0.1f);
 		else
 			Camera()->SetFOV(Camera()->GetFOV() - DT_ENGINE * 2.f);
 	}

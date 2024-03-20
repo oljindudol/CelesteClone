@@ -39,7 +39,7 @@ void CAnimator2D::finaltick()
 	if (nullptr == m_CurAnim)
 		return;
 
-	if (m_CurAnim->IsFinish() && m_bRepeat)
+	if (m_CurAnim->IsFinish() && (m_CurAnim->m_iRoop > -1))
 	{
 		m_CurAnim->Reset();
 	}
