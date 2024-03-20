@@ -86,6 +86,8 @@ void CCreateTempLevel::CreateTempLevel()
 	pTempLevel->GetLayer(6)->SetName(L"Tile");
 	pTempLevel->GetLayer(31)->SetName(L"UI");
 
+
+
 	// ComputeShader 테스트
 	// 사용할 텍스쳐 생성
 	Ptr<CTexture> pTestTex = CAssetMgr::GetInst()->CreateTexture(L"TestTex"
@@ -144,23 +146,46 @@ void CCreateTempLevel::CreateTempLevel()
 	CGameObject* pObj = nullptr;
 
 	// Backgruond Object 생성
+	//pObj = new CGameObject;
+	//pObj->SetName(L"Background");
+
+	//pObj->AddComponent(new CTransform);
+	//pObj->AddComponent(new CMeshRender);
+	//pObj->AddComponent(new CBackgroundScript);
+
+	//pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 600.f));
+	//pObj->Transform()->SetRelativeScale(Vec3(1600.f, 800.f, 1.f));
+
+	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	//pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BackgroundMtrl"));
+
+	//Ptr<CTexture> pTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.jpg");
+	//pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, pTex);
+
+	//pTempLevel->AddObject(pObj, L"Background", false);
+
+
+	// TileMap Object
 	pObj = new CGameObject;
-	pObj->SetName(L"Background");
+	pObj->SetName(L"TileMap");
 
 	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
-	pObj->AddComponent(new CBackgroundScript);
+	pObj->AddComponent(new CTileMap);
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 600.f));
-	pObj->Transform()->SetRelativeScale(Vec3(1600.f, 800.f, 1.f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 800.f));
 
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"BackgroundMtrl"));
+	Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"TileAtlasTex", L"texture\\TILE.bmp");
+	pObj->TileMap()->SetTileAtlas(pTileAtlas, Vec2(64.f, 64.f));
 
-	Ptr<CTexture> pTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.jpg");
-	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, pTex);
-
-	pTempLevel->AddObject(pObj, L"Background", false);
+	pTempLevel->AddObject(pObj, L"Tile", false);
+	pObj->TileMap()->SetFace(1, 1);
+	for (int i = 0; i < 1; ++i)
+	{
+		for (int j = 0; j < 1; ++j)
+		{
+			pObj->TileMap()->SetTileIndex(i, j, i * 1 + j);
+		}
+	}
 
 	// Player Object 생성
 	pObj = new CGameObject;
@@ -182,7 +207,7 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
-	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Fighter.bmp", L"texture\\Fighter.bmp"));
+	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Strawberry.png", L"texture\\Strawberry.png"));
 
 	pTempLevel->AddObject(pObj, L"Player", false);
 
@@ -206,7 +231,7 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
-	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Fighter.bmp", L"texture\\Fighter.bmp"));
+	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_1, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\badline.png", L"texture\\badline.png"));
 
 	pObj->StateMachine()->SetFSM(CAssetMgr::GetInst()->FindAsset<CFSM>(L"NormalMonsterFSM"));
 

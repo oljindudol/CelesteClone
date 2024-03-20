@@ -2,7 +2,7 @@
 #include "CCameraMoveScript.h"
 
 CCameraMoveScript::CCameraMoveScript()
-	: m_CamSpeed(500.f)
+	: m_CamSpeed(1000.f)
 	, CScript(-1)
 {
 }
@@ -35,21 +35,22 @@ void CCameraMoveScript::tick()
 		MovePerspective();
 	}
 
-	if (KEY_PRESSED(KEY::NUM1))
+	if (KEY_PRESSED(KEY::_1))
 	{
 		if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)		
-			Camera()->SetScale(Camera()->GetScale() + DT_ENGINE * 0.2f);
+			Camera()->SetScale(Camera()->GetScale() + DT_ENGINE * 2.5f);
 		else
 			Camera()->SetFOV(Camera()->GetFOV() + DT_ENGINE * 2.f);
 	}
 
-	if (KEY_PRESSED(KEY::NUM2))
+	if (KEY_PRESSED(KEY::_2))
 	{
 		if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
-			Camera()->SetScale(Camera()->GetScale() - DT_ENGINE * 0.2f);
+			Camera()->SetScale(Camera()->GetScale() - DT_ENGINE * 2.5f);
 		else
 			Camera()->SetFOV(Camera()->GetFOV() - DT_ENGINE * 2.f);
 	}
+
 }
 
 void CCameraMoveScript::MoveOrthographic()
@@ -77,6 +78,7 @@ void CCameraMoveScript::MoveOrthographic()
 	}
 
 	Transform()->SetRelativePos(vPos);
+
 }
 
 void CCameraMoveScript::MovePerspective()
