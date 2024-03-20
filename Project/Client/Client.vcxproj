@@ -161,6 +161,7 @@
     <ClInclude Include="Animator2DUI.h" />
     <ClInclude Include="AnimEditor.h" />
     <ClInclude Include="AssetUI.h" />
+    <ClInclude Include="CameraUI.h" />
     <ClInclude Include="CCameraMoveScript.h" />
     <ClInclude Include="CCreateTempLevel.h" />
     <ClInclude Include="CEditorObjMgr.h" />
@@ -173,7 +174,6 @@
     <ClInclude Include="ComponentUI.h" />
     <ClInclude Include="ComputeShaderUI.h" />
     <ClInclude Include="Content.h" />
-    <ClInclude Include="EditorGeneral.h" />
     <ClInclude Include="ScriptUI.h" />
     <ClInclude Include="CTraceState.h" />
     <ClInclude Include="framework.h" />
@@ -212,6 +212,7 @@
     <ClCompile Include="Animator2DUI.cpp" />
     <ClCompile Include="AnimEditor.cpp" />
     <ClCompile Include="AssetUI.cpp" />
+    <ClCompile Include="CameraUI.cpp" />
     <ClCompile Include="CCameraMoveScript.cpp" />
     <ClCompile Include="CCreateTempLevel.cpp" />
     <ClCompile Include="CEditorObjMgr.cpp" />
@@ -223,7 +224,6 @@
     <ClCompile Include="ComponentUI.cpp" />
     <ClCompile Include="ComputeShaderUI.cpp" />
     <ClCompile Include="Content.cpp" />
-    <ClCompile Include="EditorGeneral.cpp" />
     <ClCompile Include="ScriptUI.cpp" />
     <ClCompile Include="CTraceState.cpp" />
     <ClCompile Include="FSMUI.cpp" />

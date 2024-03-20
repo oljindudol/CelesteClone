@@ -26,7 +26,7 @@ void Animator2DUI::render_update()
 {
 	ComponentUI::render_update();
 	static CGameObject* pPrevTarget = nullptr;
-	static bool selected[50] = {};
+	//static bool selected[50] = {};
 
 	CGameObject* pTarget = GetTargetObject();
 
@@ -43,13 +43,13 @@ void Animator2DUI::render_update()
 
 
 	//이전 오브젝트와 현재오브젝트가 다르다면, 재할당
-	if (pPrevTarget != pTarget)
-	{
-		for (auto& b : selected)
-		{
-			b = false;
-		}
-	}
+	//if (pPrevTarget != pTarget)
+	//{
+	//	for (auto& b : selected)
+	//	{
+	//		b = false;
+	//	}
+	//}
 
 	pPrevTarget = pTarget;
 
