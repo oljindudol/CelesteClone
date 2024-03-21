@@ -11,6 +11,7 @@
 #include <list>
 #include <map>
 #include <filesystem>
+#include <unordered_map>
 
 using std::vector;
 using std::list;

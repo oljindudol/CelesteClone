@@ -75,16 +75,19 @@ void CCreateTempLevel::CreateTempLevel()
 	return;*/
 
 
+
+
 	CLevel* pTempLevel = new CLevel;
 
-	pTempLevel->GetLayer(0)->SetName(L"Default");
-	pTempLevel->GetLayer(1)->SetName(L"Background");
-	pTempLevel->GetLayer(2)->SetName(L"Tile");
-	pTempLevel->GetLayer(3)->SetName(L"Player");
-	pTempLevel->GetLayer(4)->SetName(L"Monster");
-	pTempLevel->GetLayer(5)->SetName(L"Light");
-	pTempLevel->GetLayer(6)->SetName(L"Tile");
-	pTempLevel->GetLayer(31)->SetName(L"UI");
+
+	pTempLevel->GetLayer(0)->SetName(LAYER_DEFAULT);
+	pTempLevel->GetLayer(1)->SetName(LAYER_BACKGROUND);
+	pTempLevel->GetLayer(2)->SetName(LAYER_TILE);
+	pTempLevel->GetLayer(3)->SetName(LAYER_PLAYER);
+	pTempLevel->GetLayer(4)->SetName(LAYER_MONSTER);
+	pTempLevel->GetLayer(5)->SetName(LAYER_LIGHT);
+	pTempLevel->GetLayer(6)->SetName(LAYER_TILE);
+	pTempLevel->GetLayer(31)->SetName(LAYER_UI);
 
 
 
@@ -116,7 +119,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->Camera()->LayerCheckAll();
 	pCamObj->Camera()->LayerCheck(31, false);
 
-	pTempLevel->AddObject(pCamObj, 0);
+	pTempLevel->AddObject(pCamObj, LAYER_DEFAULT);
 
 	// UI 카메라 생성
 	pCamObj = new CGameObject;
@@ -130,7 +133,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->Camera()->SetCameraPriority(1);
 	pCamObj->Camera()->LayerCheck(31, true);
 
-	pTempLevel->AddObject(pCamObj, 0);
+	pTempLevel->AddObject(pCamObj, LAYER_DEFAULT);
 
 	// 전역 광원 추가
 	CGameObject* pLight = new CGameObject;
@@ -140,7 +143,7 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pLight->Light2D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
 	pLight->Light2D()->SetAmbient(Vec3(0.8f, 0.8f, 0.8f));
-	pTempLevel->AddObject(pLight, L"Light");
+	pTempLevel->AddObject(pLight, LAYER_LIGHT);
 
 
 	CGameObject* pObj = nullptr;
@@ -177,7 +180,7 @@ void CCreateTempLevel::CreateTempLevel()
 	Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"TileAtlasTex", L"texture\\TILE.bmp");
 	pObj->TileMap()->SetTileAtlas(pTileAtlas, Vec2(64.f, 64.f));
 
-	pTempLevel->AddObject(pObj, L"Tile", false);
+	pTempLevel->AddObject(pObj,LAYER_TILE, false);
 	pObj->TileMap()->SetFace(40, 23);
 	for (int i = 0; i < 23; ++i)
 	{
@@ -209,7 +212,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"Std2DMtrl"));
 	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Strawberry.png", L"texture\\Strawberry.png"));
 
-	pTempLevel->AddObject(pObj, L"Player", false);
+	pTempLevel->AddObject(pObj, LAYER_PLAYER, false);
 
 
 	// Monster Object 생성
@@ -235,7 +238,7 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pObj->StateMachine()->SetFSM(CAssetMgr::GetInst()->FindAsset<CFSM>(L"NormalMonsterFSM"));
 
-	pTempLevel->AddObject(pObj, L"Monster", false);
+	pTempLevel->AddObject(pObj,LAYER_MONSTER, false);
 
 
 	// 충돌 설정

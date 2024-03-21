@@ -25,7 +25,8 @@ Animator2DUI::~Animator2DUI()
 void Animator2DUI::render_update()
 {
 	ComponentUI::render_update();
-	static CGameObject* pPrevTarget = nullptr;
+
+	//static CGameObject* pPrevTarget = nullptr;
 	//static bool selected[50] = {};
 
 	CGameObject* pTarget = GetTargetObject();
@@ -51,7 +52,7 @@ void Animator2DUI::render_update()
 	//	}
 	//}
 
-	pPrevTarget = pTarget;
+	//pPrevTarget = pTarget;
 
 
 	if (ImGui::Button("SAVE"))

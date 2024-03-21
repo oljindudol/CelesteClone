@@ -129,6 +129,8 @@ void GamePlayStatic::Play2DBGM(const wstring& _SoundPath, float _Volume)
 }
 
 
+
+
 void Vector3::ToDegree()
 {
 	x = (x / XM_PI) * 180.f;
@@ -199,4 +201,10 @@ std::vector<std::filesystem::path> getImagesFromDirectory(const std::string& pat
 		});
 
 	return fileList;
+}
+
+
+void GamePlayStatic::InitLayerString()
+{
+
 }

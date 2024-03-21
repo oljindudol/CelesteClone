@@ -125,6 +125,9 @@
     <Filter Include="02. UI\3. Inspector\ComponentUI\Script">
       <UniqueIdentifier>{be25e58a-0a74-4344-8769-f0a1de4e97b0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02. UI\3. Inspector\ComponentUI\Camera">
+      <UniqueIdentifier>{847d8c4b-9a6d-4389-bd10-67db414544a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h">
@@ -271,7 +274,9 @@
     <ClInclude Include="TileMapUI.h">
       <Filter>02. UI\3. Inspector\ComponentUI\TileMap</Filter>
     </ClInclude>
-    <ClInclude Include="CameraUI.h" />
+    <ClInclude Include="CameraUI.h">
+      <Filter>02. UI\3. Inspector\ComponentUI\Camera</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -420,6 +425,8 @@
     <ClCompile Include="TileMapUI.cpp">
       <Filter>02. UI\3. Inspector\ComponentUI\TileMap</Filter>
     </ClCompile>
-    <ClCompile Include="CameraUI.cpp" />
+    <ClCompile Include="CameraUI.cpp">
+      <Filter>02. UI\3. Inspector\ComponentUI\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

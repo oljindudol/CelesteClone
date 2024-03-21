@@ -9,6 +9,9 @@
 #include "C:\CelesteClone\Project\Client\AssetUI.cpp"
 
 
+#include "C:\CelesteClone\Project\Client\CameraUI.cpp"
+
+
 #include "C:\CelesteClone\Project\Client\CCameraMoveScript.cpp"
 
 
@@ -40,9 +43,6 @@
 
 
 #include "C:\CelesteClone\Project\Client\Content.cpp"
-
-
-#include "C:\CelesteClone\Project\Client\EditorGeneral.cpp"
 
 
 #include "C:\CelesteClone\Project\Client\ScriptUI.cpp"

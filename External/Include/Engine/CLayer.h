@@ -1,6 +1,14 @@
 #pragma once
 #include "CEntity.h"
 
+#define LAYER_DEFAULT L"Default"
+#define LAYER_BACKGROUND L"Background"
+#define LAYER_TILE L"Tile"
+#define LAYER_PLAYER L"Player"
+#define LAYER_MONSTER L"Monster"
+#define LAYER_LIGHT L"Light"
+#define LAYER_UI L"UI"
+
 class CGameObject;
 
 class CLayer :

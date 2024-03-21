@@ -46,6 +46,9 @@ public:
     float GetScale() { return m_Scale; }
     void SetScale(float _Scale) { m_Scale = _Scale; }
 
+    float GetWidth() { return m_Width; }
+    void SetWidth(float _Width) { m_Width = _Width; }
+
     float GetFOV() { return m_FOV; }
     void SetFOV(float _FOV) { m_FOV = _FOV; }
 
@@ -59,6 +62,11 @@ public:
     void LayerCheck(UINT _LayerIdx, bool _bCheck);
     void LayerCheck(const wstring& _strLayerName, bool _bCheck);
     void LayerCheckAll() { m_LayerCheck = 0xffffffff; }
+    UINT GetLayerCheck() { return m_LayerCheck; }
+    void SetLayerCheck(UINT _LayerCheck) { m_LayerCheck = _LayerCheck; }
+    void LayerCheckToggle(UINT _LayerIdx) { m_LayerCheck ^ (1 << _LayerIdx); }
+
+    int GetCameraPriority(){ return m_CameraPriority; }
 
 
 public:

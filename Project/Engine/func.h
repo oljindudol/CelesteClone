@@ -4,6 +4,8 @@
 class CGameObject;
 class CAsset;
 
+
+
 namespace GamePlayStatic
 {
 	void SpawnGameObject(CGameObject* _Target, int _LayerIdx);
@@ -20,6 +22,9 @@ namespace GamePlayStatic
 
 	void Play2DSound(const wstring& _SoundPath, int _Loop, float _Volume, bool _Overlap = true);
 	void Play2DBGM(const wstring& _SoundPath, float _Volume);
+
+	//std::unordered_map<int, wstring> LayerString;
+	void InitLayerString();
 
 	//void DrawDebugCube();
 	//void DrawDebugSphere();
