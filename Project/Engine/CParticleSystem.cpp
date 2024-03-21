@@ -16,8 +16,8 @@ CParticleSystem::CParticleSystem()
 	, m_MaxParticleCount(1000)
 {
 	// 전용 메쉬와 전용 재질 사용
-	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"PointMesh"));
-	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"ParticleMtrl"));
+	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(STR_KEY_PointMesh));
+	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_ParticleMeterial));
 
 	// 렌더링 해상도
 	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
@@ -36,7 +36,7 @@ CParticleSystem::CParticleSystem()
 	m_ParticleModuleBuffer->Create(sizeof(tParticleModule) + ModuleAddSize, 1, SB_TYPE::READ_ONLY, true);
 
 	// 파티클 업데이트용 컴퓨트 쉐이더 참조
-	m_CSParticleUpdate = (CParticleUpdate*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(L"ParticleUpdateShader").Get();
+	m_CSParticleUpdate = (CParticleUpdate*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(STR_KEY_ParticleUpdateShader).Get();
 
 	// SpawnCount 전달용 구조화버퍼
 	m_SpawnCountBuffer = new CStructuredBuffer;

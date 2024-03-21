@@ -13,6 +13,7 @@
 #include <filesystem>
 #include <unordered_map>
 
+
 using std::vector;
 using std::list;
 using std::map;
@@ -67,3 +68,5 @@ typedef Vector4 Vec4;
 #include "define.h"
 #include "struct.h"
 #include "func.h"
+
+#include "StringTable.h"

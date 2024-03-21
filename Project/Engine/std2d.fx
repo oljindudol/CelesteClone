@@ -74,7 +74,7 @@ float4 PS_Std2D(VS_OUT _in) : SV_Target
             }
         }
     }
-        
+    
     // 광원 처리
     // 광원의 타입별 처리
     // 광원이 여러개일 때 처리

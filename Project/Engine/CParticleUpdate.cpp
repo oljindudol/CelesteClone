@@ -4,7 +4,7 @@
 CParticleUpdate::CParticleUpdate()
 	: CComputeShader(32, 1, 1)
 {
-	Create(L"shader\\particle_update.fx", "CS_ParticleUpdate");
+	Create(STR_FILE_PATH_ParticleUpdateShader, STR_FUNC_NAME_CSShaderParticleUpdate);
 }
 
 CParticleUpdate::~CParticleUpdate()

@@ -4,7 +4,7 @@
 CSetColorShader::CSetColorShader()
 	: CComputeShader(32, 32, 1)
 {
-	Create(L"shader\\setcolor.fx", "CS_SetColor");
+	Create(STR_FILE_PATH_SetColorShader, STR_FUNC_NAME_CSShaderSetColor);
 }
 
 CSetColorShader::~CSetColorShader()

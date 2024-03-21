@@ -16,7 +16,7 @@ CTileMap::CTileMap()
 	, m_TileInfoBuffer(nullptr)
 {
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(L"TileMapMtrl"));
+	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_TileMapMeterial));
 
 	m_TileInfoBuffer = new CStructuredBuffer;
 
