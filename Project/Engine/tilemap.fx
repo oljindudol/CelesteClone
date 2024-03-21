@@ -68,23 +68,26 @@ float4 PS_TileMap(VS_OUT _in) : SV_Target
     return vColor;
 }
 
-//VS_OUT VS_Grid(VS_IN _in)
-//{
-//    VS_OUT output = (VS_OUT) 0.f; // 초기화
-//    
-//    output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
-//    output.vUV = _in.vUV;
-//	
-//    return output;
-//}
+/////////////
+//Grid (frame) v shader
+/////////////
+VS_OUT VS_Grid(VS_IN _in)
+{
+    VS_OUT output = (VS_OUT) 0.f; // 초기화
+    
+    output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
+    output.vUV = _in.vUV;
+	
+    return output;
+}
 
 
-///////////////
-// Grid (frame) pixel shader
-///////////////
-//float4 PS_Grid(VS_OUT _in) : SV_Target
-//{
-//    return float4(0.9f, 0.9f, 0.9f, 1.f);
-//}
-//
+/////////////
+//Grid (frame) pixel shader
+/////////////
+float4 PS_Grid(VS_OUT _in) : SV_Target
+{
+    return float4(0.9f, 0.9f, 0.9f, 1.f);
+}
+
 #endif

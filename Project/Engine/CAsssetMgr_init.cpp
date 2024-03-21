@@ -210,17 +210,16 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// =============
 	// GridShader
 	// =============
-	//pShader = new CGraphicsShader;
-	//pShader->CreateVertexShader(STR_FILE_PATH_TileMapShader, STR_FUNC_NAME_VTXShaderGrid);
-	//pShader->CreatePixelShader(STR_FILE_PATH_TileMapShader, STR_FUNC_NAME_PIXShaderGrid);
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(STR_FILE_PATH_TileMapShader, STR_FUNC_NAME_VTXShaderGrid);
+	pShader->CreatePixelShader(STR_FILE_PATH_TileMapShader, STR_FUNC_NAME_PIXShaderGrid);
 
-	//pShader->SetRSType(RS_TYPE::CULL_NONE);
-	//pShader->SetDSType(DS_TYPE::LESS);
-	//pShader->SetBSType(BS_TYPE::DEFAULT);
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::LESS);
+	pShader->SetBSType(BS_TYPE::DEFAULT);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
 
-	//pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
-
-	//AddAsset(STR_KEY_GridShader, pShader.Get());
+	AddAsset(STR_KEY_GridShader, pShader.Get());
 
 	// ====================
 	// ParticleRenderShader
