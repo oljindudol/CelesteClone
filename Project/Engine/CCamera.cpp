@@ -19,7 +19,7 @@ CCamera::CCamera()
 	, m_ProjType(PROJ_TYPE::ORTHOGRAPHIC)
 	, m_FOV(XM_PI / 2.f)
 	, m_Width(0.f)
-	, m_Scale(1.f)
+	, m_Scale(.25f)
 	, m_AspectRatio(1.f)
 	, m_Far(10000.f)
 	, m_LayerCheck(0)
@@ -27,6 +27,12 @@ CCamera::CCamera()
 {
 	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
 	m_AspectRatio = vResol.x / vResol.y;
+	if (1080.f == vResol.y)
+	{
+		m_Scale = 0.166666666f;
+	}
+
+
 }
 
 CCamera::~CCamera()

@@ -25,7 +25,10 @@ void TileMapUI::render_update()
 
 	//============= 1. 타일갯수 =============
 
-	static int Face[2];
+	static int Face[2] = { 0, 0 };
+
+	static int FacePrev[2] = { 0, 0 };
+
 	Face[0] = (int)GetTargetObject()->TileMap()->GetFaceX();
 	Face[1] = (int)GetTargetObject()->TileMap()->GetFaceY();
 
@@ -43,15 +46,22 @@ void TileMapUI::render_update()
 		Face[1] = min;
 	}
 
-	GetTargetObject()->TileMap()->SetFace((UINT)Face[0], (UINT)Face[1]);
-
-	for (int i = 0; i < Face[1]; ++i)
+	if (!(FacePrev[0] == Face[0] && FacePrev[1] == Face[1]))
 	{
-		for (int j = 0; j < Face[0]; ++j)
+		GetTargetObject()->TileMap()->SetFace((UINT)Face[0], (UINT)Face[1]);
+
+		for (int i = 0; i < Face[1]; ++i)
 		{
-			GetTargetObject()->TileMap()->SetTileIndex(i, j, i * Face[0] + j);
+			for (int j = 0; j < Face[0]; ++j)
+			{
+				GetTargetObject()->TileMap()->SetTileIndexWithOutGridInit(i, j, i * Face[0] + j);
+			}
 		}
+		GetTargetObject()->TileMap()->GridInit();
 	}
+
+
+
 
 
 	//============= 2. 타일 크기 =============

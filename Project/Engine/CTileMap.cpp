@@ -7,6 +7,7 @@
 #include "CMesh.h"
 
 #include "CTransform.h"
+#include "CTileMapGrid.h"
 
 CTileMap::CTileMap()
 	: CRenderComponent(COMPONENT_TYPE::TILEMAP)
@@ -14,6 +15,8 @@ CTileMap::CTileMap()
 	, m_FaceY(23)
 	, m_vTileRenderSize(Vec2(8.f, 8.f))	
 	, m_TileInfoBuffer(nullptr)
+	, m_bGridVisible(true)
+	, m_pGrid(nullptr)
 {
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_TileMapMeterial));
@@ -21,6 +24,10 @@ CTileMap::CTileMap()
 	m_TileInfoBuffer = new CStructuredBuffer;
 
 	SetFace(m_FaceX, m_FaceY);
+
+	if (!m_pGrid)
+		m_pGrid = new CTileMapGrid(this);
+	m_pGrid->Init();
 }
 
 CTileMap::CTileMap(const CTileMap& _OriginTileMap)
@@ -39,6 +46,10 @@ CTileMap::CTileMap(const CTileMap& _OriginTileMap)
 	if (nullptr != _OriginTileMap.m_TileInfoBuffer)
 	{
 		m_TileInfoBuffer = _OriginTileMap.m_TileInfoBuffer->Clone();
+
+		if (!m_pGrid)
+			m_pGrid = new CTileMapGrid(this);
+		m_pGrid->Init();
 	}	
 }
 
@@ -46,6 +57,9 @@ CTileMap::~CTileMap()
 {
 	if (nullptr != m_TileInfoBuffer)
 		delete m_TileInfoBuffer;
+
+	if (nullptr != m_pGrid)
+		delete m_pGrid;
 }
 
 void CTileMap::finaltick()
@@ -79,6 +93,11 @@ void CTileMap::render()
 	Transform()->UpdateData();
 
 	GetMesh()->render();
+
+	if (!m_pGrid->DidInit())
+		m_pGrid->Init();
+	if (m_bGridVisible && m_pGrid)
+		m_pGrid->UpdateData();
 }
 
 
@@ -127,6 +146,34 @@ void CTileMap::SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx)
 								  , (iRow * m_vTilePixelSize.y) / m_TileAtlas->GetHeight());
 
 	m_vecTileInfo[idx].bRender = 1;
+
+
+	//if (!m_pGrid)
+	//	m_pGrid = new CTileMapGrid(this); //Test
+	m_pGrid->Init();
+}
+
+void CTileMap::SetTileIndexWithOutGridInit(UINT _Row, UINT _Col, UINT _ImgIdx)
+{
+	if (nullptr == m_TileAtlas)
+		return;
+
+	UINT idx = _Row * m_FaceX + _Col;
+
+	// 렌더링할 타일 정보
+	UINT iRow = _ImgIdx / m_MaxCol;
+	UINT iCol = _ImgIdx % m_MaxCol;
+
+	m_vecTileInfo[idx].vLeftTopUV = Vec2((iCol * m_vTilePixelSize.x) / m_TileAtlas->GetWidth()
+		, (iRow * m_vTilePixelSize.y) / m_TileAtlas->GetHeight());
+
+	m_vecTileInfo[idx].bRender = 1;
+
+}
+
+void CTileMap::GridInit()
+{
+	m_pGrid->Init();
 }
 
 

@@ -2,6 +2,8 @@
 
 class CGameObject;
 class CTileMap;
+
+
 class CTileMapGrid
 {
 private:
@@ -17,6 +19,7 @@ private:
 	Vector4 m_vGridColor;
 
 	bool m_bDidInit;
+
 
 public:
 	void Init();

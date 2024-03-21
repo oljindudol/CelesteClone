@@ -42,9 +42,9 @@ void CTileMapGrid::Init()
 	// width, height을 받아와야 함.
 	int iCol, iRow;
 	Vector3 vTileMapScale = m_pTargetTileMap->Transform()->GetRelativeScale(); // width height
-	Vector3 vObjPos = m_pTargetTileMap->Transform()->GetRelativeScale();
-	iRow = m_pTargetTileMap->GetFaceX();
-	iCol = m_pTargetTileMap->GetFaceY();
+	Vector3 vObjPos = m_pTargetTileMap->Transform()->GetRelativePos();
+	iRow = m_pTargetTileMap->GetFaceY();
+	iCol = m_pTargetTileMap->GetFaceX();
 
 	Vector2 vGridSize{ 1.f,1.f };
 	Vector3 vScale = vTileMapScale;

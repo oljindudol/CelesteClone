@@ -2,6 +2,8 @@
 #include "CRenderComponent.h"
 
 class CStructuredBuffer;
+class CTileMapGrid;
+
 
 struct tTileInfo
 {
@@ -29,6 +31,9 @@ private:
     vector<tTileInfo>   m_vecTileInfo;
     CStructuredBuffer*  m_TileInfoBuffer;
 
+    bool m_bGridVisible;
+    CTileMapGrid* m_pGrid;
+
 public:
     void SetTileAtlas(Ptr<CTexture> _Atlas, Vec2 _TilePixelSize);
     auto& GetTileAtlas() { return m_TileAtlas; }
@@ -38,6 +43,8 @@ public:
     UINT GetFaceY() { return m_FaceY; }
 
     void SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx);
+    void SetTileIndexWithOutGridInit(UINT _Row, UINT _Col, UINT _ImgIdx);
+    void GridInit();
 
     Vec2 GetTileSize() {
         return m_vTileRenderSize;

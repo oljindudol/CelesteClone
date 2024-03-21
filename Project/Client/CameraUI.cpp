@@ -127,6 +127,13 @@ void CameraUI::render_update()
         ImGui::Text("FOV:");
         ImGui::SameLine();
         ImGui::DragFloat("##FOVinput", &FOV, 0.01f, 0.01f);
+
+        float Fovmin = 0.0001f;
+
+        if (Fovmin > FOV)
+        {
+            FOV = Fovmin;
+        }
         pCamera->SetFOV(FOV);
 
     }
@@ -141,6 +148,7 @@ void CameraUI::render_update()
 
     ImGui::NewLine();
 
+    //========== 카메라 visibility설정 =============
     ImGui::Text("<Layer Visibility>");
     ImGui::BeginChild("Layer Veiw", winsize, true);
     auto CurLevel = CLevelMgr::GetInst()->GetCurrentLevel();
@@ -198,7 +206,6 @@ void CameraUI::render_update()
        ImGui::PopStyleColor();
 
     }
-
     pCamera->SetLayerCheck(LayerCheckNext);
     ImGui::EndChild();
 }

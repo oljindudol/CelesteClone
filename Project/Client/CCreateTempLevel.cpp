@@ -175,7 +175,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CTileMap);
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 501.f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 250.f));
 
 	Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"TileAtlasTex", L"texture\\TILE.bmp");
 	pObj->TileMap()->SetTileAtlas(pTileAtlas, Vec2(64.f, 64.f));
@@ -201,7 +201,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CPlayerScript);
 	pObj->AddComponent(new CMissileScript);
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 500.f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 499.f));
 	pObj->Transform()->SetRelativeScale(Vec3(32.f, 32.f, 1.f));
 
 	pObj->Collider2D()->SetAbsolute(true);
