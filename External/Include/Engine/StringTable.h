@@ -88,7 +88,6 @@
 // Material
 #define STR_KEY_Std2dMeterial L"Std2DMtrl"
 #define STR_KEY_BackGroundMeterial L"BackgroundMtrl"
-
 #define STR_KEY_TileMapMeterial L"TileMapMtrl"
 #define STR_KEY_GridMeterial L"GridMtrl"
 #define STR_KEY_ParticleMeterial L"ParticleMtrl"
