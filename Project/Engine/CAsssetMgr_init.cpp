@@ -214,6 +214,8 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->CreateVertexShader(STR_FILE_PATH_TileMapShader, STR_FUNC_NAME_VTXShaderGrid);
 	pShader->CreatePixelShader(STR_FILE_PATH_TileMapShader, STR_FUNC_NAME_PIXShaderGrid);
 
+	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY::D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
 	pShader->SetDSType(DS_TYPE::LESS);
 	pShader->SetBSType(BS_TYPE::DEFAULT);

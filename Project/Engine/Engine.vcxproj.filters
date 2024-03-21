@@ -169,6 +169,9 @@
     <ClInclude Include="StringTable.h">
       <Filter>01. Header</Filter>
     </ClInclude>
+    <ClInclude Include="CTileMapGrid.h">
+      <Filter>08. Component\RenderComponent\02. TileMap\Innerclass</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -323,6 +326,9 @@
     </ClCompile>
     <ClCompile Include="CFontMgr.cpp">
       <Filter>04. Manager\FontMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CTileMapGrid.cpp">
+      <Filter>08. Component\RenderComponent\02. TileMap\Innerclass</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -484,6 +490,9 @@
     </Filter>
     <Filter Include="04. Manager\FontMgr">
       <UniqueIdentifier>{37be9843-c16a-4fff-8630-20aa99e316a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\02. TileMap\Innerclass">
+      <UniqueIdentifier>{ed1cf924-8040-49b0-b2aa-d96b26e7cf99}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

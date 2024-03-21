@@ -214,6 +214,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CTaskMgr.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="CTileMap.h" />
+    <ClInclude Include="CTileMapGrid.h" />
     <ClInclude Include="CTimeMgr.h" />
     <ClInclude Include="CTransform.h" />
     <ClInclude Include="define.h" />
@@ -273,6 +274,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CTaskMgr.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CTileMap.cpp" />
+    <ClCompile Include="CTileMapGrid.cpp" />
     <ClCompile Include="CTimeMgr.cpp" />
     <ClCompile Include="CTransform.cpp" />
     <ClCompile Include="Engine.cpp" />
