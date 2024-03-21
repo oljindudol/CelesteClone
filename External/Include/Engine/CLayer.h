@@ -3,7 +3,8 @@
 
 #define LAYER_DEFAULT L"Default"
 #define LAYER_BACKGROUND L"Background"
-#define LAYER_TILE L"Tile"
+#define LAYER_BACKTILE L"BackTile"
+#define LAYER_FORETILE L"ForeTile"
 #define LAYER_PLAYER L"Player"
 #define LAYER_MONSTER L"Monster"
 #define LAYER_LIGHT L"Light"

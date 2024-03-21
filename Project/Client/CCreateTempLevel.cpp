@@ -82,11 +82,11 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pTempLevel->GetLayer(0)->SetName(LAYER_DEFAULT);
 	pTempLevel->GetLayer(1)->SetName(LAYER_BACKGROUND);
-	pTempLevel->GetLayer(2)->SetName(LAYER_TILE);
-	pTempLevel->GetLayer(3)->SetName(LAYER_PLAYER);
-	pTempLevel->GetLayer(4)->SetName(LAYER_MONSTER);
-	pTempLevel->GetLayer(5)->SetName(LAYER_LIGHT);
-	pTempLevel->GetLayer(6)->SetName(LAYER_TILE);
+	pTempLevel->GetLayer(2)->SetName(LAYER_BACKTILE);
+	pTempLevel->GetLayer(3)->SetName(LAYER_FORETILE);
+	pTempLevel->GetLayer(4)->SetName(LAYER_PLAYER);
+	pTempLevel->GetLayer(5)->SetName(LAYER_MONSTER);
+	pTempLevel->GetLayer(6)->SetName(LAYER_LIGHT);
 	pTempLevel->GetLayer(31)->SetName(LAYER_UI);
 
 
@@ -180,7 +180,7 @@ void CCreateTempLevel::CreateTempLevel()
 	Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"TileAtlasTex", L"texture\\TILE.bmp");
 	pObj->TileMap()->SetTileAtlas(pTileAtlas, Vec2(64.f, 64.f));
 
-	pTempLevel->AddObject(pObj,LAYER_TILE, false);
+	pTempLevel->AddObject(pObj, LAYER_FORETILE, false);
 	pObj->TileMap()->SetFace(40, 23);
 	for (int i = 0; i < 23; ++i)
 	{
