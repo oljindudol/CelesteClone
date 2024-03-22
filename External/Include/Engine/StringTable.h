@@ -1,6 +1,13 @@
 #pragma once
 
 
+// Imgui UI String
+
+
+// ImGui ComponentUI String
+#define STR_COMPONENT_UI_TileMapEditor "##TileMapEditor"
+
+
 // Message
 
 
@@ -107,3 +114,8 @@
 
 
  /////// / // Test ///// / / /
+
+
+
+// Editor Object Name
+#define STR_Editor_OBJ_NAME_EditorCamera L"Editor Camera"

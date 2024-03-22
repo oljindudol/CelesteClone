@@ -6,6 +6,9 @@
 #include <Engine/CLayer.h>
 #include <Engine/CGameObject.h>
 #include <Engine/CKeyMgr.h>
+#include <Engine/CRenderMgr.h>
+#include <Engine/CCamera.h>
+
 
 #include "CImGuiMgr.h"
 #include "Inspector.h"
@@ -75,6 +78,13 @@ void Outliner::ResetCurrentLevel()
 			AddObjectToTree(pRootNode, vecParent[i]);
 		}
 	}
+
+	auto ec = CRenderMgr::GetInst()->GetEditorCamera();
+	if (nullptr != ec)
+	{
+		AddObjectToTree(pRootNode, ec->GetOwner());
+	}
+
 }
 
 void Outliner::AddObjectToTree(TreeNode* _Node, CGameObject* _Object)

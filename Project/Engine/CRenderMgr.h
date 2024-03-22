@@ -57,6 +57,7 @@ public:
             m_RenderFunc = &CRenderMgr::render_play;
     }
 
+    CCamera* GetEditorCamera() { return m_EditorCam; }
 
 public:
     void init();

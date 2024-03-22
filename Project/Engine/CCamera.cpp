@@ -40,6 +40,8 @@ CCamera::~CCamera()
 }
 
 
+
+
 void CCamera::begin()
 {
 	// 카메라를 우선순위값에 맞게 RenderMgr 에 등록시킴

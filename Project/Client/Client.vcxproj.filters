@@ -244,9 +244,6 @@
     <ClInclude Include="CGameObjectEx.h">
       <Filter>01. Manager\02. EditorObjMgr\GameObjectEx</Filter>
     </ClInclude>
-    <ClInclude Include="CCameraMoveScript.h">
-      <Filter>03. Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CCreateTempLevel.h">
       <Filter>01. Manager\03. CreateTempLevel</Filter>
     </ClInclude>
@@ -276,6 +273,9 @@
     </ClInclude>
     <ClInclude Include="CameraUI.h">
       <Filter>02. UI\3. Inspector\ComponentUI\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="TileMapEditor.h">
+      <Filter>02. UI\3. Inspector\ComponentUI\TileMap</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -395,9 +395,6 @@
     <ClCompile Include="CGameObjectEx.cpp">
       <Filter>01. Manager\02. EditorObjMgr\GameObjectEx</Filter>
     </ClCompile>
-    <ClCompile Include="CCameraMoveScript.cpp">
-      <Filter>03. Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="CCreateTempLevel.cpp">
       <Filter>01. Manager\03. CreateTempLevel</Filter>
     </ClCompile>
@@ -427,6 +424,9 @@
     </ClCompile>
     <ClCompile Include="CameraUI.cpp">
       <Filter>02. UI\3. Inspector\ComponentUI\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="TileMapEditor.cpp">
+      <Filter>02. UI\3. Inspector\ComponentUI\TileMap</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

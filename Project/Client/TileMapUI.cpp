@@ -3,6 +3,7 @@
 
 #include <Engine/CGameObject.h>
 #include <Engine/CTileMap.h>
+#include "TileMapEditor.h"
 
 TileMapUI::TileMapUI()
 	: ComponentUI("TileMap", "##TileMap", COMPONENT_TYPE::TILEMAP)
@@ -84,6 +85,16 @@ void TileMapUI::render_update()
 	}
 
 	GetTargetObject()->TileMap()->SetTileSize(Vec2(TileSize[0], TileSize[1]));
+
+	//============= 3. 에디터 열기 ============
+
+	if (ImGui::Button("Open TileMap Editor"))
+	{
+		TileMapEditor* pEdit = (TileMapEditor*)CImGuiMgr::GetInst()->FindUI(STR_COMPONENT_UI_TileMapEditor);
+		CGameObject* pTarget = GetTargetObject();
+		pEdit->SetTargetObject(pTarget);
+		pEdit->Activate();
+	}
 
 }
 

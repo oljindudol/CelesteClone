@@ -177,3 +177,5 @@ void CRenderMgr::RegisterCamera(CCamera* _Cam, int _Idx)
 
 	m_vecCam[_Idx] = _Cam;
 }
+
+

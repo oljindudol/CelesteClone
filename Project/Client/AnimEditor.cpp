@@ -16,7 +16,6 @@ AnimEditor::AnimEditor()
 void AnimEditor::render_update()
 {
 
-
     //==================== 1. Anim 선택기=====================
 
     ImVec2 pos(100, 100); // 적절한 위치에 콤보박스를 배치하세요.

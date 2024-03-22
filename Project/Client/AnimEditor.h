@@ -32,7 +32,7 @@ private:
     bool m_isPlaying;
 
 public:
-    void SetpGO(CGameObject* _TagetAnim) { m_TargetGO = _TagetAnim; }
+    void SetpGO(CGameObject* _TargetGO) { m_TargetGO = _TargetGO; }
     void SetTargetIdx(int _TagetIdx) { m_targetidx = _TagetIdx; }
 
     void initialize()

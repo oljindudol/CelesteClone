@@ -17,6 +17,7 @@
 #include "MenuUI.h"
 #include "ListUI.h"
 #include "AnimEditor.h"
+#include "TileMapEditor.h"
 
 #include "ParamUI.h"
 
@@ -198,8 +199,9 @@ void CImGuiMgr::create_ui()
     pUI = new AnimEditor;
     AddUI(pUI->GetID(), pUI);
 
-
-    
+    // AnimTileMap
+    pUI = new TileMapEditor;
+    AddUI(pUI->GetID(), pUI);
 }
 
 void CImGuiMgr::observe_content()
