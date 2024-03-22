@@ -2,16 +2,17 @@
 #include "TileMapEditor.h"
 
 //#include "CImGuiMgr.h"
-#include <Engine\CTileMap.h>
-#include <Engine\CGameObject.h>
-#include <Engine\CAssetMgr.h>
+#include <Engine/CTileMap.h>
+#include <Engine/CGameObject.h>
+#include <Engine/CAssetMgr.h>
 //#include "ParamGUI.h"
 //#include "DebugGUI.h"
-#include <Engine\CRenderMgr.h>
-#include <Engine\CCamera.h>
-#include <Engine\CKeyMgr.h>
-#include <Engine\CTransform.h>
-#include <Engine\CRenderMgr.h>
+#include <Engine/CRenderMgr.h>
+#include <Engine/CCamera.h>
+#include <Engine/CKeyMgr.h>
+#include <Engine/CTransform.h>
+#include <Engine/CRenderMgr.h>
+#include <Engine/CTexture.h>
 //#include <Engine\CObjectManager.h>
 //#include <Engine\CCursor.h>
 //#include <Engine\CSceneManager.h>
@@ -61,20 +62,22 @@ void TileMapEditor::_RenderCanvas()
 	m_pAtlasTileTex = m_pTileMap->GetTileAtlas().Get();
 
 
-	//
-	//
-	//
-	//ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
-	//
-	//CCamera* pToolCamera = CRenderMgr::GetInst()->GetToolCamera();
-	//if (pToolCamera) {
-	//	if (E_ProjectionType::Perspective == pToolCamera->GetProjectionType())
-	//		pToolCamera->SetProjectionType(E_ProjectionType::Orthographic);
-	//}
+
+	ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
+	
+	//에디터카메라 오쏘뷰고정
+	CCamera* pEditorCam = CRenderMgr::GetInst()->GetEditorCamera();
+	if (pEditorCam) {
+		if (PROJ_TYPE::PERSPECTIVE == pEditorCam->GetProjType())
+			pEditorCam->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
+	}
+	
+	//auto texture = m_pTileMap->GetTileAtlas();
+	//texture->GetWidth();
 	//
 	//ImVec2 vAtlasTexResol = {};
-	//if (m_pTileMap->GetAtlasTexture().Get()) {
-	//	ImVec2(m_pTileMap->GetAtlasTexture()->GetResolution().x, m_pTileMap->GetAtlasTexture()->GetResolution().y);
+	//if (m_pTileMap->GetTileAtlas().Get()) {
+	//	ImVec2(m_pTileMap->GetTileAtlas()->GetWidth(), m_pTileMap->GetTileAtlas()->GetHeight());
 	//}
 	//ImGui::Text("Atlas Texture Resolution [%d,%d]", vAtlasTexResol.x, vAtlasTexResol.x);
 	//

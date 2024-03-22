@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CKeyMgr.h"
 #include "CEngine.h"
+#include "CFontMgr.h"
 
 int g_KeySync[KEY::KEY_END] =
 {
@@ -110,4 +111,12 @@ void CKeyMgr::tick()
 		// 마우스 이동 방향
 		m_vMouseDrag = m_vMousePos - m_vMousePrevPos;
 	}
+}
+
+void CKeyMgr::render()
+{
+	static wchar_t m_szText[50];
+
+	swprintf_s(m_szText, 50, L"MousePos X : %d, Y : %d", int(m_vMousePos.x), int(m_vMousePos.y));
+	CFontMgr::GetInst()->DrawFont(m_szText, 10.f, 30.f, 11, FONT_RGBA(255, 255, 255, 255));
 }

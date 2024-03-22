@@ -17,8 +17,8 @@ class CTileMap :
     public CRenderComponent
 {
 private:
-    UINT                m_FaceX;            // 가로 타일 개수
-    UINT                m_FaceY;            // 세로 타일 개수
+    UINT                m_Row;            // 가로 타일 개수
+    UINT                m_Col;            // 세로 타일 개수
     Vec2                m_vTileRenderSize;  // 타일 1칸 사이즈
 
     Ptr<CTexture>       m_TileAtlas;
@@ -38,9 +38,9 @@ public:
     void SetTileAtlas(Ptr<CTexture> _Atlas, Vec2 _TilePixelSize);
     auto& GetTileAtlas() { return m_TileAtlas; }
 
-    void SetFace(UINT _FaceX, UINT _FaceY);
-    UINT GetFaceX() { return m_FaceX; }
-    UINT GetFaceY() { return m_FaceY; }
+    void SetRowCol(UINT _Row, UINT _Col);
+    UINT GetRow() { return m_Row; }
+    UINT GetCol() { return m_Col; }
 
     void SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx);
     void SetTileIndexWithOutGridInit(UINT _Row, UINT _Col, UINT _ImgIdx);

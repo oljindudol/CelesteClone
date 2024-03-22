@@ -30,8 +30,8 @@ void TileMapUI::render_update()
 
 	static int FacePrev[2] = { 0, 0 };
 
-	Face[0] = (int)GetTargetObject()->TileMap()->GetFaceX();
-	Face[1] = (int)GetTargetObject()->TileMap()->GetFaceY();
+	Face[0] = (int)GetTargetObject()->TileMap()->GetRow();
+	Face[1] = (int)GetTargetObject()->TileMap()->GetCol();
 
 	ImGui::Text("Face"); ImGui::SameLine();  ImGui::DragInt2("##Face", Face);
 
@@ -49,7 +49,7 @@ void TileMapUI::render_update()
 
 	if (!(FacePrev[0] == Face[0] && FacePrev[1] == Face[1]))
 	{
-		GetTargetObject()->TileMap()->SetFace((UINT)Face[0], (UINT)Face[1]);
+		GetTargetObject()->TileMap()->SetRowCol((UINT)Face[0], (UINT)Face[1]);
 
 		for (int i = 0; i < Face[1]; ++i)
 		{

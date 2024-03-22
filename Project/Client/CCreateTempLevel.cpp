@@ -181,7 +181,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->TileMap()->SetTileAtlas(pTileAtlas, Vec2(64.f, 64.f));
 
 	pTempLevel->AddObject(pObj, LAYER_FORETILE, false);
-	pObj->TileMap()->SetFace(40, 23);
+	pObj->TileMap()->SetRowCol(40, 23);
 	for (int i = 0; i < 23; ++i)
 	{
 		for (int j = 0; j < 40; ++j)
