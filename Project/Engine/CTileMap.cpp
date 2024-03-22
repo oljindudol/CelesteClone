@@ -131,7 +131,7 @@ void CTileMap::SetRowCol(UINT _Row, UINT _Col)
 	m_TileInfoBuffer->Create(sizeof(tTileInfo), _Row * _Col, SB_TYPE::READ_ONLY, true);
 }
 
-void CTileMap::SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx)
+void CTileMap::SetTileIndex(UINT _Row, UINT _Col, int _ImgIdx)
 {
 	if (nullptr == m_TileAtlas)
 		return;
@@ -142,18 +142,20 @@ void CTileMap::SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx)
 	UINT iRow = _ImgIdx / m_MaxCol;
 	UINT iCol = _ImgIdx % m_MaxCol;
 
-	m_vecTileInfo[idx].vLeftTopUV = Vec2((iCol * m_vTilePixelSize.x) / m_TileAtlas->GetWidth()
-								  , (iRow * m_vTilePixelSize.y) / m_TileAtlas->GetHeight());
+	//UV规侥->idx规侥
+	//m_vecTileInfo[idx].TileIdx =_ImgIdx;
 
-	m_vecTileInfo[idx].bRender = 1;
+	//m_vecTileInfo[idx].vLeftTopUV = Vec2((iCol * m_vTilePixelSize.x) / m_TileAtlas->GetWidth()
+	//							  , (iRow * m_vTilePixelSize.y) / m_TileAtlas->GetHeight());
 
+	//m_vecTileInfo[idx].bRender = 1;
 
 	//if (!m_pGrid)
 	//	m_pGrid = new CTileMapGrid(this); //Test
 	m_pGrid->Init();
 }
 
-void CTileMap::SetTileIndexWithOutGridInit(UINT _Row, UINT _Col, UINT _ImgIdx)
+void CTileMap::SetTileIndexWithOutGridInit(UINT _Row, UINT _Col, int _ImgIdx)
 {
 	if (nullptr == m_TileAtlas)
 		return;
@@ -164,10 +166,13 @@ void CTileMap::SetTileIndexWithOutGridInit(UINT _Row, UINT _Col, UINT _ImgIdx)
 	UINT iRow = _ImgIdx / m_MaxCol;
 	UINT iCol = _ImgIdx % m_MaxCol;
 
-	m_vecTileInfo[idx].vLeftTopUV = Vec2((iCol * m_vTilePixelSize.x) / m_TileAtlas->GetWidth()
-		, (iRow * m_vTilePixelSize.y) / m_TileAtlas->GetHeight());
+	//UV规侥->idx规侥
+	//m_vecTileInfo[idx].TileIdx = _ImgIdx;
 
-	m_vecTileInfo[idx].bRender = 1;
+	//m_vecTileInfo[idx].vLeftTopUV = Vec2((iCol * m_vTilePixelSize.x) / m_TileAtlas->GetWidth()
+	//	, (iRow * m_vTilePixelSize.y) / m_TileAtlas->GetHeight());
+
+	//m_vecTileInfo[idx].bRender = 1;
 
 }
 
@@ -175,8 +180,6 @@ void CTileMap::GridInit()
 {
 	m_pGrid->Init();
 }
-
-
 
 
 

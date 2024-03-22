@@ -7,19 +7,24 @@ class CTileMapGrid;
 
 struct tTileInfo
 {
-    Vec2 vLeftTopUV;    
-    int  bRender;
-    int  padding;
+    int AtlasType;
+    int AtlasIdx;
+    int TileIdx;
+    int padding;
 };
+
 
 
 class CTileMap :
     public CRenderComponent
 {
 private:
-    UINT                m_Row;            // 가로 타일 개수
-    UINT                m_Col;            // 세로 타일 개수
-    Vec2                m_vTileRenderSize;  // 타일 1칸 사이즈
+    // 가로 타일 개수
+    UINT                m_Row;            
+    // 세로 타일 개수
+    UINT                m_Col;            
+    // 타일 1칸 사이즈
+    Vec2                m_vTileRenderSize;  
 
     Ptr<CTexture>       m_TileAtlas;
     Vec2                m_vTilePixelSize;
@@ -42,17 +47,29 @@ public:
     UINT GetRow() { return m_Row; }
     UINT GetCol() { return m_Col; }
 
-    void SetTileIndex(UINT _Row, UINT _Col, UINT _ImgIdx);
-    void SetTileIndexWithOutGridInit(UINT _Row, UINT _Col, UINT _ImgIdx);
+    void SetTileIndex(UINT _Row, UINT _Col, int _ImgIdx);
+    void SetTileIndexWithOutGridInit(UINT _Row, UINT _Col, int _ImgIdx);
     void GridInit();
 
+    // 타일 1칸 사이즈
     Vec2 GetTileSize() {
         return m_vTileRenderSize;
     }
 
+    // 타일 1칸 사이즈
     void SetTileSize(Vec2 _vTileRenderSize) {
         m_vTileRenderSize = _vTileRenderSize;
     }
+
+    vector<tTileInfo>& GetTilesInfo() {
+        return m_vecTileInfo;
+    }
+
+    void SetTilesInfo(vector<tTileInfo>& _vecTileInfo)
+    {
+        m_vecTileInfo = _vecTileInfo;
+    }
+
 
 
 public:

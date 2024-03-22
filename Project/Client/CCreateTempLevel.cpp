@@ -182,13 +182,13 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pObj, LAYER_FORETILE, false);
 	pObj->TileMap()->SetRowCol(40, 23);
-	for (int i = 0; i < 23; ++i)
-	{
-		for (int j = 0; j < 40; ++j)
-		{
-			pObj->TileMap()->SetTileIndex(i, j, i * 40 + j);
-		}
-	}
+	//for (int i = 0; i < 23; ++i)
+	//{
+	//	for (int j = 0; j < 40; ++j)
+	//	{
+	//		pObj->TileMap()->SetTileIndex(i, j, i * 40 + j);
+	//	}
+	//}
 
 	// Player Object »ý¼º
 	pObj = new CGameObject;

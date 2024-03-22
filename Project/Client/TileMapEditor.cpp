@@ -141,106 +141,109 @@ void TileMapEditor::render_update()
 	//	}
 	//}
 
-	//// canvas를 이용해서 하나 불러오기
-	//_RenderCanvas();
+	//===============4. 팔레트 선택기=============
+	_RenderPalette();
 
+
+	//===============5. 레벨 클릭 판정기=============
+	ImGui::Separator();
 	auto MousePosition = CKeyMgr::GetInst()->GetMousePos();
-
 	Vector3 vMouseWorldPos = pEditorCam->GetScreenToWorld2DPosition(MousePosition);
+	ImGui::Text("Abs Mouse X:%d  Y:%d", int(vMouseWorldPos.x), int(vMouseWorldPos.y));
 
-	ImGui::Text("Tile Row:%d  Col:%d", int(vMouseWorldPos.x), int(vMouseWorldPos.y));
+	if (!pEditorCam) {
+		assert(pEditorCam);
+	}
+	else {
+
+		vector<tTileInfo>& vecTiles = m_pTileMap->GetTilesInfo();
+
+		if (!ImGui::IsWindowFocused()) {
+			m_bDeleteMode = false;
+			// TODO(Jang) : 타일 클릭 충돌했는지 구하는 코드를 CollisionManager에 넣기
+			Vector3 vMouseWorldPos = pEditorCam->GetScreenToWorld2DPosition(MousePosition);
 	
-	//===============4. 레벨 클릭 판정기=============
-	//if (!pEditorCam) {
-	//	assert(pEditorCam);
-	//}
-	//else {
-	//	if (!ImGui::IsWindowFocused()) {
-	//		m_bDeleteMode = false;
-	//		// TODO(Jang) : 타일 클릭 충돌했는지 구하는 코드를 CollisionManager에 넣기
-	//		Vector3 vMouseWorldPos = pEditorCam->GetScreenToWorld2DPosition(MousePosition);
-	//
-	//		Vector3 vObjWorldPos = GetTargetObject()->Transform()->GetPosition();
-	//		Vector3 vScale = GetTargetObject()->Transform()->GetScale();
-	//		Vector3 vHalfScale = vScale * 0.5f;
-	//		vHalfScale.x = fabsf(vHalfScale.x);
-	//		vHalfScale.y = fabsf(vHalfScale.y);
-	//
-	//		Vector3 vLBWorldPos = {};
-	//		vLBWorldPos.x = vObjWorldPos.x - vHalfScale.x;
-	//		vLBWorldPos.y = vObjWorldPos.y - vHalfScale.y;
-	//
-	//		Vector2 vOffsetLB = -Vector2(vLBWorldPos.x, vLBWorldPos.y);
-	//
-	//		Vector3 vRTWorldPos = {};
-	//		vRTWorldPos.x = vLBWorldPos.x + GetTargetObject()->Transform()->GetScale().x;
-	//		vRTWorldPos.y = vLBWorldPos.y + GetTargetObject()->Transform()->GetScale().y;
-	//
-	//		// 마우스를 타일 내부에 클릭했는가?
-	//		bool bIsTileClicked = false;
-	//
-	//		if (InputKeyHold(E_Key::LBUTTON)) {
-	//			if (vLBWorldPos.x < vMouseWorldPos.x && vRTWorldPos.x > vMouseWorldPos.x &&
-	//				vLBWorldPos.y < vMouseWorldPos.y && vRTWorldPos.y > vMouseWorldPos.y) {
-	//				bIsTileClicked = true;
-	//			}
-	//
-	//		}
-	//		if (InputKeyHold(E_Key::LBUTTON) && InputKeyHold(E_Key::RBUTTON))
-	//			m_bDeleteMode = true;
-	//
-	//		// 클릭했을 경우
-	//		if (bIsTileClicked) {
-	//			vector<TTileInfo>& vecTiles = m_pTileMap->GetTilesInfo();
-	//			Vector2 vOriginMousePos = Vector2(vMouseWorldPos.x + vOffsetLB.x, vScale.y - (vMouseWorldPos.y + vOffsetLB.y));
-	//
-	//			Vector2 vOffsetScale = Vector2(m_pTileMap->GetCol() / vScale.x, m_pTileMap->GetRow() / vScale.y);
-	//
-	//			vOriginMousePos *= vOffsetScale;
-	//
-	//			int iClickX = (int)vOriginMousePos.x;
-	//			int iClickY = (int)vOriginMousePos.y;
-	//
-	//			// Brush를 이용하여 그리기
-	//			int iMinX, iMinY, iMaxX, iMaxY;
-	//			iMinX = iClickX - m_iBrushSize;
-	//			iMaxX = iClickX + m_iBrushSize;
-	//			iMinY = iClickY - m_iBrushSize;
-	//			iMaxY = iClickY + m_iBrushSize;
-	//			iMinX = max(0, iMinX);
-	//			iMinY = max(0, iMinY);
-	//			iMaxX = min(m_pTileMap->GetCol() - 1, iMaxX);
-	//			iMaxY = min(m_pTileMap->GetRow() - 1, iMaxY);
-	//
-	//			for (int y = iMinY; y <= iMaxY; ++y) {
-	//				for (int x = iMinX; x <= iMaxX; ++x) {
-	//					int idx = y * m_pTileMap->GetCol() + x;
-	//
-	//					if (m_bDeleteMode)
-	//						vecTiles[idx].idx = -1;
-	//					else
-	//						vecTiles[idx].idx = m_iSelectedTileIdx;
-	//				}
-	//			}
-	//			/*int idx = iClickY * m_pTileMap->GetCol() + iClickX;
-	//			vecTiles[idx].idx = m_iSelectedTileIdx;*/
-	//		}
-	//	}
-	//}
-}
-
-void TileMapEditor::_RenderCanvas()
-{
-
+			Vector3 vObjWorldPos = GetTargetObject()->Transform()->GetWorldPos();
+			Vector3 vScale = GetTargetObject()->Transform()->GetWorldScale();
+			Vector3 vHalfScale = vScale * 0.5f;
+			vHalfScale.x = fabsf(vHalfScale.x);
+			vHalfScale.y = fabsf(vHalfScale.y);
 	
+			Vector3 vLBWorldPos = {};
+			vLBWorldPos.x = vObjWorldPos.x - vHalfScale.x;
+			vLBWorldPos.y = vObjWorldPos.y - vHalfScale.y;
+	
+			Vector2 vOffsetLB = -Vector2(vLBWorldPos.x, vLBWorldPos.y);
+	
+			Vector3 vRTWorldPos = {};
+			vRTWorldPos.x = vLBWorldPos.x + GetTargetObject()->Transform()->GetWorldScale().x;
+			vRTWorldPos.y = vLBWorldPos.y + GetTargetObject()->Transform()->GetWorldScale().y;
+	
+			// 마우스를 타일 내부에 클릭했는가?
+			bool bIsTileClicked = false;
+	
+			if (KEY_PRESSED(KEY::LBTN)) {
+				if (vLBWorldPos.x < vMouseWorldPos.x && vRTWorldPos.x > vMouseWorldPos.x &&
+					vLBWorldPos.y < vMouseWorldPos.y && vRTWorldPos.y > vMouseWorldPos.y) {
+					bIsTileClicked = true;
+				}
+	
+			}
+			if ( KEY_PRESSED(KEY::RBTN))
+				m_bDeleteMode = true;
+
+			// 클릭했을 경우
+			if (bIsTileClicked) {
+				Vector2 vOriginMousePos = Vector2(vMouseWorldPos.x + vOffsetLB.x, vScale.y - (vMouseWorldPos.y + vOffsetLB.y));
+	
+				Vector2 vOffsetScale = Vector2(m_pTileMap->GetRow() / vScale.x, m_pTileMap->GetCol() / vScale.y);
+	
+				vOriginMousePos *= vOffsetScale;
+	
+				int iClickX = (int)vOriginMousePos.x;
+				int iClickY = (int)vOriginMousePos.y;
+	
+				// Brush를 이용하여 그리기
+				int iMinX, iMinY, iMaxX, iMaxY;
+				iMinX = iClickX - m_iBrushSize;
+				iMaxX = iClickX + m_iBrushSize;
+				iMinY = iClickY - m_iBrushSize;
+				iMaxY = iClickY + m_iBrushSize;
+				iMinX = max(0, iMinX);
+				iMinY = max(0, iMinY);
+				iMaxX = min(m_pTileMap->GetRow() - 1, iMaxX);
+				iMaxY = min(m_pTileMap->GetCol() - 1, iMaxY);
 
 
 
-	//
-	//
+				//if (m_bDeleteMode)
+				//	vecTiles[idx].TileIdx = -1;
+				//else
+				//	vecTiles[idx].TileIdx = m_iSelectedTileIdx;
+	
+				for (int y = iMinY; y <= iMaxY; ++y) {
+					for (int x = iMinX; x <= iMaxX; ++x) {
+						int idx = y * m_pTileMap->GetCol() + x;
+	
+						if (m_bDeleteMode)
+							vecTiles[idx].TileIdx = -1;
+						else
+							vecTiles[idx].TileIdx = m_iSelectedTileIdx;
+					}
+				}
+				//int idx = iClickY * m_pTileMap->GetCol() + iClickX;
+				//vecTiles[idx].idx = m_iSelectedTileIdx;
+			}
+		}
 
-	//
-	//if (ImGui::Button("CollderCreate##TileMap2D")) {
+		for (int i=0; i < vecTiles.size();++i)
+		{
+			ImGui::Text(("Tile" + std::to_string(i) + ":"+ std::to_string(vecTiles[i].TileIdx)).c_str());
+		}
+	}
+
+	//===============6. 컬라이더 생성기=============
+		//if (ImGui::Button("CollderCreate##TileMap2D")) {
 	//	CGameObject* pObj = CObjectManager::GetInstance()->CreateEmptyGameObject();
 	//	pObj->SetName(_T("new Collders"));
 	//	vector<TTileInfo>& vecTiles = m_pTileMap->GetTilesInfo();
@@ -265,13 +268,116 @@ void TileMapEditor::_RenderCanvas()
 	//if (ImGui::Button("OptimizeCollider##TileMap2D")) {
 	//	_OptimizeCollisionArea();
 	//}
-
-
 }
 
-void TileMapEditor::_SelectTileMap(DWORD_PTR _strKey, DWORD_PTR _NONE)
+void TileMapEditor::_RenderPalette()
 {
+	static ImVec2 scrolling(0.0f, 0.0f);
+	static bool opt_enable_grid = true;
+	static bool opt_enable_context_menu = true;
+	static bool adding_line = false;
+
+	static int arrGrid[2] = { 5, 5 };
+
+	ImVec2 canvas_p0 = ImGui::GetCursorScreenPos();      // ImDrawList API uses screen coordinates!
+	ImVec2 canvas_sz = ImGui::GetContentRegionAvail();   // Resize canvas to what's available
+	if (canvas_sz.x < 50.0f) canvas_sz.x = 50.0f;
+	if (canvas_sz.y < 50.0f) canvas_sz.y = 50.0f;
+	ImVec2 canvas_p1 = ImVec2(canvas_p0.x + canvas_sz.x, canvas_p0.y + canvas_sz.y);
+
+	// Draw border and background color
+	ImGuiIO& io = ImGui::GetIO();
+	ImDrawList* draw_list = ImGui::GetWindowDrawList();
+	draw_list->AddRectFilled(canvas_p0, canvas_p1, IM_COL32(50, 50, 50, 255));
+	draw_list->AddRect(canvas_p0, canvas_p1, IM_COL32(255, 255, 255, 255));
+
+	// This will catch our interactions
+	ImGui::InvisibleButton("canvas", canvas_sz, ImGuiButtonFlags_MouseButtonLeft | ImGuiButtonFlags_MouseButtonRight);
+	const bool is_hovered = ImGui::IsItemHovered(); // Hovered
+	const bool is_active = ImGui::IsItemActive();   // Held
+	const ImVec2 origin(canvas_p0.x + scrolling.x, canvas_p0.y + scrolling.y); // Lock scrolled origin
+	const ImVec2 mouse_pos_in_canvas(io.MousePos.x - origin.x, io.MousePos.y - origin.y);
+	CTexture* pTileTexture = m_pTileMap->GetTileAtlas().Get();
+	Vector2 vAtlasSize{};
+	Vector2 vAtlasTileSize{};
+	if (!m_pTileMap->GetTileAtlas().Get())
+		return;
+
+	if (pTileTexture) {
+		vAtlasSize = Vec2(pTileTexture->GetWidth(), pTileTexture->GetHeight());
+		vAtlasTileSize = m_pTileMap->GetTileSize();
+	}
+
+	// 왼쪽 버튼을 클릭했으면
+	if (is_hovered && ImGui::IsMouseClicked(ImGuiMouseButton_Left)) {
+		// 타일의 위치 값 계산 후 선택한 타일의 인덱스를 가져온다.
+
+		// 타일을 클릭했는가?
+		bool isTileClick = false;
+		if (vAtlasSize.x > mouse_pos_in_canvas.x && vAtlasSize.y > mouse_pos_in_canvas.y &&
+			0 < mouse_pos_in_canvas.x && 0 < mouse_pos_in_canvas.y)
+			isTileClick = true;
+
+		// 타일을 클릭하지 않았으면
+		if (!isTileClick)
+			m_iSelectedTileIdx = -1;
+		else { // 타일을 클릭헀으면
+			float iCol = mouse_pos_in_canvas.x / vAtlasTileSize.x;
+			float iRow = mouse_pos_in_canvas.y / vAtlasTileSize.y;
+			modf(iCol, &iCol);
+			modf(iRow, &iRow);
+			// 선택한 타일의 인덱스를 얻는다.
+			m_iSelectedTileIdx = (int)iRow * m_pTileMap->GetRow() + (int)iCol;
+		}
+	}
+
+	const float mouse_threshold_for_pan = opt_enable_context_menu ? -1.0f : 0.0f;
+	if (is_active && ImGui::IsMouseDragging(ImGuiMouseButton_Right, mouse_threshold_for_pan))
+	{
+		scrolling.x += io.MouseDelta.x;
+		scrolling.y += io.MouseDelta.y;
+	}
+
+	// Draw grid + all lines in the canvas
+	draw_list->PushClipRect(canvas_p0, canvas_p1, true);
+	if (opt_enable_grid)
+	{
+		Vector2 vGridSize = m_pTileMap->GetTileSize();
+		for (float x = fmodf(scrolling.x, vGridSize.x); x < canvas_sz.x; x += vGridSize.x)
+			draw_list->AddLine(ImVec2(canvas_p0.x + x, canvas_p0.y), ImVec2(canvas_p0.x + x, canvas_p1.y), m_iGridColor);
+		for (float y = fmodf(scrolling.y, vGridSize.y); y < canvas_sz.y; y += vGridSize.y)
+			draw_list->AddLine(ImVec2(canvas_p0.x, canvas_p0.y + y), ImVec2(canvas_p1.x, canvas_p0.y + y), m_iGridColor);
+	}
+
+	// Draw Atlas Texture
+	if (m_pAtlasTileTex) {
+		ImVec2 vAtlasTexResolution = ImVec2(origin.x + m_pAtlasTileTex->GetWidth(), origin.y + m_pAtlasTileTex->GetHeight());
+		draw_list->AddImage(m_pAtlasTileTex->GetSRV().Get(), origin, vAtlasTexResolution);
+	}
+
+	// 타일이 선택 되었으면
+	if (_IsTileSelectedInCanvas()) {
+		Vector2 vAtlasTileSize = m_pTileMap->GetTileSize();
+		int iAtlasColCnt = m_pTileMap->GetRow();
+
+		int iRow = m_iSelectedTileIdx / iAtlasColCnt;
+		int iCol = m_iSelectedTileIdx % iAtlasColCnt;
+
+		ImVec2 vLTPos = ImVec2(iCol * vAtlasTileSize.x, iRow * vAtlasTileSize.y);
+		ImVec2  vRBPos = ImVec2((iCol + 1) * vAtlasTileSize.x, (iRow + 1) * vAtlasTileSize.y);
+
+		vLTPos = ImVec2(vLTPos.x + origin.x, vLTPos.y + origin.y);
+		vRBPos = ImVec2(vRBPos.x + origin.x, vRBPos.y + origin.y);
+		draw_list->AddRect(vLTPos, vRBPos, IMGUI_COLOR_RED, 0.f, 0, 2.f);
+	}
+
+	draw_list->PopClipRect();
+
+
+
 }
+
+
 
 void TileMapEditor::_SelectTexture(DWORD_PTR _strKey, DWORD_PTR _NONE)
 {
@@ -279,6 +385,12 @@ void TileMapEditor::_SelectTexture(DWORD_PTR _strKey, DWORD_PTR _NONE)
 
 void TileMapEditor::_Clear()
 {
+	m_pTargetObject = nullptr;
+	m_pTileMap = nullptr;
+	m_pAtlasTileTex = nullptr;
+	m_arrFaceTileCnt[0] = m_arrFaceTileCnt[1] = 0;
+	m_vAtlasTilePixelSize[0] = m_vAtlasTilePixelSize[1] = 0;
+	m_iSelectedTileIdx = -1;
 }
 
 void TileMapEditor::_OptimizeCollisionArea()

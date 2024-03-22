@@ -87,7 +87,7 @@ VS_OUT VS_Grid(VS_IN _in)
 /////////////
 float4 PS_Grid(VS_OUT _in) : SV_Target
 {
-    return float4(0.9f, 0.9f, 0.9f, 1.f);
+    return float4(0.9f, 0.9f, 0.f, 1.f);
 }
 
 #endif

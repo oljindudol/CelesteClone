@@ -8,6 +8,11 @@
 #define STR_COMPONENT_UI_TileMapEditor "##TileMapEditor"
 
 
+
+// TileInfoAtlasType
+#define INT_TILE_INFO_ATLAS_TYPE_BACK_GROUND 0
+#define INT_TILE_INFO_ATLAS_TYPE_FORE_GROUND 1
+
 // Message
 
 

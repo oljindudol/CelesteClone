@@ -33,9 +33,10 @@ public:
 
 
 private:
-	bool _IsTileSelectedInCanvas() { return m_iSelectedTileIdx < 0 ? false : true; }
-	void _RenderCanvas();
-	void _SelectTileMap(DWORD_PTR _strKey, DWORD_PTR _NONE);
+	bool _IsTileSelectedInCanvas() { 
+		return m_iSelectedTileIdx < 0 ? false : true; 
+	}
+	void _RenderPalette();
 	void _SelectTexture(DWORD_PTR _strKey, DWORD_PTR _NONE);
 	void _Clear();
 	void _OptimizeCollisionArea(); // 충돌영역 타일 최적화하기
