@@ -44,12 +44,6 @@ TileMapEditor::~TileMapEditor()
 
 void TileMapEditor::render_update()
 {
-
-
-}
-
-void TileMapEditor::_RenderCanvas()
-{
 	if (!m_pTargetObject)
 		return;
 	if (m_pTargetObject->IsDead())
@@ -64,28 +58,36 @@ void TileMapEditor::_RenderCanvas()
 
 
 	ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
-	
+
 	//에디터카메라 오쏘뷰고정
 	CCamera* pEditorCam = CRenderMgr::GetInst()->GetEditorCamera();
 	if (pEditorCam) {
 		if (PROJ_TYPE::PERSPECTIVE == pEditorCam->GetProjType())
 			pEditorCam->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
 	}
-	
-	//auto texture = m_pTileMap->GetTileAtlas();
-	//texture->GetWidth();
-	//
-	//ImVec2 vAtlasTexResol = {};
-	//if (m_pTileMap->GetTileAtlas().Get()) {
-	//	ImVec2(m_pTileMap->GetTileAtlas()->GetWidth(), m_pTileMap->GetTileAtlas()->GetHeight());
-	//}
-	//ImGui::Text("Atlas Texture Resolution [%d,%d]", vAtlasTexResol.x, vAtlasTexResol.x);
-	//
-	//ImGui::Text("Tile Face Size: %d %d", m_pTileMap->GetCol(), m_pTileMap->GetRow());
-	//
-	//ImGui::InputInt2("##Tile Map Size", m_arrFaceTileCnt);
-	//m_arrFaceTileCnt[0] = CMyMath::Clamp(m_arrFaceTileCnt[0], 0, INT_MAX);
+
+	auto texture = m_pTileMap->GetTileAtlas();
+	texture->GetWidth();
+
+	ImVec2 vAtlasTexResol = {};
+	if (m_pTileMap->GetTileAtlas().Get()) {
+		ImVec2(m_pTileMap->GetTileAtlas()->GetWidth(), m_pTileMap->GetTileAtlas()->GetHeight());
+	}
+	ImGui::Text("Atlas Texture Resolution [%d,%d]", vAtlasTexResol.x, vAtlasTexResol.x);
+
+	ImGui::Text("Tile Row:%d  Col:%d", m_pTileMap->GetCol(), m_pTileMap->GetRow());
+
+	ImGui::InputInt2("##Tile Map Size", m_arrFaceTileCnt);
+	//m_arrFaceTileCnt[0] = SimpleMath::Clamp(m_arrFaceTileCnt[0], 0, INT_MAX);
 	//m_arrFaceTileCnt[1] = CMyMath::Clamp(m_arrFaceTileCnt[1], 0, INT_MAX);
+
+}
+
+void TileMapEditor::_RenderCanvas()
+{
+
+	
+
 	//
 	//ImGui::Spacing();
 	//

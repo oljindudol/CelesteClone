@@ -171,6 +171,28 @@ void LoadWString(wstring& _str, FILE* _FILE)
 	_str = szBuff;
 }
 
+int intClamp(int _input, int _min, int _max)
+{
+	if (_min > _input)
+		return _min;
+
+	if (_max < _input)
+		return _max;
+
+	return _input;
+}
+
+float floatClamp(float _input, float _min, float _max)
+{
+	if (_min > _input)
+		return _min;
+
+	if (_max < _input)
+		return _max;
+
+	return _input;
+}
+
 std::vector<std::filesystem::path> getFoldersFromDirectory(const std::string& path) {
 	std::vector<std::filesystem::path> fileList;
 	for (const auto& entry : std::filesystem::directory_iterator(path)) {
