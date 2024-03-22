@@ -24,9 +24,10 @@ struct tLightInfo
 
 struct tTileInfo
 {
-    float2  vLeftTopUV;
-    int     bRender;
-    int     padding;
+    int AtlasType;
+    int AtlasIdx;
+    int TileIdx;
+    int padding;
 };
 
 struct tParticle

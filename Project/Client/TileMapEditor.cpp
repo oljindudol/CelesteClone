@@ -189,11 +189,12 @@ void TileMapEditor::render_update()
 				}
 	
 			}
-			if ( KEY_PRESSED(KEY::RBTN))
+			if (KEY_PRESSED(KEY::RBTN))
+			{
 				m_bDeleteMode = true;
+				bIsTileClicked = true;
+			}
 
-			// 클릭했을 경우
-			if (bIsTileClicked) {
 				Vector2 vOriginMousePos = Vector2(vMouseWorldPos.x + vOffsetLB.x, vScale.y - (vMouseWorldPos.y + vOffsetLB.y));
 	
 				Vector2 vOffsetScale = Vector2(m_pTileMap->GetRow() / vScale.x, m_pTileMap->GetCol() / vScale.y);
@@ -215,7 +216,6 @@ void TileMapEditor::render_update()
 				iMaxY = min(m_pTileMap->GetCol() - 1, iMaxY);
 
 
-
 				//if (m_bDeleteMode)
 				//	vecTiles[idx].TileIdx = -1;
 				//else
@@ -223,17 +223,20 @@ void TileMapEditor::render_update()
 	
 				for (int y = iMinY; y <= iMaxY; ++y) {
 					for (int x = iMinX; x <= iMaxX; ++x) {
-						int idx = y * m_pTileMap->GetCol() + x;
-	
+						int idx = y * m_pTileMap->GetRow() + x;
+
+						m_pTileMap->SetIdxHighLight(idx);
+						// 클릭했을 경우
+						if (bIsTileClicked) {
 						if (m_bDeleteMode)
 							vecTiles[idx].TileIdx = -1;
 						else
 							vecTiles[idx].TileIdx = m_iSelectedTileIdx;
+						}
 					}
 				}
 				//int idx = iClickY * m_pTileMap->GetCol() + iClickX;
 				//vecTiles[idx].idx = m_iSelectedTileIdx;
-			}
 		}
 
 		for (int i=0; i < vecTiles.size();++i)
@@ -300,12 +303,14 @@ void TileMapEditor::_RenderPalette()
 	CTexture* pTileTexture = m_pTileMap->GetTileAtlas().Get();
 	Vector2 vAtlasSize{};
 	Vector2 vAtlasTileSize{};
+	int iAtlasColCnt;
 	if (!m_pTileMap->GetTileAtlas().Get())
 		return;
 
 	if (pTileTexture) {
 		vAtlasSize = Vec2(pTileTexture->GetWidth(), pTileTexture->GetHeight());
-		vAtlasTileSize = m_pTileMap->GetTileSize();
+		vAtlasTileSize = m_pTileMap->GetAtlasTileSize() * vAtlasSize;
+		iAtlasColCnt =int(1.f / m_pTileMap->GetAtlasTileSize().x);
 	}
 
 	// 왼쪽 버튼을 클릭했으면
@@ -327,7 +332,7 @@ void TileMapEditor::_RenderPalette()
 			modf(iCol, &iCol);
 			modf(iRow, &iRow);
 			// 선택한 타일의 인덱스를 얻는다.
-			m_iSelectedTileIdx = (int)iRow * m_pTileMap->GetRow() + (int)iCol;
+			m_iSelectedTileIdx = (int)iRow * iAtlasColCnt + (int)iCol;
 		}
 	}
 
@@ -357,8 +362,6 @@ void TileMapEditor::_RenderPalette()
 
 	// 타일이 선택 되었으면
 	if (_IsTileSelectedInCanvas()) {
-		Vector2 vAtlasTileSize = m_pTileMap->GetTileSize();
-		int iAtlasColCnt = m_pTileMap->GetRow();
 
 		int iRow = m_iSelectedTileIdx / iAtlasColCnt;
 		int iCol = m_iSelectedTileIdx % iAtlasColCnt;

@@ -7,10 +7,19 @@ class CTileMapGrid;
 
 struct tTileInfo
 {
-    int AtlasType;
+    int TileType;
     int AtlasIdx;
     int TileIdx;
-    int b_Highlight;
+    int padding;
+
+    tTileInfo()
+        :TileType(0),
+        AtlasIdx(0),
+        TileIdx(-1),
+        padding(0)
+    {
+
+    }
 };
 
 
@@ -38,6 +47,7 @@ private:
 
     bool m_bGridVisible;
     CTileMapGrid* m_pGrid;
+    int m_IdxHighLight;
 
 public:
     void SetTileAtlas(Ptr<CTexture> _Atlas, Vec2 _TilePixelSize);
@@ -65,12 +75,28 @@ public:
         return m_vecTileInfo;
     }
 
+    Vec2 GetAtlasTileSize() {
+        return m_vSliceSizeUV;
+    }
+
+    Vec2 SetAtlasTileSize(Vec2 _vSliceSizeUV) {
+        m_vSliceSizeUV = _vSliceSizeUV;
+    }
+
     void SetTilesInfo(vector<tTileInfo>& _vecTileInfo)
     {
         m_vecTileInfo = _vecTileInfo;
     }
 
-
+    void SetIdxHighLight(int _idx)
+    {
+        m_IdxHighLight = _idx;
+    }
+    
+    void InitHightLight()
+    {
+        m_IdxHighLight = -1;
+    }
 
 public:
     virtual void finaltick() override;

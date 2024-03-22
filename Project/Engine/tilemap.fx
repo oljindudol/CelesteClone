@@ -10,7 +10,8 @@
 // Parameter
 #define FACE_X      g_int_0
 #define FACE_Y      g_int_1
-
+#define IDX_HightLight      g_int_2
+// 아틀라스에서 타일하나의 uv
 #define vSliceUV    g_vec2_0
 
 #define TileAtlas   g_tex_0
@@ -45,26 +46,50 @@ VS_OUT VS_TileMap(VS_IN _in)
 float4 PS_TileMap(VS_OUT _in) : SV_Target
 {
     
-    discard;
+    float4 vColor = float4(0.f, 0.f, 0.f, 0.f);
+    int bufferidx; 
     
-    float4 vColor = float4(1.f, 0.f, 1.f, 1.f);
+    // 면 개수만큼 _in.vUV 를 배율을 늘림
+    float2 vUV = _in.vUV * float2(FACE_X, FACE_Y);
         
+        //정수부
+    int2 Integer = (int2) floor(vUV);
+        //소수부
+    float2 tileUV = vUV - Integer;
+        
+        //타일의 인덱스
+    bufferidx = Integer.y * FACE_X + Integer.x;
+        
+        // 이미지의 인덱스를 구함.
+    int iImageIdx = g_TileInfo[bufferidx].TileIdx;
+    
     if (g_btex_0)
     {
-        // 면 개수만큼 _in.vUV 를 배율을 늘림
-        float2 vUV = _in.vUV * float2(FACE_X, FACE_Y);        
-        int2 Integer = (int2)floor(vUV);
-        vUV = vUV - Integer;
-                
-        int bufferidx = Integer.y * FACE_X + Integer.x;
-        
-        if (!g_TileInfo[bufferidx].bRender)
+        if (-1 == iImageIdx && IDX_HightLight != bufferidx)
             discard;
         
-        vUV = g_TileInfo[bufferidx].vLeftTopUV +(vSliceUV * vUV);
-        vColor = TileAtlas.Sample(g_sam_0, vUV);
+        //아틀라스idx계산용 한줄갯수
+        uint iTileWidthCount = 1.f / vSliceUV.x;
+        //아틀라스 idx->rowcol 역연산
+        uint iRow = (uint) iImageIdx / iTileWidthCount;
+        uint iCol = (uint) iImageIdx % iTileWidthCount;
+        
+        //인덱스 UV로 이동
+        float2 IdxUV = vSliceUV * float2(iCol, iRow);
+        //타일의 UV값
+        tileUV = vSliceUV * tileUV;
+        
+        vColor = TileAtlas.Sample(g_sam_0, IdxUV + tileUV);
+        
+        //옛날 LT방식
+        //vUV = g_TileInfo[bufferidx].TileIdx + (vSliceUV * vUV);
+        //vColor = TileAtlas.Sample(g_sam_0, vUV);
     }
     
+    if (IDX_HightLight == bufferidx)
+    {
+        vColor = vColor * 0.5 + float4(0.9f, 0.9f, 0.f, 1.f) * 0.5;
+    }
     return vColor;
 }
 

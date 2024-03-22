@@ -13,10 +13,11 @@ CTileMap::CTileMap()
 	: CRenderComponent(COMPONENT_TYPE::TILEMAP)
 	, m_Row(40)
 	, m_Col(23)
-	, m_vTileRenderSize(Vec2(8.f, 8.f))	
+	, m_vTileRenderSize(Vec2(8.f, 8.f))
 	, m_TileInfoBuffer(nullptr)
 	, m_bGridVisible(true)
 	, m_pGrid(nullptr)
+	, m_IdxHighLight(-1)
 {
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_TileMapMeterial));
@@ -72,7 +73,7 @@ void CTileMap::finaltick()
 void CTileMap::render()
 {	
 	// 재질에 아틀라스 텍스쳐 전달.
-	GetMaterial()->SetTexParam(TEX_PARAM::TEXARR_0, m_TileAtlas);
+	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_TileAtlas);
 	
 	// 타일의 가로 세로 개수
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, m_Row);
@@ -86,6 +87,10 @@ void CTileMap::render()
 
 	// 타일 구조화 버퍼를 t20 에 바인딩
 	m_TileInfoBuffer->UpdateData(20);
+
+	// 하이라이트할 인덱스
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_2, m_IdxHighLight);
+	InitHightLight();
 
 	// 재질 업데이트
 	GetMaterial()->UpdateData();	
