@@ -55,8 +55,6 @@ void TileMapEditor::render_update()
 	m_pTileMap = m_pTargetObject->TileMap();
 	m_pAtlasTileTex = m_pTileMap->GetTileAtlas().Get();
 
-
-
 	ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
 
 	//에디터카메라 오쏘뷰고정
@@ -66,6 +64,7 @@ void TileMapEditor::render_update()
 			pEditorCam->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
 	}
 
+	//===============1. 타일맵 정보==============
 	auto texture = m_pTileMap->GetTileAtlas();
 	texture->GetWidth();
 
@@ -77,18 +76,13 @@ void TileMapEditor::render_update()
 
 	ImGui::Text("Tile Row:%d  Col:%d", m_pTileMap->GetCol(), m_pTileMap->GetRow());
 
-	ImGui::InputInt2("##Tile Map Size", m_arrFaceTileCnt);
-	//m_arrFaceTileCnt[0] = SimpleMath::Clamp(m_arrFaceTileCnt[0], 0, INT_MAX);
-	//m_arrFaceTileCnt[1] = CMyMath::Clamp(m_arrFaceTileCnt[1], 0, INT_MAX);
 
-}
-
-void TileMapEditor::_RenderCanvas()
-{
-
-	
-
+	//===============2. 타일맵 재생성기==============
 	//
+	//ImGui::InputInt2("##Tile Map Size", m_arrFaceTileCnt);
+	//m_arrFaceTileCnt[0] = intClamp(m_arrFaceTileCnt[0], 0, INT_MAX);
+	//m_arrFaceTileCnt[1] = intClamp(m_arrFaceTileCnt[1], 0, INT_MAX);
+
 	//ImGui::Spacing();
 	//
 	//ImGui::Text("Texture Tile Size");
@@ -111,8 +105,10 @@ void TileMapEditor::_RenderCanvas()
 	//		m_pTileMap->CreateTile(m_arrFaceTileCnt[0], m_arrFaceTileCnt[1], bBlankCreate);
 	//	}
 	//}
-	//
-	//ImGui::Separator();
+
+
+	//===============3. 아틀라스 선택기==============
+		//ImGui::Separator();
 	//
 	//ImGui::Text("Mouse Right button clicking : delete mode");
 	//ImGui::Text("Brush Size : %d", m_iBrushSize + 1);
@@ -144,21 +140,25 @@ void TileMapEditor::_RenderCanvas()
 	//		}
 	//	}
 	//}
-	//
+
 	//// canvas를 이용해서 하나 불러오기
 	//_RenderCanvas();
-	//
-	//
-	//// 텍스쳐 설정
-	//CCamera* pToolCam = CRenderManager::GetInstance()->GetToolCamera();
-	//if (!pToolCam) {
-	//	assert(pToolCam);
+
+	auto MousePosition = CKeyMgr::GetInst()->GetMousePos();
+
+	Vector3 vMouseWorldPos = pEditorCam->GetScreenToWorld2DPosition(MousePosition);
+
+	ImGui::Text("Tile Row:%d  Col:%d", int(vMouseWorldPos.x), int(vMouseWorldPos.y));
+	
+	//===============4. 레벨 클릭 판정기=============
+	//if (!pEditorCam) {
+	//	assert(pEditorCam);
 	//}
 	//else {
 	//	if (!ImGui::IsWindowFocused()) {
 	//		m_bDeleteMode = false;
 	//		// TODO(Jang) : 타일 클릭 충돌했는지 구하는 코드를 CollisionManager에 넣기
-	//		Vector3 vMouseWorldPos = pToolCam->GetScreenToWorld2DPosition(MousePosition);
+	//		Vector3 vMouseWorldPos = pEditorCam->GetScreenToWorld2DPosition(MousePosition);
 	//
 	//		Vector3 vObjWorldPos = GetTargetObject()->Transform()->GetPosition();
 	//		Vector3 vScale = GetTargetObject()->Transform()->GetScale();
@@ -227,6 +227,18 @@ void TileMapEditor::_RenderCanvas()
 	//		}
 	//	}
 	//}
+}
+
+void TileMapEditor::_RenderCanvas()
+{
+
+	
+
+
+
+	//
+	//
+
 	//
 	//if (ImGui::Button("CollderCreate##TileMap2D")) {
 	//	CGameObject* pObj = CObjectManager::GetInstance()->CreateEmptyGameObject();

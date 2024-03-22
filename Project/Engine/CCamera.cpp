@@ -40,7 +40,22 @@ CCamera::~CCamera()
 }
 
 
+Vector3 CCamera::GetScreenToWorld2DPosition(const Vector2& _vPosition)
+{
 
+	Vector3 vWorldPos = Transform()->GetWorldPos();
+	Vector2 vScreenHalfSize = CDevice::GetInst()->GetRenderResolution();
+	vScreenHalfSize /= 2.f;
+
+	Vector2 vPos;
+	vPos.x = (-vScreenHalfSize.x + _vPosition.x) * m_Scale;
+	vPos.y = (vScreenHalfSize.y - _vPosition.y) * m_Scale;
+
+	vWorldPos.x = vWorldPos.x + vPos.x;
+	vWorldPos.y = vWorldPos.y + vPos.y;
+	return vWorldPos;
+
+}
 
 void CCamera::begin()
 {

@@ -68,6 +68,7 @@ public:
 
     int GetCameraPriority(){ return m_CameraPriority; }
 
+    virtual Vector3 GetScreenToWorld2DPosition(const Vector2& _vPosition);
 
 
 
