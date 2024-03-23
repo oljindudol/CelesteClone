@@ -55,7 +55,16 @@ void TileMapEditor::render_update()
 
 	m_pTileMap = m_pTargetObject->TileMap();
 	auto& vecAtlases = m_pTileMap->GetTileAtlases();
+
 	bool validAtlasIdx = true;
+
+	vector<string> items;
+
+	for (auto& p : vecAtlases)
+	{
+		items.push_back(ToString(p.first.Get()->GetKey()));
+	}
+
 
 	//idx가 범위를넘어가면 일단 0으로 초기화
 	if (m_IdxAtlas >= vecAtlases.size())
@@ -68,6 +77,21 @@ void TileMapEditor::render_update()
 		validAtlasIdx = false;
 	}
 
+	ImGui::SetNextItemWidth(150);
+	if (ImGui::BeginCombo("##combo", items[m_IdxAtlas].c_str())) {
+		for (int i = 0; i < items.size(); i++) {
+			const bool isSelected = (m_IdxAtlas == i);
+			if (ImGui::Selectable(items[i].c_str(), isSelected)) {
+				m_IdxAtlas = i;
+			}
+
+			// 항목 선택 시 자동으로 스크롤
+			if (isSelected) {
+				ImGui::SetItemDefaultFocus();
+			}
+		}
+		ImGui::EndCombo();
+	}
 
 	vector<std::pair<Ptr<CTexture>, Vec2>> pair;
 
@@ -256,6 +280,7 @@ void TileMapEditor::render_update()
 							vecTiles[idx].TileIdx = -1;
 						else
 							vecTiles[idx].TileIdx = m_iSelectedTileIdx;
+							vecTiles[idx].AtlasIdx = m_IdxAtlas;
 						}
 					}
 				}
@@ -265,7 +290,7 @@ void TileMapEditor::render_update()
 
 		for (int i=0; i < vecTiles.size();++i)
 		{
-			ImGui::Text(("Tile" + std::to_string(i) + ":"+ std::to_string(vecTiles[i].TileIdx)).c_str());
+			ImGui::Text(("Tile" + std::to_string(i) + ":"+ std::to_string(vecTiles[i].TileIdx) +std::to_string(vecTiles[i].AtlasIdx)).c_str());
 		}
 	}
 
@@ -331,11 +356,32 @@ void TileMapEditor::_RenderPalette()
 	if (nullptr == m_pAtlasTileTex)
 		return;
 
+	//배율
+	//float canvas_ratio = canvas_sz.y / canvas_sz.x;
+	float mul = 1.f;
 	if (m_pAtlasTileTex) {
 		vAtlasSize = Vec2(m_pAtlasTileTex->GetWidth(), m_pAtlasTileTex->GetHeight());
+		float atlas_ratio = vAtlasSize.y / vAtlasSize.x;
+
+		//세로가길때,세로에맞추기
+		if (1.f < atlas_ratio)
+		{
+			mul = canvas_sz.y / vAtlasSize.y;
+		}
+		else
+		{
+			mul = canvas_sz.x / vAtlasSize.x;
+		}
+
+
+		vAtlasSize = vAtlasSize * mul;
 		vAtlasTileSize = m_vAtlasTileUvSize * vAtlasSize;
 		iAtlasColCnt =int(1.f / m_vAtlasTileUvSize.x);
 	}
+
+
+
+
 
 	// 왼쪽 버튼을 클릭했으면
 	if (is_hovered && ImGui::IsMouseClicked(ImGuiMouseButton_Left)) {
@@ -380,7 +426,7 @@ void TileMapEditor::_RenderPalette()
 
 	// Draw Atlas Texture
 	if (m_pAtlasTileTex) {
-		ImVec2 vAtlasTexResolution = ImVec2(origin.x + m_pAtlasTileTex->GetWidth(), origin.y + m_pAtlasTileTex->GetHeight());
+		ImVec2 vAtlasTexResolution = ImVec2(origin.x + vAtlasSize.x, origin.y + vAtlasSize.y);
 		draw_list->AddImage(m_pAtlasTileTex->GetSRV().Get(), origin, vAtlasTexResolution);
 	}
 
@@ -399,9 +445,6 @@ void TileMapEditor::_RenderPalette()
 	}
 
 	draw_list->PopClipRect();
-
-
-
 }
 
 
