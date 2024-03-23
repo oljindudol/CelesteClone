@@ -196,45 +196,53 @@ void CTileMap::GridInit()
 
 
 
-//void CTileMap::SaveToFile(FILE* _File)
-//{
-//	// TileMap 정보 저장
-//	fwrite(&m_Row, sizeof(UINT), 1, _File);
-//	fwrite(&m_Col, sizeof(UINT), 1, _File);
-//	fwrite(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
-//	fwrite(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
-//
-//	SaveAssetRef(m_TileAtlas, _File);
-//
-//	fwrite(&m_vTilePixelSize, sizeof(Vec2), 1, _File);
-//	fwrite(&m_vSliceSizeUV, sizeof(Vec2), 1, _File);
-//
-//	fwrite(&m_MaxCol, sizeof(UINT), 1, _File);
-//	fwrite(&m_MaxRow, sizeof(UINT), 1, _File);
-//	
-//	size_t InfoCount = m_vecTileInfo.size();
-//	fwrite(&InfoCount, sizeof(size_t), 1, _File);
-//	fwrite(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
-//}
-//
-//void CTileMap::LoadFromFile(FILE* _File)
-//{
-//	// TileMap 정보 저장
-//	fread(&m_Row, sizeof(UINT), 1, _File);
-//	fread(&m_Col, sizeof(UINT), 1, _File);
-//	fread(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
-//	fread(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
-//
-//	LoadAssetRef(m_TileAtlas, _File);
-//
-//	fread(&m_vTilePixelSize, sizeof(Vec2), 1, _File);
-//	fread(&m_vSliceSizeUV, sizeof(Vec2), 1, _File);
-//
-//	fread(&m_MaxCol, sizeof(UINT), 1, _File);
-//	fread(&m_MaxRow, sizeof(UINT), 1, _File);
-//
-//	size_t InfoCount = 0;
-//	fread(&InfoCount, sizeof(size_t), 1, _File);
-//	m_vecTileInfo.reserve(InfoCount);
-//	fread(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
-//}
+void CTileMap::SaveToFile(FILE* _File)
+{
+	// TileMap 정보 저장
+	fwrite(&m_Row, sizeof(UINT), 1, _File);
+	fwrite(&m_Col, sizeof(UINT), 1, _File);
+	fwrite(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
+	fwrite(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
+
+	for (auto& p : m_vecTileAtlas)
+	{
+		SaveAssetRef(p.first, _File);
+		fwrite(&p.second, sizeof(Vec2), 1, _File);
+	}
+
+	fwrite(&m_vTilePixelSize, sizeof(Vec2), 1, _File);
+	//fwrite(&m_vSliceSizeUV, sizeof(Vec2), 1, _File);
+
+	fwrite(&m_MaxCol, sizeof(UINT), 1, _File);
+	fwrite(&m_MaxRow, sizeof(UINT), 1, _File);
+	
+	size_t InfoCount = m_vecTileInfo.size();
+	fwrite(&InfoCount, sizeof(size_t), 1, _File);
+	fwrite(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
+}
+
+void CTileMap::LoadFromFile(FILE* _File)
+{
+	// TileMap 정보 저장
+	fread(&m_Row, sizeof(UINT), 1, _File);
+	fread(&m_Col, sizeof(UINT), 1, _File);
+	fread(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
+	fread(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
+
+	for (auto& p : m_vecTileAtlas)
+	{
+		LoadAssetRef(p.first, _File);
+		fread(&p.second, sizeof(Vec2), 1, _File);
+	}
+
+	fread(&m_vTilePixelSize, sizeof(Vec2), 1, _File);
+	//fread(&m_vSliceSizeUV, sizeof(Vec2), 1, _File);
+
+	fread(&m_MaxCol, sizeof(UINT), 1, _File);
+	fread(&m_MaxRow, sizeof(UINT), 1, _File);
+
+	size_t InfoCount = 0;
+	fread(&InfoCount, sizeof(size_t), 1, _File);
+	m_vecTileInfo.reserve(InfoCount);
+	fread(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
+}

@@ -24,6 +24,7 @@ TileMapEditor::TileMapEditor()
 	m_pTargetObject(nullptr),
 	m_pTileMap{ nullptr },
 	m_pAtlasTileTex{ nullptr },
+	m_vAtlasTileUvSize{},
 	m_arrFaceTileCnt{ 0,0 },
 	m_vAtlasTilePixelSize{ 0, 0 },
 	m_iBrushSize(0),
@@ -53,8 +54,33 @@ void TileMapEditor::render_update()
 
 
 	m_pTileMap = m_pTargetObject->TileMap();
-	auto& atlases = m_pTileMap->GetTileAtlases();
-	m_pAtlasTileTex = m_pTileMap->GetTileAtlas().Get();
+	auto& vecAtlases = m_pTileMap->GetTileAtlases();
+	bool validAtlasIdx = true;
+
+	//idx가 범위를넘어가면 일단 0으로 초기화
+	if (m_IdxAtlas >= vecAtlases.size())
+	{
+		m_IdxAtlas = 0;
+	}
+	// size가 0이면 idx가 유효하지않음
+	if (0 == vecAtlases.size())
+	{
+		validAtlasIdx = false;
+	}
+
+
+	vector<std::pair<Ptr<CTexture>, Vec2>> pair;
+
+
+	if (true == validAtlasIdx)
+	{
+		m_pAtlasTileTex = m_pTileMap->GetTileAtlas(m_IdxAtlas).Get();
+		m_vAtlasTileUvSize = m_pTileMap->GetAtlasTileSize(m_IdxAtlas);
+	}
+	else
+	{
+		m_pAtlasTileTex = nullptr;
+	}
 
 	ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
 
@@ -66,12 +92,9 @@ void TileMapEditor::render_update()
 	}
 
 	//===============1. 타일맵 정보==============
-	auto texture = m_pTileMap->GetTileAtlas();
-	texture->GetWidth();
-
 	ImVec2 vAtlasTexResol = {};
-	if (m_pTileMap->GetTileAtlas().Get()) {
-		ImVec2(m_pTileMap->GetTileAtlas()->GetWidth(), m_pTileMap->GetTileAtlas()->GetHeight());
+	if (m_pAtlasTileTex) {
+		ImVec2(m_pAtlasTileTex->GetWidth(), m_pAtlasTileTex->GetHeight());
 	}
 	ImGui::Text("Atlas Texture Resolution [%d,%d]", vAtlasTexResol.x, vAtlasTexResol.x);
 
@@ -281,7 +304,7 @@ void TileMapEditor::_RenderPalette()
 	static bool opt_enable_context_menu = true;
 	static bool adding_line = false;
 
-	static int arrGrid[2] = { 5, 5 };
+	//static int arrGrid[2] = { 5, 5 };
 
 	ImVec2 canvas_p0 = ImGui::GetCursorScreenPos();      // ImDrawList API uses screen coordinates!
 	ImVec2 canvas_sz = ImGui::GetContentRegionAvail();   // Resize canvas to what's available
@@ -301,17 +324,17 @@ void TileMapEditor::_RenderPalette()
 	const bool is_active = ImGui::IsItemActive();   // Held
 	const ImVec2 origin(canvas_p0.x + scrolling.x, canvas_p0.y + scrolling.y); // Lock scrolled origin
 	const ImVec2 mouse_pos_in_canvas(io.MousePos.x - origin.x, io.MousePos.y - origin.y);
-	CTexture* pTileTexture = m_pTileMap->GetTileAtlas().Get();
+	//CTexture* pTileTexture = m_pTileMap->GetTileAtlas().Get();
 	Vector2 vAtlasSize{};
 	Vector2 vAtlasTileSize{};
 	int iAtlasColCnt;
-	if (!m_pTileMap->GetTileAtlas().Get())
+	if (nullptr == m_pAtlasTileTex)
 		return;
 
-	if (pTileTexture) {
-		vAtlasSize = Vec2(pTileTexture->GetWidth(), pTileTexture->GetHeight());
-		vAtlasTileSize = m_pTileMap->GetAtlasTileSize() * vAtlasSize;
-		iAtlasColCnt =int(1.f / m_pTileMap->GetAtlasTileSize().x);
+	if (m_pAtlasTileTex) {
+		vAtlasSize = Vec2(m_pAtlasTileTex->GetWidth(), m_pAtlasTileTex->GetHeight());
+		vAtlasTileSize = m_vAtlasTileUvSize * vAtlasSize;
+		iAtlasColCnt =int(1.f / m_vAtlasTileUvSize.x);
 	}
 
 	// 왼쪽 버튼을 클릭했으면

@@ -18,6 +18,7 @@ private:
 	CTileMap* m_pTileMap;
 	int m_IdxAtlas;
 	CTexture* m_pAtlasTileTex;
+	Vec2 m_vAtlasTileUvSize;
 
 	int m_arrFaceTileCnt[2];
 	int m_vAtlasTilePixelSize[2];
