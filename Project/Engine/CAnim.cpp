@@ -137,7 +137,6 @@ void CAnim::CreateFromFolder(CAnimator2D* _Animator, const wstring& _Path, float
 
 		m_vecFrm.push_back(frm);
 	}
-
 }
 
 void CAnim::SaveToFile(FILE* _File)

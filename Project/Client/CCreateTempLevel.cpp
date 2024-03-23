@@ -177,13 +177,26 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 250.f));
 
-	Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\snow.png", L"texture\\snow.png");
-	pObj->TileMap()->SetTileAtlas(pTileAtlas);
+	//Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\snow.png", L"texture\\snow.png");
+	//pObj->TileMap()->SetTileAtlas(pTileAtlas);
 
-	pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\girder.png", L"texture\\girder.png");
-	pObj->TileMap()->SetTileAtlas(pTileAtlas);
+	//pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\girder.png", L"texture\\girder.png");
+	//pObj->TileMap()->SetTileAtlas(pTileAtlas);
 
-	pTileAtlas = CAssetMgr::GetInst()->CreateArrayTexture(L"TileMapTextureArray", pObj->TileMap()->GetTileAtlases() , 1);
+	string ForeTilePath = "C:\\CelesteClone\\OutputFile\\content\\texture\\Gameplay\\tilemap\\backtile";
+	auto files = getImagesFromDirectory(ForeTilePath);
+
+	static const std::filesystem::path base_path = CPathMgr::GetContentPath();
+
+	for (auto& p : files)
+	{
+		std::filesystem::path relative_path = std::filesystem::relative(p, base_path);
+		Ptr<CTexture> pAtlasTex = CAssetMgr::GetInst()->Load<CTexture>(relative_path, relative_path);
+		pObj->TileMap()->SetTileAtlas(pAtlasTex);
+	}
+
+
+	Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->CreateArrayTexture(L"TileMapTextureArray", pObj->TileMap()->GetTileAtlases() , 1);
 	pObj->TileMap()->SetArrAtlas(pTileAtlas);
 
 
