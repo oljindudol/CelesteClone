@@ -177,8 +177,11 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 250.f));
 
-	Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"TileAtlasTex", L"texture\\TILE.bmp");
-	pObj->TileMap()->SetTileAtlas(pTileAtlas, Vec2(64.f, 64.f));
+	Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\snow.png", L"texture\\snow.png");
+	pObj->TileMap()->SetTileAtlas(pTileAtlas);
+
+	pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\girder.png", L"texture\\girder.png");
+	pObj->TileMap()->SetTileAtlas(pTileAtlas);
 
 	pTempLevel->AddObject(pObj, LAYER_FORETILE, false);
 	pObj->TileMap()->SetRowCol(40, 23);

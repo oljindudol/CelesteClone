@@ -36,9 +36,9 @@ CTileMap::CTileMap(const CTileMap& _OriginTileMap)
 	, m_Row(_OriginTileMap.m_Row)
 	, m_Col(_OriginTileMap.m_Col)
 	, m_vTileRenderSize(_OriginTileMap.m_vTileRenderSize)	
-	, m_TileAtlas(_OriginTileMap.m_TileAtlas)
+	, m_vecTileAtlas(_OriginTileMap.m_vecTileAtlas)
 	, m_vTilePixelSize(_OriginTileMap.m_vTilePixelSize)
-	, m_vSliceSizeUV(_OriginTileMap.m_vSliceSizeUV)
+	//, m_vSliceSizeUV(_OriginTileMap.m_vSliceSizeUV)
 	, m_MaxCol(_OriginTileMap.m_MaxCol)
 	, m_MaxRow(_OriginTileMap.m_MaxRow)
 	, m_vecTileInfo(_OriginTileMap.m_vecTileInfo)
@@ -73,14 +73,16 @@ void CTileMap::finaltick()
 void CTileMap::render()
 {	
 	// 재질에 아틀라스 텍스쳐 전달.
-	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_TileAtlas);
+	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_vecTileAtlas[0].first);
+	GetMaterial()->SetTexParam(TEX_PARAM::TEX_1, m_vecTileAtlas[1].first);
 	
 	// 타일의 가로 세로 개수
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, m_Row);
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_1, m_Col);
 		
 	// 아틀라스 이미지에서 타일 1개의 자르는 사이즈(UV 기준)
-	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC2_0, m_vSliceSizeUV);
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC2_0, m_vecTileAtlas[0].second);
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC2_1, m_vecTileAtlas[1].second);
 
 	// 각 타일 정보를 구조화 버퍼로 이동
 	m_TileInfoBuffer->SetData(m_vecTileInfo.data(), m_vecTileInfo.size());
@@ -114,15 +116,21 @@ void CTileMap::UpdateData()
 
 void CTileMap::SetTileAtlas(Ptr<CTexture> _Atlas, Vec2 _TilePixelSize)
 {
-	m_TileAtlas = _Atlas;
-	m_vTilePixelSize = _TilePixelSize;
 
-	m_MaxCol = m_TileAtlas->GetWidth() / (UINT)m_vTilePixelSize.x;
-	m_MaxRow = m_TileAtlas->GetHeight() / (UINT)m_vTilePixelSize.y;
+	m_MaxCol = _Atlas->GetWidth() / (UINT)_TilePixelSize.x;
+	m_MaxRow = _Atlas->GetHeight() / (UINT)_TilePixelSize.y;
 
-	m_vSliceSizeUV = Vec2(m_vTilePixelSize.x / m_TileAtlas->GetWidth()
-		, m_vTilePixelSize.y / m_TileAtlas->GetHeight());
+	Vec2 AtlasTileUV = Vec2(_TilePixelSize.x / _Atlas->GetWidth()
+		, _TilePixelSize.y / _Atlas->GetHeight());
+
+	std::pair< Ptr<CTexture>, Vec2> AtlasPair;
+	AtlasPair.first = _Atlas;
+	AtlasPair.second = AtlasTileUV;
+
+	m_vecTileAtlas.push_back(AtlasPair);
 }
+
+
 
 void CTileMap::SetRowCol(UINT _Row, UINT _Col)
 {
@@ -138,8 +146,8 @@ void CTileMap::SetRowCol(UINT _Row, UINT _Col)
 
 void CTileMap::SetTileIndex(UINT _Row, UINT _Col, int _ImgIdx)
 {
-	if (nullptr == m_TileAtlas)
-		return;
+	//if (0 == m_vecTileAtlas.size())
+	//	return;
 
 	UINT idx = _Row* m_Row + _Col;
 
@@ -162,8 +170,8 @@ void CTileMap::SetTileIndex(UINT _Row, UINT _Col, int _ImgIdx)
 
 void CTileMap::SetTileIndexWithOutGridInit(UINT _Row, UINT _Col, int _ImgIdx)
 {
-	if (nullptr == m_TileAtlas)
-		return;
+	//if (nullptr == m_TileAtlas)
+	//	return;
 
 	UINT idx = _Row * m_Row + _Col;
 
@@ -188,45 +196,45 @@ void CTileMap::GridInit()
 
 
 
-void CTileMap::SaveToFile(FILE* _File)
-{
-	// TileMap 정보 저장
-	fwrite(&m_Row, sizeof(UINT), 1, _File);
-	fwrite(&m_Col, sizeof(UINT), 1, _File);
-	fwrite(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
-	fwrite(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
-
-	SaveAssetRef(m_TileAtlas, _File);
-
-	fwrite(&m_vTilePixelSize, sizeof(Vec2), 1, _File);
-	fwrite(&m_vSliceSizeUV, sizeof(Vec2), 1, _File);
-
-	fwrite(&m_MaxCol, sizeof(UINT), 1, _File);
-	fwrite(&m_MaxRow, sizeof(UINT), 1, _File);
-	
-	size_t InfoCount = m_vecTileInfo.size();
-	fwrite(&InfoCount, sizeof(size_t), 1, _File);
-	fwrite(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
-}
-
-void CTileMap::LoadFromFile(FILE* _File)
-{
-	// TileMap 정보 저장
-	fread(&m_Row, sizeof(UINT), 1, _File);
-	fread(&m_Col, sizeof(UINT), 1, _File);
-	fread(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
-	fread(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
-
-	LoadAssetRef(m_TileAtlas, _File);
-
-	fread(&m_vTilePixelSize, sizeof(Vec2), 1, _File);
-	fread(&m_vSliceSizeUV, sizeof(Vec2), 1, _File);
-
-	fread(&m_MaxCol, sizeof(UINT), 1, _File);
-	fread(&m_MaxRow, sizeof(UINT), 1, _File);
-
-	size_t InfoCount = 0;
-	fread(&InfoCount, sizeof(size_t), 1, _File);
-	m_vecTileInfo.reserve(InfoCount);
-	fread(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
-}
+//void CTileMap::SaveToFile(FILE* _File)
+//{
+//	// TileMap 정보 저장
+//	fwrite(&m_Row, sizeof(UINT), 1, _File);
+//	fwrite(&m_Col, sizeof(UINT), 1, _File);
+//	fwrite(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
+//	fwrite(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
+//
+//	SaveAssetRef(m_TileAtlas, _File);
+//
+//	fwrite(&m_vTilePixelSize, sizeof(Vec2), 1, _File);
+//	fwrite(&m_vSliceSizeUV, sizeof(Vec2), 1, _File);
+//
+//	fwrite(&m_MaxCol, sizeof(UINT), 1, _File);
+//	fwrite(&m_MaxRow, sizeof(UINT), 1, _File);
+//	
+//	size_t InfoCount = m_vecTileInfo.size();
+//	fwrite(&InfoCount, sizeof(size_t), 1, _File);
+//	fwrite(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
+//}
+//
+//void CTileMap::LoadFromFile(FILE* _File)
+//{
+//	// TileMap 정보 저장
+//	fread(&m_Row, sizeof(UINT), 1, _File);
+//	fread(&m_Col, sizeof(UINT), 1, _File);
+//	fread(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
+//	fread(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
+//
+//	LoadAssetRef(m_TileAtlas, _File);
+//
+//	fread(&m_vTilePixelSize, sizeof(Vec2), 1, _File);
+//	fread(&m_vSliceSizeUV, sizeof(Vec2), 1, _File);
+//
+//	fread(&m_MaxCol, sizeof(UINT), 1, _File);
+//	fread(&m_MaxRow, sizeof(UINT), 1, _File);
+//
+//	size_t InfoCount = 0;
+//	fread(&InfoCount, sizeof(size_t), 1, _File);
+//	m_vecTileInfo.reserve(InfoCount);
+//	fread(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
+//}

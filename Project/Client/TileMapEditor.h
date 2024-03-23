@@ -16,6 +16,7 @@ public:
 private:
 	CGameObject* m_pTargetObject;
 	CTileMap* m_pTileMap;
+	int m_IdxAtlas;
 	CTexture* m_pAtlasTileTex;
 
 	int m_arrFaceTileCnt[2];

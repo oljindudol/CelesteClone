@@ -35,9 +35,10 @@ private:
     // 타일 1칸 사이즈
     Vec2                m_vTileRenderSize;  
 
-    Ptr<CTexture>       m_TileAtlas;
+    //pair : Ptr텍스쳐 , 아틀라스 타일사이즈 UV
+    vector<std::pair<Ptr<CTexture>,Vec2>> m_vecTileAtlas;
     Vec2                m_vTilePixelSize;
-    Vec2                m_vSliceSizeUV;
+    //Vec2                m_vSliceSizeUV;
 
     UINT                m_MaxCol;
     UINT                m_MaxRow;
@@ -50,8 +51,7 @@ private:
     int m_IdxHighLight;
 
 public:
-    void SetTileAtlas(Ptr<CTexture> _Atlas, Vec2 _TilePixelSize);
-    auto& GetTileAtlas() { return m_TileAtlas; }
+
 
     void SetRowCol(UINT _Row, UINT _Col);
     UINT GetRow() { return m_Row; }
@@ -75,13 +75,6 @@ public:
         return m_vecTileInfo;
     }
 
-    Vec2 GetAtlasTileSize() {
-        return m_vSliceSizeUV;
-    }
-
-    Vec2 SetAtlasTileSize(Vec2 _vSliceSizeUV) {
-        m_vSliceSizeUV = _vSliceSizeUV;
-    }
 
     void SetTilesInfo(vector<tTileInfo>& _vecTileInfo)
     {
@@ -96,6 +89,20 @@ public:
     void InitHightLight()
     {
         m_IdxHighLight = -1;
+    }
+
+    //아틀라스관련함수
+    auto& GetTileAtlases() { return m_vecTileAtlas; }
+    void SetTileAtlas(Ptr<CTexture> _Atlas,Vec2 _AtlasPixelSize = Vec2(8.f, 8.f));
+    auto& GetTileAtlas(UINT _idx) { 
+        //true면 통과
+        assert(_idx < m_vecTileAtlas.size());
+        return m_vecTileAtlas[_idx].first;
+    }
+    Vec2 GetAtlasTileSize(int _idx) {
+        //true면 통과
+        assert(_idx < m_vecTileAtlas.size());
+        return m_vecTileAtlas[_idx].second;
     }
 
 public:

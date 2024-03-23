@@ -53,6 +53,7 @@ void TileMapEditor::render_update()
 
 
 	m_pTileMap = m_pTargetObject->TileMap();
+	auto& atlases = m_pTileMap->GetTileAtlases();
 	m_pAtlasTileTex = m_pTileMap->GetTileAtlas().Get();
 
 	ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
@@ -74,7 +75,7 @@ void TileMapEditor::render_update()
 	}
 	ImGui::Text("Atlas Texture Resolution [%d,%d]", vAtlasTexResol.x, vAtlasTexResol.x);
 
-	ImGui::Text("Tile Row:%d  Col:%d", m_pTileMap->GetCol(), m_pTileMap->GetRow());
+	ImGui::Text("Tile Row:%d  Col:%d", m_pTileMap->GetRow(), m_pTileMap->GetCol());
 
 
 	//===============2. 타일맵 재생성기==============
