@@ -21,6 +21,7 @@ private:
 
 private:
     virtual int Load(const wstring& _strFilePath) override;
+    int CreateArrayTexture(const vector<std::pair<Ptr<CTexture>, Vec2>>& _vecTex, int _iMapLevel);
     int Create(UINT _Width, UINT _Height
         , DXGI_FORMAT _Format, UINT _BindFlag
         , D3D11_USAGE _Usage = D3D11_USAGE_DEFAULT);
@@ -38,6 +39,9 @@ public:
 
     UINT GetWidth() { return m_Desc.Width;}
     UINT GetHeight() { return m_Desc.Height; }
+
+    UINT GetRowPitch() { return m_Desc.Width * sizeof(UINT); }
+    UINT GetSlicePitch() { return GetRowPitch() * m_Desc.Height; }
 
     ComPtr<ID3D11Texture2D>           GetTex2D() { return m_Tex2D; }
 	ComPtr<ID3D11RenderTargetView>    GetRTV() { return m_RTV; }

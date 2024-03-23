@@ -29,6 +29,50 @@ void CAssetMgr::AddAsset(const wstring& _strKey, CAsset* _Asset)
 	m_mapAsset[(UINT)Type].insert(make_pair(_strKey, _Asset));
 }
 
+Ptr<CTexture> CAssetMgr::CreateArrayTexture(const wstring& _strKey ,const vector<std::pair<Ptr<CTexture>, Vec2>>& _vecTex, int _iMapLevel)
+{
+	// 생성하려는 텍스쳐와 동일한 키의 텍스쳐가 이미 AssetMgr 에 있다면
+	Ptr<CTexture> pTex = FindAsset<CTexture>(_strKey);
+	assert(!pTex.Get());
+
+	pTex = new CTexture(true);
+
+	if (FAILED(pTex->CreateArrayTexture(_vecTex, _iMapLevel)))
+	{
+		MessageBox(nullptr, L"텍스쳐배열 생성 실패", L"리소스 생성 실패", MB_OK);
+		return nullptr;
+	}
+
+	AddAsset<CTexture>(_strKey, pTex.Get());
+
+	return pTex;
+}
+
+Ptr<CTexture> CAssetMgr::UpdateArrayTexture(const wstring& _strKey, const vector<std::pair<Ptr<CTexture>, Vec2>>& _vecTex, int _iMapLevel)
+{
+	// 생성하려는 텍스쳐와 동일한 키의 텍스쳐가 이미 AssetMgr 에 있다면
+	Ptr<CTexture> pTexOrigin = FindAsset<CTexture>(_strKey);
+
+	if (nullptr != pTexOrigin.Get())
+	{
+		DeleteAsset<CTexture>(_strKey);
+	}
+
+	Ptr<CTexture> pTex = new CTexture(true);
+
+	if (FAILED(pTex->CreateArrayTexture(_vecTex, _iMapLevel)))
+	{
+		MessageBox(nullptr, L"텍스쳐배열 갱신 실패", L"리소스 생성 실패", MB_OK);
+		return nullptr;
+	}
+
+	AddAsset<CTexture>(_strKey, pTex.Get());
+
+	return pTex;
+}
+
+
+
 Ptr<CTexture> CAssetMgr::CreateTexture(const wstring& _strKey
 									 , UINT _Width, UINT _Height, DXGI_FORMAT _Format
 									 , UINT _Flag, D3D11_USAGE _Usage)

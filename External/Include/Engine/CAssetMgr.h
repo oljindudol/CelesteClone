@@ -46,6 +46,10 @@ public:
 
     void AddAsset(const wstring& _strKey, CAsset* _Asset);
 
+    Ptr<CTexture> CreateArrayTexture(const wstring& _strKey, const vector<std::pair<Ptr<CTexture>, Vec2>>& _vecTex, int _iMapLevel);
+
+    Ptr<CTexture> UpdateArrayTexture(const wstring& _strKey, const vector<std::pair<Ptr<CTexture>, Vec2>>& _vecTex, int _iMapLevel);
+
     template<typename T>
     Ptr<T> FindAsset(const wstring& _strKey);
 

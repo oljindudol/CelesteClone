@@ -62,6 +62,50 @@ int CTexture::Load(const wstring& _strFilePath)
 }
 
 
+int CTexture::CreateArrayTexture(const vector<std::pair<Ptr<CTexture>, Vec2>>& _vecTex, int _iMapLevel)
+{
+	m_Desc = _vecTex[0].first.Get()->m_Desc; //_vecTex[0].Get()->m_Tex2D->GetDesc(&_vecTex[0].Get()->m_Desc);
+	m_Desc.ArraySize = (UINT)_vecTex.size();
+	m_Desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
+	m_Desc.MipLevels = _iMapLevel;
+
+	HRESULT hr = DEVICE->CreateTexture2D(&m_Desc, nullptr, m_Tex2D.GetAddressOf());
+	if (FAILED(hr))
+		return hr;
+
+	// 원본데이터(밉맵 레벨 0) 를 각 칸에 옮긴다.   
+	for (int i = 0; i < _vecTex.size(); ++i)
+	{
+		UINT iOffset = D3D11CalcSubresource(0, i, _iMapLevel);
+		CONTEXT->UpdateSubresource(m_Tex2D.Get(), iOffset, nullptr, _vecTex[i].first.Get()->GetPixels() //_vecTex[i]->GetSysMem()
+			, _vecTex[i].first.Get()->GetRowPitch(), _vecTex[i].first.Get()->GetSlicePitch());
+	}
+
+	// Shader Resource View 생성
+	D3D11_SHADER_RESOURCE_VIEW_DESC viewdesc = {};
+	viewdesc.Format = m_Desc.Format;
+	viewdesc.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2DARRAY;
+	viewdesc.Texture2DArray.MipLevels = _iMapLevel;
+	viewdesc.Texture2DArray.MostDetailedMip = 0;
+	viewdesc.Texture2DArray.ArraySize = _vecTex.size();
+
+	DEVICE->CreateShaderResourceView(m_Tex2D.Get(), &viewdesc, m_SRV.GetAddressOf());
+
+	m_Tex2D->GetDesc(&m_Desc);
+
+	//배열텍스쳐를 dds파일로 저장
+	//HRESULT hr2 = SaveToDDSFile(m_Image.GetImages()
+	//	, _vecTex.size()
+	//	, m_Image.GetMetadata()
+	//	, DDS_FLAGS::DDS_FLAGS_NONE
+	//	, L"C:\\CelesteClone\\tarray.dds");
+
+	//hr2;
+
+	return hr;
+}
+
+
 int CTexture::Create(UINT _Width, UINT _Height, DXGI_FORMAT _Format, UINT _BindFlag, D3D11_USAGE _Usage)
 {
 	// Texture 생성

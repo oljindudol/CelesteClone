@@ -37,6 +37,9 @@ private:
 
     //pair : Ptr텍스쳐 , 아틀라스 타일사이즈 UV
     vector<std::pair<Ptr<CTexture>,Vec2>> m_vecTileAtlas;
+    //텍스쳐어레이
+    Ptr<CTexture> m_arrAtlas;
+
     Vec2                m_vTilePixelSize;
     //Vec2                m_vSliceSizeUV;
 
@@ -57,6 +60,16 @@ public:
     UINT GetRow() { return m_Row; }
     UINT GetCol() { return m_Col; }
 
+    void SetArrAtlas(Ptr<CTexture> _arrAtlas)
+    {
+        m_arrAtlas = _arrAtlas;
+    }
+    Ptr<CTexture> GetArrAtlas()
+    {
+        return m_arrAtlas;
+    }
+
+    
     void SetTileIndex(UINT _Row, UINT _Col, int _ImgIdx);
     void SetTileIndexWithOutGridInit(UINT _Row, UINT _Col, int _ImgIdx);
     void GridInit();
@@ -93,6 +106,13 @@ public:
 
     //아틀라스관련함수
     auto& GetTileAtlases() { return m_vecTileAtlas; }
+    auto& GetTileAtlasesTexture() { 
+        vector<Ptr<CTexture>> ret;
+        for (auto& e : m_vecTileAtlas)
+        {
+            ret.push_back(e.first);
+        }
+        return ret; }
     void SetTileAtlas(Ptr<CTexture> _Atlas,Vec2 _AtlasPixelSize = Vec2(8.f, 8.f));
     auto& GetTileAtlas(UINT _idx) { 
         //true면 통과

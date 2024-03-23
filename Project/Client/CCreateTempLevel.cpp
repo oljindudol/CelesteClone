@@ -183,6 +183,10 @@ void CCreateTempLevel::CreateTempLevel()
 	pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\girder.png", L"texture\\girder.png");
 	pObj->TileMap()->SetTileAtlas(pTileAtlas);
 
+	pTileAtlas = CAssetMgr::GetInst()->CreateArrayTexture(L"TileMapTextureArray", pObj->TileMap()->GetTileAtlases() , 1);
+	pObj->TileMap()->SetArrAtlas(pTileAtlas);
+
+
 	pTempLevel->AddObject(pObj, LAYER_FORETILE, false);
 	pObj->TileMap()->SetRowCol(40, 23);
 	//for (int i = 0; i < 23; ++i)

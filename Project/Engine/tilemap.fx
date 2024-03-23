@@ -14,8 +14,10 @@
 // 아틀라스에서 타일하나의 uv
 #define vSliceUV    g_vec2_0
 
-#define TileAtlas0   g_tex_0
-#define TileAtlas1   g_tex_1
+//#define TileAtlas0   g_tex_0
+//#define TileAtlas1   g_tex_1
+#define ArrTileAtlas   g_texarr_0
+
 
 StructuredBuffer<tTileInfo> g_TileInfo : register(t20);
 
@@ -63,6 +65,7 @@ float4 PS_TileMap(VS_OUT _in) : SV_Target
         
         // 이미지의 인덱스를 구함.
     int iImageIdx = g_TileInfo[bufferidx].TileIdx;
+    int iAtlasIdx = g_TileInfo[bufferidx].AtlasIdx;
     
     //컴파일러에러
     //Texture2D Txture = g_tex_0;
@@ -90,16 +93,18 @@ float4 PS_TileMap(VS_OUT _in) : SV_Target
         float2 IdxUV = vSliceUV * float2(iCol, iRow);
         //타일의 UV값
         tileUV = vSliceUV * tileUV;
-        
-        if (0 == g_TileInfo[bufferidx].AtlasIdx)
-        {
-            vColor = TileAtlas0.Sample(g_sam_0, IdxUV + tileUV);
-        }
-        else
-        {
-            vColor = TileAtlas1.Sample(g_sam_0, IdxUV + tileUV);
-        
-        }
+        float2 finalUV = IdxUV + tileUV;
+        float3 UV3 = float3(finalUV, iAtlasIdx);
+        vColor = ArrTileAtlas.Sample(g_sam_0, UV3); //,g_TileInfo[bufferidx].AtlasIdx);
+        //if (0 == g_TileInfo[bufferidx].AtlasIdx)
+        //{
+        //    vColor = TileAtlas0.Sample(g_sam_0, IdxUV + tileUV);
+        //}
+        //else
+        //{
+        //    vColor = TileAtlas1.Sample(g_sam_0, IdxUV + tileUV);
+        //
+        //}
         //옛날 LT방식
         //vUV = g_TileInfo[bufferidx].TileIdx + (vSliceUV * vUV);
         //vColor = TileAtlas.Sample(g_sam_0, vUV);

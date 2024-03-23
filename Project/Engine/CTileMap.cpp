@@ -73,8 +73,8 @@ void CTileMap::finaltick()
 void CTileMap::render()
 {	
 	// 재질에 아틀라스 텍스쳐 전달.
-	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_vecTileAtlas[0].first);
-	GetMaterial()->SetTexParam(TEX_PARAM::TEX_1, m_vecTileAtlas[1].first);
+	GetMaterial()->SetTexParam(TEX_PARAM::TEXARR_0, m_arrAtlas);
+	//GetMaterial()->SetTexParam(TEX_PARAM::TEX_1, m_vecTileAtlas[1].first);
 	
 	// 타일의 가로 세로 개수
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, m_Row);
@@ -209,6 +209,7 @@ void CTileMap::SaveToFile(FILE* _File)
 		SaveAssetRef(p.first, _File);
 		fwrite(&p.second, sizeof(Vec2), 1, _File);
 	}
+
 
 	fwrite(&m_vTilePixelSize, sizeof(Vec2), 1, _File);
 	//fwrite(&m_vSliceSizeUV, sizeof(Vec2), 1, _File);
