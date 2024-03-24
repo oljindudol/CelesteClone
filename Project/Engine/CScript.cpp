@@ -4,11 +4,14 @@
 CScript::CScript(UINT _ScriptType)
 	: CComponent(COMPONENT_TYPE::SCRIPT)
 	, m_iScriptType(_ScriptType)
+	, m_Physics(nullptr)
 {
 }
 
 CScript::~CScript()
 {
+	if (nullptr != m_Physics)
+		delete m_Physics;
 }
 
 void CScript::Instantiate(Ptr<CPrefab> _Prefab, Vec3 _vWorldPos, int _layerIdx)

@@ -28,6 +28,7 @@
     <ClInclude Include="CPlatFormScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
+    <ClInclude Include="CPhysics.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -57,6 +58,7 @@
     <ClCompile Include="CPlatFormScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
+    <ClCompile Include="CPhysics.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">

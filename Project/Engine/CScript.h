@@ -7,6 +7,7 @@
 
 #include "CGameObject.h"
 #include "components.h"
+class CPhysics;
 
 struct tScriptParam
 {
@@ -21,6 +22,7 @@ class CScript :
 private:
     const UINT              m_iScriptType;
     vector<tScriptParam>    m_ScriptParam;
+    CPhysics* m_Physics;
 
 
 public:
@@ -41,7 +43,8 @@ public:
     virtual void SaveToFile(FILE* _File) = 0;
     virtual void LoadFromFile(FILE* _File) = 0;
 
-
+    CPhysics* GetPhysics() { return m_Physics; }
+    void SetPhysics(CPhysics* _Physics) { m_Physics = _Physics; }
 
     CScript* Clone() = 0;
 public:

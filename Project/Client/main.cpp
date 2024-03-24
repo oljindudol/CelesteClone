@@ -244,6 +244,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             ::SetWindowPos(hWnd, nullptr, suggested_rect->left, suggested_rect->top, suggested_rect->right - suggested_rect->left, suggested_rect->bottom - suggested_rect->top, SWP_NOZORDER | SWP_NOACTIVATE);
         }
         break;
+    case WM_SYSKEYDOWN://alt키막기
+    case WM_KEYDOWN:
+        switch (wParam)
+        {
+        case VK_MENU:
+            break;
+        }
+        break;
 
     default:
         return DefWindowProc(hWnd, message, wParam, lParam);

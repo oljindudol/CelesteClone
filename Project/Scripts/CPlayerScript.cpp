@@ -8,12 +8,12 @@
 #include <Engine/CMaterial.h>
 #include <Engine/CRenderComponent.h>
 
+#include "CPhysics.h"
 
 CPlayerScript::CPlayerScript()
 	: CScript(PLAYERSCRIPT)
 	, m_Speed(100.f)
 {
-
 }
 
 CPlayerScript::~CPlayerScript()
@@ -39,6 +39,9 @@ void CPlayerScript::begin()
 
 	auto a = Animator2D();
 	Animator2D()->Play(L"idle");
+
+
+	SetPhysics(new CPhysics(GetOwner()));
 
 }
 
@@ -118,6 +121,8 @@ void CPlayerScript::tick()
 			pMtrl->SetScalarParam(SCALAR_PARAM::INT_0, 0);
 		}
 	}
+
+	GetPhysics()->Update();
 
 	//static float f = 0.f;
 	//f += DT * 0.3f;
