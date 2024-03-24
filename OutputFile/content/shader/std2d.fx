@@ -24,6 +24,8 @@ VS_OUT VS_Std2D(VS_IN _in)
 {
     VS_OUT output = (VS_OUT) 0.f;
     
+    _in.vPos = _in.vPos - float3(g_vOffset, 0.f);
+    
     output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
     output.vColor = _in.vColor;
     output.vUV = _in.vUV;
@@ -43,7 +45,7 @@ float4 PS_Std2D(VS_OUT _in) : SV_Target
     if(g_UseAnim2D)
     {        
         float2 vBackgroundLeftTop = g_vLeftTop + (g_vSlizeSize / 2.f) - (g_vBackground / 2.f);        
-        vBackgroundLeftTop -= g_vOffset;
+        //vBackgroundLeftTop -= g_vOffset;
         float2 vUV = vBackgroundLeftTop + (g_vBackground * _in.vUV);
         
         if (vUV.x < g_vLeftTop.x || (g_vLeftTop.x + g_vSlizeSize.x) < vUV.x
@@ -111,7 +113,7 @@ float4 PS_Std2D_Effect(VS_OUT _in) : SV_Target
     if (g_UseAnim2D)
     {
         float2 vBackgroundLeftTop = g_vLeftTop + (g_vSlizeSize / 2.f) - (g_vBackground / 2.f);
-        vBackgroundLeftTop -= g_vOffset;
+        //vBackgroundLeftTop -= g_vOffset;
         float2 vUV = vBackgroundLeftTop + (g_vBackground * _in.vUV);
         
         if (vUV.x < g_vLeftTop.x || (g_vLeftTop.x + g_vSlizeSize.x) < vUV.x

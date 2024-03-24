@@ -26,17 +26,19 @@ void CPlayerScript::begin()
 	string OriginPath = "C:\\CelesteClone\\OutputFile\\content\\texture\\Gameplay\\madeline";
 	auto folders = getFoldersFromDirectory(OriginPath);
 	
+	//auto ty = Transform()->GetRelativeScale().y;
 	for (auto& f : folders)
 	{
 		auto rel = std::filesystem::relative(f, OriginPath);
-		Animator2D()->CreateFromFolder(rel,f, 10);
+
+		Animator2D()->CreateFromFolder(rel,f, 12.5 , Vec2(0.f, -0.375f) );
 	}
 
 
 	GetRenderComponent()->GetDynamicMaterial();
 
 	auto a = Animator2D();
-	Animator2D()->Play(L"launch");
+	Animator2D()->Play(L"idle");
 
 }
 

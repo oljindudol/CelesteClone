@@ -106,7 +106,7 @@ void CAnim::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop
 	}
 }
 
-void CAnim::CreateFromFolder(CAnimator2D* _Animator, const wstring& _Path, float _FPS)
+void CAnim::CreateFromFolder(CAnimator2D* _Animator, const wstring& _Path, float _FPS, Vec2 _offset)
 {
 	tAnimFrm frm = {};
 	m_Animator = _Animator;
@@ -130,7 +130,7 @@ void CAnim::CreateFromFolder(CAnimator2D* _Animator, const wstring& _Path, float
 
 		frm.vSlice = Vec2(1.f, 1.f);
 		frm.vLeftTop = Vec2(0.f,0.f);
-		frm.vOffset = Vec2(0.f,0.f);
+		frm.vOffset = _offset;
 		frm.Duration = 1.f / _FPS;
 
 		frm.vBackground = Vec2(1.f,1.f);

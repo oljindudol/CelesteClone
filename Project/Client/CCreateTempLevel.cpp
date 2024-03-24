@@ -19,6 +19,7 @@
 #include <Engine/CSetColorShader.h>
 
 #include "CLevelSaveLoad.h"
+#include <Scripts/CCameraMoveScript.h>
 #include <Scripts/CMissileScript.h>
 #include <Scripts/CMonsterScript.h>
 
@@ -114,6 +115,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->SetName(L"MainCamera");
 	pCamObj->AddComponent(new CTransform);
 	pCamObj->AddComponent(new CCamera);
+	pCamObj->AddComponent(new CCameraMoveScript);
 
 	pCamObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	pCamObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
@@ -187,7 +189,7 @@ void CCreateTempLevel::CreateTempLevel()
 	//pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\girder.png", L"texture\\girder.png");
 	//pObj->TileMap()->SetTileAtlas(pTileAtlas);
 
-	string ForeTilePath = "C:\\CelesteClone\\OutputFile\\content\\texture\\Gameplay\\tilemap\\backtile";
+	string ForeTilePath = "C:\\CelesteClone\\OutputFile\\content\\texture\\Gameplay\\tilemap\\foretile";
 	auto files = getImagesFromDirectory(ForeTilePath);
 
 	static const std::filesystem::path base_path = CPathMgr::GetContentPath();
@@ -225,13 +227,13 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CPlayerScript);
 	pObj->AddComponent(new CMissileScript);
 
-	Vec3 playerscale = Vec3(16.f, 16.f, 1.f);
+	Vec3 playerscale = Vec3(32.f, 32.f, 1.f);
 
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 90.f));
 	pObj->Transform()->SetRelativeScale(playerscale);
 
-	pObj->Collider2D()->SetAbsolute(true);
-	pObj->Collider2D()->SetOffsetScale(Vec2(playerscale.x, playerscale.y));
+	pObj->Collider2D()->SetAbsolute(false);
+	pObj->Collider2D()->SetOffsetScale(Vec2(0.25f, 0.25f));
 	pObj->Collider2D()->SetOffsetPos(Vec2(0.f, 0.f));
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(STR_KEY_RectMesh));
@@ -267,7 +269,7 @@ void CCreateTempLevel::CreateTempLevel()
 	//pTempLevel->AddObject(pObj,LAYER_MONSTER, false);
 
 
-	// Platform Object 持失
+	//Platform Object 持失
 	pObj = new CGameObject;
 	pObj->SetName(L"Platform");
 

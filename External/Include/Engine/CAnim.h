@@ -48,7 +48,7 @@ public:
     void Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop
         , Vec2 _vSliceSize, Vec2 _vOffset, Vec2 _vBackground, int _FrmCount, float _FPS);
 
-    void CreateFromFolder(CAnimator2D* _Animator, const wstring& _Path , float _FPS);
+    void CreateFromFolder(CAnimator2D* _Animator, const wstring& _Path , float _FPS , Vec2 _offset);
 
     void SaveToFile(FILE* _File);
     void LoadFromFile(FILE* _File);

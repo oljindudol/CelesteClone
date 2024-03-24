@@ -9,6 +9,9 @@
 #include <Engine\CDevice.h>
 #include <Engine/CPrefab.h>
 
+#include <Engine/CLevel.h>
+#include <Engine/CLevelMgr.h>
+
 #include "CLevelSaveLoad.h"
 
 #ifdef _DEBUG
@@ -113,7 +116,18 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
 #ifndef _RELEASE_GAME
             // EditorObj
-            CEditorObjMgr::GetInst()->progress();
+            auto CL = CLevelMgr::GetInst()->GetCurrentLevel();
+            auto LS = LEVEL_STATE::NONE;
+            if (nullptr != CL)
+            {
+                LS = CL->GetState();
+            }
+
+            if ((LEVEL_STATE::STOP == LS || LEVEL_STATE::PAUSE == LS))
+            {
+                CEditorObjMgr::GetInst()->progress();
+            }
+
 
             // ImGui Update
             CImGuiMgr::GetInst()->progress();

@@ -23,7 +23,7 @@ public:
     // _LeftTop, _SliceSize, _Offset : Pixel Unit
     void Create(const wstring& _strKey, Ptr<CTexture> _AltasTex, Vec2 _LeftTop, Vec2 _vSliceSize, Vec2 _OffsetSize, Vec2 _Background, int _FrmCount, float _FPS);
 
-    void CreateFromFolder(const wstring& _strKey, const wstring& _Path, float _FPS);
+    void CreateFromFolder(const wstring& _strKey, const wstring& _Path, float _FPS , Vec2 _offset = Vec2(0.f,0.f));
 
     CAnim* FindAnim(const wstring& _strAnimName);
     void Play(const wstring& _strAnimName, bool _bRepeat = true);

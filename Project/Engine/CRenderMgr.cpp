@@ -72,8 +72,16 @@ void CRenderMgr::render_debug()
 	if (m_vecCam.empty())
 		return;
 
-	g_Transform.matView = m_vecCam[0]->GetViewMat();
-	g_Transform.matProj = m_vecCam[0]->GetProjMat();
+	if (&CRenderMgr::render_play == m_RenderFunc)
+	{
+		g_Transform.matView = m_vecCam[0]->GetViewMat();
+		g_Transform.matProj = m_vecCam[0]->GetProjMat();
+	}
+	else
+	{
+		g_Transform.matView = m_EditorCam->GetViewMat();
+		g_Transform.matProj = m_EditorCam->GetProjMat();
+	}
 
 	list<tDebugShapeInfo>::iterator iter = m_DbgShapeInfo.begin();
 	for (; iter != m_DbgShapeInfo.end(); )

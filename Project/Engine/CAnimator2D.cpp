@@ -71,13 +71,13 @@ void CAnimator2D::Create(const wstring& _strKey, Ptr<CTexture> _AltasTex, Vec2 _
 	m_mapAnim.insert(make_pair(_strKey, pAnim));
 }
 
-void CAnimator2D::CreateFromFolder(const wstring& _strKey, const wstring& _Path, float _FPS)
+void CAnimator2D::CreateFromFolder(const wstring& _strKey, const wstring& _Path, float _FPS, Vec2 _offset)
 {
 	CAnim* pAnim = FindAnim(_strKey);
 	assert(!pAnim);
 
 	pAnim = new CAnim;
-	pAnim->CreateFromFolder(this, _Path, _FPS);
+	pAnim->CreateFromFolder(this, _Path, _FPS , _offset);
 
 	m_mapAnim.insert(make_pair(_strKey, pAnim));
 }
