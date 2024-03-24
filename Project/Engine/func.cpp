@@ -155,6 +155,12 @@ wstring ToWString(const string& _str)
 	return wstring(_str.begin(), _str.end());
 }
 
+string ToString(const std::string_view& _sv)
+{
+	return { _sv.data(),_sv.size() };
+}
+
+
 void SaveWString(const wstring& _str, FILE* _File)
 {	
 	size_t len = _str.length();

@@ -225,11 +225,13 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CPlayerScript);
 	pObj->AddComponent(new CMissileScript);
 
+	Vec3 playerscale = Vec3(16.f, 16.f, 1.f);
+
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 90.f));
-	pObj->Transform()->SetRelativeScale(Vec3(32.f, 32.f, 1.f));
+	pObj->Transform()->SetRelativeScale(playerscale);
 
 	pObj->Collider2D()->SetAbsolute(true);
-	pObj->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
+	pObj->Collider2D()->SetOffsetScale(Vec2(playerscale.x, playerscale.y));
 	pObj->Collider2D()->SetOffsetPos(Vec2(0.f, 0.f));
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(STR_KEY_RectMesh));
@@ -276,11 +278,12 @@ void CCreateTempLevel::CreateTempLevel()
 
 	Vec3 scale = Vec3(32.f, 32.f, 1.f);
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 90.f));
-	pObj->Transform()->SetRelativeScale(Vec3(32.f, 32.f, 1.f));
+	pObj->Transform()->SetRelativeScale(scale);
 
-	pObj->Collider2D()->SetAbsolute(true);
-	pObj->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
+	pObj->Collider2D()->SetAbsolute(false);
+	pObj->Collider2D()->SetOffsetScale(Vec2(1.f, 1.f));
 	pObj->Collider2D()->SetOffsetPos(Vec2(0.f, 0.f));
+	pObj->Collider2D()->SetColliderType(COLLIDER2D_TYPE::COL_TYPE_CIRCLE);
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(STR_KEY_RectMesh));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_DebugMeterial));
@@ -290,8 +293,7 @@ void CCreateTempLevel::CreateTempLevel()
 
 
 	// 충돌 설정
-	CCollisionMgr::GetInst()->LayerCheck(3, 4);
-	CCollisionMgr::GetInst()->LayerCheck(4, 4);
+	CCollisionMgr::GetInst()->LayerCheck(LAYER_TILECOL, LAYER_PLAYER);
 
 	CLevelMgr::GetInst()->ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
 

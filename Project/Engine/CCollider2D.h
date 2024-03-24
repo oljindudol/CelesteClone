@@ -1,11 +1,13 @@
 #pragma once
 #include "CComponent.h"
 
-enum class COLLIDER2D_TYPE 
+enum class COLLIDER2D_TYPE
 {
-    RECT,
-    CIRCLE,
+    COL_TYPE_RECT,
+    COL_TYPE_CIRCLE,
+    COL_TYPE_END,
 };
+
 
 
 class CCollider2D :
