@@ -53,16 +53,18 @@ void CTileMapGrid::Init()
 
 	vGridSize = Vector2(vScale.x / iCol, vScale.y / iRow);
 
+	float zmul = 16.f;
+
 	for (int y = 0; y < iRow + 1; ++y) {
-		Vector3 vStartPos = Vector3(vOriginLBPos.x, vOriginLBPos.y + y * vGridSize.y, vObjPos.z);
-		Vector3 vEndPos = Vector3(vOriginRTPos.x, vOriginLBPos.y + y * vGridSize.y, vObjPos.z);
+		Vector3 vStartPos = Vector3(vOriginLBPos.x, vOriginLBPos.y + y * vGridSize.y, 0.f);// vObjPos.z);
+		Vector3 vEndPos = Vector3(vOriginRTPos.x, vOriginLBPos.y + y * vGridSize.y, 0.f); //vObjPos.z );
 
 
 		AddBuffer(vStartPos / vScale, vEndPos / vScale); // 1 미만 사이즈로 만들어줌.
 	}
 	for (int x = 0; x < iCol + 1; ++x) {
-		Vector3 vStartPos = Vector3(vOriginLBPos.x + x * vGridSize.x, vOriginLBPos.y, vObjPos.z);
-		Vector3 vEndPos = Vector3(vOriginLBPos.x + x * vGridSize.x, vOriginRTPos.y, vObjPos.z);
+		Vector3 vStartPos = Vector3(vOriginLBPos.x + x * vGridSize.x, vOriginLBPos.y, 0.f); //vObjPos.z );
+		Vector3 vEndPos = Vector3(vOriginLBPos.x + x * vGridSize.x, vOriginRTPos.y, 0.f); //vObjPos.z );
 		AddBuffer(vStartPos / vScale, vEndPos / vScale); // 1 미만 사이즈로 만들어줌.
 	}
 }

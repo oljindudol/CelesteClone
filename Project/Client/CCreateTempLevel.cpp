@@ -121,7 +121,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
 	pCamObj->Camera()->SetCameraPriority(0);
 	pCamObj->Camera()->LayerCheckAll();
-	pCamObj->Camera()->LayerCheck(31, false);
+	pCamObj->Camera()->LayerCheck(LAYER_UI, false);
 
 	pTempLevel->AddObject(pCamObj, LAYER_DEFAULT);
 
@@ -135,7 +135,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
 
 	pCamObj->Camera()->SetCameraPriority(1);
-	pCamObj->Camera()->LayerCheck(31, true);
+	pCamObj->Camera()->LayerCheck(LAYER_UI, true);
 
 	pTempLevel->AddObject(pCamObj, LAYER_DEFAULT);
 
@@ -283,7 +283,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->Collider2D()->SetAbsolute(false);
 	pObj->Collider2D()->SetOffsetScale(Vec2(1.f, 1.f));
 	pObj->Collider2D()->SetOffsetPos(Vec2(0.f, 0.f));
-	pObj->Collider2D()->SetColliderType(COLLIDER2D_TYPE::COL_TYPE_CIRCLE);
+	pObj->Collider2D()->SetColliderType(COLLIDER2D_TYPE::COL_TYPE_RECT);
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(STR_KEY_RectMesh));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_DebugMeterial));

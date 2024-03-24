@@ -32,7 +32,7 @@ CCamera::CCamera()
 		m_Scale = 0.166666666f;
 	}
 
-	m_FOV = 1.222f;
+	m_FOV = 1.56f;
 }
 
 CCamera::~CCamera()
