@@ -1,15 +1,32 @@
 #pragma once
 #include "CEntity.h"
 
-#define LAYER_DEFAULT L"Default"
-#define LAYER_BACKGROUND L"Background"
-#define LAYER_BACKTILE L"BackTile"
-#define LAYER_TILECOL L"TileCol"
-#define LAYER_FORETILE L"ForeTile"
-#define LAYER_PLAYER L"Player"
-#define LAYER_MONSTER L"Monster"
-#define LAYER_LIGHT L"Light"
-#define LAYER_UI L"UI"
+//#define LAYER_MAX 32
+
+//enum LAYER
+//{
+//    LAYER_DEFAULT,
+//    LAYER_BACKGROUND,
+//    LAYER_BACKTILE,
+//    LAYER_TILECOL,
+//    LAYER_FORETILE,
+//    LAYER_PLAYER,
+//    LAYER_MONSTER,
+//    LAYER_LIGHT,
+//    LAYER_UI,
+//    LAYER_MAX = 32,
+//};
+
+//#define LAYER_DEFAULT L"Default"
+//#define LAYER_BACKGROUND L"Background"
+//#define LAYER_BACKTILE L"BackTile"
+//#define LAYER_TILECOL L"TileCol"
+//#define LAYER_FORETILE L"ForeTile"
+//#define LAYER_PLAYER L"Player"
+//#define LAYER_MONSTER L"Monster"
+//#define LAYER_LIGHT L"Light"
+//#define LAYER_UI L"UI"
+
 
 class CGameObject;
 

@@ -14,6 +14,7 @@
 #include <unordered_map>
 
 
+
 using std::vector;
 using std::list;
 using std::map;
@@ -60,7 +61,8 @@ typedef Vector2 Vec2;
 typedef Vector3 Vec3;
 typedef Vector4 Vec4;
 
-
+// Magic_Enum
+#include <Magic_Enum/magic_enum_all.hpp>
 
 
 // 엔진 헤더 참조

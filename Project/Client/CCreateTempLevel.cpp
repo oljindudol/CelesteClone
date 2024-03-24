@@ -76,15 +76,22 @@ void CCreateTempLevel::CreateTempLevel()
 
 	CLevel* pTempLevel = new CLevel;
 
-	pTempLevel->GetLayer(0)->SetName(LAYER_DEFAULT);
-	pTempLevel->GetLayer(1)->SetName(LAYER_BACKGROUND);
-	pTempLevel->GetLayer(2)->SetName(LAYER_BACKTILE);
-	pTempLevel->GetLayer(3)->SetName(LAYER_TILECOL);
-	pTempLevel->GetLayer(4)->SetName(LAYER_FORETILE);
-	pTempLevel->GetLayer(5)->SetName(LAYER_PLAYER);
-	pTempLevel->GetLayer(6)->SetName(LAYER_MONSTER);
-	pTempLevel->GetLayer(7)->SetName(LAYER_LIGHT);
-	pTempLevel->GetLayer(31)->SetName(LAYER_UI);
+	for (int i = 0; i < LAYER_END; ++i)
+	{
+		auto s = magic_enum::enum_name((LAYER)i);
+		pTempLevel->GetLayer(i)->SetName(ToWString({ s.data(),s.size() }));
+	}
+
+	//pTempLevel->GetLayer(LAYER_DEFAULT)->SetName(LAYER_DEFAULT);
+	//pTempLevel->GetLayer(LAYER_BACKGROUND)->SetName(LAYER_BACKGROUND);
+	//pTempLevel->GetLayer(LAYER_BACKTILE)->SetName(LAYER_BACKTILE);
+	//pTempLevel->GetLayer(LAYER_TILECOL)->SetName(LAYER_TILECOL);
+	//pTempLevel->GetLayer(LAYER_FORETILE)->SetName(LAYER_FORETILE);
+	//pTempLevel->GetLayer(LAYER_PLAYER)->SetName(LAYER_PLAYER);
+	//pTempLevel->GetLayer(LAYER_MONSTER)->SetName(LAYER_MONSTER);
+	//pTempLevel->GetLayer(LAYER_LIGHT)->SetName(LAYER_LIGHT);
+	//pTempLevel->GetLayer(LAYER_UI)->SetName(LAYER_UI);
+
 
 
 
