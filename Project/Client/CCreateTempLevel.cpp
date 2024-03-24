@@ -208,6 +208,19 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pObj, LAYER_FORETILE, false);
 	pObj->TileMap()->SetRowCol(40, 23);
+
+	auto& ti = pObj->TileMap()->GetTilesInfo();
+	for (int i = 840; i < 880; ++i)
+	{
+		ti[i].TileIdx= 0;
+		ti[i].AtlasIdx = 17;
+	}
+	for (int i = 880; i < 920; ++i)
+	{
+		ti[i].TileIdx = 6;
+		ti[i].AtlasIdx = 17;
+	}
+
 	//for (int i = 0; i < 23; ++i)
 	//{
 	//	for (int j = 0; j < 40; ++j)
@@ -278,8 +291,8 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CCollider2D);
 	pObj->AddComponent(new CAnimator2D);
 
-	Vec3 scale = Vec3(32.f, 32.f, 1.f);
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 90.f));
+	Vec3 scale = Vec3(324.f, 30.f, 1.f);
+	pObj->Transform()->SetRelativePos(Vec3(0.f, -90.f, 90.f));
 	pObj->Transform()->SetRelativeScale(scale);
 
 	pObj->Collider2D()->SetAbsolute(false);
