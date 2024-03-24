@@ -30,9 +30,9 @@ void CEditorObjMgr::init()
 	pEditorCam->Camera()->LayerCheckAll();
 	pEditorCam->Camera()->LayerCheck(31, false);
 	pEditorCam->Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
-	pEditorCam->Camera()->SetFOV(XM_PI / 2.f);
-	pEditorCam->Camera()->SetFar(100.f);
-	pEditorCam->Transform()->SetRelativePos(Vec3(0.f, 0.f, 411.f));
+	//pEditorCam->Camera()->SetFOV(XM_PI / 2.f);
+	pEditorCam->Camera()->SetFar(1000.f);
+	pEditorCam->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 
 	//해상도에따라 0.25f or 0.1666666f
 	pEditorCam->Camera()->SetScale(.25f);

@@ -204,12 +204,14 @@ void CTileMap::SaveToFile(FILE* _File)
 	fwrite(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
 	fwrite(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
 
+	size_t AtlasCount = m_vecTileAtlas.size();
+	fwrite(&AtlasCount, sizeof(size_t), 1, _File);
 	for (auto& p : m_vecTileAtlas)
 	{
 		SaveAssetRef(p.first, _File);
 		fwrite(&p.second, sizeof(Vec2), 1, _File);
 	}
-
+	SaveAssetRef(GetArrAtlas(), _File);
 
 	fwrite(&m_vTilePixelSize, sizeof(Vec2), 1, _File);
 	//fwrite(&m_vSliceSizeUV, sizeof(Vec2), 1, _File);
@@ -230,11 +232,18 @@ void CTileMap::LoadFromFile(FILE* _File)
 	fread(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
 	fread(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
 
+	size_t AtlasCount = m_vecTileAtlas.size();
+	fread(&AtlasCount, sizeof(size_t), 1, _File);
+	m_vecTileAtlas.resize(AtlasCount);
 	for (auto& p : m_vecTileAtlas)
 	{
 		LoadAssetRef(p.first, _File);
 		fread(&p.second, sizeof(Vec2), 1, _File);
 	}
+	LoadAssetRef(m_arrAtlas, _File);
+	//auto pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"TileMapTextureArray",L"");
+	//SetArrAtlas(pTileAtlas);
+
 
 	fread(&m_vTilePixelSize, sizeof(Vec2), 1, _File);
 	//fread(&m_vSliceSizeUV, sizeof(Vec2), 1, _File);

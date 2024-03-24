@@ -49,6 +49,12 @@ void CameraUI::render_update()
     ImVec4 Blue = ImVec4(0.f, 0.f, 1.f, 1.0f);
     ImVec4 Gray = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);
 
+    float ffar = pCamera->GetFar();
+    ImGui::Text("Far"); ImGui::SameLine();
+    ImGui::DragFloat("Far", &ffar);
+    ffar = floatClamp(ffar, 1.f);
+    pCamera->SetFar(ffar);
+
     //Á÷±³
     if (PROJ_TYPE::ORTHOGRAPHIC == ProjType)
     {

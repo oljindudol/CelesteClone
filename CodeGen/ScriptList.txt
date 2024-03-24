@@ -2,4 +2,5 @@ CBackgroundScript
 CCameraMoveScript
 CMissileScript
 CMonsterScript
+CPlatFormScript
 CPlayerScript

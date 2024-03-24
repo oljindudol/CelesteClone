@@ -37,6 +37,7 @@ void SaveWString(const wstring& _str, FILE* _File);
 void LoadWString(wstring& _str, FILE* _FILE);
 
 int intClamp(int _input , int _min,int _max = INT_MAX);
+float floatClamp(float _input, float _min);
 float floatClamp(float _input, float _min, float _max);
 
 

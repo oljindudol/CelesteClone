@@ -128,7 +128,8 @@ void TileMapEditor::render_update()
 	//===============2. 타일맵 재생성기==============
 	//
 	//ImGui::InputInt2("##Tile Map Size", m_arrFaceTileCnt);
-	//m_arrFaceTileCnt[0] = intClamp(m_arrFaceTileCnt[0], 0, INT_MAX);
+	//m_arrFaceTileCnt[0] = 
+	// (m_arrFaceTileCnt[0], 0, INT_MAX);
 	//m_arrFaceTileCnt[1] = intClamp(m_arrFaceTileCnt[1], 0, INT_MAX);
 
 	//ImGui::Spacing();

@@ -74,19 +74,16 @@ void CCreateTempLevel::CreateTempLevel()
 	CLevelMgr::GetInst()->ChangeLevel(pLevel, LEVEL_STATE::STOP);
 	return;*/
 
-
-
-
 	CLevel* pTempLevel = new CLevel;
-
 
 	pTempLevel->GetLayer(0)->SetName(LAYER_DEFAULT);
 	pTempLevel->GetLayer(1)->SetName(LAYER_BACKGROUND);
 	pTempLevel->GetLayer(2)->SetName(LAYER_BACKTILE);
-	pTempLevel->GetLayer(3)->SetName(LAYER_FORETILE);
-	pTempLevel->GetLayer(4)->SetName(LAYER_PLAYER);
-	pTempLevel->GetLayer(5)->SetName(LAYER_MONSTER);
-	pTempLevel->GetLayer(6)->SetName(LAYER_LIGHT);
+	pTempLevel->GetLayer(3)->SetName(LAYER_TILECOL);
+	pTempLevel->GetLayer(4)->SetName(LAYER_FORETILE);
+	pTempLevel->GetLayer(5)->SetName(LAYER_PLAYER);
+	pTempLevel->GetLayer(6)->SetName(LAYER_MONSTER);
+	pTempLevel->GetLayer(7)->SetName(LAYER_LIGHT);
 	pTempLevel->GetLayer(31)->SetName(LAYER_UI);
 
 
@@ -111,7 +108,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->AddComponent(new CTransform);
 	pCamObj->AddComponent(new CCamera);
 
-	pCamObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 410.f));
+	pCamObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	pCamObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
 
 	pCamObj->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
@@ -175,7 +172,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CTileMap);
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 250.f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 91.f));
 
 	//Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\snow.png", L"texture\\snow.png");
 	//pObj->TileMap()->SetTileAtlas(pTileAtlas);
@@ -221,7 +218,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CPlayerScript);
 	pObj->AddComponent(new CMissileScript);
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 499.f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 90.f));
 	pObj->Transform()->SetRelativeScale(Vec3(32.f, 32.f, 1.f));
 
 	pObj->Collider2D()->SetAbsolute(true);
@@ -236,29 +233,53 @@ void CCreateTempLevel::CreateTempLevel()
 
 
 	// Monster Object 积己
+	//pObj = new CGameObject;
+	//pObj->SetName(L"Monster");
+
+	//pObj->AddComponent(new CTransform);
+	//pObj->AddComponent(new CMeshRender);
+	//pObj->AddComponent(new CCollider2D);
+	//pObj->AddComponent(new CStateMachine);
+	//pObj->AddComponent(new CMonsterScript);
+
+	//pObj->Transform()->SetRelativePos(Vec3(500.f, 0.f, 500.f));
+	//pObj->Transform()->SetRelativeScale(Vec3(32.f, 32.f, 1.f));
+
+	//pObj->Collider2D()->SetAbsolute(true);
+	//pObj->Collider2D()->SetOffsetScale(Vec2(120.f, 120.f));
+	//pObj->Collider2D()->SetOffsetPos(Vec2(0.f, 0.f));
+
+	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(STR_KEY_RectMesh));
+	//pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_Std2dMeterial));
+	//pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\badline.png", L"texture\\badline.png"));
+
+	//pObj->StateMachine()->SetFSM(CAssetMgr::GetInst()->FindAsset<CFSM>(L"NormalMonsterFSM"));
+
+	//pTempLevel->AddObject(pObj,LAYER_MONSTER, false);
+
+
+	// Platform Object 积己
 	pObj = new CGameObject;
-	pObj->SetName(L"Monster");
+	pObj->SetName(L"Platform");
 
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CMeshRender);
 	pObj->AddComponent(new CCollider2D);
-	pObj->AddComponent(new CStateMachine);
-	pObj->AddComponent(new CMonsterScript);
+	pObj->AddComponent(new CAnimator2D);
 
-	pObj->Transform()->SetRelativePos(Vec3(500.f, 0.f, 500.f));
+	Vec3 scale = Vec3(32.f, 32.f, 1.f);
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 90.f));
 	pObj->Transform()->SetRelativeScale(Vec3(32.f, 32.f, 1.f));
 
 	pObj->Collider2D()->SetAbsolute(true);
-	pObj->Collider2D()->SetOffsetScale(Vec2(120.f, 120.f));
+	pObj->Collider2D()->SetOffsetScale(Vec2(100.f, 100.f));
 	pObj->Collider2D()->SetOffsetPos(Vec2(0.f, 0.f));
 
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(STR_KEY_RectMesh));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_Std2dMeterial));
-	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\badline.png", L"texture\\badline.png"));
+	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_DebugMeterial));
+	//pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Strawberry.png", L"texture\\Strawberry.png"));
 
-	pObj->StateMachine()->SetFSM(CAssetMgr::GetInst()->FindAsset<CFSM>(L"NormalMonsterFSM"));
-
-	pTempLevel->AddObject(pObj,LAYER_MONSTER, false);
+	pTempLevel->AddObject(pObj, LAYER_TILECOL, false);
 
 
 	// 面倒 汲沥
