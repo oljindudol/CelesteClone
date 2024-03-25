@@ -20,7 +20,7 @@ private:
     bool            m_bAbsolute;
 
     Matrix          m_matColWorld;
-    COLLIDER2D_TYPE m_Type;    
+    COLLIDER2D_TYPE m_Type;
 
 public:
     void SetAbsolute(bool _bAbsol) { m_bAbsolute = _bAbsol; }
@@ -37,6 +37,27 @@ public:
 
 public:
     virtual void finaltick() override;
+
+private:
+    Vec2 m_WorldPos;
+    Vec2 m_WorldScale;
+    Vec2 m_PrevWolrdPos;
+    Vec2 m_PrevWorldScale;
+
+    void CalcWorldTransform();
+    void UpdatePrevWorldTransform() { 
+        m_PrevWolrdPos = m_WorldPos; 
+        m_PrevWorldScale = m_WorldScale;
+    }
+
+    //void CalcWorldScale();
+    //void UpdatePrevWorldScale() { }
+
+public:
+    Vec2& GetWorldPos() { return m_WorldPos; }
+    Vec2& GetPrevWorldPos() { return m_PrevWolrdPos; }
+    Vec2& GetWorldScale() { return m_WorldScale; }
+    Vec2& GetPrevWorldScale() { return m_PrevWorldScale; }
 
 
 public:

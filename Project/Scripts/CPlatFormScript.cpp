@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "CPlatFormScript.h"
 
+#include "CPhysics.h"
+
 CPlatFormScript::CPlatFormScript()
 	: CScript(PLATFORMSCRIPT)
 {
@@ -21,56 +23,78 @@ void CPlatFormScript::tick()
 
 void CPlatFormScript::BeginOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
 {
-	Vec2 ThisPos = _Collider->GetOffsetPos();
-	Vec2 ThisScale = _Collider->GetOffsetScale();
-	auto ThisAbs = _Collider->IsAbsolute();
-	if (false == ThisAbs)
+	//Vec2 ThisPos = _Collider->GetOffsetPos();
+	//Vec2 ThisScale = _Collider->GetOffsetScale();
+	//auto ThisAbs = _Collider->IsAbsolute();
+	//if (false == ThisAbs)
+	//{
+	//	auto ownerpos = _Collider->GetOwner()->Transform()->GetWorldPos();
+	//	auto ownerscale = _Collider->GetOwner()->Transform()->GetWorldScale();
+	//	ThisPos = ownerpos * ThisPos;
+	//	ThisScale = ownerscale * ThisScale;
+	//}
+
+	//Vec2 OtherPos = _OtherCollider->GetOffsetPos();
+	//Vec2 OtherScale = _OtherCollider->GetOffsetScale();
+	//auto OtherAbs = _OtherCollider->IsAbsolute();
+	//if (false == OtherAbs)
+	//{
+	//	auto ownerpos = _OtherObj->Transform()->GetWorldPos();
+	//	auto ownerscale = _OtherObj->Transform()->GetWorldScale();
+	//	OtherPos = ownerpos * ThisPos;
+	//	OtherScale = ownerscale * ThisScale;
+	//}
+
+	Vec2 ThisPos = _Collider->GetWorldPos();
+	Vec2 ThisPrevPos = _Collider->GetPrevWorldPos();
+	Vec2 ThisScale = _Collider->GetWorldScale();
+
+	Vec2 OtherPos = _OtherCollider->GetWorldPos();
+	Vec2 OtherPrevPos = _OtherCollider->GetPrevWorldPos();
+	Vec2 OtherScale = _OtherCollider->GetWorldScale();
+
+	// TODO: if (레이어 판정로직 or 오브젝트 타입 판정로직?)
+
+	float plattop = (ThisPos.y - ThisScale.y / 2.f);
+	float otherprevbottom = (OtherPrevPos.y + OtherScale.y / 2.f);
+
+	float yfix = 0.99f;//((UINT)LAYER::PLAYER == _OtherObj->GetLayerIdx()) ? 0.99f : 0.97f;
+
+	//위에서 올라왔으면, y스피드를 0으로 고정
+	if (plattop > otherprevbottom)// *yfix)
 	{
-		auto ownerpos = _Collider->GetOwner()->Transform()->GetWorldPos();
-		auto ownerscale = _Collider->GetOwner()->Transform()->GetWorldScale();
-		ThisPos = ownerpos * ThisPos;
-		ThisScale = ownerscale * ThisScale;
-	}
-
-	Vec2 OtherPos = _OtherCollider->GetOffsetPos();
-	Vec2 OtherScale = _OtherCollider->GetOffsetScale();
-	auto OtherAbs = _OtherCollider->IsAbsolute();
-	if (false == OtherAbs)
-	{
-		auto ownerpos = _OtherObj->Transform()->GetWorldPos();
-		auto ownerscale = _OtherObj->Transform()->GetWorldScale();
-		OtherPos = ownerpos * ThisPos;
-		OtherScale = ownerscale * ThisScale;
-	}
-
-
-	if ((UINT)LAYER::PLAYER == _OtherObj->GetLayerIdx() ||
-		(UINT)LAYER::MONSTER == _OtherObj->GetLayerIdx())
-	{
-		float plattop = (_Collider->GetOffsetPos().y - _Collider->GetScale().y / 2.f);
-		float otherprevbottom = (_OtherCol->GetPrevPos().y + _OtherCol->GetScale().y / 2.f);
-
-		float yfix = ((UINT)LAYER::PLAYER == _OtherObj->GetLayerIdx()) ? 0.99f : 0.97f;
-
-		//위에서 올라왔으면, y스피드를 0으로 고정
-		if (plattop > otherprevbottom)// *yfix)
+		CPhysics* phy = nullptr;
+		auto vs = _OtherObj->GetScripts();
+		for (auto& s : vs)
 		{
-
-			CMovement* mov = _OtherObj->GetMovement();
-
-			if (nullptr != mov)
+			auto pp = s->GetPhysics();
+			if (nullptr != pp)
 			{
-				Vec2 v = mov->GetVelocity();
-				mov->SetVelocity(Vec2(v.x, 0.f));
+				phy = pp;
 			}
+		}
+
+		if (nullptr != phy)
+		{
+			Vec3 v = phy->GetVelocity();
+			phy->SetVelocity(Vec3(v.x, 0.f,0.f));
+			phy->UseGravity(false);
 		}
 	}
 }
 
 void CPlatFormScript::Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
 {
-	float plattop = (_OwnCol->GetPos().y - _OwnCol->GetScale().y / 2.f);
-	float otherprevbottom = (_OtherCol->GetPrevPos().y + _OtherCol->GetScale().y / 2.f);
+	Vec2 ThisPos = _Collider->GetWorldPos();
+	Vec2 ThisPrevPos = _Collider->GetPrevWorldPos();
+	Vec2 ThisScale = _Collider->GetWorldScale();
+
+	Vec2 OtherPos = _OtherCollider->GetWorldPos();
+	Vec2 OtherPrevPos = _OtherCollider->GetPrevWorldPos();
+	Vec2 OtherScale = _OtherCollider->GetWorldScale();
+
+	float plattop = (ThisPos.y - ThisScale.y / 2.f);
+	float otherprevbottom = (OtherPrevPos.y + OtherScale.y / 2.f);
 	//float otherbottom =( _OtherCol->GetPos().y +_OtherCol->GetScale().y / 2.f);
 
 	//if (_OwnCol->GetName() == L"PlatformCollider2")
@@ -78,21 +102,21 @@ void CPlatFormScript::Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CC
 	//if ((UINT)LAYER::MONSTER == _OtherObj->GetLayerIdx())
 	//	int a = 0;
 
-	float yfix = ((UINT)LAYER::PLAYER == _OtherObj->GetLayerIdx()) ? 0.99f : 0.95f;
+	float yfix = 0.99f; // ((UINT)LAYER::PLAYER == _OtherObj->GetLayerIdx()) ? 0.99f : 0.95f;
 
 
 	if (plattop >= otherprevbottom * yfix)// && plattop <= otherbottom)
 	{
 
-		float up = (_OwnCol->GetScale().y / 2.f
-			+ _OtherCol->GetScale().y / 2.f
-			- abs(_OwnCol->GetPos().y
-				- _OtherCol->GetPos().y)
+		float up = (ThisScale.y / 2.f
+			+ OtherScale.y / 2.f
+			- abs(ThisPos.y
+				- OtherPos.y)
 			) / 2.f;
 
-		_OtherObj->SetPos(Vec2(_OtherObj->GetPos().x, _OtherObj->GetPos().y - up));
+		Vec3 OtherPos = _OtherObj->Transform()->GetRelativePos();
+		_OtherObj->Transform()->SetRelativePos(Vec3(OtherPos.x, OtherPos.y - up,0.f));
 	}
-}
 }
 
 void CPlatFormScript::EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)

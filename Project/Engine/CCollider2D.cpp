@@ -60,7 +60,8 @@ void CCollider2D::finaltick()
 		GamePlayStatic::DrawDebugRect(m_matColWorld, Vec3(1.f, 0.f, 0.f), false);
 	}
 
-
+	CalcWorldTransform();
+	UpdatePrevWorldTransform();
 }
 
 void CCollider2D::CalcWorldTransform()

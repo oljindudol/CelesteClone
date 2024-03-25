@@ -41,12 +41,10 @@ public:
 private:
     Vec2 m_WorldPos;
     Vec2 m_WorldScale;
-
-    void CalcWorldTransform();
-
     Vec2 m_PrevWolrdPos;
     Vec2 m_PrevWorldScale;
 
+    void CalcWorldTransform();
     void UpdatePrevWorldTransform() { 
         m_PrevWolrdPos = m_WorldPos; 
         m_PrevWorldScale = m_WorldScale;
