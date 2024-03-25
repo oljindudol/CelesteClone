@@ -29,6 +29,7 @@
 
 #include "CIdleState.h"
 #include "CTraceState.h"
+#include <Scripts/CPlatFormScript.h>
 
 
 void CCreateTempLevel::Init()
@@ -290,6 +291,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CMeshRender);
 	pObj->AddComponent(new CCollider2D);
 	pObj->AddComponent(new CAnimator2D);
+	pObj->AddComponent(new CPlatFormScript);
 
 	Vec3 scale = Vec3(324.f, 30.f, 1.f);
 	pObj->Transform()->SetRelativePos(Vec3(0.f, -90.f, 90.f));

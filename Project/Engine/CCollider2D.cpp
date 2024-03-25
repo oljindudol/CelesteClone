@@ -66,14 +66,17 @@ void CCollider2D::finaltick()
 
 void CCollider2D::CalcWorldTransform()
 {
-	Vec2 ThisPos = GetOffsetPos();
+	Vec3 ThisPos = Transform()->GetWorldPos();
 	Vec2 ThisScale = GetOffsetScale();
 	auto ThisAbs = m_bAbsolute;
-	if (false == ThisAbs)
+	if (true == ThisAbs)
 	{
-		auto ownerpos = Transform()->GetWorldPos();
+		ThisPos = ThisPos - GetOffsetPos();
+	}
+	else
+	{
 		auto ownerscale = Transform()->GetWorldScale();
-		ThisPos = ownerpos * ThisPos;
+		ThisPos = ThisPos - Vec2(ownerscale.x , ownerscale.y) *GetOffsetPos();
 		ThisScale = ownerscale * ThisScale;
 	}
 

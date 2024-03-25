@@ -15,7 +15,7 @@ CPhysics::CPhysics()
 	m_fMaxSpeed(15.f),
 	m_fFriction(0.f),
 	m_bIsFrictionActive(true),
-	m_vGravityAccel(0.0f, 0.98066f, 0.0f), // default (0.0f, 9.80665f, 0.0f)
+	m_vGravityAccel(0.0f, 9.8066f, 0.0f), // default (0.0f, 9.80665f, 0.0f)
 	m_bUseGravity(true),
 	m_bIsKinematic(false),
 	m_Owner(nullptr)

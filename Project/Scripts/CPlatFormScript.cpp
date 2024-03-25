@@ -55,8 +55,8 @@ void CPlatFormScript::BeginOverlap(CCollider2D* _Collider, CGameObject* _OtherOb
 
 	// TODO: if (레이어 판정로직 or 오브젝트 타입 판정로직?)
 
-	float plattop = (ThisPos.y - ThisScale.y / 2.f);
-	float otherprevbottom = (OtherPrevPos.y + OtherScale.y / 2.f);
+	float plattop = (ThisPos.y + ThisScale.y / 2.f);
+	float otherprevbottom = (OtherPrevPos.y - OtherScale.y / 2.f);
 
 	float yfix = 0.99f;//((UINT)LAYER::PLAYER == _OtherObj->GetLayerIdx()) ? 0.99f : 0.97f;
 
@@ -93,8 +93,8 @@ void CPlatFormScript::Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CC
 	Vec2 OtherPrevPos = _OtherCollider->GetPrevWorldPos();
 	Vec2 OtherScale = _OtherCollider->GetWorldScale();
 
-	float plattop = (ThisPos.y - ThisScale.y / 2.f);
-	float otherprevbottom = (OtherPrevPos.y + OtherScale.y / 2.f);
+	float plattop = (ThisPos.y + ThisScale.y / 2.f);
+	float otherprevbottom = (OtherPrevPos.y - OtherScale.y / 2.f);
 	//float otherbottom =( _OtherCol->GetPos().y +_OtherCol->GetScale().y / 2.f);
 
 	//if (_OwnCol->GetName() == L"PlatformCollider2")
@@ -114,8 +114,24 @@ void CPlatFormScript::Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CC
 				- OtherPos.y)
 			) / 2.f;
 
-		Vec3 OtherPos = _OtherObj->Transform()->GetRelativePos();
-		_OtherObj->Transform()->SetRelativePos(Vec3(OtherPos.x, OtherPos.y - up,0.f));
+		auto OtherOffset = _OtherCollider->GetOffsetPos();
+		auto OtherObTrans = _OtherObj->Transform();
+
+		if(true == _OtherCollider->IsAbsolute())
+		{
+			up -= _OtherCollider->GetOffsetPos().y;
+
+		}
+		else
+		{
+			auto ws = OtherObTrans->GetWorldScale().y;
+			auto op = _OtherCollider->GetOffsetPos().y;
+
+			up -= (ws * op);
+		}
+
+		Vec3 OtherObPos = OtherObTrans->GetRelativePos();
+		_OtherObj->Transform()->SetRelativePos(Vec3(OtherObPos.x, OtherObPos.y + up, OtherObPos.z));
 	}
 }
 
