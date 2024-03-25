@@ -59,7 +59,30 @@ void CCollider2D::finaltick()
 	{
 		GamePlayStatic::DrawDebugRect(m_matColWorld, Vec3(1.f, 0.f, 0.f), false);
 	}
+
+
 }
+
+void CCollider2D::CalcWorldTransform()
+{
+	Vec2 ThisPos = GetOffsetPos();
+	Vec2 ThisScale = GetOffsetScale();
+	auto ThisAbs = m_bAbsolute;
+	if (false == ThisAbs)
+	{
+		auto ownerpos = Transform()->GetWorldPos();
+		auto ownerscale = Transform()->GetWorldScale();
+		ThisPos = ownerpos * ThisPos;
+		ThisScale = ownerscale * ThisScale;
+	}
+
+	m_WorldPos = ThisPos;
+	m_WorldScale = ThisScale;
+}
+
+//void CCollider2D::CalcWorldScale()
+//{
+//}
 
 void CCollider2D::BeginOverlap(CCollider2D* _OtherCollider)
 {

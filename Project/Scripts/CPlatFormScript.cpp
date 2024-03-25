@@ -21,10 +21,33 @@ void CPlatFormScript::tick()
 
 void CPlatFormScript::BeginOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
 {
+	Vec2 ThisPos = _Collider->GetOffsetPos();
+	Vec2 ThisScale = _Collider->GetOffsetScale();
+	auto ThisAbs = _Collider->IsAbsolute();
+	if (false == ThisAbs)
+	{
+		auto ownerpos = _Collider->GetOwner()->Transform()->GetWorldPos();
+		auto ownerscale = _Collider->GetOwner()->Transform()->GetWorldScale();
+		ThisPos = ownerpos * ThisPos;
+		ThisScale = ownerscale * ThisScale;
+	}
+
+	Vec2 OtherPos = _OtherCollider->GetOffsetPos();
+	Vec2 OtherScale = _OtherCollider->GetOffsetScale();
+	auto OtherAbs = _OtherCollider->IsAbsolute();
+	if (false == OtherAbs)
+	{
+		auto ownerpos = _OtherObj->Transform()->GetWorldPos();
+		auto ownerscale = _OtherObj->Transform()->GetWorldScale();
+		OtherPos = ownerpos * ThisPos;
+		OtherScale = ownerscale * ThisScale;
+	}
+
+
 	if ((UINT)LAYER::PLAYER == _OtherObj->GetLayerIdx() ||
 		(UINT)LAYER::MONSTER == _OtherObj->GetLayerIdx())
 	{
-		float plattop = (_Collider->GetPos().y - _Collider->GetScale().y / 2.f);
+		float plattop = (_Collider->GetOffsetPos().y - _Collider->GetScale().y / 2.f);
 		float otherprevbottom = (_OtherCol->GetPrevPos().y + _OtherCol->GetScale().y / 2.f);
 
 		float yfix = ((UINT)LAYER::PLAYER == _OtherObj->GetLayerIdx()) ? 0.99f : 0.97f;
