@@ -207,6 +207,23 @@ float floatClamp(float _input, float _min, float _max)
 	return _input;
 }
 
+Color HexToColor(string _strHex)
+{
+	int r, g, b;
+	std::stringstream ss;
+
+	ss << std::hex << _strHex.substr(1, 2);
+	ss >> r;
+	ss.clear();
+	ss << std::hex << _strHex.substr(3, 2);
+	ss >> g;
+	ss.clear();
+	ss << std::hex << _strHex.substr(5, 2);
+	ss >> b;
+
+	return Color(r / 255.0f, g / 255.0f, b / 255.0f,1.f);
+}
+
 std::vector<std::filesystem::path> getFoldersFromDirectory(const std::string& path) {
 	std::vector<std::filesystem::path> fileList;
 	for (const auto& entry : std::filesystem::directory_iterator(path)) {

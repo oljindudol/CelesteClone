@@ -16,18 +16,18 @@
 CPlayerScript::CPlayerScript()
 	: CScript(PLAYERSCRIPT)
 {
-	m_SM = new CCustomStateMachine<CPlayerScript>(this , (int)2);
+	StateMachine = new CCustomStateMachine<CPlayerScript>(this , (int)2);
 
 
-	m_SM->SetCallbacks( 0,"StNormal",&CPlayerScript::NormalUpdate, &CPlayerScript::NormalBegin, &CPlayerScript::NormalEnd,nullptr);
-	m_SM->SetCallbacks(1, "StUpdate", &CPlayerScript::DashUpdate, &CPlayerScript::DashBegin, &CPlayerScript::DashEnd, nullptr);
+	StateMachine->SetCallbacks( 0,"StNormal",&CPlayerScript::NormalUpdate, &CPlayerScript::NormalBegin, &CPlayerScript::NormalEnd,nullptr);
+	StateMachine->SetCallbacks(1, "StUpdate", &CPlayerScript::DashUpdate, &CPlayerScript::DashBegin, &CPlayerScript::DashEnd, nullptr);
 }
 
 
 
 CPlayerScript::~CPlayerScript()
 {
-	delete m_SM;
+	delete StateMachine;
 }
 
 
@@ -51,7 +51,7 @@ void CPlayerScript::begin()
 
 	//SetPhysics(new CPhysics(GetOwner()));
 
-	m_SM->Begin();
+	StateMachine->Begin();
 }
 
 void CPlayerScript::tick()
@@ -131,7 +131,7 @@ void CPlayerScript::tick()
 		}
 	}
 
-	m_SM->Update();
+	StateMachine->Update();
 	//GetPhysics()->Update();
 
 	//static float f = 0.f;
