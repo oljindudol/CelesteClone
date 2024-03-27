@@ -11,16 +11,25 @@
 //#include "CPhysics.h"
 #include "CCustomStateMachine.h"
 
+
+
 CPlayerScript::CPlayerScript()
 	: CScript(PLAYERSCRIPT)
 {
-	m_SM = new CCustomStateMachine<CPlayerScript>(this , (int)1);
+	m_SM = new CCustomStateMachine<CPlayerScript>(this , (int)2);
+
+
+	m_SM->SetCallbacks( 0,"StNormal",&CPlayerScript::NormalUpdate, &CPlayerScript::NormalBegin, &CPlayerScript::NormalEnd,nullptr);
+	m_SM->SetCallbacks(1, "StUpdate", &CPlayerScript::DashUpdate, &CPlayerScript::DashBegin, &CPlayerScript::DashEnd, nullptr);
 }
+
+
 
 CPlayerScript::~CPlayerScript()
 {
 	delete m_SM;
 }
+
 
 void CPlayerScript::begin()
 {
@@ -40,8 +49,9 @@ void CPlayerScript::begin()
 	auto a = Animator2D();
 	Animator2D()->Play(L"idle");
 
-
 	//SetPhysics(new CPhysics(GetOwner()));
+
+	m_SM->Begin();
 }
 
 void CPlayerScript::tick()
@@ -121,6 +131,7 @@ void CPlayerScript::tick()
 		}
 	}
 
+	m_SM->Update();
 	//GetPhysics()->Update();
 
 	//static float f = 0.f;
@@ -154,4 +165,54 @@ void CPlayerScript::SaveToFile(FILE* _File)
 void CPlayerScript::LoadFromFile(FILE* _File)
 {
 	//fread(&m_Speed, sizeof(float), 1, _File);
+}
+
+
+
+void CPlayerScript::NormalBegin()
+{
+	printf("start Normal");
+}
+
+int CPlayerScript::NormalUpdate()
+{
+	if (KEY_PRESSED(RIGHT))
+		return 1;
+	if (KEY_PRESSED(LEFT))
+		return 1;
+
+	return 0;
+}
+void CPlayerScript::NormalEnd()
+{
+	printf("End Normal");
+}
+void CPlayerScript::DashBegin()
+{
+	printf("start Dash");
+}
+int CPlayerScript::DashUpdate()
+{
+	Vec3 vPos = Transform()->GetRelativePos();
+	Vec3 vRot = Transform()->GetRelativeRotation();
+	if (KEY_PRESSED(RIGHT))
+	{
+		vPos.x += DT * 200.f;
+		Transform()->SetRelativePos(vPos);
+		return 1;
+	}
+		
+	if (KEY_PRESSED(LEFT))
+	{
+		vPos.x -= DT * 200.f;
+		Transform()->SetRelativePos(vPos);
+		return 1;
+	}
+
+	return 0;
+}
+
+void CPlayerScript::DashEnd()
+{
+	printf("End Dash");
 }

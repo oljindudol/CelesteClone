@@ -23,6 +23,14 @@ public:
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
+
+    void NormalBegin();
+    int NormalUpdate();
+    void NormalEnd();
+    void DashBegin();
+    int DashUpdate();
+    void DashEnd();
+
     CLONE(CPlayerScript);
 public:
     CPlayerScript();
