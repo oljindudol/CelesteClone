@@ -8,17 +8,18 @@
 #include <Engine/CMaterial.h>
 #include <Engine/CRenderComponent.h>
 
-#include "CPhysics.h"
+//#include "CPhysics.h"
+#include "CCustomStateMachine.h"
 
 CPlayerScript::CPlayerScript()
 	: CScript(PLAYERSCRIPT)
-	, m_Speed(100.f)
 {
+	m_SM = new CCustomStateMachine<CPlayerScript>(this , (int)1);
 }
 
 CPlayerScript::~CPlayerScript()
 {
-
+	delete m_SM;
 }
 
 void CPlayerScript::begin()
@@ -34,15 +35,13 @@ void CPlayerScript::begin()
 		Animator2D()->CreateFromFolder(rel,f, 12.5 , Vec2(0.f, -0.375f) );
 	}
 
-
 	GetRenderComponent()->GetDynamicMaterial();
 
 	auto a = Animator2D();
 	Animator2D()->Play(L"idle");
 
 
-	SetPhysics(new CPhysics(GetOwner()));
-
+	//SetPhysics(new CPhysics(GetOwner()));
 }
 
 void CPlayerScript::tick()
@@ -53,28 +52,28 @@ void CPlayerScript::tick()
 
 	auto a = Animator2D();
 	if (KEY_PRESSED(KEY::UP))
-		vPos.y += DT * m_Speed;	
+		//vPos.y += DT * m_Speed;	
 	if (KEY_TAP(KEY::UP))
 		Animator2D()->Play(L"MOVE_UP");
 	if (KEY_RELEASED(UP))
 		Animator2D()->Play(L"IDLE_UP");
 	
 	if (KEY_PRESSED(KEY::DOWN))
-		vPos.y -= DT * m_Speed;
+		//vPos.y -= DT * m_Speed;
 	if (KEY_TAP(KEY::DOWN))
 		Animator2D()->Play(L"MOVE_DOWN");
 	if (KEY_RELEASED(DOWN))
 		Animator2D()->Play(L"IDLE_DOWN");
 
 	if (KEY_PRESSED(KEY::LEFT))
-		vPos.x -= DT * m_Speed;
+		//vPos.x -= DT * m_Speed;
 	if (KEY_TAP(KEY::LEFT))
 		Animator2D()->Play(L"MOVE_LEFT");
 	if (KEY_RELEASED(LEFT))
 		Animator2D()->Play(L"IDLE_LEFT");
 
 	if (KEY_PRESSED(KEY::RIGHT))
-		vPos.x += DT * m_Speed;
+		//vPos.x += DT * m_Speed;
 	if (KEY_TAP(KEY::RIGHT))
 		Animator2D()->Play(L"MOVE_RIGHT");
 	if (KEY_RELEASED(RIGHT))
@@ -122,7 +121,7 @@ void CPlayerScript::tick()
 		}
 	}
 
-	GetPhysics()->Update();
+	//GetPhysics()->Update();
 
 	//static float f = 0.f;
 	//f += DT * 0.3f;
@@ -149,10 +148,10 @@ void CPlayerScript::EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, C
 
 void CPlayerScript::SaveToFile(FILE* _File)
 {
-	fwrite(&m_Speed, sizeof(float), 1, _File);
+	//fwrite(&m_Speed, sizeof(float), 1, _File);
 }
 
 void CPlayerScript::LoadFromFile(FILE* _File)
 {
-	fread(&m_Speed, sizeof(float), 1, _File);
+	//fread(&m_Speed, sizeof(float), 1, _File);
 }

@@ -3,12 +3,15 @@
 #include <Engine/CScript.h>
 class CPhysics;
 
+template <typename T>
+class CCustomStateMachine;
+
 class CPlayerScript :
     public CScript
 {
 private:
     Ptr<CPrefab>    m_Missile;
-    float           m_Speed;
+    CCustomStateMachine<CPlayerScript>* m_SM;
 
 public:
     virtual void begin() override;

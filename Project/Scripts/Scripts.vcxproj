@@ -179,7 +179,7 @@ call CodeGen.exe</Command>
     </ClInclude>
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CScriptMgr.h" />
-    <ClInclude Include="CustomStateMachine.h" />
+    <ClInclude Include="CCustomStateMachine.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
@@ -197,7 +197,7 @@ call CodeGen.exe</Command>
     </ClCompile>
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
-    <ClCompile Include="CustomStateMachine.cpp" />
+    <ClCompile Include="CCustomStateMachine.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

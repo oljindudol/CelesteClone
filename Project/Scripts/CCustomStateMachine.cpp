@@ -1,24 +1,24 @@
 #include "pch.h"
-#include "CustomStateMachine.h"
+#include "CCustomStateMachine.h"
 
-template <class T>
-CustomStateMachine<T>::CustomStateMachine(T* _pOwner,int maxStates)
-	:m_pOwner(_pOwner),
-	m_StateMgr(StateManager(this)),
-	m_bChangedStates(false),
-	m_bLog(false),
-	m_bLocked(false)
-{
-	m_vecStateStrings.resize(maxStates, NULL);
-	m_vecBegins.resize(maxStates, NULL);
-	m_vecUpdates.resize(maxStates, NULL);
-	m_vecEnds.resize(maxStates, NULL);
-}
+//template <class T>
+//CCustomStateMachine<T>::CCustomStateMachine(T* _pOwner,int maxStates)
+//	:m_pOwner(_pOwner),
+//	m_StateMgr(StateManager(this)),
+//	m_bChangedStates(false),
+//	m_bLog(false),
+//	m_bLocked(false)
+//{
+//	m_vecStateStrings.resize(maxStates, NULL);
+//	m_vecBegins.resize(maxStates, NULL);
+//	m_vecUpdates.resize(maxStates, NULL);
+//	m_vecEnds.resize(maxStates, NULL);
+//}
 
-template <class T>
-CustomStateMachine<T>::~CustomStateMachine()
-{
-}
+//template <class T>
+//CCustomStateMachine<T>::~CCustomStateMachine()
+//{
+//}
 
 
 //template<class T>
@@ -32,7 +32,7 @@ CustomStateMachine<T>::~CustomStateMachine()
 //}
 
 template<class T>
-void CustomStateMachine<T>::SetCallbacks(int _State, string _StateName, int(T::* _Update)(), void(T::* CoRoutine)(), void(T::* _Begin)(), void(T::* _End)())
+void CCustomStateMachine<T>::SetCallbacks(int _State, string _StateName, int(T::* _Update)(), void(T::* CoRoutine)(), void(T::* _Begin)(), void(T::* _End)())
 {
 	m_vecStateStrings[_State] = _StateName;
 	m_vecCoroutines[_State] = CoRoutine;
@@ -42,7 +42,7 @@ void CustomStateMachine<T>::SetCallbacks(int _State, string _StateName, int(T::*
 }
 
 template <class T>
-void CustomStateMachine<T>::Update()
+void CCustomStateMachine<T>::Update()
 {
 	auto state = GetCurState();
 	
@@ -69,23 +69,23 @@ void CustomStateMachine<T>::Update()
 
 
 template <class T>
-void CustomStateMachine<T>::ReflectState(CGameObject* from, int index, string name)
+void CCustomStateMachine<T>::ReflectState(CGameObject* from, int index, string name)
 {
 }
 
 template <class T>
-void CustomStateMachine<T>::LogState(int index)
+void CCustomStateMachine<T>::LogState(int index)
 {
 }
 
 template <class T>
-void CustomStateMachine<T>::LogAllStates()
+void CCustomStateMachine<T>::LogAllStates()
 {
 }
 
 
 template <class T>
-void CustomStateMachine<T>::StateManager::SetCurState(int _ToState)
+void CCustomStateMachine<T>::StateManager::SetCurState(int _ToState)
 {
 	T* Ower = m_Outer->m_pOwner;
 
@@ -162,7 +162,7 @@ void CustomStateMachine<T>::StateManager::SetCurState(int _ToState)
 //}
 
 template <class T>
-void CustomStateMachine<T>::StateManager::ForceSetCurState(int _ToState)
+void CCustomStateMachine<T>::StateManager::ForceSetCurState(int _ToState)
 {
 	if (m_CurState != _ToState)
 	{

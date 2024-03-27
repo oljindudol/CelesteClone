@@ -4,7 +4,7 @@ class Coroutine;
 #include "CPlayerScript.h"
 
 template <class T>
-class CustomStateMachine
+class CCustomStateMachine
 {
 private:
 	//멤버는 int변수 밖에없지만 
@@ -19,13 +19,13 @@ private:
 	private:
 		int m_PrevState;
 		int m_CurState;
-		CustomStateMachine* m_Outer;
+		CCustomStateMachine* m_Outer;
 
 	private:
 		StateManager() : m_PrevState(-1), m_CurState(-1), m_Outer(nullptr) {}
 
 	public:
-		StateManager(CustomStateMachine* _Outer) :StateManager() { m_Outer = _Outer; };
+		StateManager(CCustomStateMachine* _Outer) :StateManager() { m_Outer = _Outer; };
 		~StateManager() {};
 		int GetPrevStateInt() { return m_CurState; }
 		int GetCurStateInt() { return m_CurState; }
@@ -60,7 +60,7 @@ public:
 	Coroutine* currentCoroutine;
 
 private:
-	CustomStateMachine() = delete;
+	CCustomStateMachine() = delete;
 
 public:
 	//void SetCallbacks(int _State, string _StateName , intRetFunc _UpdateFunc, voidRetFunc _CoroutineFunc = NULL, voidRetFunc _BeginFunc = NULL, voidRetFunc _EndFunc = NULL);
@@ -77,8 +77,23 @@ public:
 	void LogAllStates();
 
 
-	CustomStateMachine(T* _pOwner, int maxStates = 1);
-	~CustomStateMachine();
+	//CCustomStateMachine(T* _pOwner, int maxStates = 1);
+	CCustomStateMachine(T* _pOwner, int maxStates=1)
+		:m_pOwner(_pOwner),
+		m_StateMgr(StateManager(this)),
+		m_bChangedStates(false),
+		m_bLog(false),
+		m_bLocked(false)
+	{
+		m_vecStateStrings.resize(maxStates);
+		m_vecBegins.resize(maxStates, nullptr);
+		m_vecUpdates.resize(maxStates, nullptr);
+		m_vecEnds.resize(maxStates, nullptr);
+	}
+
+	~CCustomStateMachine() 
+	{
+	};
 
 };
 

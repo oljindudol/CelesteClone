@@ -29,7 +29,7 @@
       <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="CPhysics.h" />
-    <ClInclude Include="CustomStateMachine.h" />
+    <ClInclude Include="CCustomStateMachine.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -60,7 +60,7 @@
       <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CPhysics.cpp" />
-    <ClCompile Include="CustomStateMachine.cpp" />
+    <ClCompile Include="CCustomStateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">

@@ -51,6 +51,7 @@ enum class PLAYER_STATE
 	//TempleFall = 20,
 	//CassetteFly = 21,
 	//Attract = 22,
+	End = 23,
 };
 
 
