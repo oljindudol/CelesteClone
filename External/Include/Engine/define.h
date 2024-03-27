@@ -26,6 +26,34 @@
 							TYPE(const TYPE& _OriginBuffer) = delete;
 
 
+enum class PLAYER_STATE
+{
+	Normal = 0,
+	Climb = 1,
+	Dash = 2,
+	//Swim = 3,
+	//Boost = 4,
+	//RedDash = 5,
+	//HitSquash = 6,
+	Launch = 7,
+	//Pickup = 8,
+	DreamDash = 9,
+	SummitLaunch = 10,
+	//Dummy = 11,
+	//IntroWalk = 12,
+	//IntroJump = 13,
+	//IntroRespawn = 14,
+	//IntroWakeUp = 15,
+	BirdDashTutorial = 16,
+	//Frozen = 17,
+	//ReflectionFall = 18,
+	//StarFly = 19,
+	//TempleFall = 20,
+	//CassetteFly = 21,
+	//Attract = 22,
+};
+
+
 enum LAYER
 {
 	LAYER_DEFAULT,

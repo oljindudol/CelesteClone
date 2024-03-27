@@ -29,6 +29,7 @@
       <Filter>Scripts</Filter>
     </ClInclude>
     <ClInclude Include="CPhysics.h" />
+    <ClInclude Include="CustomStateMachine.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -59,6 +60,7 @@
       <Filter>Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CPhysics.cpp" />
+    <ClCompile Include="CustomStateMachine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -69,6 +71,9 @@
     </Filter>
     <Filter Include="ScriptMgr">
       <UniqueIdentifier>{b42de7fc-e585-40cf-9c65-79e91e2b59d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CustomStateMachine">
+      <UniqueIdentifier>{9cbd76a7-23ea-4cc2-9178-b8188f6c201c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
