@@ -296,7 +296,7 @@ void TileMapEditor::render_update()
 	}
 
 	//===============6. 컬라이더 생성기=============
-		//if (ImGui::Button("CollderCreate##TileMap2D")) {
+	//if (ImGui::Button("CollderCreate##TileMap2D")) {
 	//	CGameObject* pObj = CObjectManager::GetInstance()->CreateEmptyGameObject();
 	//	pObj->SetName(_T("new Collders"));
 	//	vector<TTileInfo>& vecTiles = m_pTileMap->GetTilesInfo();

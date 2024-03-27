@@ -102,7 +102,7 @@ void CPlatFormScript::Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CC
 	//if ((UINT)LAYER::MONSTER == _OtherObj->GetLayerIdx())
 	//	int a = 0;
 
-	float yfix = 0.99f; // ((UINT)LAYER::PLAYER == _OtherObj->GetLayerIdx()) ? 0.99f : 0.95f;
+	float yfix = 1.f;// 0.99f; // ((UINT)LAYER::PLAYER == _OtherObj->GetLayerIdx()) ? 0.99f : 0.95f;
 
 
 	if (plattop >= otherprevbottom * yfix)// && plattop <= otherbottom)
@@ -137,6 +137,23 @@ void CPlatFormScript::Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CC
 
 void CPlatFormScript::EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
 {
+	CPhysics* phy = nullptr;
+	auto vs = _OtherObj->GetScripts();
+	for (auto& s : vs)
+	{
+		auto pp = s->GetPhysics();
+		if (nullptr != pp)
+		{
+			phy = pp;
+		}
+	}
+
+	if (nullptr != phy)
+	{
+		//Vec3 v = phy->GetVelocity();
+		//phy->SetVelocity(Vec3(v.x, 0.f, 0.f));
+		phy->UseGravity(true);
+	}
 }
 
 void CPlatFormScript::SaveToFile(FILE* _File)
