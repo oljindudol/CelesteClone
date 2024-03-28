@@ -30,7 +30,7 @@ TileMapEditor::TileMapEditor()
 	m_iBrushSize(0),
 	m_bDeleteMode{ false },
 	m_iSelectedTileIdx(-1),
-
+	m_IdxAtlas(0),
 	// canvas
 	m_iGridColor(IMGUI_COLOR_GREEN) // green
 {
@@ -118,7 +118,7 @@ void TileMapEditor::render_update()
 	//===============1. Å¸ÀÏ¸Ê Á¤º¸==============
 	ImVec2 vAtlasTexResol = {};
 	if (m_pAtlasTileTex) {
-		ImVec2(m_pAtlasTileTex->GetWidth(), m_pAtlasTileTex->GetHeight());
+		ImVec2((float)m_pAtlasTileTex->GetWidth(), (float)m_pAtlasTileTex->GetHeight());
 	}
 	ImGui::Text("Atlas Texture Resolution [%d,%d]", vAtlasTexResol.x, vAtlasTexResol.x);
 

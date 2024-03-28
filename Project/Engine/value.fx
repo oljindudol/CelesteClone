@@ -67,7 +67,7 @@ cbuffer ANIM_DATA2D : register(b2)
     float2  g_vBackground;
     float2  g_vOffset;    
     int     g_UseAnim2D;
-    float3  padding;
+    float3  g_vMul;
 }
 
 cbuffer GLOBAL_DATA : register(b3)

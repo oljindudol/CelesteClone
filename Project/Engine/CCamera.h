@@ -64,7 +64,7 @@ public:
     void LayerCheckAll() { m_LayerCheck = 0xffffffff; }
     UINT GetLayerCheck() { return m_LayerCheck; }
     void SetLayerCheck(UINT _LayerCheck) { m_LayerCheck = _LayerCheck; }
-    void LayerCheckToggle(UINT _LayerIdx) { m_LayerCheck ^ (1 << _LayerIdx); }
+    void LayerCheckToggle(UINT _LayerIdx) { m_LayerCheck = m_LayerCheck ^ (1 << _LayerIdx); }
 
     int GetCameraPriority(){ return m_CameraPriority; }
 

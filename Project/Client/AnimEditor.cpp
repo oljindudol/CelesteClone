@@ -176,7 +176,7 @@ void AnimEditor::render_update()
     ImGui::SameLine();
     if (ImGui::Button("Delete Selected Frame"))
     {
-        for (int i = (m_selectedfrm.size() - 1); i >= 0; --i)
+        for (int i = ((int)m_selectedfrm.size() - 1); i >= 0; --i)
         {
             if (m_selectedfrm[i])
             {
@@ -198,15 +198,15 @@ void AnimEditor::render_update()
         auto aw = (float)vecFrm[m_curframe].pFrameTex->GetWidth();
         auto ah = (float)vecFrm[m_curframe].pFrameTex->GetHeight();
 
-        auto imgsize = ImVec2(vecFrm[m_curframe].pFrameTex.Get()->GetWidth(), vecFrm[m_curframe].pFrameTex.Get()->GetHeight());
+        auto imgsize = ImVec2((float)vecFrm[m_curframe].pFrameTex.Get()->GetWidth(), (float)vecFrm[m_curframe].pFrameTex.Get()->GetHeight());
         ImVec2 slicesize;
         if (imgsize.x > imgsize.y)
         {
-            slicesize = ImVec2(300, int(imgsize.y * (300.f / float(imgsize.x))));
+            slicesize = ImVec2(300, int(imgsize.y * (300.f / imgsize.x)));
         }
         else
         {
-            slicesize = ImVec2(int(imgsize.x * (300.f / float(imgsize.y))), 300);
+            slicesize = ImVec2(int(imgsize.x * (300.f / imgsize.y)), 300);
         }
         
         //auto lt = vecFrm[m_curframe].vLeftTop;
@@ -250,7 +250,7 @@ void AnimEditor::render_update()
 
         auto slice = ImVec2(vecFrm[i].vSlice.x, vecFrm[i].vSlice.y);
         int w = 100;
-        auto slicesize = ImVec2(w, int(slice.y * (float(w) / float(slice.x))));
+        auto slicesize = ImVec2(w, (int)(slice.y * (float)(w) / (slice.x)));
         auto lt = vecFrm[i].vLeftTop;
         auto uv = ImVec2(lt.x / aw, lt.y / ah);
 

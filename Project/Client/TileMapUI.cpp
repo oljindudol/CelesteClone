@@ -71,7 +71,7 @@ void TileMapUI::render_update()
 
 	ImGui::Text("TileSize"); ImGui::SameLine();  ImGui::DragFloat2("##TileSize", TileSize);
 
-	int minsize = 1.f;
+	float minsize = 1.f;
 
 	if (Face[0] < minsize)
 	{

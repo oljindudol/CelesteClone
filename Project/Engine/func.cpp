@@ -256,6 +256,27 @@ std::vector<std::filesystem::path> getImagesFromDirectory(const std::string& pat
 	return fileList;
 }
 
+float Approach(float val, float target, float maxMove)
+{
+	if (val <= target)
+	{
+		return min(val + maxMove, target);
+	}
+	return max(val - maxMove, target);
+}
+
+int Sign(float _val)
+{
+	if (_val < 0.f)
+		return -1;
+	return 1;
+}
+
+
+float Lerp(float A, float B, float Alpha)
+{
+	return A * (1 - Alpha) + B * Alpha;
+}
 
 void GamePlayStatic::InitLayerString()
 {

@@ -7,6 +7,7 @@
 
 CTileMapGrid::CTileMapGrid(CTileMap* _pTargetTileMap) :
 	m_pTargetTileMap(_pTargetTileMap),
+	m_bDidInit(false),
 	m_vGridColor{ 1.f,0.f,1.f,1.f }
 {
 	m_pMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_GridMeterial);
@@ -82,7 +83,7 @@ void CTileMapGrid::AddBuffer(const Vector3& _vPos1, const Vector3& _vPos2)
 
 	CMesh* pMesh = new CMesh;
 	//pMesh->Create(m_vecVtx.data(), sizeof(Vtx) * (UINT)m_vecVtx.size(), m_vecIdx.data(), sizeof(UINT) * (UINT)m_vecIdx.size(), D3D11_USAGE::D3D11_USAGE_DEFAULT);
-	pMesh->Create(m_vecVtx.data(), m_vecVtx.size(), m_vecIdx.data(), m_vecIdx.size());
+	pMesh->Create(m_vecVtx.data(), (int)m_vecVtx.size(), m_vecIdx.data(), (int)m_vecIdx.size());
 	m_vecMesh.push_back(pMesh);
 
 	m_vecVtx.clear();

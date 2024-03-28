@@ -25,6 +25,7 @@ VS_OUT VS_Std2D(VS_IN _in)
     VS_OUT output = (VS_OUT) 0.f;
     
     _in.vPos = _in.vPos - float3(g_vOffset, 0.f);
+    _in.vPos = _in.vPos * g_vMul.z;
     
     output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
     output.vColor = _in.vColor;
@@ -41,7 +42,6 @@ float4 PS_Std2D(VS_OUT _in) : SV_Target
     
     if (g_vec4_1.w == 3.14f)
         return float4(1.f, 1.f, 0.f, 1.f);
-    
     if(g_UseAnim2D)
     {        
         float2 vBackgroundLeftTop = g_vLeftTop + (g_vSlizeSize / 2.f) - (g_vBackground / 2.f);        

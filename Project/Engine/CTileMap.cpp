@@ -35,7 +35,7 @@ CTileMap::CTileMap(const CTileMap& _OriginTileMap)
 	: CRenderComponent(_OriginTileMap)
 	, m_Row(_OriginTileMap.m_Row)
 	, m_Col(_OriginTileMap.m_Col)
-	, m_vTileRenderSize(_OriginTileMap.m_vTileRenderSize)	
+	, m_vTileRenderSize(_OriginTileMap.m_vTileRenderSize)
 	, m_vecTileAtlas(_OriginTileMap.m_vecTileAtlas)
 	, m_vTilePixelSize(_OriginTileMap.m_vTilePixelSize)
 	//, m_vSliceSizeUV(_OriginTileMap.m_vSliceSizeUV)
@@ -43,6 +43,7 @@ CTileMap::CTileMap(const CTileMap& _OriginTileMap)
 	, m_MaxRow(_OriginTileMap.m_MaxRow)
 	, m_vecTileInfo(_OriginTileMap.m_vecTileInfo)
 	, m_TileInfoBuffer(nullptr)
+	, m_pGrid(nullptr)
 {
 	if (nullptr != _OriginTileMap.m_TileInfoBuffer)
 	{
@@ -85,7 +86,7 @@ void CTileMap::render()
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC2_1, m_vecTileAtlas[1].second);
 
 	// 각 타일 정보를 구조화 버퍼로 이동
-	m_TileInfoBuffer->SetData(m_vecTileInfo.data(), m_vecTileInfo.size());
+	m_TileInfoBuffer->SetData(m_vecTileInfo.data(), (int)m_vecTileInfo.size());
 
 	// 타일 구조화 버퍼를 t20 에 바인딩
 	m_TileInfoBuffer->UpdateData(20);

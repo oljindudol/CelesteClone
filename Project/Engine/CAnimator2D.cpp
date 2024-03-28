@@ -5,6 +5,7 @@
 
 CAnimator2D::CAnimator2D()
 	: CComponent(COMPONENT_TYPE::ANIMATOR2D)
+	,m_MulScale(Vec2(1.f,1.f))
 {
 
 }

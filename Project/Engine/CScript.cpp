@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CScript.h"
+#include "Scripts/CPhysics.h"
 
 CScript::CScript(UINT _ScriptType)
 	: CComponent(COMPONENT_TYPE::SCRIPT)

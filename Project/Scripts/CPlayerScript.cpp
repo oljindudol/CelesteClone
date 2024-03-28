@@ -14,7 +14,8 @@
 #include <Engine/CAnimator2D.h>
 #include <Engine/CAnim.h>
 
-
+#define GRABKEY KEY_PRESSED(S)
+#define JUMPKEY KEY_PRESSED(LALT)
 
 CPlayerScript::CPlayerScript()
 	: CScript(PLAYERSCRIPT)
@@ -473,7 +474,7 @@ void CPlayerScript::Update()
         //Wall Speed Retention
         //if (wallSpeedRetentionTimer > 0)
         //{
-        //    if (math.signf(Speed.x) == -Math.Sign(wallSpeedRetained))
+        //    if (math.Sign(Speed.x) == -Math.Sign(wallSpeedRetained))
         //        wallSpeedRetentionTimer = 0;
         //    else if (!CollideCheck<Solid>(Position + Vector2.UnitX * Math.Sign(wallSpeedRetained)))
         //    {
@@ -805,23 +806,241 @@ void CPlayerScript::LoadFromFile(FILE* _File)
 	//fread(&m_Speed, sizeof(float), 1, _File);
 }
 
-void CPlayerScript::NormalBegin()
-{
-	printf("start Normal");
-}
 
 int CPlayerScript::NormalUpdate()
 {
-	if (KEY_PRESSED(RIGHT))
-		return 1;
-	if (KEY_PRESSED(LEFT))
-		return 1;
+    //Use Lift Boost if walked off platform
+    //if (wasOnGround && !onGround && Speed.y >= 0)
+    //    Speed.y = LiftBoost.Y;
 
-	return 0;
+    //if (Holding == null)
+    //{
+        if (GRABKEY && !IsTired && !Ducking)
+        {
+            //Grabbing Holdables
+            //foreach(Holdable hold in Scene.Tracker.GetComponents<Holdable>())
+            //    if (hold.Check(this) && Pickup(hold))
+            //        return StPickup;
+
+            //Climbing
+            //if (Speed.y >= 0 && Math.Sign(Speed.y) != -(int)Facing)
+            //{
+            //    if (ClimbCheck((int)Facing))
+            //    {
+            //        Ducking = false;
+            //        return StClimb;
+            //    }
+
+            //    if (Input.MoveY < 1 && level.Wind.Y <= 0)
+            //    {
+            //        for (int i = 1; i <= ClimbUpCheckDist; i++)
+            //        {
+            //            if (!CollideCheck<Solid>(Position + Vector2.UnitY * -i) && ClimbCheck((int)Facing, -i))
+            //            {
+            //                MoveVExact(-i);
+            //                Ducking = false;
+            //                return StClimb;
+            //            }
+            //        }
+            //    }
+            //}
+        }
+
+        //Dashing
+        if (CanDash())
+        {
+            //Speed += LiftBoost;
+            return StartDash();
+        }
+
+        //Ducking
+        //if (Ducking)
+        //{
+        //    if (onGround && Input.MoveY != 1)
+        //    {
+        //        if (CanUnDuck)
+        //        {
+        //            Ducking = false;
+        //            Sprite.Scale = new Vector2(.8f, 1.2f);
+        //        }
+        //        else if (Speed.x == 0)
+        //        {
+        //            for (int i = DuckCorrectCheck; i > 0; i--)
+        //            {
+        //                if (CanUnDuckAt(Position + Vector2.UnitX * i))
+        //                {
+        //                    MoveH(DuckCorrectSlide * Engine.DeltaTime);
+        //                    break;
+        //                }
+        //                else if (CanUnDuckAt(Position - Vector2.UnitX * i))
+        //                {
+        //                    MoveH(-DuckCorrectSlide * Engine.DeltaTime);
+        //                    break;
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+        //else if (onGround && Input.MoveY == 1 && Speed.y >= 0)
+        //{
+        //    Ducking = true;
+        //    Sprite.Scale = new Vector2(1.4f, .6f);
+        //}
+    //}
+    //else
+    //{
+    //    //Throw
+    //    if (!Input.Grab.Check && minHoldTimer <= 0)
+    //        Throw();
+
+    //    //Ducking
+    //    if (!Ducking && onGround && Input.MoveY == 1 && Speed.y >= 0)
+    //    {
+    //        Drop();
+    //        Ducking = true;
+    //        Sprite.Scale = new Vector2(1.4f, .6f);
+    //    }
+    //}
+
+    //Running and Friction
+        if (Ducking && onGround)
+            Speed.x = Approach(Speed.x, 0, DuckFriction * DT);
+        else
+        {
+            float mult = onGround ? 1 : AirMult;
+            //if (onGround && level.CoreMode == Session.CoreModes.Cold)
+            //    mult *= .3f;
+            float max = Holding == nullptr ? MaxRun : HoldingMaxRun;
+            //if (level.InSpace)
+            //    max *= SpacePhysicsMult;
+            if (abs(Speed.x) > max && Sign(Speed.x) == moveX)
+                Speed.x = Approach(Speed.x, max * moveX, RunReduce * mult * DT);  //Reduce back from beyond the max speed
+            else
+                Speed.x = Approach(Speed.x, max * moveX, RunAccel * mult * DT);   //Approach the max speed
+        }
+
+        //Vertical
+        {
+            //Calculate current max fall speed
+            {
+                float mf = MaxFall;
+                float fmf = FastMaxFall;
+
+                //if (level.InSpace)
+                //{
+                //    mf *= SpacePhysicsMult;
+                //    fmf *= SpacePhysicsMult;
+                //}
+
+                //Fast Fall
+                if (KEY_PRESSED(DOWN) && Speed.y >= mf)
+                {
+                    maxFall = Approach(maxFall, fmf, FastMaxAccel * DT);
+
+                    float half = mf + (fmf - mf) * .5f;
+                    if (Speed.y >= half)
+                    {
+                        float spriteLerp = min(1.f, (Speed.y - half) / (fmf - half));
+                        Sprite.Scale.X = Lerp(1f, .5f, spriteLerp);
+                        Sprite.Scale.Y = Lerp(1f, 1.5f, spriteLerp);
+                    }
+                }
+                else
+                    maxFall = Approach(maxFall, mf, FastMaxAccel * DT);
+            }
+
+            //Gravity
+            if (!onGround)
+            {
+                float max = maxFall;
+
+                //Wall Slide
+                //if ((moveX == (int)Facing || (moveX == 0 && GRABKEY)) && Input.MoveY.Value != 1)
+                //{
+                //    if (Speed.y >= 0 && wallSlideTimer > 0 && Holding == nullptr && ClimbBoundsCheck((int)Facing) && CollideCheck<Solid>(Position + Vector2.UnitX * (int)Facing) && CanUnDuck)
+                //    {
+                //        SetDucking(false);
+                //        wallSlideDir = (int)Facing;
+                //    }
+
+                //    if (wallSlideDir != 0)
+                //    {
+                //        if (wallSlideTimer > WallSlideTime * .5f && true) //ClimbBlocker.Check(level, this, Position + Vector2.UnitX * wallSlideDir))
+                //            wallSlideTimer = WallSlideTime * .5f;
+
+                //        max = Lerp(MaxFall, WallSlideStartMax, wallSlideTimer / WallSlideTime);
+                //        if (wallSlideTimer / WallSlideTime > .65f)
+                //            CreateWallSlideParticles(wallSlideDir);
+                //    }
+                //}
+
+                float mult = (abs(Speed.y) < HalfGravThreshold && (JUMPKEY || AutoJump)) ? .5f : 1.f;
+
+                //if (level.InSpace)
+                //    mult *= SpacePhysicsMult;
+
+                Speed.y = Approach(Speed.y, max, Gravity * mult * DT);
+            }
+
+            //Variable Jumping
+            if (varJumpTimer > 0)
+            {
+                if (AutoJump || JUMPKEY)
+                    Speed.y = min(Speed.y, varJumpSpeed);
+                else
+                    varJumpTimer = 0;
+            }
+
+            //Jumping
+            if (JUMPKEY)
+            {
+                //Water water = nullptr;
+                if (jumpGraceTimer > 0)
+                {
+                    Jump();
+                }
+                //else if (CanUnDuck())
+                //{
+                //    bool canUnduck = CanUnDuck();
+                //    if (canUnduck && WallJumpCheck(1))
+                //    {
+                //        if (Facing == Facings.Right && Input.Grab.Check && Stamina > 0 && Holding == null && !ClimbBlocker.Check(Scene, this, Position + Vector2.UnitX * WallJumpCheckDist))
+                //            ClimbJump();
+                //        else if (DashAttacking && DashDir.X == 0 && DashDir.Y == -1)
+                //            SuperWallJump(-1);
+                //        else
+                //            WallJump(-1);
+                //    }
+                //    else if (canUnduck && WallJumpCheck(-1))
+                //    {
+                //        if (Facing == Facings.Left && Input.Grab.Check && Stamina > 0 && Holding == null && !ClimbBlocker.Check(Scene, this, Position + Vector2.UnitX * -WallJumpCheckDist))
+                //            ClimbJump();
+                //        else if (DashAttacking && DashDir.X == 0 && DashDir.Y == -1)
+                //            SuperWallJump(1);
+                //        else
+                //            WallJump(1);
+                //    }
+                //    //else if ((water = CollideFirst<Water>(Position + Vector2.UnitY * 2)) != null)
+                //    //{
+                //    //    Jump();
+                //    //    water.TopSurface.DoRipple(Position, 1);
+                //    //}
+                //}
+            }
+        }
+     //}
+    return StNormal;
+}
+
+void CPlayerScript::NormalBegin()
+{
+    maxFall = MaxFall;
 }
 void CPlayerScript::NormalEnd()
 {
-	printf("End Normal");
+    wallBoostTimer = 0;
+    wallSpeedRetentionTimer = 0;
+    hopWaitX = 0;
 }
 void CPlayerScript::DashBegin()
 {
@@ -829,29 +1048,53 @@ void CPlayerScript::DashBegin()
 }
 int CPlayerScript::DashUpdate()
 {
-	Vec3 vPos = Transform()->GetRelativePos();
-	Vec3 vRot = Transform()->GetRelativeRotation();
-	if (KEY_PRESSED(RIGHT))
-	{
-		vPos.x += DT * 200.f;
-		Transform()->SetRelativePos(vPos);
-		return 1;
-	}
-		
-	if (KEY_PRESSED(LEFT))
-	{
-		vPos.x -= DT * 200.f;
-		Transform()->SetRelativePos(vPos);
-		return 1;
-	}
+    if (KEY_PRESSED(RIGHT))
+        return 1;
+    if (KEY_PRESSED(LEFT))
+        return 1;
 
-	return 0;
+    return 0;
 }
-
 void CPlayerScript::DashEnd()
 {
 	printf("End Dash");
 }
+
+void CPlayerScript::Jump(bool particles, bool playSfx)
+{
+    //Input.Jump.ConsumeBuffer();
+    jumpGraceTimer = 0;
+    varJumpTimer = VarJumpTime;
+    AutoJump = false;
+    dashAttackTimer = 0;
+    wallSlideTimer = WallSlideTime;
+    wallBoostTimer = 0;
+
+    Speed.x += JumpHBoost * moveX;
+    Speed.y = JumpSpeed;
+    //Speed += LiftBoost;
+    varJumpSpeed = Speed.y;
+
+    LaunchedBoostCheck();
+
+    //if (playSfx)
+    //{
+    //    if (launched)
+    //        Play(Sfxs.char_mad_jump_assisted);
+
+    //    if (dreamJump)
+    //        Play(Sfxs.char_mad_jump_dreamblock);
+    //    else
+    //        Play(Sfxs.char_mad_jump);
+    //}
+
+    Sprite.Scale = new Vector2(.6f, 1.4f);
+    //if (particles)
+    //    Dust.Burst(BottomCenter, Calc.Up, 4);
+
+    //SaveData.Instance.TotalJumps++;
+}
+
 
 bool CPlayerScript::InControl()
 {

@@ -40,7 +40,7 @@ void Animator2DUI::render_update()
 		return;
 	}
 
-	SetSize(ImVec2(0.f, refMapAnim.size()*20));
+	SetSize(ImVec2(0.f, float(refMapAnim.size())*20));
 
 
 	//이전 오브젝트와 현재오브젝트가 다르다면, 재할당

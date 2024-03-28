@@ -123,3 +123,11 @@ void Delete_Map(map<T1, T2>& _map)
 std::vector<std::filesystem::path> getFoldersFromDirectory(const std::string& path);
 
 std::vector<std::filesystem::path> getImagesFromDirectory(const std::string& path);
+
+float Approach(float val, float target, float maxMove);
+
+
+int Sign(float _val);
+
+float Lerp(float A, float B, float Alpha);
+

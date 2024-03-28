@@ -13,8 +13,12 @@ private:
     map<wstring, CAnim*>    m_mapAnim;
     CAnim*                  m_CurAnim;
     bool                    m_bRepeat;
+    Vec2                    m_MulScale;
 
 public:
+    void SetMulScale(Vec2 _MulScale) { m_MulScale = _MulScale; }
+    Vec2 GetMulScale() { return m_MulScale; }
+
     virtual void finaltick() override;
 
     void UpdateData();

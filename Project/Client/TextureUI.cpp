@@ -26,8 +26,8 @@ void TextureUI::render_update()
     ImGui::InputText("##TexName", (char*)strPath.c_str(), strPath.length(), ImGuiInputTextFlags_ReadOnly);   
 
     // 해상도 정보 출력
-    float Width = pTex->GetWidth();
-    float Height = pTex->GetHeight();
+    float Width = (float)pTex->GetWidth();
+    float Height = (float)pTex->GetHeight();
 
     ImGui::Text("Width "); 
     ImGui::SameLine(); 

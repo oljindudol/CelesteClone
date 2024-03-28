@@ -304,15 +304,11 @@ public:
     float windTimeout;
     float windHairTimer;
     //MirrorReflection reflection;
+    int MaxDashes = 2;
+    void* Holding = nullptr;
 
 #pragma endregion
 
-
-
-
-
-private:
-    int MaxDashes = 2;
 
 #pragma region functions
 public:
@@ -325,13 +321,43 @@ public:
     void CreateSplitParticles();
     void RefillDash() { Dashes = MaxDashes; }
 
-
     void NormalBegin();
     int NormalUpdate();
     void NormalEnd();
     void DashBegin();
     int DashUpdate();
     void DashEnd();
+    void Jump(bool particles = true, bool playSfx = true);
+
+    //Vec2 LiftBoost()
+    //{
+    //    Vector2 val = LiftSpeed;
+    //    if (Math.Abs(val.X) > LiftXCap)
+    //        val.X = LiftXCap * Math.Sign(val.X);
+    //    if (val.Y > 0)
+    //        val.Y = 0;
+    //    else if (val.Y < LiftYCap)
+    //        val.Y = LiftYCap;
+    //    return val;
+    //}
+
+    bool CanDash()
+    {
+        return KEY_PRESSED(F) && dashCooldownTimer <= 0 && Dashes > 0;
+            //&& (TalkComponent.PlayerOver == null || !Input.Talk.Pressed);
+    }
+
+private:
+        bool wasDashB;
+public:
+    int StartDash()
+    {
+        wasDashB = Dashes == 2;
+        Dashes = max(0, Dashes - 1);
+        //Input.Dash.ConsumeBuffer();
+        return StDash;
+    }
+
 #pragma endregion
 
 
@@ -386,6 +412,22 @@ public:
         bool ret = true;//!CollideCheck<Solid>();
         Collider = Colliderwas;
         return ret;
+    }
+
+    void CreateWallSlideParticles(int _val) {  };
+    bool LaunchedBoostCheck() {
+        launched = false;
+        return false;
+        //if (LiftBoost.LengthSquared() >= LaunchedBoostCheckSpeedSq && Speed.LengthSquared() >= LaunchedJumpCheckSpeedSq)
+        //{
+        //    launched = true;
+        //    return true;
+        //}
+        //else
+        //{
+        //    launched = false;
+        //    return false;
+        //}
     }
 
 #pragma endregion
