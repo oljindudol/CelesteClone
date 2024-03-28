@@ -17,6 +17,9 @@ public:
     virtual void begin() override;
     virtual void tick() override;
 
+
+
+
     virtual void BeginOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider);
     virtual void Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider);
     virtual void EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider);
@@ -24,18 +27,11 @@ public:
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
 
-    void NormalBegin();
-    int NormalUpdate();
-    void NormalEnd();
-    void DashBegin();
-    int DashUpdate();
-    void DashEnd();
 
     CLONE(CPlayerScript);
 public:
     CPlayerScript();
     ~CPlayerScript();
-
 
 
 #pragma region Const
@@ -112,12 +108,13 @@ private:
     const float EndDashUpMult = .75f;
     const float DashTime = .15f;
     const float DashCooldown = .2f;
+private:
+    //여기부터 들여쓰기오류
     const float DashRefillCooldown = .1f;
     const int DashHJumpThruNudge = 6;
     const int DashCornerCorrection = 4;
     const int DashVFloorSnapDist = 3;
     const float DashAttackTime = .3f;
-
     const float BoostMoveSpeed = 80.f;
     const float DuckWindMult = 0.f;
     const int WindWallDistance = 3;
@@ -145,6 +142,7 @@ private:
     const float ClimbGrabYMult = .2f;
     const float ClimbHopY = -120.f;
     const float ClimbHopX = 100.f;
+
     const float ClimbHopForceTime = .2f;
     const float ClimbJumpBoostTime = .2f;
     const float ClimbHopNoWindTime = .3f;
@@ -170,9 +168,10 @@ private:
 
 #pragma region Vars
 public:
+    Vec4 Collider;
     Vector2 Speed;
+    Facings Facing;
     // TODO:
-    //Facings Facing;
     //PlayerSprite Sprite;
     //PlayerHair Hair;
     //CCustomStateMachine<CPlayerScript> StateMachine;
@@ -220,12 +219,15 @@ public:
     enum IntroTypes { Transition, Respawn, WalkInRight, WalkInLeft, Jump, WakeUp, Fall, TempleMirrorVoid, None };
     IntroTypes IntroType;
 
+    
 private:
     //Level level;
     // TODO:
     //Collision onCollideH;
     //Collision onCollideV;
+public:
     bool onGround;
+    bool OnSafeGround;
     bool wasOnGround;
     int moveX;
     bool flash;
@@ -305,6 +307,31 @@ private:
 
 #pragma endregion
 
+
+
+
+private:
+    int MaxDashes = 2;
+
+#pragma region functions
+public:
+    void Update();
+    void UpdateHair();
+    //헤어,스웨트,파티클
+    void UpdateRender();
+    void UpdateSprite();
+    void StartHair();
+    void CreateSplitParticles();
+    void RefillDash() { Dashes = MaxDashes; }
+
+
+    void NormalBegin();
+    int NormalUpdate();
+    void NormalEnd();
+    void DashBegin();
+    int DashUpdate();
+    void DashEnd();
+#pragma endregion
 
 };
 

@@ -26,6 +26,12 @@
 							TYPE(const TYPE& _OriginBuffer) = delete;
 
 
+enum Facings
+{
+	FacingsLeft = -1,
+	FacingsRight = 1,
+};
+
 enum class PLAYER_STATE
 {
 	Normal = 0,

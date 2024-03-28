@@ -170,9 +170,10 @@ private:
 
 #pragma region Vars
 public:
+    Vec4 Collider;
     Vector2 Speed;
+    Facings Facing;
     // TODO:
-    //Facings Facing;
     //PlayerSprite Sprite;
     //PlayerHair Hair;
     //CCustomStateMachine<CPlayerScript> StateMachine;
