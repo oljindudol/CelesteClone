@@ -10,6 +10,9 @@
 
 //#include "CPhysics.h"
 #include "CCustomStateMachine.h"
+#include <math.h>
+#include <Engine/CAnimator2D.h>
+#include <Engine/CAnim.h>
 
 
 
@@ -37,7 +40,7 @@ CPlayerScript::CPlayerScript()
 	//onCollideH = OnCollideH;
 	//onCollideV = OnCollideV;
 
-	StateMachine = new CCustomStateMachine<CPlayerScript>(this , (int)PLAYER_STATE::END);
+	StateMachine = new CCustomStateMachine<CPlayerScript>(this , (int)PLAYER_STATE::StEND);
 	StateMachine->SetCallbacks( 0,"StNormal",&CPlayerScript::NormalUpdate, &CPlayerScript::NormalBegin, &CPlayerScript::NormalEnd,nullptr);
 	StateMachine->SetCallbacks(1, "StUpdate", &CPlayerScript::DashUpdate, &CPlayerScript::DashBegin, &CPlayerScript::DashEnd, nullptr);
 
@@ -257,501 +260,504 @@ void CPlayerScript::tick()
 
 void CPlayerScript::Update()
 {
+    int inputx = 0;
+    Vec3 V3Pos = Transform()->GetRelativePos();
+    Vec2 Position = Vec2(V3Pos.x, V3Pos.y);
+    float X = Position.x;
+    float Y = Position.y;
+
+    //Infinite Stamina variant
+    //if (SaveData.Instance.AssistMode && SaveData.Instance.Assists.InfiniteStamina)
+    //    Stamina = ClimbMaxStamina;
+
+    PreviousPosition = Position;
+
+    //Vars       
     {
-        Vec3 V3Pos = Transform()->GetWorldPos();
-        Vec2 Position = Vec2(V3Pos.x, V3Pos.y);
-        float X = Position.x;
-        float Y = Position.y;
+        // strawb reset timer
+        StrawberryCollectResetTimer -= DT;
+        if (StrawberryCollectResetTimer <= 0)
+            StrawberryCollectIndex = 0;
 
-        //Infinite Stamina variant
-        //if (SaveData.Instance.AssistMode && SaveData.Instance.Assists.InfiniteStamina)
-        //    Stamina = ClimbMaxStamina;
+        // idle timer
+        //idleTimer += DT;
+        //if (level != null && level.InCutscene)
+        //    idleTimer = -5;
+        //else if (Speed.X != 0 || Speed.Y != 0)
+        //    idleTimer = 0;
 
-        PreviousPosition = Position;
+        //Underwater music
+        //if (!Dead)
+        //    Audio.MusicUnderwater = UnderwaterMusicCheck();
 
-        //Vars       
+        //Just respawned
+        if (JustRespawned && Speed != Vec2(0, 0))
+            JustRespawned = false;
+
+        //Get ground
+        //if (StateMachine.State == StDreamDash)
+        //    onGround = OnSafeGround = false;
+        //else if (Speed.Y >= 0)
+        //{
+        //    Platform first = CollideFirst<Solid>(Position + Vector2.UnitY);
+        //    if (first == null)
+        //        first = CollideFirstOutside<JumpThru>(Position + Vector2.UnitY);
+
+        //    if (first != null)
+        //    {
+        //        onGround = true;
+        //        OnSafeGround = first.Safe;
+        //    }
+        //    else
+        //        onGround = OnSafeGround = false;
+        //}
+        //else
+        //    onGround = OnSafeGround = false;
+
+        //if (StateMachine.State == StSwim)
+        //    OnSafeGround = true;
+
+        //Safe Ground Blocked?
+        //if (OnSafeGround)
+        //{
+        //    foreach(SafeGroundBlocker blocker in Scene.Tracker.GetComponents<SafeGroundBlocker>())
+        //    {
+        //        if (blocker.Check(this))
+        //        {
+        //            OnSafeGround = false;
+        //            break;
+        //        }
+        //    }
+        //}
+
+        playFootstepOnLand -= DT;
+
+        //Highest Air Y
+        if (onGround)
+            highestAirY = Y;
+        else
+            highestAirY = min(Y, highestAirY);
+
+        //Flashing
+        //if (Scene.OnInterval(.05f))
+        //    flash = !flash;
+
+        //Wall Slide
+        if (wallSlideDir != 0)
         {
-            // strawb reset timer
-            StrawberryCollectResetTimer -= DT;
-            if (StrawberryCollectResetTimer <= 0)
-                StrawberryCollectIndex = 0;
-
-            // idle timer
-            //idleTimer += DT;
-            //if (level != null && level.InCutscene)
-            //    idleTimer = -5;
-            //else if (Speed.X != 0 || Speed.Y != 0)
-            //    idleTimer = 0;
-
-            //Underwater music
-            //if (!Dead)
-            //    Audio.MusicUnderwater = UnderwaterMusicCheck();
-
-            //Just respawned
-            if (JustRespawned && Speed != Vec2(0,0))
-                JustRespawned = false;
-
-            //Get ground
-            //if (StateMachine.State == StDreamDash)
-            //    onGround = OnSafeGround = false;
-            //else if (Speed.Y >= 0)
-            //{
-            //    Platform first = CollideFirst<Solid>(Position + Vector2.UnitY);
-            //    if (first == null)
-            //        first = CollideFirstOutside<JumpThru>(Position + Vector2.UnitY);
-
-            //    if (first != null)
-            //    {
-            //        onGround = true;
-            //        OnSafeGround = first.Safe;
-            //    }
-            //    else
-            //        onGround = OnSafeGround = false;
-            //}
-            //else
-            //    onGround = OnSafeGround = false;
-
-            //if (StateMachine.State == StSwim)
-            //    OnSafeGround = true;
-
-            //Safe Ground Blocked?
-            //if (OnSafeGround)
-            //{
-            //    foreach(SafeGroundBlocker blocker in Scene.Tracker.GetComponents<SafeGroundBlocker>())
-            //    {
-            //        if (blocker.Check(this))
-            //        {
-            //            OnSafeGround = false;
-            //            break;
-            //        }
-            //    }
-            //}
-
-            playFootstepOnLand -= DT;
-
-            //Highest Air Y
-            if (onGround)
-                highestAirY = Y;
-            else
-                highestAirY = min(Y, highestAirY);
-
-            //Flashing
-            //if (Scene.OnInterval(.05f))
-            //    flash = !flash;
-
-            //Wall Slide
-            if (wallSlideDir != 0)
-            {
-                wallSlideTimer = max(wallSlideTimer - DT, 0);
-                wallSlideDir = 0;
-            }
-
-            //Wall Boost
-            if (wallBoostTimer > 0)
-            {
-                wallBoostTimer -= DT;
-                if (moveX == wallBoostDir)
-                {
-                    Speed.x = WallJumpHSpeed * moveX;
-                    Stamina += ClimbJumpCost;
-                    wallBoostTimer = 0;
-                    //sweatSprite.Play("idle");
-                }
-            }
-
-            //After Dash
-            if (onGround && StateMachine.State != StClimb)
-            {
-                AutoJump = false;
-                Stamina = ClimbMaxStamina;
-                wallSlideTimer = WallSlideTime;
-            }
-
-            //Dash Attack
-            if (dashAttackTimer > 0)
-                dashAttackTimer -= DT;
-
-            //Jump Grace
-            //if (onGround)
-            //{
-            //    dreamJump = false;
-            //    jumpGraceTimer = JumpGraceTime;
-            //}
-            //else if (jumpGraceTimer > 0)
-            //    jumpGraceTimer -= DT;
-
-            //refill Dashes
-            {
-                if (dashCooldownTimer > 0)
-                    dashCooldownTimer -= DT;
-
-                if (dashRefillCooldownTimer > 0)
-                    dashRefillCooldownTimer -= DT;
-                else //if (SaveData.Instance.AssistMode && SaveData.Instance.Assists.DashMode == Assists.DashModes.Infinite && !level.InCutscene)
-                    RefillDash();
-                //else if (!Inventory.NoRefills)
-                //{
-                //    if (StateMachine.State == StSwim)
-                //        RefillDash();
-                //    else if (onGround)
-                //        if (CollideCheck<Solid, NegaBlock>(Position + Vector2.UnitY) || CollideCheckOutside<JumpThru>(Position + Vector2.UnitY))
-                //            if (!CollideCheck<Spikes>(Position) || (SaveData.Instance.AssistMode && SaveData.Instance.Assists.Invincible))
-                //                RefillDash();
-                //}
-            }
-
-            //Var Jump
-            if (varJumpTimer > 0)
-                varJumpTimer -= DT;
-
-            //Auto Jump
-            if (AutoJumpTimer > 0)
-            {
-                if (AutoJump)
-                {
-                    AutoJumpTimer -= DT;
-                    if (AutoJumpTimer <= 0)
-                        AutoJump = false;
-                }
-                else
-                    AutoJumpTimer = 0;
-            }
-
-            //Force Move X
-            if (forceMoveXTimer > 0)
-            {
-                forceMoveXTimer -= DT;
-                moveX = forceMoveX;
-            }
-            else
-            {
-                float inputx =0.f;
-                if (KEY_PRESSED(LEFT))
-                {
-                    inputx = -1.f;
-                }
-                else if (KEY_PRESSED(RIGHT))
-                {
-                    inputx = 1.f;
-                }
-                
-                moveX = Inputx;
-                climbHopSolid = null;
-            }
-
-            //Climb Hop Solid Movement
-            if (climbHopSolid != null && !climbHopSolid.Collidable)
-                climbHopSolid = null;
-            else if (climbHopSolid != null && climbHopSolid.Position != climbHopSolidPosition)
-            {
-                var move = climbHopSolid.Position - climbHopSolidPosition;
-                climbHopSolidPosition = climbHopSolid.Position;
-                MoveHExact((int)move.X);
-                MoveVExact((int)move.Y);
-            }
-
-            //Wind
-            if (noWindTimer > 0)
-                noWindTimer -= DT;
-
-            //Facing
-            if (moveX != 0 && InControl
-                && StateMachine.State != StClimb && StateMachine.State != StPickup && StateMachine.State != StRedDash && StateMachine.State != StHitSquash)
-            {
-                var to = (Facings)moveX;
-                if (to != Facing && Ducking)
-                    Sprite.Scale = new Vector2(0.8f, 1.2f);
-                Facing = to;
-            }
-
-            //Aiming
-            lastAim = Input.GetAimVector(Facing);
-
-            //Wall Speed Retention
-            if (wallSpeedRetentionTimer > 0)
-            {
-                if (Math.Sign(Speed.X) == -Math.Sign(wallSpeedRetained))
-                    wallSpeedRetentionTimer = 0;
-                else if (!CollideCheck<Solid>(Position + Vector2.UnitX * Math.Sign(wallSpeedRetained)))
-                {
-                    Speed.X = wallSpeedRetained;
-                    wallSpeedRetentionTimer = 0;
-                }
-                else
-                    wallSpeedRetentionTimer -= DT;
-            }
-
-            //Hop Wait X
-            if (hopWaitX != 0)
-            {
-                if (Math.Sign(Speed.X) == -hopWaitX || Speed.Y > 0)
-                    hopWaitX = 0;
-                else if (!CollideCheck<Solid>(Position + Vector2.UnitX * hopWaitX))
-                {
-                    Speed.X = hopWaitXSpeed;
-                    hopWaitX = 0;
-                }
-            }
-
-            // Wind Timeout
-            if (windTimeout > 0)
-                windTimeout -= DT;
-
-            // Hair
-            {
-                var windDir = windDirection;
-                if (ForceStrongWindHair.Length() > 0)
-                    windDir = ForceStrongWindHair;
-
-                if (windTimeout > 0 && windDir.X != 0)
-                {
-                    windHairTimer += DT * 8f;
-
-                    Hair.StepPerSegment = new Vector2(windDir.X * 5f, (float)Math.Sin(windHairTimer));
-                    Hair.StepInFacingPerSegment = 0f;
-                    Hair.StepApproach = 128f;
-                    Hair.StepYSinePerSegment = 0;
-                }
-                else if (Dashes > 1)
-                {
-                    Hair.StepPerSegment = new Vector2((float)Math.Sin(Scene.TimeActive * 2) * 0.7f - (int)Facing * 3, (float)Math.Sin(Scene.TimeActive * 1f));
-                    Hair.StepInFacingPerSegment = 0f;
-                    Hair.StepApproach = 90f;
-                    Hair.StepYSinePerSegment = 1f;
-
-                    Hair.StepPerSegment.Y += windDir.Y * 2f;
-                }
-                else
-                {
-                    Hair.StepPerSegment = new Vector2(0, 2f);
-                    Hair.StepInFacingPerSegment = 0.5f;
-                    Hair.StepApproach = 64f;
-                    Hair.StepYSinePerSegment = 0;
-
-                    Hair.StepPerSegment.Y += windDir.Y * 0.5f;
-                }
-            }
-
-            if (StateMachine.State == StRedDash)
-                Sprite.HairCount = 1;
-            else if (StateMachine.State != StStarFly)
-                Sprite.HairCount = (Dashes > 1 ? 5 : startHairCount);
-
-            //Min Hold Time
-            if (minHoldTimer > 0)
-                minHoldTimer -= DT;
-
-            //Launch Particles
-            if (launched)
-            {
-                var sq = Speed.LengthSquared();
-                if (sq < LaunchedMinSpeedSq)
-                    launched = false;
-                else
-                {
-                    var was = launchedTimer;
-                    launchedTimer += DT;
-
-                    if (launchedTimer >= .5f)
-                    {
-                        launched = false;
-                        launchedTimer = 0;
-                    }
-                    else if (Calc.OnInterval(launchedTimer, was, .15f))
-                        level.Add(Engine.Pooler.Create<SpeedRing>().Init(Center, Speed.Angle(), Color.White));
-                }
-            }
-            else
-                launchedTimer = 0;
+            wallSlideTimer = max(wallSlideTimer - DT, 0);
+            wallSlideDir = 0;
         }
 
-        if (IsTired)
+        //Wall Boost
+        if (wallBoostTimer > 0)
         {
-            Input.Rumble(RumbleStrength.Light, RumbleLength.Short);
-            if (!wasTired)
+            wallBoostTimer -= DT;
+            if (moveX == wallBoostDir)
             {
-                wasTired = true;
+                Speed.x = WallJumpHSpeed * moveX;
+                Stamina += ClimbJumpCost;
+                wallBoostTimer = 0;
+                //sweatSprite.Play("idle");
             }
+        }
+
+        //After Dash
+        if (onGround && (int)StateMachine->GetCurState() != StClimb)
+        {
+            AutoJump = false;
+            Stamina = ClimbMaxStamina;
+            wallSlideTimer = WallSlideTime;
+        }
+
+        //Dash Attack
+        if (dashAttackTimer > 0)
+            dashAttackTimer -= DT;
+
+        //Jump Grace
+        //if (onGround)
+        //{
+        //    dreamJump = false;
+        //    jumpGraceTimer = JumpGraceTime;
+        //}
+        //else if (jumpGraceTimer > 0)
+        //    jumpGraceTimer -= DT;
+
+        //refill Dashes
+        {
+            if (dashCooldownTimer > 0)
+                dashCooldownTimer -= DT;
+
+            if (dashRefillCooldownTimer > 0)
+                dashRefillCooldownTimer -= DT;
+            else //if (SaveData.Instance.AssistMode && SaveData.Instance.Assists.DashMode == Assists.DashModes.Infinite && !level.InCutscene)
+                RefillDash();
+            //else if (!Inventory.NoRefills)
+            //{
+            //    if (StateMachine.State == StSwim)
+            //        RefillDash();
+            //    else if (onGround)
+            //        if (CollideCheck<Solid, NegaBlock>(Position + Vector2.UnitY) || CollideCheckOutside<JumpThru>(Position + Vector2.UnitY))
+            //            if (!CollideCheck<Spikes>(Position) || (SaveData.Instance.AssistMode && SaveData.Instance.Assists.Invincible))
+            //                RefillDash();
+            //}
+        }
+
+        //Var Jump
+        if (varJumpTimer > 0)
+            varJumpTimer -= DT;
+
+        //Auto Jump
+        if (AutoJumpTimer > 0)
+        {
+            if (AutoJump)
+            {
+                AutoJumpTimer -= DT;
+                if (AutoJumpTimer <= 0)
+                    AutoJump = false;
+            }
+            else
+                AutoJumpTimer = 0;
+        }
+
+        //Force Move X
+        if (forceMoveXTimer > 0)
+        {
+            forceMoveXTimer -= DT;
+            moveX = forceMoveX;
         }
         else
-            wasTired = false;
-
-        base.Update();
-
-        //Light Offset
-        if (Ducking)
-            Light.Position = duckingLightOffset;
-        else
-            Light.Position = normalLightOffset;
-
-        //Jump Thru Assist
-        if (!onGround && Speed.Y <= 0 && (StateMachine.State != StClimb || lastClimbMove == -1) && CollideCheck<JumpThru>() && !JumpThruBoostBlockedCheck())
-            MoveV(JumpThruAssistSpeed * DT);
-
-        //Dash Floor Snapping
-        if (!onGround && DashAttacking && DashDir.Y == 0)
         {
-            if (CollideCheck<Solid>(Position + Vector2.UnitY * DashVFloorSnapDist) || CollideCheckOutside<JumpThru>(Position + Vector2.UnitY * DashVFloorSnapDist))
-                MoveVExact(DashVFloorSnapDist);
-        }
 
-        //Falling unducking
-        if (Speed.Y > 0 && CanUnDuck && Collider != starFlyHitbox && !onGround)
-            Ducking = false;
-
-        //Physics
-        if (StateMachine.State != StDreamDash && StateMachine.State != StAttract)
-            MoveH(Speed.X * DT, onCollideH);
-        if (StateMachine.State != StDreamDash && StateMachine.State != StAttract)
-            MoveV(Speed.Y * DT, onCollideV);
-
-        //Swimming
-        if (StateMachine.State == StSwim)
-        {
-            //Stay at water surface
-            if (Speed.Y < 0 && Speed.Y >= SwimMaxRise)
+            if (KEY_PRESSED(LEFT))
             {
-                while (!SwimCheck())
-                {
-                    Speed.Y = 0;
-                    if (MoveVExact(1))
-                        break;
-                }
+                inputx = -1;
             }
-        }
-        else if (StateMachine.State == StNormal && SwimCheck())
-            StateMachine.State = StSwim;
-        else if (StateMachine.State == StClimb && SwimCheck())
-        {
-            var water = CollideFirst<Water>(Position);
-            if (water != null && Center.Y < water.Center.Y)
+            else if (KEY_PRESSED(RIGHT))
             {
-                while (SwimCheck())
-                    if (MoveVExact(-1))
-                        break;
-                if (SwimCheck())
-                    StateMachine.State = StSwim;
-            }
-            else
-                StateMachine.State = StSwim;
-        }
-
-        // wall slide SFX
-        {
-            var isSliding = Sprite.CurrentAnimationID != null && Sprite.CurrentAnimationID.Equals(PlayerSprite.WallSlide) && Speed.Y > 0;
-            if (isSliding)
-            {
-                if (!wallSlideSfx.Playing)
-                    Loop(wallSlideSfx, Sfxs.char_mad_wallslide);
-
-                var platform = SurfaceIndex.GetPlatformByPriority(CollideAll<Solid>(Center + Vector2.UnitX * (int)Facing, temp));
-                if (platform != null)
-                    wallSlideSfx.Param(SurfaceIndex.Param, platform.GetWallSoundIndex(this, (int)Facing));
-            }
-            else
-                Stop(wallSlideSfx);
-        }
-
-        // update sprite
-        UpdateSprite();
-
-        //Carry held item
-        UpdateCarry();
-
-        //Triggers
-        if (StateMachine.State != StReflectionFall)
-        {
-            foreach(Trigger trigger in Scene.Tracker.GetEntities<Trigger>())
-            {
-                if (CollideCheck(trigger))
-                {
-                    if (!trigger.Triggered)
-                    {
-                        trigger.Triggered = true;
-                        triggersInside.Add(trigger);
-                        trigger.OnEnter(this);
-                    }
-                    trigger.OnStay(this);
-                }
-                else if (trigger.Triggered)
-                {
-                    triggersInside.Remove(trigger);
-                    trigger.Triggered = false;
-                    trigger.OnLeave(this);
-                }
-            }
-        }
-
-        //Strawberry Block
-        StrawberriesBlocked = CollideCheck<BlockField>();
-
-        // Camera (lerp by distance using delta-time)
-        if (InControl || ForceCameraUpdate)
-        {
-            if (StateMachine.State == StReflectionFall)
-            {
-                level.Camera.Position = CameraTarget;
-            }
-            else
-            {
-                var from = level.Camera.Position;
-                var target = CameraTarget;
-                var multiplier = StateMachine.State == StTempleFall ? 8 : 1f;
-
-                level.Camera.Position = from + (target - from) * (1f - (float)Math.Pow(0.01f / multiplier, DT));
-            }
-        }
-
-        //Player Colliders
-        if (!Dead && StateMachine.State != StCassetteFly)
-        {
-            Collider was = Collider;
-            Collider = hurtbox;
-
-            foreach(PlayerCollider pc in Scene.Tracker.GetComponents<PlayerCollider>())
-            {
-                if (pc.Check(this) && Dead)
-                {
-                    Collider = was;
-                    return;
-                }
+                inputx = 1;
             }
 
-            // If the current collider is not the hurtbox we set it to, that means a collision callback changed it. Keep the new one!
-            bool keepNew = (Collider != hurtbox);
-
-            if (!keepNew)
-                Collider = was;
+            moveX = inputx;
+            //climbHopSolid = null;
         }
 
-        //Bounds
-        if (InControl && !Dead && StateMachine.State != StDreamDash)
-            level.EnforceBounds(this);
+        //Climb Hop Solid Movement
+        //if (climbHopSolid != null && !climbHopSolid.Collidable)
+        //    climbHopSolid = null;
+        //else if (climbHopSolid != null && climbHopSolid.Position != climbHopSolidPosition)
+        //{
+        //    var move = climbHopSolid.Position - climbHopSolidPosition;
+        //    climbHopSolidPosition = climbHopSolid.Position;
+        //    MoveHExact((int)move.X);
+        //    MoveVExact((int)move.Y);
+        //}
 
-        UpdateChaserStates();
-        UpdateHair(true);
+        //Wind
+        if (noWindTimer > 0)
+            noWindTimer -= DT;
 
-        //Sounds on ducking state change
-        if (wasDucking != Ducking)
-        {
-            wasDucking = Ducking;
-            if (wasDucking)
-                Play(Sfxs.char_mad_duck);
-            else if (onGround)
-                Play(Sfxs.char_mad_stand);
-        }
+        //Facing
+        //if (moveX != 0 && InControl()
+        //    && StateMachine->GetCurState() != StClimb)// && StateMachine.State != StPickup && StateMachine.State != StRedDash && StateMachine.State != StHitSquash)
+        //{
+        //    auto to = (Facings)moveX;
+        //    if (to != Facing && Ducking)
+        //        CAnimator2D().GetCurAnim()-> // = new Vector2(0.8f, 1.2f);
+        //    Facing = to;
+        //}
 
-        // shallow swim sfx
-        if (Speed.X != 0 && ((StateMachine.State == StSwim && !SwimUnderwaterCheck()) || (StateMachine.State == StNormal && CollideCheck<Water>(Position))))
-        {
-            if (!swimSurfaceLoopSfx.Playing)
-                swimSurfaceLoopSfx.Play(Sfxs.char_mad_water_move_shallow);
-        }
-        else
-            swimSurfaceLoopSfx.Stop();
+        //Aiming
+        //lastAim = Input.GetAimVector(Facing);
 
-        wasOnGround = onGround;
+        //Wall Speed Retention
+        //if (wallSpeedRetentionTimer > 0)
+        //{
+        //    if (math.signf(Speed.x) == -Math.Sign(wallSpeedRetained))
+        //        wallSpeedRetentionTimer = 0;
+        //    else if (!CollideCheck<Solid>(Position + Vector2.UnitX * Math.Sign(wallSpeedRetained)))
+        //    {
+        //        Speed.X = wallSpeedRetained;
+        //        wallSpeedRetentionTimer = 0;
+        //    }
+        //    else
+        //        wallSpeedRetentionTimer -= DT;
+        //}
+
+        //Hop Wait X
+        //if (hopWaitX != 0)
+        //{
+        //    if (Math.Sign(Speed.X) == -hopWaitX || Speed.Y > 0)
+        //        hopWaitX = 0;
+        //    else if (!CollideCheck<Solid>(Position + Vector2.UnitX * hopWaitX))
+        //    {
+        //        Speed.X = hopWaitXSpeed;
+        //        hopWaitX = 0;
+        //    }
+        //}
+
+        // Wind Timeout
+        //if (windTimeout > 0)
+        //    windTimeout -= DT;
+
+        // Hair
+        //{
+        //    var windDir = windDirection;
+        //    if (ForceStrongWindHair.Length() > 0)
+        //        windDir = ForceStrongWindHair;
+
+        //    if (windTimeout > 0 && windDir.X != 0)
+        //    {
+        //        windHairTimer += DT * 8f;
+
+        //        Hair.StepPerSegment = new Vector2(windDir.X * 5f, (float)Math.Sin(windHairTimer));
+        //        Hair.StepInFacingPerSegment = 0f;
+        //        Hair.StepApproach = 128f;
+        //        Hair.StepYSinePerSegment = 0;
+        //    }
+        //    else if (Dashes > 1)
+        //    {
+        //        Hair.StepPerSegment = new Vector2((float)Math.Sin(Scene.TimeActive * 2) * 0.7f - (int)Facing * 3, (float)Math.Sin(Scene.TimeActive * 1f));
+        //        Hair.StepInFacingPerSegment = 0f;
+        //        Hair.StepApproach = 90f;
+        //        Hair.StepYSinePerSegment = 1f;
+
+        //        Hair.StepPerSegment.Y += windDir.Y * 2f;
+        //    }
+        //    else
+        //    {
+        //        Hair.StepPerSegment = new Vector2(0, 2f);
+        //        Hair.StepInFacingPerSegment = 0.5f;
+        //        Hair.StepApproach = 64f;
+        //        Hair.StepYSinePerSegment = 0;
+
+        //        Hair.StepPerSegment.Y += windDir.Y * 0.5f;
+        //    }
+        //}
+
+        //if (StateMachine->GetCurState() == StRedDash)
+        //    Sprite.HairCount = 1;
+        //else if (StateMachine.State != StStarFly)
+        //    Sprite.HairCount = (Dashes > 1 ? 5 : startHairCount);
+
+        //Min Hold Time
+        if (minHoldTimer > 0)
+            minHoldTimer -= DT;
+
+        //Launch Particles
+        //if (launched)
+        //{
+        //    var sq = Speed.LengthSquared();
+        //    if (sq < LaunchedMinSpeedSq)
+        //        launched = false;
+        //    else
+        //    {
+        //        var was = launchedTimer;
+        //        launchedTimer += DT;
+
+        //        if (launchedTimer >= .5f)
+        //        {
+        //            launched = false;
+        //            launchedTimer = 0;
+        //        }
+        //        else if (Calc.OnInterval(launchedTimer, was, .15f))
+        //            level.Add(Engine.Pooler.Create<SpeedRing>().Init(Center, Speed.Angle(), Color.White));
+        //    }
+        //}
+        //else
+        //    launchedTimer = 0;
     }
+
+    if (IsTired())
+    {
+        //Input.Rumble(RumbleStrength.Light, RumbleLength.Short);s
+        if (!wasTired)
+        {
+            wasTired = true;
+        }
+    }
+    else
+        wasTired = false;
+
+    //base.Update();
+
+    //Light Offset
+    //if (Ducking)
+    //    Light.Position = duckingLightOffset;
+    //else
+    //    Light.Position = normalLightOffset;
+
+    //Jump Thru Assist
+    //if (!onGround && Speed.y <= 0 && (StateMachine->GetCurState() != StClimb || lastClimbMove == -1) && CollideCheck<JumpThru>() && !JumpThruBoostBlockedCheck())
+    //    MoveV(JumpThruAssistSpeed * DT);
+
+    //Dash Floor Snapping
+    //if (!onGround && DashAttacking && DashDir.y == 0)
+    //{
+    //    if (CollideCheck<Solid>(Position + Vector2.UnitY * DashVFloorSnapDist) || CollideCheckOutside<JumpThru>(Position + Vector2.UnitY * DashVFloorSnapDist))
+    //        MoveVExact(DashVFloorSnapDist);
+    //}
+
+    //Falling unducking
+    if (Speed.y > 0 && CanUnDuck() && Collider != starFlyHitbox && !onGround)
+        SetDucking(false);
+
+    //Physics
+    float newx = Position.x + Speed.x * DT;
+    float newy = Position.y + Speed.y * DT;
+    if (StateMachine->GetCurState() != StDreamDash && StateMachine->GetCurState() != StAttract)
+        Transform()->SetRelativePos(Vec3(newx, newy, V3Pos.z));
+    //    MoveH(Speed.x * DT, onCollideH);
+    if (StateMachine->GetCurState() != StDreamDash && StateMachine->GetCurState() != StAttract)
+        Transform()->SetRelativePos(Vec3(newx, newy, V3Pos.z));
+    //    MoveV(Speed.y * DT, onCollideV);
+
+    //Swimming
+    //if (StateMachine->GetCurState() == StSwim)
+    //{
+    //    //Stay at water surface
+    //    if (Speed.y < 0 && Speed.y >= SwimMaxRise)
+    //    {
+    //        while (!SwimCheck())
+    //        {
+    //            Speed.y = 0;
+    //            if (MoveVExact(1))
+    //                break;
+    //        }
+    //    }
+    //}
+    //else if (StateMachine->GetCurState() == StNormal && SwimCheck())
+    //    StateMachine->GetCurState() = StSwim;
+    //else if (StateMachine->GetCurState() == StClimb && SwimCheck())
+    //{
+    //    var water = CollideFirst<Water>(Position);
+    //    if (water != null && Center.Y < water.Center.Y)
+    //    {
+    //        while (SwimCheck())
+    //            if (MoveVExact(-1))
+    //                break;
+    //        if (SwimCheck())
+    //            StateMachine->GetCurState() = StSwim;
+    //    }
+    //    else
+    //        StateMachine->GetCurState() = StSwim;
+    //}
+
+    // wall slide SFX
+    //{
+    //    var isSliding = Sprite.CurrentAnimationID != null && Sprite.CurrentAnimationID.Equals(PlayerSprite.WallSlide) && Speed.y > 0;
+    //    if (isSliding)
+    //    {
+    //        if (!wallSlideSfx.Playing)
+    //            Loop(wallSlideSfx, Sfxs.char_mad_wallslide);
+
+    //        var platform = SurfaceIndex.GetPlatformByPriority(CollideAll<Solid>(Center + Vector2.UnitX * (int)Facing, temp));
+    //        if (platform != null)
+    //            wallSlideSfx.Param(SurfaceIndex.Param, platform.GetWallSoundIndex(this, (int)Facing));
+    //    }
+    //    else
+    //        Stop(wallSlideSfx);
+    //}
+
+    // update sprite
+    UpdateSprite();
+
+    //Carry held item
+    //UpdateCarry();
+
+    //Triggers
+    //if (StateMachine->GetCurState() != StReflectionFall)
+    //{
+    //    foreach(Trigger trigger in Scene.Tracker.GetEntities<Trigger>())
+    //    {
+    //        if (CollideCheck(trigger))
+    //        {
+    //            if (!trigger.Triggered)
+    //            {
+    //                trigger.Triggered = true;
+    //                triggersInside.Add(trigger);
+    //                trigger.OnEnter(this);
+    //            }
+    //            trigger.OnStay(this);
+    //        }
+    //        else if (trigger.Triggered)
+    //        {
+    //            triggersInside.Remove(trigger);
+    //            trigger.Triggered = false;
+    //            trigger.OnLeave(this);
+    //        }
+    //    }
+    //}
+
+    //Strawberry Block
+    //StrawberriesBlocked = CollideCheck<BlockField>();
+
+    // Camera (lerp by distance using delta-time)
+    //if (InControl || ForceCameraUpdate)
+    //{
+    //    if (StateMachine->GetCurState() == StReflectionFall)
+    //    {
+    //        level.Camera.Position = CameraTarget;
+    //    }
+    //    else
+    //    {
+    //        var from = level.Camera.Position;
+    //        var target = CameraTarget;
+    //        var multiplier = StateMachine->GetCurState() == StTempleFall ? 8 : 1f;
+
+    //        level.Camera.Position = from + (target - from) * (1f - (float)Math.Pow(0.01f / multiplier, DT));
+    //    }
+    //}
+
+    //Player Colliders
+    //if (!Dead && StateMachine->GetCurState() != StCassetteFly)
+    //{
+    //    Collider was = Collider;
+    //    Collider = hurtbox;
+
+    //    foreach(PlayerCollider pc in Scene.Tracker.GetComponents<PlayerCollider>())
+    //    {
+    //        if (pc.Check(this) && Dead)
+    //        {
+    //            Collider = was;
+    //            return;
+    //        }
+    //    }
+
+    //    // If the current collider is not the hurtbox we set it to, that means a collision callback changed it. Keep the new one!
+    //    bool keepNew = (Collider != hurtbox);
+
+    //    if (!keepNew)
+    //        Collider = was;
+    //}
+
+    //Bounds
+    //if (InControl && !Dead && StateMachine->GetCurState() != StDreamDash)
+    //    level.EnforceBounds(this);
+
+    //UpdateChaserStates();
+    //UpdateHair(true);
+
+    //Sounds on ducking state change
+    //if (wasDucking != Ducking)
+    //{
+    //    wasDucking = Ducking;
+    //    if (wasDucking)
+    //        Play(Sfxs.char_mad_duck);
+    //    else if (onGround)
+    //        Play(Sfxs.char_mad_stand);
+    //}
+
+    // shallow swim sfx
+    //if (Speed.x != 0 && ((StateMachine->GetCurState() == StSwim && !SwimUnderwaterCheck()) || (StateMachine->GetCurState() == StNormal && CollideCheck<Water>(Position))))
+    //{
+    //    if (!swimSurfaceLoopSfx.Playing)
+    //        swimSurfaceLoopSfx.Play(Sfxs.char_mad_water_move_shallow);
+    //}
+    //else
+    //    swimSurfaceLoopSfx.Stop();
+
+    wasOnGround = onGround;
 }
 
 void CPlayerScript::UpdateHair()
@@ -846,3 +852,22 @@ void CPlayerScript::DashEnd()
 {
 	printf("End Dash");
 }
+
+bool CPlayerScript::InControl()
+{
+    switch ((PLAYER_STATE)StateMachine->GetCurState())
+    {
+    case StIntroJump:
+    case StIntroWalk:
+    case StIntroWakeUp:
+    case StIntroRespawn:
+    case StDummy:
+    case StFrozen:
+    case StBirdDashTutorial:
+        return false;
+    default:
+        return true;
+    }
+}
+
+

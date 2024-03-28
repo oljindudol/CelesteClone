@@ -310,6 +310,7 @@ public:
 
 
 
+
 private:
     int MaxDashes = 2;
 
@@ -332,6 +333,64 @@ public:
     int DashUpdate();
     void DashEnd();
 #pragma endregion
+
+
+#pragma region getters&setters
+public:
+
+    bool InControl();
+    void SetMaxDashes(int _maxdashes) {MaxDashes = _maxdashes;}
+    int GetMaxDashes() { return MaxDashes; }
+
+    bool Ducking()
+    {
+        return Collider == duckHitbox || Collider == duckHurtbox;
+    }
+
+    void SetDucking(bool value)
+    {
+        if (value)
+        {
+            Collider = duckHitbox;
+            hurtbox = duckHurtbox;
+
+        }
+        else
+        {
+            Collider = normalHitbox;
+            hurtbox = normalHurtbox;
+        }
+    }
+
+
+    float CheckStamina()
+    {
+        if (wallBoostTimer > 0)
+            return Stamina + ClimbJumpCost;
+        else
+            return Stamina;
+    }
+
+    bool IsTired()
+    {
+        return CheckStamina() < ClimbTiredThreshold;
+    }
+
+    bool CanUnDuck()
+    {
+        if (!Ducking())
+            return true;
+
+        Vec4 Colliderwas = Collider;
+        Collider = normalHitbox;
+        bool ret = true;//!CollideCheck<Solid>();
+        Collider = Colliderwas;
+        return ret;
+    }
+
+#pragma endregion
+
+
 
 };
 
