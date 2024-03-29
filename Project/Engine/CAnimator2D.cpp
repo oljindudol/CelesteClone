@@ -62,23 +62,23 @@ void CAnimator2D::Clear()
 }
 
 void CAnimator2D::Create(const wstring& _strKey, Ptr<CTexture> _AltasTex, Vec2 _LeftTop
-	, Vec2 _vSliceSize, Vec2 _OffsetSize, Vec2 _Background, int _FrmCount, float _FPS)
+	, Vec2 _vSliceSize, Vec2 _OffsetSize, Vec2 _Background, int _FrmCount, float _Delay)
 {
 	CAnim* pAnim = FindAnim(_strKey);
 	assert(!pAnim);
 
 	pAnim = new CAnim;	
-	pAnim->Create(this, _AltasTex, _LeftTop, _vSliceSize, _OffsetSize, _Background, _FrmCount, _FPS);
+	pAnim->Create(this, _AltasTex, _LeftTop, _vSliceSize, _OffsetSize, _Background, _FrmCount, _Delay);
 	m_mapAnim.insert(make_pair(_strKey, pAnim));
 }
 
-void CAnimator2D::CreateFromFolder(const wstring& _strKey, const wstring& _Path, float _FPS, Vec2 _offset)
+void CAnimator2D::CreateFromFolder(const wstring& _strKey, const wstring& _Path, float _Delay, Vec2 _offset)
 {
 	CAnim* pAnim = FindAnim(_strKey);
 	assert(!pAnim);
 
 	pAnim = new CAnim;
-	pAnim->CreateFromFolder(this, _Path, _FPS , _offset);
+	pAnim->CreateFromFolder(this, _Path, _Delay, _offset);
 
 	m_mapAnim.insert(make_pair(_strKey, pAnim));
 }

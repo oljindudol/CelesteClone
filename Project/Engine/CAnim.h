@@ -9,7 +9,7 @@ struct tAnimFrm
     Vec2    vSlice;
     Vec2    vOffset;
     Vec2    vBackground;
-    float   Duration;
+    //float   Duration;
     Ptr<CTexture>       pFrameTex;
 
 };
@@ -25,9 +25,10 @@ private:
     vector<tAnimFrm>    m_vecFrm;
     int                 m_CurFrmIdx;
     bool                m_bFinish;
+    float               m_Duration;
 
     // -1 루프안함, 루프할 프레임
-    int            m_iRoop;
+    int                 m_iRoop;
     float               m_AccTime;
 
 public:
@@ -43,12 +44,17 @@ public:
         m_CurFrmIdx = m_iRoop;
         m_AccTime = 0.f;
     }
+    void SetDuration(float _Duration) {
+        m_Duration= _Duration;
+    }
+    float GetDuration() { return m_Duration; }
+
 
     static void Clear();
     void Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop
-        , Vec2 _vSliceSize, Vec2 _vOffset, Vec2 _vBackground, int _FrmCount, float _FPS);
+        , Vec2 _vSliceSize, Vec2 _vOffset, Vec2 _vBackground, int _FrmCount, float _Delay);
 
-    void CreateFromFolder(CAnimator2D* _Animator, const wstring& _Path , float _FPS , Vec2 _offset);
+    void CreateFromFolder(CAnimator2D* _Animator, const wstring& _Path , float _Delay, Vec2 _offset);
 
     void SaveToFile(FILE* _File);
     void LoadFromFile(FILE* _File);

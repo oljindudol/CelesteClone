@@ -41,7 +41,7 @@ void CAnim::finaltick()
 		return;
 	}
 
-	if (m_vecFrm[m_CurFrmIdx].Duration < m_AccTime)
+	if (m_Duration < m_AccTime)
 	{
 		++m_CurFrmIdx;
 		if (m_vecFrm.size() <= m_CurFrmIdx)
@@ -86,10 +86,11 @@ void CAnim::Clear()
 }
 
 void CAnim::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop
-	, Vec2 _vSliceSize, Vec2 _vOffset, Vec2 _vBackground, int _FrmCount, float _FPS)
+	, Vec2 _vSliceSize, Vec2 _vOffset, Vec2 _vBackground, int _FrmCount, float _Delay)
 {
 	m_Animator = _Animator;
 	m_AtlasTex = _Atlas;
+	m_Duration = _Delay;
 
 	for (int i = 0; i < _FrmCount; ++i)
 	{
@@ -100,7 +101,7 @@ void CAnim::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop
 		frm.vLeftTop = Vec2(_vLeftTop.x / (float)_Atlas->GetWidth() + frm.vSlice.x * i, _vLeftTop.y / (float)_Atlas->GetHeight());
 
 		frm.vOffset = Vec2(_vOffset.x / (float)_Atlas->GetWidth(), _vOffset.y / (float)_Atlas->GetHeight());
-		frm.Duration = 1.f / _FPS;
+		//frm.Duration = 1.f / _FPS;
 
 		frm.vBackground = Vec2(_vBackground.x / (float)_Atlas->GetWidth(), _vBackground.y / (float)_Atlas->GetHeight());
 	
@@ -109,10 +110,11 @@ void CAnim::Create(CAnimator2D* _Animator, Ptr<CTexture> _Atlas, Vec2 _vLeftTop
 	}
 }
 
-void CAnim::CreateFromFolder(CAnimator2D* _Animator, const wstring& _Path, float _FPS, Vec2 _offset)
+void CAnim::CreateFromFolder(CAnimator2D* _Animator, const wstring& _Path, float _Delay, Vec2 _offset)
 {
 	tAnimFrm frm = {};
 	m_Animator = _Animator;
+	m_Duration = _Delay;
 
 	string s;
 	s.assign(_Path.begin(),_Path.end());
@@ -134,7 +136,7 @@ void CAnim::CreateFromFolder(CAnimator2D* _Animator, const wstring& _Path, float
 		frm.vSlice = Vec2(1.f, 1.f);
 		frm.vLeftTop = Vec2(0.f,0.f);
 		frm.vOffset = _offset;
-		frm.Duration = 1.f / _FPS;
+		//frm.Duration = 1.f / _FPS;
 
 		frm.vBackground = Vec2(1.f,1.f);
 

@@ -140,14 +140,16 @@ void AnimEditor::render_update()
     //============duration============
     if (0 != vecFrm.size())
     {
-        float dur = vecFrm[m_curframe].Duration;
+        //float dur = vecFrm[m_curframe].Duration;
+        float dur = targetpair.second->GetDuration();
         ImGui::Text("Duration");
         ImGui::SameLine();
         const float minValue = 0.01f; // 최소값
         ImGui::SetNextItemWidth(100);
         ImGui::InputFloat("##Duration", &dur, 0.1f, 1.f, "%.2f");
         if (dur < minValue) dur = minValue;
-        vecFrm[m_curframe].Duration = dur;
+        //vecFrm[m_curframe].Duration = dur;
+        targetpair.second->SetDuration(dur);
     }
 
 
@@ -340,7 +342,7 @@ void AnimEditor::render_update()
         m_acctime += ImGui::GetIO().DeltaTime;
 
         // 현재 프레임의 Duration 이상 경과하면 다음 프레임으로 이동
-        if (m_acctime >= vecFrm[m_curframe].Duration)
+        if (m_acctime >= targetpair.second->GetDuration()) //vecFrm[m_curframe].Duration)
         {
             m_acctime = 0.0f;
 

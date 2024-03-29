@@ -157,7 +157,7 @@ void CPlayerScript::begin()
 	{
 		auto rel = std::filesystem::relative(f, OriginPath);
 
-		Animator2D()->CreateFromFolder(rel,f, 12.5 , Vec2(0.f, -0.375f) );
+		Animator2D()->CreateFromFolder(rel,f, 0.08f , Vec2(0.f, -0.375f) );
 	}
 
 	GetRenderComponent()->GetDynamicMaterial();
@@ -247,8 +247,8 @@ void CPlayerScript::tick()
 		}
 	}
 
-	//StateMachine->Update();
-	//Update();
+	StateMachine->Update();
+	Update();
 	//GetPhysics()->Update();
 
 	//static float f = 0.f;
@@ -376,13 +376,13 @@ void CPlayerScript::Update()
             dashAttackTimer -= DT;
 
         //Jump Grace
-        //if (onGround)
-        //{
-        //    dreamJump = false;
-        //    jumpGraceTimer = JumpGraceTime;
-        //}
-        //else if (jumpGraceTimer > 0)
-        //    jumpGraceTimer -= DT;
+        if (onGround)
+        {
+            //dreamJump = false;
+            jumpGraceTimer = JumpGraceTime;
+        }
+        else if (jumpGraceTimer > 0)
+            jumpGraceTimer -= DT;
 
         //refill Dashes
         {
@@ -605,7 +605,7 @@ void CPlayerScript::Update()
 
     //Physics
     float newx = Position.x + Speed.x * DT;
-    float newy = Position.y + Speed.y * DT;
+    float newy = Position.y - Speed.y * DT;
     if (StateMachine->GetCurState() != StDreamDash && StateMachine->GetCurState() != StAttract)
         Transform()->SetRelativePos(Vec3(newx, newy, V3Pos.z));
     //    MoveH(Speed.x * DT, onCollideH);
@@ -1065,7 +1065,7 @@ void CPlayerScript::DashEnd()
 void CPlayerScript::jump()
 {
     //Input.Jump.ConsumeBuffer();
-    jumpGraceTimer = 0;
+    jumpGraceTimer = 0.f;
     varJumpTimer = VarJumpTime;
     AutoJump = false;
     dashAttackTimer = 0;
@@ -1112,6 +1112,18 @@ bool CPlayerScript::InControl()
     default:
         return true;
     }
+}
+
+void CPlayerScript::SetGround()
+{
+    Speed.y = 0.f; 
+    onGround = true;
+    Animator2D()->SetMulScale(Vec2(1.f, 1.f));
+}
+
+void CPlayerScript::UnSetGround()
+{
+    onGround = false;
 }
 
 

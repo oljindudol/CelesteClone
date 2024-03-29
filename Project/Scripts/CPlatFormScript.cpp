@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "CPlatFormScript.h"
 
-#include "CPhysics.h"
+#include "CPlayerScript.h"
 
 CPlatFormScript::CPlatFormScript()
 	: CScript(PLATFORMSCRIPT)
@@ -63,22 +63,20 @@ void CPlatFormScript::BeginOverlap(CCollider2D* _Collider, CGameObject* _OtherOb
 	//위에서 올라왔으면, y스피드를 0으로 고정
 	if (plattop > otherprevbottom)// *yfix)
 	{
-		CPhysics* phy = nullptr;
 		auto vs = _OtherObj->GetScripts();
+		CPlayerScript* ps = nullptr;
 		for (auto& s : vs)
 		{
-			auto pp = s->GetPhysics();
-			if (nullptr != pp)
+			ps = dynamic_cast<CPlayerScript*>(s);
+			if (nullptr != ps)
 			{
-				phy = pp;
+				break;
 			}
 		}
 
-		if (nullptr != phy)
+		if (nullptr != ps)
 		{
-			Vec3 v = phy->GetVelocity();
-			phy->SetVelocity(Vec3(v.x, 0.f,0.f));
-			phy->UseGravity(false);
+			ps->SetGround();
 		}
 	}
 }
@@ -137,22 +135,20 @@ void CPlatFormScript::Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CC
 
 void CPlatFormScript::EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
 {
-	CPhysics* phy = nullptr;
 	auto vs = _OtherObj->GetScripts();
+	CPlayerScript* ps = nullptr;
 	for (auto& s : vs)
 	{
-		auto pp = s->GetPhysics();
-		if (nullptr != pp)
+		ps = dynamic_cast<CPlayerScript*>(s);
+		if (nullptr != ps)
 		{
-			phy = pp;
+			break;
 		}
 	}
 
-	if (nullptr != phy)
+	if (nullptr != ps)
 	{
-		//Vec3 v = phy->GetVelocity();
-		//phy->SetVelocity(Vec3(v.x, 0.f, 0.f));
-		phy->UseGravity(true);
+		ps->UnSetGround();
 	}
 }
 
