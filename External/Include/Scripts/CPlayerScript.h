@@ -327,6 +327,7 @@ public:
     void DashBegin();
     int DashUpdate();
     void DashEnd();
+    void jump();
 
     //Vec2 LiftBoost()
     //{
@@ -411,6 +412,22 @@ public:
         bool ret = true;//!CollideCheck<Solid>();
         Collider = Colliderwas;
         return ret;
+    }
+
+    void CreateWallSlideParticles(int _val) {  };
+    bool LaunchedBoostCheck() {
+        launched = false;
+        return false;
+        //if (LiftBoost.LengthSquared() >= LaunchedBoostCheckSpeedSq && Speed.LengthSquared() >= LaunchedJumpCheckSpeedSq)
+        //{
+        //    launched = true;
+        //    return true;
+        //}
+        //else
+        //{
+        //    launched = false;
+        //    return false;
+        //}
     }
 
 #pragma endregion

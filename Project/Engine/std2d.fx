@@ -25,7 +25,10 @@ VS_OUT VS_Std2D(VS_IN _in)
     VS_OUT output = (VS_OUT) 0.f;
     
     _in.vPos = _in.vPos - float3(g_vOffset, 0.f);
-    _in.vPos = _in.vPos * g_vMul.z;
+    if (g_UseAnim2D)
+    {
+        _in.vPos = _in.vPos * g_vMul.z;
+    }
     
     output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
     output.vColor = _in.vColor;

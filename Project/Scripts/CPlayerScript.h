@@ -327,7 +327,7 @@ public:
     void DashBegin();
     int DashUpdate();
     void DashEnd();
-    void Jump(bool particles = true, bool playSfx = true);
+    void jump();
 
     //Vec2 LiftBoost()
     //{

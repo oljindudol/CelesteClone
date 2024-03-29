@@ -247,8 +247,8 @@ void CPlayerScript::tick()
 		}
 	}
 
-	StateMachine->Update();
-	Update();
+	//StateMachine->Update();
+	//Update();
 	//GetPhysics()->Update();
 
 	//static float f = 0.f;
@@ -815,7 +815,7 @@ int CPlayerScript::NormalUpdate()
 
     //if (Holding == null)
     //{
-        if (GRABKEY && !IsTired && !Ducking)
+        if (GRABKEY && !IsTired() && !Ducking())
         {
             //Grabbing Holdables
             //foreach(Holdable hold in Scene.Tracker.GetComponents<Holdable>())
@@ -903,7 +903,7 @@ int CPlayerScript::NormalUpdate()
     //}
 
     //Running and Friction
-        if (Ducking && onGround)
+        if (Ducking() && onGround)
             Speed.x = Approach(Speed.x, 0, DuckFriction * DT);
         else
         {
@@ -941,8 +941,10 @@ int CPlayerScript::NormalUpdate()
                     if (Speed.y >= half)
                     {
                         float spriteLerp = min(1.f, (Speed.y - half) / (fmf - half));
-                        Sprite.Scale.X = Lerp(1f, .5f, spriteLerp);
-                        Sprite.Scale.Y = Lerp(1f, 1.5f, spriteLerp);
+                        float lx = Lerp(1.f, .5f, spriteLerp);
+                        float ly = Lerp(1.f, 1.5f, spriteLerp);
+
+                        Animator2D()->SetMulScale(Vec2(lx, ly));
                     }
                 }
                 else
@@ -997,7 +999,7 @@ int CPlayerScript::NormalUpdate()
                 //Water water = nullptr;
                 if (jumpGraceTimer > 0)
                 {
-                    Jump();
+                    jump();
                 }
                 //else if (CanUnDuck())
                 //{
@@ -1060,7 +1062,7 @@ void CPlayerScript::DashEnd()
 	printf("End Dash");
 }
 
-void CPlayerScript::Jump(bool particles, bool playSfx)
+void CPlayerScript::jump()
 {
     //Input.Jump.ConsumeBuffer();
     jumpGraceTimer = 0;
@@ -1087,8 +1089,7 @@ void CPlayerScript::Jump(bool particles, bool playSfx)
     //    else
     //        Play(Sfxs.char_mad_jump);
     //}
-
-    Sprite.Scale = new Vector2(.6f, 1.4f);
+    Animator2D()->SetMulScale(Vec2(.6f, 1.4f));
     //if (particles)
     //    Dust.Burst(BottomCenter, Calc.Up, 4);
 

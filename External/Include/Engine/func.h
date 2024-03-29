@@ -125,3 +125,9 @@ std::vector<std::filesystem::path> getFoldersFromDirectory(const std::string& pa
 std::vector<std::filesystem::path> getImagesFromDirectory(const std::string& path);
 
 float Approach(float val, float target, float maxMove);
+
+
+int Sign(float _val);
+
+float Lerp(float A, float B, float Alpha);
+
