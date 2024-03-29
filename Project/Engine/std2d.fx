@@ -27,7 +27,7 @@ VS_OUT VS_Std2D(VS_IN _in)
     _in.vPos = _in.vPos - float3(g_vOffset, 0.f);
     if (g_UseAnim2D)
     {
-        _in.vPos = _in.vPos * g_vMul.z;
+        _in.vPos = _in.vPos * g_vMul;
     }
     
     output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);

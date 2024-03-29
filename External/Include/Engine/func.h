@@ -126,7 +126,6 @@ std::vector<std::filesystem::path> getImagesFromDirectory(const std::string& pat
 
 float Approach(float val, float target, float maxMove);
 
-
 int Sign(float _val);
 
 float Lerp(float A, float B, float Alpha);
