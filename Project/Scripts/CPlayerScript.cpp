@@ -149,14 +149,11 @@ CPlayerScript::CPlayerScript()
 
 }
 
-
-
 CPlayerScript::~CPlayerScript()
 {
 	delete StateMachine;
     delete Sprite;
 }
-
 
 void CPlayerScript::begin()
 {
@@ -270,7 +267,6 @@ void CPlayerScript::tick()
 	//GamePlayStatic::DrawDebugCircle(Vec3(0.f, 0.f, 0.f), 200.f, Vec3(0.f, 1.f, 1.f), true);
 }
 
-
 void CPlayerScript::UpdateHair()
 {
 }
@@ -278,7 +274,6 @@ void CPlayerScript::UpdateHair()
 void CPlayerScript::UpdateRender()
 {
 }
-
 
 void CPlayerScript::StartHair()
 {
@@ -313,193 +308,6 @@ void CPlayerScript::LoadFromFile(FILE* _File)
 	//fread(&m_Speed, sizeof(float), 1, _File);
 }
 
-
-void CPlayerScript::UpdateSprite()
-{
-    auto SpriteScale = Animator2D()->GetMulScale();
-
-    //Tween
-    SpriteScale.x = Approach(SpriteScale.x, 1.f, 1.75f * DT);
-    SpriteScale.y = Approach(SpriteScale.y, 1.f, 1.75f * DT);
-
-    Animator2D()->SetMulScale(SpriteScale);
-
-    //Animation
-    if (InControl() && Sprite->CurrentAnimationID != Sprite->Throw && StateMachine->GetCurState() != StTempleFall &&
-        StateMachine->GetCurState() != StReflectionFall && StateMachine->GetCurState() != StStarFly && StateMachine->GetCurState() != StCassetteFly)
-    {
-        if (StateMachine->GetCurState() == StAttract)
-        {
-            Sprite->Play(Sprite->FallFast);
-        }
-        else if (StateMachine->GetCurState() == StSummitLaunch)
-        {
-            Sprite->Play(Sprite->Launch);
-        }
-        // picking up
-        else if (StateMachine->GetCurState() == StPickup)
-        {
-            Sprite->Play(Sprite->PickUp);
-        }
-        // swiming
-        else if (StateMachine->GetCurState() == StSwim)
-        {
-            if (inputy > 0)
-                Sprite->Play(Sprite->SwimDown);
-            else if (inputy < 0)
-                Sprite->Play(Sprite->SwimUp);
-            else
-                Sprite->Play(Sprite->SwimIdle);
-        }
-        // dream dashing
-        else if (StateMachine->GetCurState() == StDreamDash)
-        {
-            if (Sprite->CurrentAnimationID != Sprite->DreamDashIn && Sprite->CurrentAnimationID != Sprite->DreamDashLoop)
-                Sprite->Play(Sprite->DreamDashIn);
-        }
-        else if (Sprite->DreamDashing() && Sprite->LastAnimationID != Sprite->DreamDashOut)
-        {
-            Sprite->Play(Sprite->DreamDashOut);
-        }
-        else if (Sprite->CurrentAnimationID != Sprite->DreamDashOut)
-        {
-            //// during dash
-            //if (DashAttacking())
-            //{
-            //    if (onGround && DashDir.Y == 0 && !Ducking && Speed.X != 0 && moveX == -Math.Sign(Speed.X))
-            //    {
-            //        if (Scene.OnInterval(.02f))
-            //            Dust.Burst(Position, Calc.Up, 1);
-            //        Sprite->Play(Sprite->Skid);
-            //    }
-            //    else
-            //        Sprite->Play(Sprite->Dash);
-            //}
-            // climbing
-            if (StateMachine->GetCurState() == StClimb)
-            {
-                if (lastClimbMove < 0)
-                    Sprite->Play(Sprite->ClimbUp);
-                else if (lastClimbMove > 0)
-                    Sprite->Play(Sprite->WallSlide);
-                //else if (!CollideCheck<Solid>(Position + new Vector2((int)Facing, 6)))
-                //    Sprite->Play(Sprite->Dangling);
-                else if (inputx == -(int)Facing)
-                {
-                    if (Sprite->CurrentAnimationID != Sprite->ClimbLookBack)
-                        Sprite->Play(Sprite->ClimbLookBackStart);
-                }
-                else
-                    Sprite->Play(Sprite->WallSlide);
-            }
-            // ducking
-            else if (Ducking() && StateMachine->GetCurState() == StNormal)
-            {
-                Sprite->Play(Sprite->Duck);
-            }
-            else if (onGround)
-            {
-                fastJump = false;
-                //if (Holding == null && moveX != 0 && CollideCheck<Solid>(Position + Vector2.UnitX * moveX))
-                //{
-                //    Sprite->Play("push");
-                //}
-                if (abs(Speed.x) <= RunAccel / 40.f && moveX == 0)
-                {
-                    if (Holding != null)
-                    {
-                        Sprite->Play(Sprite->IdleCarry);
-                    }
-                    //else if (!Scene.CollideCheck<Solid>(Position + new Vector2((int)Facing * 1, 2)) && !Scene.CollideCheck<Solid>(Position + new Vector2((int)Facing * 4, 2)) && !CollideCheck<JumpThru>(Position + new Vector2((int)Facing * 4, 2)))
-                    //{
-                    //    Sprite->Play(Sprite->FrontEdge);
-                    //}
-                    //else if (!Scene.CollideCheck<Solid>(Position + new Vector2(-(int)Facing * 1, 2)) && !Scene.CollideCheck<Solid>(Position + new Vector2(-(int)Facing * 4, 2)) && !CollideCheck<JumpThru>(Position + new Vector2(-(int)Facing * 4, 2)))
-                    //{
-                    //    Sprite->Play("edgeBack");
-                    //}
-                    //else if (Input.MoveY.Value == -1)
-                    //{
-                    //    if (Sprite->LastAnimationID != Sprite->LookUp)
-                    //        Sprite->Play(Sprite->LookUp);
-                    //}
-                    else
-                    {
-                        if (Sprite->CurrentAnimationID != "" && !(string::npos != Sprite->CurrentAnimationID.find("idle")) )
-                            Sprite->Play(Sprite->Idle);
-                    }
-                }
-                else if (Holding != null)
-                {
-                    Sprite->Play(Sprite->RunCarry);
-                }
-                else if (Sign(Speed.x) == -moveX && moveX != 0)
-                {
-                    if (abs(Speed.x) > MaxRun)
-                        Sprite->Play(Sprite->Skid);
-                    else if (Sprite->CurrentAnimationID != Sprite->Skid)
-                        Sprite->Play(Sprite->Flip);
-                }
-                else if (windDirection.x != 0 && windTimeout > 0.f && (int)Facing == -Sign(windDirection.x))
-                {
-                    Sprite->Play(Sprite->RunWind);
-                }
-                else if (!Sprite->Running())
-                {
-                    if (abs(Speed.x) < MaxRun * .5f)
-                        Sprite->Play(Sprite->RunSlow);
-                    else
-                        Sprite->Play(Sprite->RunFast);
-                }
-            }
-            // wall sliding
-            else if (wallSlideDir != 0 && Holding == nullptr)
-            {
-                Sprite->Play(Sprite->WallSlide);
-            }
-            // jumping up
-            else if (Speed.y < 0)
-            {
-                if (Holding != nullptr)
-                {
-                    Sprite->Play(Sprite->JumpCarry);
-                }
-                else if (fastJump || abs(Speed.x) > MaxRun)
-                {
-                    fastJump = true;
-                    Sprite->Play(Sprite->JumpFast);
-                }
-                else
-                    Sprite->Play(Sprite->JumpSlow);
-            }
-            // falling down
-            else
-            {
-                if (Holding != nullptr)
-                {
-                    Sprite->Play(Sprite->FallCarry);
-                }
-                else if (fastJump || Speed.y >= MaxFall) //|| level.InSpace)
-                {
-                    fastJump = true;
-                    if (Sprite->LastAnimationID != Sprite->FallFast)
-                        Sprite->Play(Sprite->FallFast);
-                }
-                else
-                    Sprite->Play(Sprite->FallSlow);
-            }
-        }
-    }
-
-
-    //if (StateMachine->GetCurState() != StDummy)
-    //{
-    //    if (level.InSpace)
-    //        Sprite->Rate = .5f;
-    //    else
-    //        Sprite->Rate = 1.f;
-    //}
-}
 void CPlayerScript::Update()
 {
     inputx = 0;
@@ -1018,6 +826,252 @@ void CPlayerScript::Update()
 
     wasOnGround = onGround;
 }
+void CPlayerScript::UpdateSprite()
+{
+    auto SpriteScale = Animator2D()->GetMulScale();
+
+    //Tween
+    SpriteScale.x = Approach(SpriteScale.x, 1.f, 1.75f * DT);
+    SpriteScale.y = Approach(SpriteScale.y, 1.f, 1.75f * DT);
+
+    Animator2D()->SetMulScale(SpriteScale);
+
+    //Animation
+    if (InControl() && Sprite->CurrentAnimationID != Sprite->Throw && StateMachine->GetCurState() != StTempleFall &&
+        StateMachine->GetCurState() != StReflectionFall && StateMachine->GetCurState() != StStarFly && StateMachine->GetCurState() != StCassetteFly)
+    {
+        if (StateMachine->GetCurState() == StAttract)
+        {
+            Sprite->Play(Sprite->FallFast);
+        }
+        else if (StateMachine->GetCurState() == StSummitLaunch)
+        {
+            Sprite->Play(Sprite->Launch);
+        }
+        // picking up
+        else if (StateMachine->GetCurState() == StPickup)
+        {
+            Sprite->Play(Sprite->PickUp);
+        }
+        // swiming
+        else if (StateMachine->GetCurState() == StSwim)
+        {
+            if (inputy > 0)
+                Sprite->Play(Sprite->SwimDown);
+            else if (inputy < 0)
+                Sprite->Play(Sprite->SwimUp);
+            else
+                Sprite->Play(Sprite->SwimIdle);
+        }
+        // dream dashing
+        else if (StateMachine->GetCurState() == StDreamDash)
+        {
+            if (Sprite->CurrentAnimationID != Sprite->DreamDashIn && Sprite->CurrentAnimationID != Sprite->DreamDashLoop)
+                Sprite->Play(Sprite->DreamDashIn);
+        }
+        else if (Sprite->DreamDashing() && Sprite->LastAnimationID != Sprite->DreamDashOut)
+        {
+            Sprite->Play(Sprite->DreamDashOut);
+        }
+        else if (Sprite->CurrentAnimationID != Sprite->DreamDashOut)
+        {
+            //// during dash
+            //if (DashAttacking())
+            //{
+            //    if (onGround && DashDir.Y == 0 && !Ducking && Speed.X != 0 && moveX == -Math.Sign(Speed.X))
+            //    {
+            //        if (Scene.OnInterval(.02f))
+            //            Dust.Burst(Position, Calc.Up, 1);
+            //        Sprite->Play(Sprite->Skid);
+            //    }
+            //    else
+            //        Sprite->Play(Sprite->Dash);
+            //}
+            // climbing
+            if (StateMachine->GetCurState() == StClimb)
+            {
+                if (lastClimbMove < 0)
+                    Sprite->Play(Sprite->ClimbUp);
+                else if (lastClimbMove > 0)
+                    Sprite->Play(Sprite->WallSlide);
+                //else if (!CollideCheck<Solid>(Position + new Vector2((int)Facing, 6)))
+                //    Sprite->Play(Sprite->Dangling);
+                else if (inputx == -(int)Facing)
+                {
+                    if (Sprite->CurrentAnimationID != Sprite->ClimbLookBack)
+                        Sprite->Play(Sprite->ClimbLookBackStart);
+                }
+                else
+                    Sprite->Play(Sprite->WallSlide);
+            }
+            // ducking
+            else if (Ducking() && StateMachine->GetCurState() == StNormal)
+            {
+                Sprite->Play(Sprite->Duck);
+            }
+            else if (onGround)
+            {
+                fastJump = false;
+                //if (Holding == null && moveX != 0 && CollideCheck<Solid>(Position + Vector2.UnitX * moveX))
+                //{
+                //    Sprite->Play("push");
+                //}
+                if (abs(Speed.x) <= RunAccel / 40.f && moveX == 0)
+                {
+                    if (Holding != null)
+                    {
+                        Sprite->Play(Sprite->IdleCarry);
+                    }
+                    //else if (!Scene.CollideCheck<Solid>(Position + new Vector2((int)Facing * 1, 2)) && !Scene.CollideCheck<Solid>(Position + new Vector2((int)Facing * 4, 2)) && !CollideCheck<JumpThru>(Position + new Vector2((int)Facing * 4, 2)))
+                    //{
+                    //    Sprite->Play(Sprite->FrontEdge);
+                    //}
+                    //else if (!Scene.CollideCheck<Solid>(Position + new Vector2(-(int)Facing * 1, 2)) && !Scene.CollideCheck<Solid>(Position + new Vector2(-(int)Facing * 4, 2)) && !CollideCheck<JumpThru>(Position + new Vector2(-(int)Facing * 4, 2)))
+                    //{
+                    //    Sprite->Play("edgeBack");
+                    //}
+                    //else if (Input.MoveY.Value == -1)
+                    //{
+                    //    if (Sprite->LastAnimationID != Sprite->LookUp)
+                    //        Sprite->Play(Sprite->LookUp);
+                    //}
+                    else
+                    {
+                        if (Sprite->CurrentAnimationID != "" && !(string::npos != Sprite->CurrentAnimationID.find("idle")) )
+                            Sprite->Play(Sprite->Idle);
+                    }
+                }
+                else if (Holding != null)
+                {
+                    Sprite->Play(Sprite->RunCarry);
+                }
+                else if (Sign(Speed.x) == -moveX && moveX != 0)
+                {
+                    if (abs(Speed.x) > MaxRun)
+                        Sprite->Play(Sprite->Skid);
+                    else if (Sprite->CurrentAnimationID != Sprite->Skid)
+                        Sprite->Play(Sprite->Flip);
+                }
+                else if (windDirection.x != 0 && windTimeout > 0.f && (int)Facing == -Sign(windDirection.x))
+                {
+                    Sprite->Play(Sprite->RunWind);
+                }
+                else if (!Sprite->Running())
+                {
+                    if (abs(Speed.x) < MaxRun * .5f)
+                        Sprite->Play(Sprite->RunSlow);
+                    else
+                        Sprite->Play(Sprite->RunFast);
+                }
+            }
+            // wall sliding
+            else if (wallSlideDir != 0 && Holding == nullptr)
+            {
+                Sprite->Play(Sprite->WallSlide);
+            }
+            // jumping up
+            else if (Speed.y < 0)
+            {
+                if (Holding != nullptr)
+                {
+                    Sprite->Play(Sprite->JumpCarry);
+                }
+                else if (fastJump || abs(Speed.x) > MaxRun)
+                {
+                    fastJump = true;
+                    Sprite->Play(Sprite->JumpFast);
+                }
+                else
+                    Sprite->Play(Sprite->JumpSlow);
+            }
+            // falling down
+            else
+            {
+                if (Holding != nullptr)
+                {
+                    Sprite->Play(Sprite->FallCarry);
+                }
+                else if (fastJump || Speed.y >= MaxFall) //|| level.InSpace)
+                {
+                    fastJump = true;
+                    if (Sprite->LastAnimationID != Sprite->FallFast)
+                        Sprite->Play(Sprite->FallFast);
+                }
+                else
+                    Sprite->Play(Sprite->FallSlow);
+            }
+        }
+    }
+
+
+    //if (StateMachine->GetCurState() != StDummy)
+    //{
+    //    if (level.InSpace)
+    //        Sprite->Rate = .5f;
+    //    else
+    //        Sprite->Rate = 1.f;
+    //}
+}
+
+void CPlayerScript::SetGround()
+{
+    Speed.y = 0.f;
+    onGround = true;
+    Animator2D()->SetMulScale(Vec2(1.f, 1.f));
+}
+void CPlayerScript::UnSetGround()
+{
+    onGround = false;
+}
+bool CPlayerScript::InControl()
+{
+    switch ((PLAYER_STATE)StateMachine->GetCurState())
+    {
+    case StIntroJump:
+    case StIntroWalk:
+    case StIntroWakeUp:
+    case StIntroRespawn:
+    case StDummy:
+    case StFrozen:
+    case StBirdDashTutorial:
+        return false;
+    default:
+        return true;
+    }
+}
+void CPlayerScript::jump()
+{
+    //Input.Jump.ConsumeBuffer();
+    jumpGraceTimer = 0.f;
+    varJumpTimer = VarJumpTime;
+    AutoJump = false;
+    dashAttackTimer = 0;
+    wallSlideTimer = WallSlideTime;
+    wallBoostTimer = 0;
+
+    Speed.x += JumpHBoost * moveX;
+    Speed.y = JumpSpeed;
+    //Speed += LiftBoost;
+    varJumpSpeed = Speed.y;
+
+    LaunchedBoostCheck();
+
+    //if (playSfx)
+    //{
+    //    if (launched)
+    //        Play(Sfxs.char_mad_jump_assisted);
+
+    //    if (dreamJump)
+    //        Play(Sfxs.char_mad_jump_dreamblock);
+    //    else
+    //        Play(Sfxs.char_mad_jump);
+    //}
+    Animator2D()->SetMulScale(Vec2(.6f, 1.4f));
+    //if (particles)
+    //    Dust.Burst(BottomCenter, Calc.Up, 4);
+
+    //SaveData.Instance.TotalJumps++;
+}
 int CPlayerScript::NormalUpdate()
 {
     //Use Lift Boost if walked off platform
@@ -1244,7 +1298,6 @@ int CPlayerScript::NormalUpdate()
      //}
     return StNormal;
 }
-
 void CPlayerScript::NormalBegin()
 {
     maxFall = MaxFall;
@@ -1255,6 +1308,7 @@ void CPlayerScript::NormalEnd()
     wallSpeedRetentionTimer = 0;
     hopWaitX = 0;
 }
+
 void CPlayerScript::CallDashEvents()
 {
     if (!calledDashEvents)
@@ -1304,42 +1358,6 @@ void CPlayerScript::CallDashEvents()
             //CurrentBooster = null;
         //}
     }
-}
-
-void CPlayerScript::DashBegin()
-{
-    DashCoroutineTimer = DashTime;
-    DashCoroutineCnt = 0;
-    calledDashEvents = false;
-    dashStartedOnGround = onGround;
-    launched = false;
-
-    //if (Engine.TimeRate > 0.25f)
-        //Celeste.Freeze(.05f);
-    dashCooldownTimer = DashCooldown;
-    dashRefillCooldownTimer = DashRefillCooldown;
-    StartedDashing = true;
-    wallSlideTimer = WallSlideTime;
-    dashTrailTimer = 0;
-
-    //level.Displacement.AddBurst(Center, .4f, 8, 64, .5f, Ease.QuadOut, Ease.QuadOut);
-
-    //Input.Rumble(RumbleStrength.Strong, RumbleLength.Medium);
-
-    dashAttackTimer = DashAttackTime;
-    beforeDashSpeed = Speed;
-    Speed = Vec2(0.f,0.f);
-    DashDir = Vec2(0.f, 0.f);
-
-    if (!onGround && Ducking() && CanUnDuck())
-        SetDucking(false);
-}
-void CPlayerScript::DashEnd()
-{
-    DashCoroutineTimer = 0.f;
-    DashCoroutineCnt = 0;
-    CallDashEvents();
-    demoDashed = false;
 }
 void CPlayerScript::CreateTrail()
 {
@@ -1516,72 +1534,42 @@ int CPlayerScript::DashUpdate()
     //    level.ParticlesFG.Emit(wasDashB ? P_DashB : P_DashA, Center + Calc.Random.Range(Vector2.One * -2, Vector2.One * 2), DashDir.Angle());
     return StDash;
 }
-
-
-void CPlayerScript::jump()
+void CPlayerScript::DashBegin()
 {
-    //Input.Jump.ConsumeBuffer();
-    jumpGraceTimer = 0.f;
-    varJumpTimer = VarJumpTime;
-    AutoJump = false;
-    dashAttackTimer = 0;
+    DashCoroutineTimer = DashTime;
+    DashCoroutineCnt = 0;
+    calledDashEvents = false;
+    dashStartedOnGround = onGround;
+    launched = false;
+
+    //if (Engine.TimeRate > 0.25f)
+        //Celeste.Freeze(.05f);
+    dashCooldownTimer = DashCooldown;
+    dashRefillCooldownTimer = DashRefillCooldown;
+    StartedDashing = true;
     wallSlideTimer = WallSlideTime;
-    wallBoostTimer = 0;
+    dashTrailTimer = 0;
 
-    Speed.x += JumpHBoost * moveX;
-    Speed.y = JumpSpeed;
-    //Speed += LiftBoost;
-    varJumpSpeed = Speed.y;
+    //level.Displacement.AddBurst(Center, .4f, 8, 64, .5f, Ease.QuadOut, Ease.QuadOut);
 
-    LaunchedBoostCheck();
+    //Input.Rumble(RumbleStrength.Strong, RumbleLength.Medium);
 
-    //if (playSfx)
-    //{
-    //    if (launched)
-    //        Play(Sfxs.char_mad_jump_assisted);
+    dashAttackTimer = DashAttackTime;
+    beforeDashSpeed = Speed;
+    Speed = Vec2(0.f,0.f);
+    DashDir = Vec2(0.f, 0.f);
 
-    //    if (dreamJump)
-    //        Play(Sfxs.char_mad_jump_dreamblock);
-    //    else
-    //        Play(Sfxs.char_mad_jump);
-    //}
-    Animator2D()->SetMulScale(Vec2(.6f, 1.4f));
-    //if (particles)
-    //    Dust.Burst(BottomCenter, Calc.Up, 4);
-
-    //SaveData.Instance.TotalJumps++;
+    if (!onGround && Ducking() && CanUnDuck())
+        SetDucking(false);
 }
-
-
-
-
-bool CPlayerScript::InControl()
+void CPlayerScript::DashEnd()
 {
-    switch ((PLAYER_STATE)StateMachine->GetCurState())
-    {
-    case StIntroJump:
-    case StIntroWalk:
-    case StIntroWakeUp:
-    case StIntroRespawn:
-    case StDummy:
-    case StFrozen:
-    case StBirdDashTutorial:
-        return false;
-    default:
-        return true;
-    }
+    DashCoroutineTimer = 0.f;
+    DashCoroutineCnt = 0;
+    CallDashEvents();
+    demoDashed = false;
 }
 
-void CPlayerScript::SetGround()
-{
-    Speed.y = 0.f; 
-    onGround = true;
-    Animator2D()->SetMulScale(Vec2(1.f, 1.f));
-}
 
-void CPlayerScript::UnSetGround()
-{
-    onGround = false;
-}
 
 
