@@ -52,8 +52,8 @@ CPlayerScript::CPlayerScript()
 	//onCollideV = OnCollideV;
 
 	StateMachine = new CCustomStateMachine<CPlayerScript>(this , (int)PLAYER_STATE::StEND);
-	StateMachine->SetCallbacks( 0,"StNormal",&CPlayerScript::NormalUpdate, &CPlayerScript::NormalBegin, &CPlayerScript::NormalEnd,nullptr);
-	StateMachine->SetCallbacks(1, "StUpdate", &CPlayerScript::DashUpdate, &CPlayerScript::DashBegin, &CPlayerScript::DashEnd, nullptr);
+	StateMachine->SetCallbacks( StNormal,ToString( magic_enum::enum_name(StNormal)), &CPlayerScript::NormalUpdate, &CPlayerScript::NormalBegin, &CPlayerScript::NormalEnd, nullptr);
+	StateMachine->SetCallbacks(StDash, ToString(magic_enum::enum_name(StDash)), &CPlayerScript::DashUpdate, &CPlayerScript::DashBegin, &CPlayerScript::DashEnd, nullptr);
 
 	// other stuff
 	// Leader = 아이템따라오는것 , wind,light 
@@ -1252,23 +1252,161 @@ void CPlayerScript::NormalEnd()
     wallSpeedRetentionTimer = 0;
     hopWaitX = 0;
 }
+void CPlayerScript::CallDashEvents()
+{
+    if (!calledDashEvents)
+    {
+        calledDashEvents = true;
+        //if (CurrentBooster == null)
+        //{
+            // Increment Counter
+            //SaveData.Instance.TotalDashes++;
+            //level.Session.Dashes++;
+            //Stats.Increment(Stat.DASHES);
+
+            // Sfxs
+            //{
+            //    var rightDashSound = DashDir.Y < 0 || (DashDir.Y == 0 && DashDir.X > 0);
+            //    if (DashDir == Vector2.Zero)
+            //        rightDashSound = Facing == Facings.Right;
+
+            //    if (rightDashSound)
+            //    {
+            //        if (wasDashB)
+            //            Play(Sfxs.char_mad_dash_pink_right);
+            //        else
+            //            Play(Sfxs.char_mad_dash_red_right);
+            //    }
+            //    else
+            //    {
+            //        if (wasDashB)
+            //            Play(Sfxs.char_mad_dash_pink_left);
+            //        else
+            //            Play(Sfxs.char_mad_dash_red_left);
+            //    }
+
+            //    if (SwimCheck())
+            //        Play(Sfxs.char_mad_water_dash_gen);
+            //}
+
+            //Dash Listeners
+            //foreach(DashListener dl in Scene.Tracker.GetComponents<DashListener>())
+            //    if (dl.OnDash != null)
+            //        dl.OnDash(DashDir);
+        //}
+        //else
+        //{
+            //Booster
+            //CurrentBooster.PlayerBoosted(this, DashDir);
+            //CurrentBooster = null;
+        //}
+    }
+}
 void CPlayerScript::DashBegin()
 {
-	printf("start Dash");
-}
-int CPlayerScript::DashUpdate()
-{
-    if (RIGHTKEY)
-        return 1;
-    if (LEFTKEY)
-        return 1;
+    calledDashEvents = false;
+    dashStartedOnGround = onGround;
+    launched = false;
 
-    return 0;
+    //if (Engine.TimeRate > 0.25f)
+        //Celeste.Freeze(.05f);
+    dashCooldownTimer = DashCooldown;
+    dashRefillCooldownTimer = DashRefillCooldown;
+    StartedDashing = true;
+    wallSlideTimer = WallSlideTime;
+    dashTrailTimer = 0;
+
+    //level.Displacement.AddBurst(Center, .4f, 8, 64, .5f, Ease.QuadOut, Ease.QuadOut);
+
+    //Input.Rumble(RumbleStrength.Strong, RumbleLength.Medium);
+
+    dashAttackTimer = DashAttackTime;
+    beforeDashSpeed = Speed;
+    Speed = Vec2(0.f,0.f);
+    DashDir = Vec2(0.f, 0.f);
+
+    if (!onGround && Ducking() && CanUnDuck())
+        SetDucking(false);
 }
 void CPlayerScript::DashEnd()
 {
-	printf("End Dash");
+    CallDashEvents();
+    demoDashed = false;
 }
+int CPlayerScript::DashUpdate()
+{
+    StartedDashing = false;
+
+    //Trail
+    if (dashTrailTimer > 0)
+    {
+        dashTrailTimer -= Engine.DeltaTime;
+        if (dashTrailTimer <= 0)
+            CreateTrail();
+    }
+
+    //Grab Holdables
+    if (Holding == null && Input.Grab.Check && !IsTired && CanUnDuck)
+    {
+        //Grabbing Holdables
+        foreach(Holdable hold in Scene.Tracker.GetComponents<Holdable>())
+            if (hold.Check(this) && Pickup(hold))
+                return StPickup;
+    }
+
+    if (DashDir.Y == 0)
+    {
+        //JumpThru Correction
+        foreach(JumpThru jt in Scene.Tracker.GetEntities<JumpThru>())
+            if (CollideCheck(jt) && Bottom - jt.Top <= DashHJumpThruNudge)
+                MoveVExact((int)(jt.Top - Bottom));
+
+        //Super Jump
+        if (CanUnDuck && Input.Jump.Pressed && jumpGraceTimer > 0)
+        {
+            SuperJump();
+            return StNormal;
+        }
+    }
+
+    if (DashDir.X == 0 && DashDir.Y == -1)
+    {
+        if (Input.Jump.Pressed && CanUnDuck)
+        {
+            if (WallJumpCheck(1))
+            {
+                SuperWallJump(-1);
+                return StNormal;
+            }
+            else if (WallJumpCheck(-1))
+            {
+                SuperWallJump(1);
+                return StNormal;
+            }
+        }
+    }
+    else
+    {
+        if (Input.Jump.Pressed && CanUnDuck)
+        {
+            if (WallJumpCheck(1))
+            {
+                WallJump(-1);
+                return StNormal;
+            }
+            else if (WallJumpCheck(-1))
+            {
+                WallJump(1);
+                return StNormal;
+            }
+        }
+    }
+
+    if (Speed != Vector2.Zero && level.OnInterval(0.02f))
+        level.ParticlesFG.Emit(wasDashB ? P_DashB : P_DashA, Center + Calc.Random.Range(Vector2.One * -2, Vector2.One * 2), DashDir.Angle());
+    return StDash;
+}
+
 
 void CPlayerScript::jump()
 {
@@ -1303,6 +1441,8 @@ void CPlayerScript::jump()
 
     //SaveData.Instance.TotalJumps++;
 }
+
+
 
 
 bool CPlayerScript::InControl()

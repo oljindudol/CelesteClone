@@ -327,6 +327,10 @@ public:
     int DashUpdate();
     void DashEnd();
     void jump();
+    bool StartedDashing= false;
+    Vec2 beforeDashSpeed;
+    bool demoDashed = false;
+    void CallDashEvents();
 
     //Vec2 LiftBoost()
     //{
