@@ -1,18 +1,21 @@
 #include "pch.h"
 #include "CPlayerSprite.h"
-
+#include "CPlayerScript.h"
 
 
 
 CPlayerSprite::CPlayerSprite()
+	:Hair(nullptr)
 {
 	Mode = PlayerSpriteMode::MadelineNoBackpack;
 
 	spriteName = "player_no_backpack";
 }
 
-CPlayerSprite::CPlayerSprite(PlayerSpriteMode mode)
+CPlayerSprite::CPlayerSprite(CPlayerScript* _Owner,PlayerSpriteMode mode)
+	:CPlayerSprite()
 {
+	m_Owner = _Owner;
 	Mode = mode;
 	string sprite = "";
 	if (mode == PlayerSpriteMode::Madeline)
@@ -66,4 +69,16 @@ bool CPlayerSprite::Running()
 bool CPlayerSprite::DreamDashing()
 {
 	return false;
+}
+
+void CPlayerSprite::Play(string _animid)
+{
+	if (LastAnimationID == _animid)
+	{
+		return;
+	}
+	LastAnimationID = CurrentAnimationID;
+	CurrentAnimationID = _animid;
+	
+	m_Owner->Animator2D()->Play(ToWString(_animid));
 }

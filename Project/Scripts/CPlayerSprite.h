@@ -72,24 +72,25 @@ public:
 private:
 	string spriteName;
 	PlayerSpriteMode Mode;
+	class CPlayerScript* m_Owner;
 
 public:
+	string CurrentAnimationID;
+	string LastAnimationID;
 	CplayerHair* Hair;
-	CPlayerSprite();
-	CPlayerSprite(PlayerSpriteMode _mode);
-	~CPlayerSprite();
 	Vec2 HairOffset();
 	PlayerSpriteMode GetMode() { return Mode; }
 	int HairFrame();
 	bool HasHair();
 	bool Running();
 	bool DreamDashing();
+	void Play(string _animid);
 
+public:
+	CPlayerSprite(CPlayerScript* _Owner, PlayerSpriteMode _mode);
+	CPlayerSprite();
+	~CPlayerSprite();
 	
-
-
-
-
 
 };
 

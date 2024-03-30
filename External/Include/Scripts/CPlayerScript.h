@@ -17,9 +17,6 @@ public:
     virtual void begin() override;
     virtual void tick() override;
 
-
-
-
     virtual void BeginOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider);
     virtual void Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider);
     virtual void EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider);
@@ -172,8 +169,8 @@ public:
     Vector2 Speed;
     Facings Facing;
     // TODO:
-    //PlayerSprite Sprite;
-    //PlayerHair Hair;
+    class CPlayerSprite* Sprite;
+    class CPlayerHair* Hair;
     //CCustomStateMachine<CPlayerScript> StateMachine;
     Vector2 CameraAnchor;
     bool CameraAnchorIgnoreX;
@@ -221,6 +218,8 @@ public:
 
     
 private:
+    int inputx;
+    int inputy;
     //Level level;
     // TODO:
     //Collision onCollideH;

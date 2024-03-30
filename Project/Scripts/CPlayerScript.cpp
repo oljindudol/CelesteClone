@@ -13,11 +13,19 @@
 #include <math.h>
 #include <Engine/CAnimator2D.h>
 #include <Engine/CAnim.h>
+#include "CPlayerSprite.h"
+#include "CPlayerHair.h"
 
+
+//key bind
 #define GRABKEY KEY_PRESSED(S)
 #define JUMPKEY KEY_PRESSED(LALT)
 #define LEFTKEY KEY_PRESSED(LEFT)
 #define RIGHTKEY KEY_PRESSED(RIGHT)
+
+#define UPKEY KEY_PRESSED(UP)
+#define DOWNKEY KEY_PRESSED(DOWN)
+#define null nullptr
 
 CPlayerScript::CPlayerScript()
 	: CScript(PLAYERSCRIPT)
@@ -26,7 +34,7 @@ CPlayerScript::CPlayerScript()
 	//Tag = Tags.Persistent;
 
 	//hair sprite
-	//Sprite = new PlayerSprite(spriteMode);
+	Sprite = new CPlayerSprite(this ,PlayerSpriteMode::Madeline);
 	//Add(Hair = new PlayerHair(Sprite));
 	//Add(Sprite);
 	//Hair.Color = NormalHairColor;
@@ -146,6 +154,7 @@ CPlayerScript::CPlayerScript()
 CPlayerScript::~CPlayerScript()
 {
 	delete StateMachine;
+    delete Sprite;
 }
 
 
@@ -270,45 +279,6 @@ void CPlayerScript::UpdateRender()
 {
 }
 
-void CPlayerScript::UpdateSprite()
-{
-    // color
-    if (StateMachine.State == StStarFly)
-    {
-        Hair.Color = Sprite.Color;
-        applyGravity = false;
-    }
-    else if (Dashes == 0 && Dashes < MaxDashes)
-        Hair.Color = Color.Lerp(Hair.Color, UsedHairColor, 6f * Engine.DeltaTime);
-    else
-    {
-        Color color;
-        if (lastDashes != Dashes)
-        {
-            color = FlashHairColor;
-            hairFlashTimer = .12f;
-        }
-        else if (hairFlashTimer > 0)
-        {
-            color = FlashHairColor;
-            hairFlashTimer -= Engine.DeltaTime;
-        }
-        else if (Dashes == 2)
-            color = TwoDashesHairColor;
-        else
-            color = NormalHairColor;
-
-        Hair.Color = color;
-    }
-
-    if (OverrideHairColor != null)
-        Hair.Color = OverrideHairColor.Value;
-
-    Hair.Facing = Facing;
-    Hair.SimulateMotion = applyGravity;
-    lastDashes = Dashes;
-}
-
 
 void CPlayerScript::StartHair()
 {
@@ -344,190 +314,194 @@ void CPlayerScript::LoadFromFile(FILE* _File)
 }
 
 
-private void UpdateSprite()
+void CPlayerScript::UpdateSprite()
 {
+    auto SpriteScale = Animator2D()->GetMulScale();
+
     //Tween
-    Sprite.Scale.X = Calc.Approach(Sprite.Scale.X, 1f, 1.75f * Engine.DeltaTime);
-    Sprite.Scale.Y = Calc.Approach(Sprite.Scale.Y, 1f, 1.75f * Engine.DeltaTime);
+    SpriteScale.x = Approach(SpriteScale.x, 1.f, 1.75f * DT);
+    SpriteScale.y = Approach(SpriteScale.y, 1.f, 1.75f * DT);
 
     //Animation
-    if (InControl && Sprite.CurrentAnimationID != PlayerSprite.Throw && StateMachine.State != StTempleFall &&
-        StateMachine.State != StReflectionFall && StateMachine.State != StStarFly && StateMachine.State != StCassetteFly)
+    if (InControl() && Sprite->CurrentAnimationID != Sprite->Throw && StateMachine->GetCurState() != StTempleFall &&
+        StateMachine->GetCurState() != StReflectionFall && StateMachine->GetCurState() != StStarFly && StateMachine->GetCurState() != StCassetteFly)
     {
-        if (StateMachine.State == StAttract)
+        if (StateMachine->GetCurState() == StAttract)
         {
-            Sprite.Play(PlayerSprite.FallFast);
+            Sprite->Play(Sprite->FallFast);
         }
-        else if (StateMachine.State == StSummitLaunch)
+        else if (StateMachine->GetCurState() == StSummitLaunch)
         {
-            Sprite.Play(PlayerSprite.Launch);
+            Sprite->Play(Sprite->Launch);
         }
         // picking up
-        else if (StateMachine.State == StPickup)
+        else if (StateMachine->GetCurState() == StPickup)
         {
-            Sprite.Play(PlayerSprite.PickUp);
+            Sprite->Play(Sprite->PickUp);
         }
         // swiming
-        else if (StateMachine.State == StSwim)
+        else if (StateMachine->GetCurState() == StSwim)
         {
-            if (Input.MoveY.Value > 0)
-                Sprite.Play(PlayerSprite.SwimDown);
-            else if (Input.MoveY.Value < 0)
-                Sprite.Play(PlayerSprite.SwimUp);
+            if (inputy > 0)
+                Sprite->Play(Sprite->SwimDown);
+            else if (inputy < 0)
+                Sprite->Play(Sprite->SwimUp);
             else
-                Sprite.Play(PlayerSprite.SwimIdle);
+                Sprite->Play(Sprite->SwimIdle);
         }
         // dream dashing
-        else if (StateMachine.State == StDreamDash)
+        else if (StateMachine->GetCurState() == StDreamDash)
         {
-            if (Sprite.CurrentAnimationID != PlayerSprite.DreamDashIn && Sprite.CurrentAnimationID != PlayerSprite.DreamDashLoop)
-                Sprite.Play(PlayerSprite.DreamDashIn);
+            if (Sprite->CurrentAnimationID != Sprite->DreamDashIn && Sprite->CurrentAnimationID != Sprite->DreamDashLoop)
+                Sprite->Play(Sprite->DreamDashIn);
         }
-        else if (Sprite.DreamDashing && Sprite.LastAnimationID != PlayerSprite.DreamDashOut)
+        else if (Sprite->DreamDashing() && Sprite->LastAnimationID != Sprite->DreamDashOut)
         {
-            Sprite.Play(PlayerSprite.DreamDashOut);
+            Sprite->Play(Sprite->DreamDashOut);
         }
-        else if (Sprite.CurrentAnimationID != PlayerSprite.DreamDashOut)
+        else if (Sprite->CurrentAnimationID != Sprite->DreamDashOut)
         {
-            // during dash
-            if (DashAttacking)
-            {
-                if (onGround && DashDir.Y == 0 && !Ducking && Speed.X != 0 && moveX == -Math.Sign(Speed.X))
-                {
-                    if (Scene.OnInterval(.02f))
-                        Dust.Burst(Position, Calc.Up, 1);
-                    Sprite.Play(PlayerSprite.Skid);
-                }
-                else
-                    Sprite.Play(PlayerSprite.Dash);
-            }
+            //// during dash
+            //if (DashAttacking())
+            //{
+            //    if (onGround && DashDir.Y == 0 && !Ducking && Speed.X != 0 && moveX == -Math.Sign(Speed.X))
+            //    {
+            //        if (Scene.OnInterval(.02f))
+            //            Dust.Burst(Position, Calc.Up, 1);
+            //        Sprite->Play(Sprite->Skid);
+            //    }
+            //    else
+            //        Sprite->Play(Sprite->Dash);
+            //}
             // climbing
-            else if (StateMachine.State == StClimb)
+            if (StateMachine->GetCurState() == StClimb)
             {
                 if (lastClimbMove < 0)
-                    Sprite.Play(PlayerSprite.ClimbUp);
+                    Sprite->Play(Sprite->ClimbUp);
                 else if (lastClimbMove > 0)
-                    Sprite.Play(PlayerSprite.WallSlide);
-                else if (!CollideCheck<Solid>(Position + new Vector2((int)Facing, 6)))
-                    Sprite.Play(PlayerSprite.Dangling);
-                else if (Input.MoveX == -(int)Facing)
+                    Sprite->Play(Sprite->WallSlide);
+                //else if (!CollideCheck<Solid>(Position + new Vector2((int)Facing, 6)))
+                //    Sprite->Play(Sprite->Dangling);
+                else if (inputx == -(int)Facing)
                 {
-                    if (Sprite.CurrentAnimationID != PlayerSprite.ClimbLookBack)
-                        Sprite.Play(PlayerSprite.ClimbLookBackStart);
+                    if (Sprite->CurrentAnimationID != Sprite->ClimbLookBack)
+                        Sprite->Play(Sprite->ClimbLookBackStart);
                 }
                 else
-                    Sprite.Play(PlayerSprite.WallSlide);
+                    Sprite->Play(Sprite->WallSlide);
             }
             // ducking
-            else if (Ducking && StateMachine.State == StNormal)
+            else if (Ducking() && StateMachine->GetCurState() == StNormal)
             {
-                Sprite.Play(PlayerSprite.Duck);
+                Sprite->Play(Sprite->Duck);
             }
             else if (onGround)
             {
                 fastJump = false;
-                if (Holding == null && moveX != 0 && CollideCheck<Solid>(Position + Vector2.UnitX * moveX))
-                {
-                    Sprite.Play("push");
-                }
-                else if (Math.Abs(Speed.X) <= RunAccel / 40f && moveX == 0)
+                //if (Holding == null && moveX != 0 && CollideCheck<Solid>(Position + Vector2.UnitX * moveX))
+                //{
+                //    Sprite->Play("push");
+                //}
+                if (abs(Speed.x) <= RunAccel / 40.f && moveX == 0)
                 {
                     if (Holding != null)
                     {
-                        Sprite.Play(PlayerSprite.IdleCarry);
+                        Sprite->Play(Sprite->IdleCarry);
                     }
-                    else if (!Scene.CollideCheck<Solid>(Position + new Vector2((int)Facing * 1, 2)) && !Scene.CollideCheck<Solid>(Position + new Vector2((int)Facing * 4, 2)) && !CollideCheck<JumpThru>(Position + new Vector2((int)Facing * 4, 2)))
-                    {
-                        Sprite.Play(PlayerSprite.FrontEdge);
-                    }
-                    else if (!Scene.CollideCheck<Solid>(Position + new Vector2(-(int)Facing * 1, 2)) && !Scene.CollideCheck<Solid>(Position + new Vector2(-(int)Facing * 4, 2)) && !CollideCheck<JumpThru>(Position + new Vector2(-(int)Facing * 4, 2)))
-                    {
-                        Sprite.Play("edgeBack");
-                    }
-                    else if (Input.MoveY.Value == -1)
-                    {
-                        if (Sprite.LastAnimationID != PlayerSprite.LookUp)
-                            Sprite.Play(PlayerSprite.LookUp);
-                    }
+                    //else if (!Scene.CollideCheck<Solid>(Position + new Vector2((int)Facing * 1, 2)) && !Scene.CollideCheck<Solid>(Position + new Vector2((int)Facing * 4, 2)) && !CollideCheck<JumpThru>(Position + new Vector2((int)Facing * 4, 2)))
+                    //{
+                    //    Sprite->Play(Sprite->FrontEdge);
+                    //}
+                    //else if (!Scene.CollideCheck<Solid>(Position + new Vector2(-(int)Facing * 1, 2)) && !Scene.CollideCheck<Solid>(Position + new Vector2(-(int)Facing * 4, 2)) && !CollideCheck<JumpThru>(Position + new Vector2(-(int)Facing * 4, 2)))
+                    //{
+                    //    Sprite->Play("edgeBack");
+                    //}
+                    //else if (Input.MoveY.Value == -1)
+                    //{
+                    //    if (Sprite->LastAnimationID != Sprite->LookUp)
+                    //        Sprite->Play(Sprite->LookUp);
+                    //}
                     else
                     {
-                        if (Sprite.CurrentAnimationID != null && !Sprite.CurrentAnimationID.Contains("idle"))
-                            Sprite.Play(PlayerSprite.Idle);
+                        if (Sprite->CurrentAnimationID != "" && !(string::npos != Sprite->CurrentAnimationID.find("idle")) )
+                            Sprite->Play(Sprite->Idle);
                     }
                 }
                 else if (Holding != null)
                 {
-                    Sprite.Play(PlayerSprite.RunCarry);
+                    Sprite->Play(Sprite->RunCarry);
                 }
-                else if (Math.Sign(Speed.X) == -moveX && moveX != 0)
+                else if (Sign(Speed.x) == -moveX && moveX != 0)
                 {
-                    if (Math.Abs(Speed.X) > MaxRun)
-                        Sprite.Play(PlayerSprite.Skid);
-                    else if (Sprite.CurrentAnimationID != PlayerSprite.Skid)
-                        Sprite.Play(PlayerSprite.Flip);
+                    if (abs(Speed.x) > MaxRun)
+                        Sprite->Play(Sprite->Skid);
+                    else if (Sprite->CurrentAnimationID != Sprite->Skid)
+                        Sprite->Play(Sprite->Flip);
                 }
-                else if (windDirection.X != 0 && windTimeout > 0f && (int)Facing == -Math.Sign(windDirection.X))
+                else if (windDirection.x != 0 && windTimeout > 0.f && (int)Facing == -Sign(windDirection.x))
                 {
-                    Sprite.Play(PlayerSprite.RunWind);
+                    Sprite->Play(Sprite->RunWind);
                 }
-                else if (!Sprite.Running)
+                else if (!Sprite->Running())
                 {
-                    if (Math.Abs(Speed.X) < MaxRun * .5f)
-                        Sprite.Play(PlayerSprite.RunSlow);
+                    if (abs(Speed.x) < MaxRun * .5f)
+                        Sprite->Play(Sprite->RunSlow);
                     else
-                        Sprite.Play(PlayerSprite.RunFast);
+                        Sprite->Play(Sprite->RunFast);
                 }
             }
             // wall sliding
-            else if (wallSlideDir != 0 && Holding == null)
+            else if (wallSlideDir != 0 && Holding == nullptr)
             {
-                Sprite.Play(PlayerSprite.WallSlide);
+                Sprite->Play(Sprite->WallSlide);
             }
             // jumping up
-            else if (Speed.Y < 0)
+            else if (Speed.y < 0)
             {
-                if (Holding != null)
+                if (Holding != nullptr)
                 {
-                    Sprite.Play(PlayerSprite.JumpCarry);
+                    Sprite->Play(Sprite->JumpCarry);
                 }
-                else if (fastJump || Math.Abs(Speed.X) > MaxRun)
+                else if (fastJump || abs(Speed.x) > MaxRun)
                 {
                     fastJump = true;
-                    Sprite.Play(PlayerSprite.JumpFast);
+                    Sprite->Play(Sprite->JumpFast);
                 }
                 else
-                    Sprite.Play(PlayerSprite.JumpSlow);
+                    Sprite->Play(Sprite->JumpSlow);
             }
             // falling down
             else
             {
-                if (Holding != null)
+                if (Holding != nullptr)
                 {
-                    Sprite.Play(PlayerSprite.FallCarry);
+                    Sprite->Play(Sprite->FallCarry);
                 }
-                else if (fastJump || Speed.Y >= MaxFall || level.InSpace)
+                else if (fastJump || Speed.y >= MaxFall) //|| level.InSpace)
                 {
                     fastJump = true;
-                    if (Sprite.LastAnimationID != PlayerSprite.FallFast)
-                        Sprite.Play(PlayerSprite.FallFast);
+                    if (Sprite->LastAnimationID != Sprite->FallFast)
+                        Sprite->Play(Sprite->FallFast);
                 }
                 else
-                    Sprite.Play(PlayerSprite.FallSlow);
+                    Sprite->Play(Sprite->FallSlow);
             }
         }
     }
 
-    if (StateMachine.State != Player.StDummy)
-    {
-        if (level.InSpace)
-            Sprite.Rate = .5f;
-        else
-            Sprite.Rate = 1f;
-    }
+
+    //if (StateMachine->GetCurState() != StDummy)
+    //{
+    //    if (level.InSpace)
+    //        Sprite->Rate = .5f;
+    //    else
+    //        Sprite->Rate = 1.f;
+    //}
 }
 void CPlayerScript::Update()
 {
-    int inputx = 0;
+    inputx = 0;
+    inputy = 0;
     Vec3 V3Pos = Transform()->GetRelativePos();
     Vec2 Position = Vec2(V3Pos.x, V3Pos.y);
     float X = Position.x;
@@ -705,7 +679,18 @@ void CPlayerScript::Update()
                 inputx = 1;
             }
 
+            if (UPKEY)
+            {
+                inputy = -1;
+            }
+            else if (DOWNKEY)
+            {
+                inputy = 1;
+            }
+
             moveX = inputx;
+
+
             //climbHopSolid = null;
         }
 
