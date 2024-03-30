@@ -16,6 +16,8 @@
 
 #define GRABKEY KEY_PRESSED(S)
 #define JUMPKEY KEY_PRESSED(LALT)
+#define LEFTKEY KEY_PRESSED(LEFT)
+#define RIGHTKEY KEY_PRESSED(RIGHT)
 
 CPlayerScript::CPlayerScript()
 	: CScript(PLAYERSCRIPT)
@@ -259,6 +261,53 @@ void CPlayerScript::tick()
 	//GamePlayStatic::DrawDebugCircle(Vec3(0.f, 0.f, 0.f), 200.f, Vec3(0.f, 1.f, 1.f), true);
 }
 
+
+void CPlayerScript::UpdateHair()
+{
+}
+
+void CPlayerScript::UpdateRender()
+{
+}
+
+void CPlayerScript::UpdateSprite()
+{
+}
+
+void CPlayerScript::StartHair()
+{
+}
+
+void CPlayerScript::CreateSplitParticles()
+{
+}
+
+void CPlayerScript::BeginOverlap(CCollider2D* _Collider
+	, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
+{
+	Ptr<CMaterial> pMtrl = GetRenderComponent()->GetDynamicMaterial();
+}
+
+void CPlayerScript::Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
+{
+	
+}
+
+void CPlayerScript::EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
+{
+}
+
+void CPlayerScript::SaveToFile(FILE* _File)
+{
+	//fwrite(&m_Speed, sizeof(float), 1, _File);
+}
+
+void CPlayerScript::LoadFromFile(FILE* _File)
+{
+	//fread(&m_Speed, sizeof(float), 1, _File);
+}
+
+
 void CPlayerScript::Update()
 {
     int inputx = 0;
@@ -430,11 +479,11 @@ void CPlayerScript::Update()
         else
         {
 
-            if (KEY_PRESSED(LEFT))
+            if (LEFTKEY)
             {
                 inputx = -1;
             }
-            else if (KEY_PRESSED(RIGHT))
+            else if (RIGHTKEY)
             {
                 inputx = 1;
             }
@@ -611,6 +660,10 @@ void CPlayerScript::Update()
     //    MoveH(Speed.x * DT, onCollideH);
     if (StateMachine->GetCurState() != StDreamDash && StateMachine->GetCurState() != StAttract)
         Transform()->SetRelativePos(Vec3(newx, newy, V3Pos.z));
+    if (0 != inputx)
+    {
+        GetOwner()->m_facing = (Facings)inputx;
+    }
     //    MoveV(Speed.y * DT, onCollideV);
 
     //Swimming
@@ -760,53 +813,6 @@ void CPlayerScript::Update()
 
     wasOnGround = onGround;
 }
-
-void CPlayerScript::UpdateHair()
-{
-}
-
-void CPlayerScript::UpdateRender()
-{
-}
-
-void CPlayerScript::UpdateSprite()
-{
-}
-
-void CPlayerScript::StartHair()
-{
-}
-
-void CPlayerScript::CreateSplitParticles()
-{
-}
-
-void CPlayerScript::BeginOverlap(CCollider2D* _Collider
-	, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
-{
-	Ptr<CMaterial> pMtrl = GetRenderComponent()->GetDynamicMaterial();
-}
-
-void CPlayerScript::Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
-{
-	
-}
-
-void CPlayerScript::EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
-{
-}
-
-void CPlayerScript::SaveToFile(FILE* _File)
-{
-	//fwrite(&m_Speed, sizeof(float), 1, _File);
-}
-
-void CPlayerScript::LoadFromFile(FILE* _File)
-{
-	//fread(&m_Speed, sizeof(float), 1, _File);
-}
-
-
 int CPlayerScript::NormalUpdate()
 {
     //Use Lift Boost if walked off platform
@@ -1050,9 +1056,9 @@ void CPlayerScript::DashBegin()
 }
 int CPlayerScript::DashUpdate()
 {
-    if (KEY_PRESSED(RIGHT))
+    if (RIGHTKEY)
         return 1;
-    if (KEY_PRESSED(LEFT))
+    if (LEFTKEY)
         return 1;
 
     return 0;

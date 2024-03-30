@@ -11,6 +11,7 @@ private:
 	wstring		m_strName;
 
 public:
+	Facings m_facing;
 	void SetName(const wstring& _strName) { m_strName = _strName; }
 	const wstring& GetName() const { return m_strName; }
 	UINT GetID() const { return m_ID; }

@@ -64,7 +64,8 @@ void CAnim::UpdateData()
 	data.vSlizeSize = m_vecFrm[m_CurFrmIdx].vSlice;
 	data.vBackGround = m_vecFrm[m_CurFrmIdx].vBackground;
 	auto vMul = m_Animator->GetMulScale();
-	data.vMulScale = Vec3(vMul.x, vMul.y, 1.f);
+	int facing =  (int)m_Animator->GetOwner()->m_facing;
+	data.vMulScale = Vec3(facing * vMul.x, vMul.y, 1.f);
 
 	pCB->SetData(&data);
 	pCB->UpdateData();
