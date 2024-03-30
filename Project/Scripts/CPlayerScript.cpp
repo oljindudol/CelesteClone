@@ -322,6 +322,8 @@ void CPlayerScript::UpdateSprite()
     SpriteScale.x = Approach(SpriteScale.x, 1.f, 1.75f * DT);
     SpriteScale.y = Approach(SpriteScale.y, 1.f, 1.75f * DT);
 
+    Animator2D()->SetMulScale(SpriteScale);
+
     //Animation
     if (InControl() && Sprite->CurrentAnimationID != Sprite->Throw && StateMachine->GetCurState() != StTempleFall &&
         StateMachine->GetCurState() != StReflectionFall && StateMachine->GetCurState() != StStarFly && StateMachine->GetCurState() != StCassetteFly)
@@ -503,7 +505,7 @@ void CPlayerScript::Update()
     inputx = 0;
     inputy = 0;
     Vec3 V3Pos = Transform()->GetRelativePos();
-    Vec2 Position = Vec2(V3Pos.x, V3Pos.y);
+    Position = Vec2(V3Pos.x, V3Pos.y);
     float X = Position.x;
     float Y = Position.y;
 
@@ -631,7 +633,7 @@ void CPlayerScript::Update()
 
             if (dashRefillCooldownTimer > 0)
                 dashRefillCooldownTimer -= DT;
-            else //if (SaveData.Instance.AssistMode && SaveData.Instance.Assists.DashMode == Assists.DashModes.Infinite && !level.InCutscene)
+            else if (onGround) //if (SaveData.Instance.AssistMode && SaveData.Instance.Assists.DashMode == Assists.DashModes.Infinite && !level.InCutscene)
                 RefillDash();
             //else if (!Inventory.NoRefills)
             //{
@@ -720,7 +722,8 @@ void CPlayerScript::Update()
         //}
 
         //Aiming
-        //lastAim = Input.GetAimVector(Facing);
+        lastAim = Vec2(inputx, inputy);
+        lastAim.Normalize();
 
         //Wall Speed Retention
         //if (wallSpeedRetentionTimer > 0)
@@ -1302,8 +1305,11 @@ void CPlayerScript::CallDashEvents()
         //}
     }
 }
+
 void CPlayerScript::DashBegin()
 {
+    DashCoroutineTimer = DashTime;
+    DashCoroutineCnt = 0;
     calledDashEvents = false;
     dashStartedOnGround = onGround;
     launched = false;
@@ -1330,80 +1336,184 @@ void CPlayerScript::DashBegin()
 }
 void CPlayerScript::DashEnd()
 {
+    DashCoroutineTimer = 0.f;
+    DashCoroutineCnt = 0;
     CallDashEvents();
     demoDashed = false;
 }
+void CPlayerScript::CreateTrail()
+{
+}
 int CPlayerScript::DashUpdate()
 {
+    static Vector2 swapCancel = Vec2(0, 0);
     StartedDashing = false;
+    DashCoroutineTimer -= DT;
 
     //Trail
     if (dashTrailTimer > 0)
     {
-        dashTrailTimer -= Engine.DeltaTime;
+        dashTrailTimer -= DT;
         if (dashTrailTimer <= 0)
             CreateTrail();
     }
 
     //Grab Holdables
-    if (Holding == null && Input.Grab.Check && !IsTired && CanUnDuck)
+    if (Holding == null && GRABKEY && !IsTired() && CanUnDuck())
     {
-        //Grabbing Holdables
-        foreach(Holdable hold in Scene.Tracker.GetComponents<Holdable>())
-            if (hold.Check(this) && Pickup(hold))
-                return StPickup;
+        ////Grabbing Holdables
+        //foreach(Holdable hold in Scene.Tracker.GetComponents<Holdable>())
+        //    if (hold.Check(this) && Pickup(hold))
+        //        return StPickup;
     }
 
-    if (DashDir.Y == 0)
+    if (DashDir.y == 0)
     {
-        //JumpThru Correction
-        foreach(JumpThru jt in Scene.Tracker.GetEntities<JumpThru>())
-            if (CollideCheck(jt) && Bottom - jt.Top <= DashHJumpThruNudge)
-                MoveVExact((int)(jt.Top - Bottom));
+        ////JumpThru Correction
+        //foreach(JumpThru jt in Scene.Tracker.GetEntities<JumpThru>())
+        //    if (CollideCheck(jt) && Bottom - jt.Top <= DashHJumpThruNudge)
+        //        MoveVExact((int)(jt.Top - Bottom));
 
-        //Super Jump
-        if (CanUnDuck && Input.Jump.Pressed && jumpGraceTimer > 0)
-        {
-            SuperJump();
-            return StNormal;
-        }
+        ////Super Jump
+        //if (CanUnDuck && JUMPKEY && jumpGraceTimer > 0)
+        //{
+        //    SuperJump();
+        //    return StNormal;
+        //}
     }
 
-    if (DashDir.X == 0 && DashDir.Y == -1)
+    if (DashDir.x == 0 && DashDir.y == -1)
     {
-        if (Input.Jump.Pressed && CanUnDuck)
-        {
-            if (WallJumpCheck(1))
-            {
-                SuperWallJump(-1);
-                return StNormal;
-            }
-            else if (WallJumpCheck(-1))
-            {
-                SuperWallJump(1);
-                return StNormal;
-            }
-        }
+        //if (JUMPKEY && CanUnDuck())
+        //{
+        //    if (WallJumpCheck(1))
+        //    {
+        //        SuperWallJump(-1);
+        //        return StNormal;
+        //    }
+        //    else if (WallJumpCheck(-1))
+        //    {
+        //        SuperWallJump(1);
+        //        return StNormal;
+        //    }
+        //}
     }
     else
     {
-        if (Input.Jump.Pressed && CanUnDuck)
+        if (JUMPKEY && CanUnDuck())
         {
-            if (WallJumpCheck(1))
-            {
-                WallJump(-1);
-                return StNormal;
-            }
-            else if (WallJumpCheck(-1))
-            {
-                WallJump(1);
-                return StNormal;
-            }
+            //if (WallJumpCheck(1))
+            //{
+            //    WallJump(-1);
+            //    return StNormal;
+            //}
+            //else if (WallJumpCheck(-1))
+            //{
+            //    WallJump(1);
+            //    return StNormal;
+            //}
         }
     }
 
-    if (Speed != Vector2.Zero && level.OnInterval(0.02f))
-        level.ParticlesFG.Emit(wasDashB ? P_DashB : P_DashA, Center + Calc.Random.Range(Vector2.One * -2, Vector2.One * 2), DashDir.Angle());
+    //Dash Coroutine
+    if (0 == DashCoroutineCnt)
+    {
+        //Do Nothing
+        ++DashCoroutineCnt;
+        return StDash;
+    }
+    if (1 == DashCoroutineCnt)
+    {
+
+        auto dir = lastAim;
+        //if (OverrideDashDirection)
+        //    dir = OverrideDashDirection.Value;
+
+        auto newSpeed = dir * DashSpeed;
+        if (Sign(beforeDashSpeed.x) == Sign(newSpeed.x) && abs(beforeDashSpeed.x) > abs(newSpeed.x))
+            newSpeed.x = beforeDashSpeed.x;
+        Speed = newSpeed;
+
+        //if (CollideCheck<Water>())
+        //    Speed *= SwimDashSpeedMult;
+
+        DashDir = dir;
+        //SceneAs<Level>().DirectionalShake(DashDir, .2f);
+
+        if (DashDir.x != 0)
+            Facing = (Facings)Sign(DashDir.x);
+
+        CallDashEvents();
+
+        //Feather particles
+        //if (StateMachine->GetPrevState() == StStarFly)
+        //    level.Particles.Emit(FlyFeather.P_Boost, 12, Center, Vector2.One * 4, (-dir).Angle());
+
+        //Dash Slide
+        if (onGround && DashDir.x != 0 && DashDir.y > 0 && Speed.y > 0)
+            //&& (!Inventory.DreamDash || !CollideCheck<DreamBlock>(Position +Vec2(0,1))))
+        {
+            DashDir.x = Sign(DashDir.x);
+            DashDir.y = 0;
+            Speed.y = 0;
+            Speed.x *= DodgeSlideSpeedMult;
+            SetDucking(true);
+        }
+
+        //SlashFx.Burst(Center, DashDir.Angle());
+        CreateTrail();
+        dashTrailTimer = .08f;
+
+        //Swap Block check
+        //if (DashDir.X != 0 && Input.Grab.Check)
+        //{
+        //    var swapBlock = CollideFirst<SwapBlock>(Position + Vector2.UnitX * Math.Sign(DashDir.X));
+        //    if (swapBlock != null && swapBlock.Direction.X == Math.Sign(DashDir.X))
+        //    {
+        //        StateMachine.State = StClimb;
+        //        Speed = Vector2.Zero;
+        //        yield break;
+        //    }
+        //}
+
+        //Stick to Swap Blocks
+        swapCancel = Vec2(1,1);
+        //foreach(SwapBlock swapBlock in Scene.Tracker.GetEntities<SwapBlock>())
+        //{
+        //    if (CollideCheck(swapBlock, Position + Vector2.UnitY))
+        //    {
+        //        if (swapBlock != null && swapBlock.Swapping)
+        //        {
+        //            if (DashDir.X != 0 && swapBlock.Direction.X == Math.Sign(DashDir.X))
+        //                Speed.X = swapCancel.X = 0;
+        //            if (DashDir.Y != 0 && swapBlock.Direction.Y == Math.Sign(DashDir.Y))
+        //                Speed.Y = swapCancel.Y = 0;
+        //        }
+        //    }
+        //}
+
+        ++DashCoroutineCnt;
+        return StDash;
+    }
+    if (2 == DashCoroutineCnt && DashCoroutineTimer<0.f )
+    {
+        CreateTrail();
+
+        AutoJump = true;
+        AutoJumpTimer = 0;
+        if (DashDir.y <= 0)
+        {
+            Speed = DashDir * EndDashSpeed;
+            Speed.x *= swapCancel.x;
+            Speed.y *= swapCancel.y;
+        }
+        if (Speed.y < 0)
+            Speed.y *= EndDashUpMult;
+        return StNormal;
+    }
+
+    //if (Speed != Vec2(0.f,0.f) &&)// level.OnInterval(0.02f))
+    //    level.ParticlesFG.Emit(wasDashB ? P_DashB : P_DashA, Center + Calc.Random.Range(Vector2.One * -2, Vector2.One * 2), DashDir.Angle());
     return StDash;
 }
 

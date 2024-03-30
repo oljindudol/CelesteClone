@@ -193,6 +193,7 @@ public:
     bool m_Dead;
     void SetDead(bool _Dead) { m_Dead = _Dead; }
     bool GetDead() { return m_Dead; }
+    Vec2 Position;
 
     int StrawberryCollectIndex = 0;
     float StrawberryCollectResetTimer = 0.f;
@@ -331,6 +332,7 @@ public:
     Vec2 beforeDashSpeed;
     bool demoDashed = false;
     void CallDashEvents();
+    void CreateTrail();
 
     //Vec2 LiftBoost()
     //{
@@ -344,6 +346,8 @@ public:
     //    return val;
     //}
 
+    int DashCoroutineCnt;
+    float DashCoroutineTimer;
     bool CanDash()
     {
         return KEY_PRESSED(F) && dashCooldownTimer <= 0 && Dashes > 0;
