@@ -30,6 +30,8 @@
     </ClInclude>
     <ClInclude Include="CPhysics.h" />
     <ClInclude Include="CCustomStateMachine.h" />
+    <ClInclude Include="CPlayerSprite.h" />
+    <ClInclude Include="CPlayerHair.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -61,6 +63,8 @@
     </ClCompile>
     <ClCompile Include="CPhysics.cpp" />
     <ClCompile Include="CCustomStateMachine.cpp" />
+    <ClCompile Include="CPlayerSprite.cpp" />
+    <ClCompile Include="CPlayerHair.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">

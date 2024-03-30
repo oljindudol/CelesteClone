@@ -177,7 +177,9 @@ call CodeGen.exe</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="CPlayerHair.h" />
     <ClInclude Include="CPlayerScript.h" />
+    <ClInclude Include="CPlayerSprite.h" />
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CCustomStateMachine.h" />
     <ClInclude Include="framework.h" />
@@ -195,7 +197,9 @@ call CodeGen.exe</Command>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="CPlayerHair.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
+    <ClCompile Include="CPlayerSprite.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CCustomStateMachine.cpp" />
     <ClCompile Include="pch.cpp">

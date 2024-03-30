@@ -26,6 +26,15 @@
 							TYPE(const TYPE& _OriginBuffer) = delete;
 
 
+enum PlayerSpriteMode
+{
+	Madeline,
+	MadelineNoBackpack,
+	Badeline,
+	MadelineAsBadeline,
+	Playback
+};
+
 enum Facings
 {
 	FacingsLeft = -1,
