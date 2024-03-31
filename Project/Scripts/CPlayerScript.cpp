@@ -153,8 +153,18 @@ CPlayerScript::CPlayerScript()
 
 CPlayerScript::~CPlayerScript()
 {
-	delete StateMachine;
-    delete Sprite;
+    if (nullptr != StateMachine)
+    {
+        delete StateMachine;
+    }
+    if (nullptr != Sprite)
+    {
+        delete Sprite;
+    }
+    if (nullptr != m_pHairUpdate)
+    {
+        delete m_pHairUpdate;
+    }
 }
 
 void CPlayerScript::begin()

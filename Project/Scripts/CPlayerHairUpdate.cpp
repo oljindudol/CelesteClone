@@ -20,7 +20,7 @@ CPlayerHairUpdate::CPlayerHairUpdate(CPlayerSprite* _Sprite, CHair* _Hair)
 
 CPlayerHairUpdate::~CPlayerHairUpdate()
 {
-
+	
 }
 
 void CPlayerHairUpdate::Start()
