@@ -15,6 +15,7 @@
 #include <Engine/CAnim.h>
 #include "CPlayerSprite.h"
 #include "CPlayerHairUpdate.h"
+#include <Engine\CHair.h>
 
 
 //key bind
@@ -35,11 +36,21 @@ CPlayerScript::CPlayerScript()
 
 	//hair sprite
 	Sprite = new CPlayerSprite(this ,PlayerSpriteMode::Madeline);
-	//Add(Hair = new PlayerHair(Sprite));
-	//Add(Sprite);
-	//Hair.Color = NormalHairColor;
-	//startHairCount = Sprite.HairCount;
+	startHairCount = Sprite->HairCount;
 
+    //m_pPlayerHairGO = new CGameObject;
+    //m_pPlayerHairGO->SetName(L"ph");
+    //m_pPlayerHairGO->AddComponent(new CTransform);
+    //
+    //
+    //m_pPlayerHairGO->AddComponent(new CHair);
+    //m_pPlayerHairGO->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+
+    //pTempLevel->AddObject(pObj, LAYER_PLAYER, false);
+    //Add(Hair = new PlayerHair(Sprite));
+    //Add(Sprite);
+    //Hair.Color = NormalHairColor;
+    
 	// sweat sprite
 	//sweatSprite = GFX.SpriteBank.Create("player_sweat");
 	//Add(sweatSprite);
@@ -146,6 +157,9 @@ CPlayerScript::CPlayerScript()
 	//};
 
 	//Add(reflection = new MirrorReflection());
+
+
+
 
 }
 

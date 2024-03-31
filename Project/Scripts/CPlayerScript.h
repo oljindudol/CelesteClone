@@ -169,10 +169,10 @@ public:
     Vector2 Speed;
     Facings Facing;
     // TODO:
-    class CPlayerSprite* Sprite;
-    CGameObject* HairGO;
-    class CPlayerHair* HairComp;
-    class 
+    class CPlayerSprite*        Sprite;
+    CGameObject*                m_pPlayerHairGO;
+    class CHair*                m_pHairComp;
+    class CPlayerHairUpdate*    m_pHairUpdate;
 
     //CCustomStateMachine<CPlayerScript> StateMachine;
     Vector2 CameraAnchor;

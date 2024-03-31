@@ -154,15 +154,7 @@ void CCreateTempLevel::CreateTempLevel()
 
 	CGameObject* pObj = nullptr;
 
-	pObj = new CGameObject;
-	pObj->SetName(L"ph");
 
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CPlayerHair);
-
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-
-	pTempLevel->AddObject(pObj, LAYER_PLAYER, false);
 	pObj = nullptr;
 
 	// Backgruond Object »ý¼º

@@ -172,8 +172,8 @@
     <ClInclude Include="CTileMapGrid.h">
       <Filter>08. Component\RenderComponent\02. TileMap\Innerclass</Filter>
     </ClInclude>
-    <ClInclude Include="CPlayerHair.h">
-      <Filter>08. Component\RenderComponent\04. PlayerHair</Filter>
+    <ClInclude Include="CHair.h">
+      <Filter>08. Component\RenderComponent\04. Hair</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -333,8 +333,8 @@
     <ClCompile Include="CTileMapGrid.cpp">
       <Filter>08. Component\RenderComponent\02. TileMap\Innerclass</Filter>
     </ClCompile>
-    <ClCompile Include="CPlayerHair.cpp">
-      <Filter>08. Component\RenderComponent\04. PlayerHair</Filter>
+    <ClCompile Include="CHair.cpp">
+      <Filter>08. Component\RenderComponent\04. Hair</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -500,7 +500,7 @@
     <Filter Include="08. Component\RenderComponent\02. TileMap\Innerclass">
       <UniqueIdentifier>{ed1cf924-8040-49b0-b2aa-d96b26e7cf99}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\RenderComponent\04. PlayerHair">
+    <Filter Include="08. Component\RenderComponent\04. Hair">
       <UniqueIdentifier>{e6be9a6e-00bc-4c5f-9b20-7c2cf2002bbb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

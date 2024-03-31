@@ -1,5 +1,5 @@
 #pragma once
-class CPlayerHair;
+class CHair;
 class CPlayerHairUpdate;
 
 
