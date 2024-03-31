@@ -265,6 +265,13 @@ float Approach(float val, float target, float maxMove)
 	return max(val - maxMove, target);
 }
 
+Vec2 Approach(Vec2 val, Vec2 Target, float maxMove)
+{
+	float retx = Approach(val.x,Target.x, maxMove);
+	float rety = Approach(val.y, Target.y, maxMove);
+	return Vec2(retx, rety);
+}
+
 int Sign(float _val)
 {
 	if (_val < 0.f)

@@ -3,7 +3,6 @@
 #include "CPlayerScript.h"
 
 
-
 CPlayerSprite::CPlayerSprite()
 	:Hair(nullptr)
 {

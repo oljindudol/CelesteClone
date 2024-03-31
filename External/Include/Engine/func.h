@@ -125,6 +125,7 @@ std::vector<std::filesystem::path> getFoldersFromDirectory(const std::wstring& p
 std::vector<std::filesystem::path> getImagesFromDirectory(const std::wstring& path);
 
 float Approach(float val, float target, float maxMove);
+Vec2 Approach(Vec2 val, Vec2 Target, float maxMove);
 
 int Sign(float _val);
 

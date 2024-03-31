@@ -4,8 +4,6 @@ class CPlayerHairUpdate;
 
 
 
-
-
 class CPlayerSprite
 {
 #pragma region consts
@@ -73,10 +71,12 @@ public:
 	string CurrentAnimationID;
 	string LastAnimationID;
 	CPlayerHairUpdate* Hair;
-	Vec2 HairOffset();
 	PlayerSpriteMode GetMode() { return Mode; }
-	int HairFrame();
+
+	Vec2 HairOffset();
 	bool HasHair();
+	int HairFrame();
+
 	bool Running();
 	bool DreamDashing();
 	void Play(string _animid);
@@ -86,6 +86,6 @@ public:
 	CPlayerSprite();
 	~CPlayerSprite();
 	
-
+	friend CPlayerHairUpdate;
 };
 

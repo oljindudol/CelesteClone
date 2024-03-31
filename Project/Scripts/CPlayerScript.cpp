@@ -16,7 +16,9 @@
 #include "CPlayerSprite.h"
 #include "CPlayerHairUpdate.h"
 #include <Engine\CHair.h>
-
+#include <Engine\CLevelMgr.h>
+#include <Engine\CLevel.h>
+#include "CPlayerHairUpdate.h"
 
 //key bind
 #define GRABKEY KEY_PRESSED(S)
@@ -34,22 +36,8 @@ CPlayerScript::CPlayerScript()
 	//Depth = Depths.Player;
 	//Tag = Tags.Persistent;
 
-	//hair sprite
-	Sprite = new CPlayerSprite(this ,PlayerSpriteMode::Madeline);
-	startHairCount = Sprite->HairCount;
 
-    //m_pPlayerHairGO = new CGameObject;
-    //m_pPlayerHairGO->SetName(L"ph");
-    //m_pPlayerHairGO->AddComponent(new CTransform);
-    //
-    //
-    //m_pPlayerHairGO->AddComponent(new CHair);
-    //m_pPlayerHairGO->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 
-    //pTempLevel->AddObject(pObj, LAYER_PLAYER, false);
-    //Add(Hair = new PlayerHair(Sprite));
-    //Add(Sprite);
-    //Hair.Color = NormalHairColor;
     
 	// sweat sprite
 	//sweatSprite = GFX.SpriteBank.Create("player_sweat");
@@ -171,6 +159,25 @@ CPlayerScript::~CPlayerScript()
 
 void CPlayerScript::begin()
 {
+    //hair sprite
+    Sprite = new CPlayerSprite(this, PlayerSpriteMode::Madeline);
+    startHairCount = Sprite->HairCount;
+
+    m_pPlayerHairGO = new CGameObject;
+    m_pPlayerHairGO->SetName(L"PlayerHair");
+    m_pPlayerHairGO->AddComponent(new CTransform);
+    m_pPlayerHairGO->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+    m_pHairComp = new CHair;
+    m_pPlayerHairGO->AddComponent(m_pHairComp);
+
+    CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(m_pPlayerHairGO, LAYER_PLAYER, false);
+    GetOwner()->AddChild(m_pPlayerHairGO);
+    //Add(Hair = new PlayerHair(Sprite));
+    //Add(Sprite);
+    m_pHairComp->SetHairColor(NormalHairColor);
+
+    m_pHairUpdate = new CPlayerHairUpdate(Sprite, m_pHairComp);
+
 
     std::filesystem::path base_path = CPathMgr::GetContentPath();
     wstring OriginPath = base_path;

@@ -16,6 +16,7 @@ struct tHairNode
 {
 	Vec2 vOffset;
 	Vec2 vScale;
+	tHairNode() :vOffset(Vec2(0, 0)), vScale(Vec2(0, 0)) {}
 };
 
 class CHair
@@ -25,10 +26,12 @@ private:
 	std::unordered_map<string, tPlayerHairInfo> m_umHairInfo;
 	Ptr<CTexture> m_HairTex;
 	vector<Ptr<CTexture>> m_vecBangTex;
+	bool DrawPlayerSpriteOutline;
+
 
 private:
 	int m_ThisFrameBangIdx;
-	list<tHairNode> m_HairNodes;
+	vector<tHairNode> m_HairNodes;
 	Color m_HairColor;
 	Color m_BorderColor;
 	int m_HairCnt;
@@ -37,10 +40,11 @@ public:
 	void SetThisFrameBangIdx(int _ThisFrameBangIdx) { m_ThisFrameBangIdx = _ThisFrameBangIdx; }
 	void SetMetaData();
 	tPlayerHairInfo GettHairInfo(string& _Key) { return m_umHairInfo[_Key]; }
-	list<tHairNode>& GetHairNodesRef() { return m_HairNodes; }
+	vector<tHairNode>& GetHairNodesRef() { return m_HairNodes; }
 
-	void SetHairColor(Color& _HairColor) {m_HairColor= _HairColor;}
-	void SetBorderColor(Color& _BorderColor) { m_BorderColor = _BorderColor; }
+	void SetHairColor(const Color& _HairColor) {m_HairColor= _HairColor;}
+	void SetBorderColor(const Color& _BorderColor) { m_BorderColor = _BorderColor; }
+	void SetHairCnt(int _HairCnt) { m_HairCnt = _HairCnt; }
 	int GetHairCnt() { return m_HairCnt; }
 
 	virtual void finaltick() override;
