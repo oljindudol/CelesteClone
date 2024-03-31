@@ -27,8 +27,9 @@ CHair::CHair()
 	}
 	//매쉬 메테리얼 할당
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_Std2dMeterial));
-
+	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_HairMeterial));
+    GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_HairTex);
+    auto a = GetMaterial();
     SetMetaData();
 }
 
@@ -130,10 +131,29 @@ void CHair::finaltick()
 
 void CHair::UpdateData()
 {
+    if (nullptr != GetMaterial())
+    {
+        GetMaterial()->UpdateData();
+    }
+
+    Transform()->UpdateData();
 }
 
 void CHair::render()
 {
+    if (nullptr == GetMesh() || nullptr == GetMaterial())
+        return;
+    if (Animator2D())
+    {
+        Animator2D()->UpdateData();
+    }
+    else
+    {
+        Animator2D()->Clear();
+    }
+    UpdateData();
+
+    GetMesh()->render();
 }
 
 

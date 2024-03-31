@@ -540,5 +540,8 @@
     <FxCompile Include="particle_update.fx">
       <Filter>ShaderCode\Compute\ParticleUpdate</Filter>
     </FxCompile>
+    <FxCompile Include="player.fx">
+      <Filter>ShaderCode\Render</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

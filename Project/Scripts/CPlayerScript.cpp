@@ -19,6 +19,7 @@
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
 #include "CPlayerHairUpdate.h"
+#include "Engine\CTaskMgr.h"
 
 //key bind
 #define GRABKEY KEY_PRESSED(S)
@@ -208,6 +209,8 @@ void CPlayerScript::begin()
 	//SetPhysics(new CPhysics(GetOwner()));
 
 	StateMachine->Begin();
+
+    CTaskMgr::GetInst()->TriggetObjectEvent();
 }
 
 void CPlayerScript::tick()

@@ -2,7 +2,8 @@
 
 
 // Image Path
-#define STR_FILE_PATH_HAIR L"\\texture\\Gameplay\\hair\\hair00.png"
+//#define STR_FILE_PATH_HAIR L"\\texture\\Gameplay\\hair\\hair00.png"
+#define STR_FILE_PATH_HAIR L"\\texture\\Effect1.png"
 #define STR_FOLDER_PATH_BANGS L"\\texture\\Gameplay\\hair\\bangs"
 #define STR_FOLDER_PATH_PLAYERANIMATION L"\\texture\\Gameplay\\madeline"
 #define STR_FOLDER_PATH_FORE_TILE L"\\texture\\Gameplay\\tilemap\\foretile"
