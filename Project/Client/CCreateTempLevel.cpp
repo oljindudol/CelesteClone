@@ -116,7 +116,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->SetName(L"MainCamera");
 	pCamObj->AddComponent(new CTransform);
 	pCamObj->AddComponent(new CCamera);
-	pCamObj->AddComponent(new CCameraMoveScript);
+	//pCamObj->AddComponent(new CCameraMoveScript);
 
 	pCamObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	pCamObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
@@ -160,7 +160,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CPlayerHair);
 
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 91.f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 
 	pTempLevel->AddObject(pObj, LAYER_PLAYER, false);
 	pObj = nullptr;

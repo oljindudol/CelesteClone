@@ -13,9 +13,6 @@
     <ClInclude Include="CMissileScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="CPlayerScript.h">
-      <Filter>Scripts</Filter>
-    </ClInclude>
     <ClInclude Include="CScriptMgr.h">
       <Filter>ScriptMgr</Filter>
     </ClInclude>
@@ -28,10 +25,15 @@
     <ClInclude Include="CPlatFormScript.h">
       <Filter>Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="CPhysics.h" />
-    <ClInclude Include="CCustomStateMachine.h" />
     <ClInclude Include="CPlayerSprite.h" />
     <ClInclude Include="CPlayerHairUpdate.h" />
+    <ClInclude Include="CPlayerScript.h" />
+    <ClInclude Include="CPhysics.h">
+      <Filter>phy</Filter>
+    </ClInclude>
+    <ClInclude Include="CCustomStateMachine.h">
+      <Filter>CustomStateMachine</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -46,9 +48,6 @@
     <ClCompile Include="CMissileScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="CPlayerScript.cpp">
-      <Filter>Scripts</Filter>
-    </ClCompile>
     <ClCompile Include="CScriptMgr.cpp">
       <Filter>ScriptMgr</Filter>
     </ClCompile>
@@ -61,10 +60,15 @@
     <ClCompile Include="CPlatFormScript.cpp">
       <Filter>Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="CPhysics.cpp" />
-    <ClCompile Include="CCustomStateMachine.cpp" />
     <ClCompile Include="CPlayerSprite.cpp" />
     <ClCompile Include="CPlayerHairUpdate.cpp" />
+    <ClCompile Include="CPlayerScript.cpp" />
+    <ClCompile Include="CPhysics.cpp">
+      <Filter>phy</Filter>
+    </ClCompile>
+    <ClCompile Include="CCustomStateMachine.cpp">
+      <Filter>CustomStateMachine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -78,6 +82,9 @@
     </Filter>
     <Filter Include="CustomStateMachine">
       <UniqueIdentifier>{9cbd76a7-23ea-4cc2-9178-b8188f6c201c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="phy">
+      <UniqueIdentifier>{c0d5068e-fc5a-47ea-8c44-f006933d78c4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

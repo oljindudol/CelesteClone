@@ -29,7 +29,6 @@ void CCameraMoveScript::tick()
 	{
 		MoveOrthographic();
 	}
-
 	else
 	{
 		MovePerspective();

@@ -170,7 +170,10 @@ public:
     Facings Facing;
     // TODO:
     class CPlayerSprite* Sprite;
-    class CPlayerHair* Hair;
+    CGameObject* HairGO;
+    class CPlayerHair* HairComp;
+    class 
+
     //CCustomStateMachine<CPlayerScript> StateMachine;
     Vector2 CameraAnchor;
     bool CameraAnchorIgnoreX;

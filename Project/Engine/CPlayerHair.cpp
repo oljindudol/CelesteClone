@@ -2,6 +2,7 @@
 #include "CPlayerHair.h"
 #include < fstream >
 #include <iostream>
+#include "CRenderMgr.h"
 
 CPlayerHair::CPlayerHair()
 	: CRenderComponent(COMPONENT_TYPE::PLAYERHAIR)
@@ -41,7 +42,6 @@ void CPlayerHair::SetMetaData()
     fp += L"metadata";
     string filepath = ToString(fp);
 
-    //std::unordered_map<std::string, tPlayerHairInfo> hairInfoMap;
     std::ifstream file(filepath);
     std::string line;
 
@@ -93,13 +93,16 @@ void CPlayerHair::SetMetaData()
             ++idx;
         }
     }
-    int a = 0;
 
 
 }
 
 void CPlayerHair::finaltick()
 {
+    if (CRenderMgr::GetInst()->IsDebugPosition())
+    {
+        GamePlayStatic::DrawDebugCross(Transform()->GetWorldPos(), 20.f, Vec3(0.f, 1.f, 0.f), true);
+    }
 }
 
 void CPlayerHair::UpdateData()
