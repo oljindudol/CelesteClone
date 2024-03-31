@@ -72,10 +72,10 @@ public:
 	string LastAnimationID;
 	CPlayerHairUpdate* Hair;
 	PlayerSpriteMode GetMode() { return Mode; }
-
-	Vec2 HairOffset();
-	bool HasHair();
-	int HairFrame();
+	Color Color;
+	//Vec2 HairOffset();
+	//bool HasHair();
+	//int HairFrame();
 
 	bool Running();
 	bool DreamDashing();

@@ -312,11 +312,13 @@ public:
 
 #pragma endregion
 
+private:
+    bool startHairCalled = false;
 
 #pragma region functions
 public:
     void Update();
-    void UpdateHair();
+    void UpdateHair(bool applyGravity=true);
     //헤어,스웨트,파티클
     void UpdateRender();
     void UpdateSprite();

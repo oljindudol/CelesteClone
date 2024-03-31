@@ -45,20 +45,20 @@ CPlayerSprite::~CPlayerSprite()
 {
 }
 
-Vec2 CPlayerSprite::HairOffset()
-{
-	return Vec2();
-}
-
-int CPlayerSprite::HairFrame()
-{
-	return 0;
-}
-
-bool CPlayerSprite::HasHair()
-{
-	return false;
-}
+//Vec2 CPlayerSprite::HairOffset()
+//{
+//	return Vec2();
+//}
+//
+//int CPlayerSprite::HairFrame()
+//{
+//	return 0;
+//}
+//
+//bool CPlayerSprite::HasHair()
+//{
+//	return false;
+//}
 
 bool CPlayerSprite::Running()
 {

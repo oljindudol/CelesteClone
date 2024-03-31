@@ -3,6 +3,8 @@
 #include < fstream >
 #include <iostream>
 #include "CRenderMgr.h"
+#include "CAnimator2D.h"
+#include "CAnim.h"
 
 CHair::CHair()
 	: CRenderComponent(COMPONENT_TYPE::PLAYERHAIR)
@@ -95,6 +97,25 @@ void CHair::SetMetaData()
     }
 
 
+}
+
+tPlayerHairInfo CHair::GettHairInfo()
+{
+    tPlayerHairInfo ret = {};
+    if(nullptr == Animator2D())
+        return ret;
+    if(nullptr == Animator2D()->GetCurAnim())
+        return ret;
+
+    auto AnimName = Animator2D()->GetCurAnim()->GetName();
+    auto AnimIdx = Animator2D()->GetCurAnim()->GetCurIdx();
+
+    string key = ToString(AnimName) + std::to_string(AnimIdx);
+    auto iter = m_umHairInfo.find(key);
+    if (m_umHairInfo.end() != iter)
+        ret = iter->second;
+
+    return ret;
 }
 
 void CHair::finaltick()

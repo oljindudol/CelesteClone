@@ -35,9 +35,6 @@ CPlayerScript::CPlayerScript()
 {
 	//Depth = Depths.Player;
 	//Tag = Tags.Persistent;
-
-
-
     
 	// sweat sprite
 	//sweatSprite = GFX.SpriteBank.Create("player_sweat");
@@ -302,16 +299,82 @@ void CPlayerScript::tick()
 	//GamePlayStatic::DrawDebugCircle(Vec3(0.f, 0.f, 0.f), 200.f, Vec3(0.f, 1.f, 1.f), true);
 }
 
-void CPlayerScript::UpdateHair()
+void CPlayerScript::UpdateHair(bool applyGravity)
 {
+    if (StateMachine->GetCurState() == 19)
+    {
+        Hair->Color = Sprite->Color;
+        applyGravity = false;
+    }
+    else if (Dashes == 0 && Dashes < MaxDashes)
+    {
+        if (Sprite.Mode == PlayerSpriteMode.MadelineAsBadeline)
+        {
+            Hair.Color = Color.Lerp(Hair.Color, Player.UsedBadelineHairColor, 6f * Engine.DeltaTime);
+        }
+        else
+        {
+            Hair.Color = Color.Lerp(Hair.Color, Player.UsedHairColor, 6f * Engine.DeltaTime);
+        }
+    }
+    else
+    {
+        Color color;
+        if (lastDashes != Dashes)
+        {
+            color = Player.FlashHairColor;
+            hairFlashTimer = 0.12f;
+        }
+        else if (hairFlashTimer > 0f)
+        {
+            color = Player.FlashHairColor;
+            hairFlashTimer -= Engine.DeltaTime;
+        }
+        else if (Sprite.Mode == PlayerSpriteMode.MadelineAsBadeline)
+        {
+            if (Dashes == 2)
+            {
+                color = Player.TwoDashesBadelineHairColor;
+            }
+            else
+            {
+                color = Player.NormalBadelineHairColor;
+            }
+        }
+        else if (Dashes == 2)
+        {
+            color = Player.TwoDashesHairColor;
+        }
+        else
+        {
+            color = Player.NormalHairColor;
+        }
+        Hair.Color = color;
+    }
+    if (OverrideHairColor != null)
+    {
+        Hair.Color = OverrideHairColor.Value;
+    }
+    Hair->Facing = Facing;
+    Hair.SimulateMotion = applyGravity;
+    lastDashes = Dashes;
 }
 
 void CPlayerScript::UpdateRender()
 {
+
 }
 
 void CPlayerScript::StartHair()
 {
+    if (startHairCalled)
+    {
+        return;
+    }
+    startHairCalled = true;
+    m_pHairUpdate->facing = Facing;
+    m_pHairUpdate->Start();
+    UpdateHair(true);
 }
 
 void CPlayerScript::CreateSplitParticles()

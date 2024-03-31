@@ -4,11 +4,14 @@
 #include <Engine\CHair.h>
 #include "CPlayerScript.h"
 
+
+
 CPlayerHairUpdate::CPlayerHairUpdate(CPlayerSprite* _Sprite, CHair* _Hair)
 {
 	Sprite = _Sprite;
 	Hair = _Hair;
-	auto& Nodes = Hair->GetHairNodesRef();
+	auto& RenderInfoRef = Hair->GetRenderInfoRef();
+	auto& Nodes = RenderInfoRef.vecHairNodes;
 
 	for (int i = 0; i < Sprite->HairCount; i++)
 	{
@@ -23,12 +26,15 @@ CPlayerHairUpdate::~CPlayerHairUpdate()
 	
 }
 
+
+
+
 void CPlayerHairUpdate::Start()
 {
-	auto facing = Sprite->m_Owner->GetOwner()->m_facing;
 	auto worldpos = Hair->GetOwner()->Transform()->GetWorldPos();
 	Vec2 at = Vec2(worldpos.x, worldpos.y) + Vec2((float)(-facing * (Facings)200), 200.f);
-	auto& Nodes = Hair->GetHairNodesRef();
+	auto& RenderInfo = Hair->GetRenderInfoRef();
+	auto& Nodes = RenderInfo.vecHairNodes;
 
 	for (size_t i = 0; i < Nodes.size(); i++)
 	{
@@ -44,18 +50,23 @@ void CPlayerHairUpdate::Update()
 void CPlayerHairUpdate::AfterUpdate()
 {
 	auto player = Sprite->m_Owner->GetOwner();
-	auto Facing = player->m_facing;
 	auto SpriteScale = player->Animator2D()->GetMulScale();
-	auto& Nodes = Hair->GetHairNodesRef();
 	auto playerworldscale = player->Transform()->GetWorldScale();
+	
+	auto& RenderInfoRef = Hair->GetRenderInfoRef();
+	auto& Nodes = RenderInfoRef.vecHairNodes;
+	
+	auto Info = Hair->GettHairInfo();
 
-	Vec2 offset = Sprite->HairOffset() * Vec2((float)Facing, 1.f);
+
+	Vec2 offset = Info.HairOffset * Vec2((float)facing, 1.f);
 	Nodes[0].vOffset = Vec2(playerworldscale.x, playerworldscale.y) + Vec2(0.f, -9.f * SpriteScale.y) + offset;
-	Vec2 target = Nodes[0].vOffset + Vec2((float)(-(float)Facing) * StepInFacingPerSegment * 2.f, (float)sinf((double)wave) * StepYSinePerSegment) + StepPerSegment;
+	Vec2 target = Nodes[0].vOffset + Vec2((float)(-(float)facing) * StepInFacingPerSegment * 2.f, (float)sinf((double)wave) * StepYSinePerSegment) + StepPerSegment;
 	Vec2 prev = Nodes[0].vOffset;
 	float maxdist = 3.f;
 	for (int i = 1; i < Sprite->HairCount; i++)
 	{
+		// 오프셋 
 		if (i >= Nodes.size())
 		{
 			Nodes.push_back(Nodes[i - 1]);
@@ -71,14 +82,30 @@ void CPlayerHairUpdate::AfterUpdate()
 			tmp.Normalize();
 			Nodes[i].vOffset = prev + tmp * maxdist;
 		}
-		target = Nodes[i].vOffset + Vec2((float)(-(float)Facing) * StepInFacingPerSegment, (float)sin((double)(wave + (float)i * 0.8f)) * StepYSinePerSegment) + StepPerSegment;
+		target = Nodes[i].vOffset + Vec2((float)(-(float)facing) * StepInFacingPerSegment, (float)sin((double)(wave + (float)i * 0.8f)) * StepYSinePerSegment) + StepPerSegment;
 		prev = Nodes[i].vOffset;
+
+		// Scale
+		Nodes[i].vScale = GetHairScale(i);
 	}
+
+	// Bang
+	RenderInfoRef.ThisFrameBangIdx = Info.BangFrame;
+	// HasHair
+	RenderInfoRef.HasHair = Info.HasHair;
+
+	// 헤어카운트 등록
+	RenderInfoRef.HairCnt =  Sprite->HairCount;
 }
 
-Vec2 CPlayerHairUpdate::GetHairScale()
+Vec2 CPlayerHairUpdate::GetHairScale(int index)
 {
-	return Vec2();
+	auto player = Sprite->m_Owner->GetOwner();
+	auto Facing = player->m_facing;
+	auto SpriteScale = player->Animator2D()->GetMulScale();
+
+	float scale = 0.25f + (1.f - (float)index / (float)Sprite->HairCount) * 0.75f;
+	return Vec2(((index == 0) ? ((float)Facing) : scale) * abs(SpriteScale.x), scale);
 }
 
 
