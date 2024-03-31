@@ -28,7 +28,6 @@ CPlayerHairUpdate::~CPlayerHairUpdate()
 
 
 
-
 void CPlayerHairUpdate::Start()
 {
 	auto worldpos = Hair->GetOwner()->Transform()->GetWorldPos();

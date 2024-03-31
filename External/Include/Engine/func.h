@@ -130,4 +130,5 @@ Vec2 Approach(Vec2 val, Vec2 Target, float maxMove);
 int Sign(float _val);
 
 float Lerp(float A, float B, float Alpha);
+Color Lerp(Vec4 A, Vec4 B, float Alpha);
 

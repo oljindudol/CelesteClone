@@ -27,7 +27,7 @@ CHair::CHair()
 	}
 	//매쉬 메테리얼 할당
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_DebugMeterial));
+	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_Std2dMeterial));
 
     SetMetaData();
 }
@@ -102,13 +102,15 @@ void CHair::SetMetaData()
 tPlayerHairInfo CHair::GettHairInfo()
 {
     tPlayerHairInfo ret = {};
-    if(nullptr == Animator2D())
+    auto p = GetOwner()->GetParent();
+    auto Animator = p->Animator2D();
+    if(nullptr == Animator)
         return ret;
-    if(nullptr == Animator2D()->GetCurAnim())
+    if(nullptr == Animator->GetCurAnim())
         return ret;
 
-    auto AnimName = Animator2D()->GetCurAnim()->GetName();
-    auto AnimIdx = Animator2D()->GetCurAnim()->GetCurIdx();
+    auto AnimName = Animator->GetCurAnimName();
+    auto AnimIdx = Animator->GetCurAnim()->GetCurIdx();
 
     string key = ToString(AnimName) + std::to_string(AnimIdx);
     auto iter = m_umHairInfo.find(key);

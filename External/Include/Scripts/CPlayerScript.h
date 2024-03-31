@@ -207,7 +207,7 @@ public:
 
     // TODO:
     //Booster CurrentBooster;
-    Color OverrideHairColor;
+    Color OverrideHairColor = HexToColor("9B3FB5");
 
     // hair
     const Color NormalHairColor = HexToColor("AC3232");
@@ -215,6 +215,10 @@ public:
     const Color UsedHairColor = HexToColor("44B7FF");
     const Color FlashHairColor = HexToColor("FFFFFF");
     const Color TwoDashesHairColor = HexToColor("ff6def");
+
+    const Color UsedBadelineHairColor = HexToColor("44B7FF");
+    const Color TwoDashesBadelineHairColor = HexToColor("ff6def");
+    const Color NormalBadelineHairColor = HexToColor("9B3FB5");
 
     // level-start intro
     enum IntroTypes { Transition, Respawn, WalkInRight, WalkInLeft, Jump, WakeUp, Fall, TempleMirrorVoid, None };
@@ -312,11 +316,13 @@ public:
 
 #pragma endregion
 
+private:
+    bool startHairCalled = false;
 
 #pragma region functions
 public:
     void Update();
-    void UpdateHair();
+    void UpdateHair(bool applyGravity=true);
     //헤어,스웨트,파티클
     void UpdateRender();
     void UpdateSprite();

@@ -12,6 +12,7 @@ class CAnimator2D :
 private:
     map<wstring, CAnim*>    m_mapAnim;
     CAnim*                  m_CurAnim;
+    wstring                 m_CurAnimName;
     bool                    m_bRepeat;
     Vec2                    m_MulScale;
 
@@ -36,6 +37,7 @@ public:
     virtual void LoadFromFile(FILE* _File) override;
 
     CAnim* GetCurAnim() { return m_CurAnim; }
+    wstring GetCurAnimName() { return m_CurAnimName; }
 
     CLONE(CAnimator2D);
 public:

@@ -97,10 +97,12 @@ void CAnimator2D::Play(const wstring& _strAnimName, bool _bRepeat)
 {
 	CAnim* pAnim = FindAnim(_strAnimName);
 	if (nullptr == pAnim)
+	{
 		return;
+	}
 
 	m_bRepeat = _bRepeat;
-
+	m_CurAnimName = _strAnimName;
 	m_CurAnim = pAnim;
 	m_CurAnim->Reset();
 }

@@ -289,6 +289,11 @@ void CPlayerScript::tick()
 
 	StateMachine->Update();
 	Update();
+
+    UpdateHair(true);
+    m_pHairUpdate->Update();
+    m_pHairUpdate->AfterUpdate();
+
 	//GetPhysics()->Update();
 
 	//static float f = 0.f;
@@ -303,18 +308,18 @@ void CPlayerScript::UpdateHair(bool applyGravity)
 {
     if (StateMachine->GetCurState() == 19)
     {
-        Hair->Color = Sprite->Color;
+        m_pHairUpdate->Color = Sprite->Color;
         applyGravity = false;
     }
     else if (Dashes == 0 && Dashes < MaxDashes)
     {
-        if (Sprite.Mode == PlayerSpriteMode.MadelineAsBadeline)
+        if (Sprite->Mode == PlayerSpriteMode::MadelineAsBadeline)
         {
-            Hair.Color = Color.Lerp(Hair.Color, Player.UsedBadelineHairColor, 6f * Engine.DeltaTime);
+            m_pHairUpdate->Color = (Color)Lerp((Vec4)m_pHairUpdate->Color, (Vec4)UsedBadelineHairColor, 6.f * DT);
         }
         else
         {
-            Hair.Color = Color.Lerp(Hair.Color, Player.UsedHairColor, 6f * Engine.DeltaTime);
+            m_pHairUpdate->Color = (Color)Lerp((Vec4)m_pHairUpdate->Color, (Vec4)UsedHairColor, 6.f * DT);
         }
     }
     else
@@ -322,41 +327,41 @@ void CPlayerScript::UpdateHair(bool applyGravity)
         Color color;
         if (lastDashes != Dashes)
         {
-            color = Player.FlashHairColor;
+            color = FlashHairColor;
             hairFlashTimer = 0.12f;
         }
-        else if (hairFlashTimer > 0f)
+        else if (hairFlashTimer > 0.f)
         {
-            color = Player.FlashHairColor;
-            hairFlashTimer -= Engine.DeltaTime;
+            color = FlashHairColor;
+            hairFlashTimer -= DT;
         }
-        else if (Sprite.Mode == PlayerSpriteMode.MadelineAsBadeline)
+        else if (Sprite->Mode == PlayerSpriteMode::MadelineAsBadeline)
         {
             if (Dashes == 2)
             {
-                color = Player.TwoDashesBadelineHairColor;
+                color = TwoDashesBadelineHairColor;
             }
             else
             {
-                color = Player.NormalBadelineHairColor;
+                color = NormalBadelineHairColor;
             }
         }
         else if (Dashes == 2)
         {
-            color = Player.TwoDashesHairColor;
+            color = TwoDashesHairColor;
         }
         else
         {
-            color = Player.NormalHairColor;
+            color = NormalHairColor;
         }
-        Hair.Color = color;
+        m_pHairUpdate->Color = color;
     }
     if (OverrideHairColor != null)
     {
-        Hair.Color = OverrideHairColor.Value;
+        m_pHairUpdate->Color = OverrideHairColor;
     }
-    Hair->Facing = Facing;
-    Hair.SimulateMotion = applyGravity;
+    m_pHairUpdate->facing = Facing;
+    m_pHairUpdate->SimulateMotion = applyGravity;
     lastDashes = Dashes;
 }
 

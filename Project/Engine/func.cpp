@@ -285,6 +285,16 @@ float Lerp(float A, float B, float Alpha)
 	return A * (1 - Alpha) + B * Alpha;
 }
 
+Color Lerp(Vec4 A, Vec4 B, float Alpha)
+{
+	float r = Lerp(A.x, B.x, Alpha);
+	float g = Lerp(A.y, B.y, Alpha);
+	float b = Lerp(A.z, B.z, Alpha);
+	float a = Lerp(A.w, B.w, Alpha);
+	
+	return Color(r,g,b,a);
+}
+
 void GamePlayStatic::InitLayerString()
 {
 

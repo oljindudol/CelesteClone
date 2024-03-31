@@ -62,9 +62,9 @@ public:
 #pragma endregion
 public:
 	int HairCount = 4;
+	PlayerSpriteMode Mode;
 private:
 	string spriteName;
-	PlayerSpriteMode Mode;
 	class CPlayerScript* m_Owner;
 
 public:
