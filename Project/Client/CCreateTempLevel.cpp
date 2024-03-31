@@ -152,8 +152,18 @@ void CCreateTempLevel::CreateTempLevel()
 	pLight->Light2D()->SetAmbient(Vec3(0.8f, 0.8f, 0.8f));
 	pTempLevel->AddObject(pLight, LAYER_LIGHT);
 
-
 	CGameObject* pObj = nullptr;
+
+	pObj = new CGameObject;
+	pObj->SetName(L"ph");
+
+	pObj->AddComponent(new CTransform);
+	pObj->AddComponent(new CPlayerHair);
+
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 91.f));
+
+	pTempLevel->AddObject(pObj, LAYER_PLAYER, false);
+	pObj = nullptr;
 
 	// Backgruond Object »ý¼º
 	//pObj = new CGameObject;
@@ -190,10 +200,14 @@ void CCreateTempLevel::CreateTempLevel()
 	//pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\girder.png", L"texture\\girder.png");
 	//pObj->TileMap()->SetTileAtlas(pTileAtlas);
 
-	string ForeTilePath = "C:\\CelesteClone\\OutputFile\\content\\texture\\Gameplay\\tilemap\\foretile";
+	static const std::filesystem::path base_path = CPathMgr::GetContentPath();
+
+	wstring ForeTilePath = base_path;
+	ForeTilePath += STR_FOLDER_PATH_FORE_TILE;
+
+
 	auto files = getImagesFromDirectory(ForeTilePath);
 
-	static const std::filesystem::path base_path = CPathMgr::GetContentPath();
 
 	for (auto& p : files)
 	{

@@ -117,12 +117,9 @@ void CAnim::CreateFromFolder(CAnimator2D* _Animator, const wstring& _Path, float
 	m_Animator = _Animator;
 	m_Duration = _Delay;
 
-	string s;
-	s.assign(_Path.begin(),_Path.end());
-
 	static const std::filesystem::path base_path = CPathMgr::GetContentPath();
 
-	auto images = getImagesFromDirectory(s);
+	auto images = getImagesFromDirectory(_Path);
 
 	for (int i = 0; i < images.size(); ++i)
 	{

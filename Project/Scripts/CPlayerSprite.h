@@ -1,13 +1,8 @@
 #pragma once
-class CplayerHair;
+class CPlayerHair;
+class CPlayerHairUpdate;
 
-struct PlayerAnimMetadata
-{
-	Vec2 HairOffset;
-	//¾Õ¸Ó¸® Frame
-	int  BangFrame; 
-	bool HasHair;
-};
+
 
 
 
@@ -77,7 +72,7 @@ private:
 public:
 	string CurrentAnimationID;
 	string LastAnimationID;
-	CplayerHair* Hair;
+	CPlayerHairUpdate* Hair;
 	Vec2 HairOffset();
 	PlayerSpriteMode GetMode() { return Mode; }
 	int HairFrame();

@@ -5,4 +5,4 @@ CScriptMgr.h
 CPhysics.h
 CustomStateMachine.h
 CPlayerSprite.h
-CPlayerHair.h
+CPlayerHairUpdate.h

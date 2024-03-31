@@ -224,7 +224,7 @@ Color HexToColor(string _strHex)
 	return Color(r / 255.0f, g / 255.0f, b / 255.0f,1.f);
 }
 
-std::vector<std::filesystem::path> getFoldersFromDirectory(const std::string& path) {
+std::vector<std::filesystem::path> getFoldersFromDirectory(const std::wstring& path) {
 	std::vector<std::filesystem::path> fileList;
 	for (const auto& entry : std::filesystem::directory_iterator(path)) {
 		if (std::filesystem::is_directory(entry)) {
@@ -240,7 +240,7 @@ std::vector<std::filesystem::path> getFoldersFromDirectory(const std::string& pa
 	return fileList;
 }
 
-std::vector<std::filesystem::path> getImagesFromDirectory(const std::string& path) {
+std::vector<std::filesystem::path> getImagesFromDirectory(const std::wstring& path) {
 	std::vector<std::filesystem::path> fileList;
 	for (const auto& entry : std::filesystem::directory_iterator(path)) {
 		if (entry.path().extension() == ".jpg" || entry.path().extension() == ".png") {

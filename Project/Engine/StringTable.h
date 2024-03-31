@@ -1,6 +1,12 @@
 #pragma once
 
 
+// Image Path
+#define STR_FILE_PATH_HAIR L"\\texture\\Gameplay\\hair\\hair00.png"
+#define STR_FOLDER_PATH_BANGS L"\\texture\\Gameplay\\hair\\bangs"
+#define STR_FOLDER_PATH_PLAYERANIMATION L"\\texture\\Gameplay\\madeline"
+#define STR_FOLDER_PATH_FORE_TILE L"\\texture\\Gameplay\\tilemap\\foretile"
+
 // Imgui UI String
 
 
@@ -95,6 +101,8 @@
 #define STR_KEY_GrayFilterShader L"GrayFilterShader"
 #define STR_KEY_DistortionShader L"DistortionShader"
 #define STR_KEY_DebugShapeShader L"DebugShapeShader"
+#define STR_KEY_HairShader L"PlayerHairShader"
+#define STR_KEY_BangShader L"PlayerBangShader"
 
 
 // Material
@@ -106,6 +114,8 @@
 #define STR_KEY_GrayFilterMeterial L"GrayFilterMtrl"
 #define STR_KEY_DistortionMeterial L"DistortionMtrl"
 #define STR_KEY_DebugMeterial L"DebugShapeMtrl"
+#define STR_KEY_HairMeterial L"PlayerHairMtrl"
+#define STR_KEY_BangMeterial L"PlayerBangMtrl"
 
 
 

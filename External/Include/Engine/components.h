@@ -9,6 +9,7 @@
 #include "CLight2D.h"
 #include "CTileMap.h"
 #include "CParticleSystem.h"
+#include "CPlayerHair.h"
 
 //#include "CCollider3D.h"
 //#include "CAnimator3D.h"

@@ -120,9 +120,9 @@ void Delete_Map(map<T1, T2>& _map)
 	_map.clear();
 }
 
-std::vector<std::filesystem::path> getFoldersFromDirectory(const std::string& path);
+std::vector<std::filesystem::path> getFoldersFromDirectory(const std::wstring& path);
 
-std::vector<std::filesystem::path> getImagesFromDirectory(const std::string& path);
+std::vector<std::filesystem::path> getImagesFromDirectory(const std::wstring& path);
 
 float Approach(float val, float target, float maxMove);
 

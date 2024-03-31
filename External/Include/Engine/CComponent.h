@@ -35,6 +35,7 @@ public:
     GET_OTHER_COMPONENT(Light2D);
     GET_OTHER_COMPONENT(TileMap);
     GET_OTHER_COMPONENT(StateMachine);
+    GET_OTHER_COMPONENT(CPlayerHair);
    
     CRenderComponent* GetRenderComponent() { return m_Owner->GetRenderComopnent();}
 

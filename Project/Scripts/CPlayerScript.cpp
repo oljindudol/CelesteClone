@@ -14,7 +14,7 @@
 #include <Engine/CAnimator2D.h>
 #include <Engine/CAnim.h>
 #include "CPlayerSprite.h"
-#include "CPlayerHair.h"
+#include "CPlayerHairUpdate.h"
 
 
 //key bind
@@ -157,7 +157,11 @@ CPlayerScript::~CPlayerScript()
 
 void CPlayerScript::begin()
 {
-	string OriginPath = "C:\\CelesteClone\\OutputFile\\content\\texture\\Gameplay\\madeline";
+
+    std::filesystem::path base_path = CPathMgr::GetContentPath();
+    wstring OriginPath = base_path;
+
+    OriginPath += STR_FOLDER_PATH_PLAYERANIMATION;
 	auto folders = getFoldersFromDirectory(OriginPath);
 	
 	//auto ty = Transform()->GetRelativeScale().y;
