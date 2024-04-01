@@ -101,6 +101,7 @@ void CPlayerHairUpdate::AfterUpdate()
 	// 헤어카운트 등록
 	RenderInfoRef.HairCnt =  Sprite->HairCount;
 	RenderInfoRef.facing = facing;
+	RenderInfoRef.HairColor = Color;
 	//Hair->SetRenderInfo(RenderInfoRef);
 }
 

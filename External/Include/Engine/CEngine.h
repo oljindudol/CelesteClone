@@ -10,6 +10,7 @@ private:
 
 public:
 	HWND GetMainWind() { return m_hMainWnd; }
+	void Freeze(float _FreezeTime);
 
 private:
 	void DebugFunctionCheck();

@@ -212,16 +212,16 @@ Color HexToColor(string _strHex)
 	int r, g, b;
 	std::stringstream ss;
 
-	ss << std::hex << _strHex.substr(1, 2);
+	ss << std::hex << _strHex.substr(0, 2);
 	ss >> r;
 	ss.clear();
-	ss << std::hex << _strHex.substr(3, 2);
+	ss << std::hex << _strHex.substr(2, 2);
 	ss >> g;
 	ss.clear();
-	ss << std::hex << _strHex.substr(5, 2);
+	ss << std::hex << _strHex.substr(4, 2);
 	ss >> b;
 
-	return Color(r / 255.0f, g / 255.0f, b / 255.0f,1.f);
+	return Color((float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f,1.f);
 }
 
 std::vector<std::filesystem::path> getFoldersFromDirectory(const std::wstring& path) {

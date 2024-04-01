@@ -20,6 +20,7 @@
 #include <Engine\CLevel.h>
 #include "CPlayerHairUpdate.h"
 #include "Engine\CTaskMgr.h"
+#include <Engine\CEngine.h>
 
 //key bind
 #define GRABKEY KEY_PRESSED(S)
@@ -40,6 +41,7 @@ CPlayerScript::CPlayerScript()
 	// sweat sprite
 	//sweatSprite = GFX.SpriteBank.Create("player_sweat");
 	//Add(sweatSprite);
+    Celeste = CEngine::GetInst();
 
 	// physics
 	Collider = normalHitbox;
@@ -61,7 +63,7 @@ CPlayerScript::CPlayerScript()
 	//triggersInside = new HashSet<Trigger>();
 	//Add(Light = new VertexLight(normalLightOffset, Color.White, 1f, 32, 64));
 	//Add(new WaterInteraction(() = > { return StateMachine.State == StDash || StateMachine.State == StReflectionFall; }));
-
+    
 	//Wind
 	//Add(new WindMover(WindMove));
 
@@ -183,9 +185,9 @@ void CPlayerScript::begin()
     GetOwner()->AddChild(m_pPlayerHairGO);
     //Add(Hair = new PlayerHair(Sprite));
     //Add(Sprite);
-    m_pHairComp->SetHairColor(NormalHairColor);
 
     m_pHairUpdate = new CPlayerHairUpdate(Sprite, m_pHairComp);
+    m_pHairUpdate->Color = NormalHairColor;
 
 
     std::filesystem::path base_path = CPathMgr::GetContentPath();
@@ -360,10 +362,10 @@ void CPlayerScript::UpdateHair(bool applyGravity)
         }
         m_pHairUpdate->Color = color;
     }
-    if (OverrideHairColor != null)
-    {
-        m_pHairUpdate->Color = OverrideHairColor;
-    }
+    //if (OverrideHairColor != null)
+    //{
+    //    m_pHairUpdate->Color = OverrideHairColor;
+    //}
     m_pHairUpdate->facing = Facing;
     m_pHairUpdate->SimulateMotion = applyGravity;
     lastDashes = Dashes;
@@ -1651,16 +1653,15 @@ void CPlayerScript::DashBegin()
     launched = false;
 
     //if (Engine.TimeRate > 0.25f)
-        //Celeste.Freeze(.05f);
+    Celeste->Freeze(.05f);
+    //level.Displacement.AddBurst(Center, .4f, 8, 64, .5f, Ease.QuadOut, Ease.QuadOut);
+    //Input.Rumble(RumbleStrength.Strong, RumbleLength.Medium);
+
     dashCooldownTimer = DashCooldown;
     dashRefillCooldownTimer = DashRefillCooldown;
     StartedDashing = true;
     wallSlideTimer = WallSlideTime;
     dashTrailTimer = 0;
-
-    //level.Displacement.AddBurst(Center, .4f, 8, 64, .5f, Ease.QuadOut, Ease.QuadOut);
-
-    //Input.Rumble(RumbleStrength.Strong, RumbleLength.Medium);
 
     dashAttackTimer = DashAttackTime;
     beforeDashSpeed = Speed;

@@ -318,6 +318,7 @@ public:
 
 private:
     bool startHairCalled = false;
+    class CEngine* Celeste;
 
 #pragma region functions
 public:

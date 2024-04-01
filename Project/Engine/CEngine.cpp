@@ -85,6 +85,11 @@ void CEngine::progress()
 }
 
 
+void CEngine::Freeze(float _FreezeTime)
+{
+	CTimeMgr::GetInst()->Freeze(_FreezeTime);
+}
+
 void CEngine::DebugFunctionCheck()
 {
 	if (KEY_TAP(KEY::O))
