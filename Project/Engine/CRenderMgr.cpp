@@ -49,6 +49,17 @@ void CRenderMgr::tick()
 	Clear();
 }
 
+void CRenderMgr::DirectionalShake(Vec2 _dir, float _time)
+{
+	if (0 != m_vecCam.size())
+	{
+		_dir.Normalize();
+		m_vecCam[0]->m_ShakeDirection = _dir;
+		m_vecCam[0]->m_LastDirectionalShake = 0;
+		m_vecCam[0]->m_ShakeTimer = max(m_vecCam[0]->m_ShakeTimer, _time);
+	}
+}
+
 void CRenderMgr::render_play()
 {
 	for (size_t i = 0; i < m_vecCam.size(); ++i)

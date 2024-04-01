@@ -62,6 +62,7 @@ public:
 public:
     void init();
     void tick();
+    void DirectionalShake(Vec2 _dir, float _time = 0.3f);
 
 private:
     void render_play();

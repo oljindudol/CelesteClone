@@ -67,7 +67,7 @@ void CCamera::finaltick()
 {
 	// 뷰 행렬을 계산한다.
 	// 카메라를 원점으로 이동시키는 이동 행렬
-	Vec3 vCamPos = Transform()->GetRelativePos();
+	Vec3 vCamPos = Transform()->GetRelativePos() + Vec3(m_CursSakeOffset, 0.f);
 	Matrix matTrans = XMMatrixTranslation(-vCamPos.x, -vCamPos.y, -vCamPos.z);
 
 	// 카메라의 각 우, 상, 전 방 방향을 기저축이랑 일치시키도록 회전하는 회전행렬

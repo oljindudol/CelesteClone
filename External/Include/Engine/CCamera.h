@@ -39,6 +39,11 @@ private:
     vector<CGameObject*>    m_vecTransparent;
     vector<CGameObject*>    m_vecPostProcess;
 
+    Vec2  m_ShakeDirection;
+    Vec2  m_CursSakeOffset;
+    float m_ShakeTimer = 0.f;
+    int   m_LastDirectionalShake;
+
 public:
     PROJ_TYPE GetProjType() { return m_ProjType; }
     void SetProjType(PROJ_TYPE _Type) { m_ProjType = _Type; }
@@ -89,5 +94,7 @@ private:
 public:
     CCamera();
     ~CCamera();
+
+    friend class CRenderMgr;
 };
 
