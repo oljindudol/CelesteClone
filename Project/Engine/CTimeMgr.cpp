@@ -26,6 +26,8 @@ void CTimeMgr::init()
 	QueryPerformanceFrequency(&m_Frequency);
 
 	QueryPerformanceCounter(&m_PrevCount);
+
+	m_FreezeTime = 0.f;
 }
 
 void CTimeMgr::tick()
@@ -33,6 +35,13 @@ void CTimeMgr::tick()
 	QueryPerformanceCounter(&m_CurCount);
 
 	m_EngineDeltaTime = m_DeltaTime = double(m_CurCount.QuadPart - m_PrevCount.QuadPart) / double(m_Frequency.QuadPart);
+
+	if (m_FreezeTime>0.f)
+	{
+		m_FreezeTime -= m_DeltaTime;
+		m_DeltaTime = 0.f;
+	}
+
 
 	if (m_bLock)
 	{
@@ -58,6 +67,13 @@ void CTimeMgr::tick()
 
 	++m_iCall;	
 	g_global.g_time += (float)m_DeltaTime;	
+
+
+	//if(KEY_PRESSED(F))
+	//{
+	//	Freeze(.05f);
+	//}
+
 }
 
 void CTimeMgr::render()

@@ -16,6 +16,7 @@ private:
 	UINT			m_iCall;
 	double			m_Time;
 	bool			m_bLock;
+	double			m_FreezeTime;
 
 	wchar_t			m_szText[256];
 
@@ -27,6 +28,10 @@ public:
 	double GetEngineDeltaTime_d() { return m_EngineDeltaTime; }
 
 	void LockDeltaTime(bool _Lock) { m_bLock = _Lock; }
+
+	void Freeze(float _FreezeTime) {
+		m_FreezeTime = _FreezeTime;
+	}
 
 public:
 	void init();
