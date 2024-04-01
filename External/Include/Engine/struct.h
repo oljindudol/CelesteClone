@@ -121,10 +121,11 @@ struct tSpawnCount
 // ==================
 struct tHair
 {
-	Vec2 vOffset;
-	Vec2 vScale;
-	Vec3 vHairColor;
+	Vec4 vHairColor;
+	Vec3 vOffset;
 	int bang;
+	Vec2 vScale;
+	int padding[2];
 };
 
 

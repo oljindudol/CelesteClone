@@ -528,9 +528,6 @@
     <FxCompile Include="postprocess.fx">
       <Filter>ShaderCode\Render</Filter>
     </FxCompile>
-    <FxCompile Include="tilemap.fx">
-      <Filter>ShaderCode\Render</Filter>
-    </FxCompile>
     <FxCompile Include="setcolor.fx">
       <Filter>ShaderCode\Compute\SetColor</Filter>
     </FxCompile>
@@ -542,6 +539,9 @@
     </FxCompile>
     <FxCompile Include="player.fx">
       <Filter>ShaderCode\Render</Filter>
+    </FxCompile>
+    <FxCompile Include="tilemap.fx">
+      <Filter>ShaderCode\Util</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>

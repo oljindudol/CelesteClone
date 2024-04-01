@@ -83,10 +83,11 @@ cbuffer GLOBAL_DATA : register(b3)
 
 cbuffer HAIR_DATA : register(b4)
 {
-    float2 g_HairOffset; 
-    float2 g_HairScale;
-    float3 g_HairColor;
+    float4 g_HairColor;
+    float3 g_HairOffset; 
     int g_Int_Bang;
+    float2 g_HairScale;
+    int hairpadding[2];
 }
 
 

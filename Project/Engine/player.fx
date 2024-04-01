@@ -26,15 +26,10 @@ VS_OUT VS_Hair(VS_IN _in)
     
 
     _in.vPos = _in.vPos * float3(g_HairScale, 1.f);
-    if(1 == g_Int_Bang)
-    {
-        _in.vPos = _in.vPos + float3(g_HairOffset, 0.f);
-    }
-    else
-    {
-        _in.vPos = _in.vPos + float3(g_HairOffset, 0.f);
-        
-    }
+    //_in.vPos = _in.vPos * float3(10.f,10.f, 1.f);
+
+    _in.vPos = _in.vPos + g_HairOffset;
+
     
     
     output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
@@ -60,7 +55,9 @@ float4 PS_Hair(VS_OUT _in) : SV_Target
         float fAlpha = vColor.a;
         if (fAlpha > 0.9f)
         {
-            vColor = float4(g_HairColor, 1.f);
+            vColor = g_HairColor;
+            //vColor = float4(g_HairColor, 1.f);
+            //vColor = float4(1.f, 0.f, 0.f, 1.f);
         }
         else
         {
@@ -83,7 +80,9 @@ float4 PS_Hair(VS_OUT _in) : SV_Target
         else
         {
             //vColor = float4(1.f, 0.f, 0.f, 1.f);
-            vColor = float4(g_HairColor, 1.f);
+            vColor = g_HairColor;
+            //vColor = float4(g_HairColor, 1.f);
+            //vColor = float4(1.f, 0.f, 0.f, 1.f);
         }
     }
 

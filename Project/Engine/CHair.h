@@ -57,6 +57,7 @@ public:
 	virtual void finaltick() override;
 	virtual void UpdateData() override;
 	virtual void render() override;
+	void RenderHair(Color Color, bool _OnePixelDown,Vec3 offset = Vec3(0, 0,0 ) );
 	CLONE(CHair);
 	CHair();
 	~CHair();

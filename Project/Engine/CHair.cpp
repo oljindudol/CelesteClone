@@ -132,15 +132,15 @@ void CHair::finaltick()
 
 void CHair::UpdateData()
 {
-    if (nullptr != GetMaterial())
-    {
-        GetMaterial()->UpdateData();
-    }
+    //if (nullptr != GetMaterial())
+    //{
+    //    GetMaterial()->UpdateData();
+    //}
 
-    auto originpos = Transform()->GetWorldPos();
+    //auto originpos = Transform()->GetWorldPos();
 
-    //Transform()->SetRelativePos(Vec3(originpos.x - 50.f, originpos.y - 50.f, originpos.z - 50.f));
-    Transform()->UpdateData();
+    ////Transform()->SetRelativePos(Vec3(originpos.x - 50.f, originpos.y - 50.f, originpos.z - 50.f));
+    //Transform()->UpdateData();
 }
 
 void CHair::render()
@@ -158,34 +158,66 @@ void CHair::render()
 
     //hair render
     GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_HairTex);
-    auto originpos = Transform()->GetWorldPos();
-    auto vec = m_RenderInfo.vecHairNodes;
+
     //Transform()->SetRelativePos(originpos - Vec3(vec[0].vOffset.x, vec[0].vOffset.y, 0.f));
     Transform()->UpdateData();
+
+    //RenderHair(m_RenderInfo.BorderColor, Vec3(1 , 0,1));
+    //RenderHair(m_RenderInfo.BorderColor, Vec3(-1, 0,1));
+    //RenderHair(m_RenderInfo.BorderColor, Vec3(0 , 1,1));
+    //RenderHair(m_RenderInfo.BorderColor, Vec3(0, -1,1));
+    bool OnePixDown = false;
+    auto PAniator = GetOwner()->GetParent()->Animator2D();
+    if (L"idle" == PAniator->GetCurAnimName()
+        && 2< PAniator->GetCurAnim()->GetCurIdx())
+    {
+        OnePixDown = true;
+    }
+
+
+
+    const float OutLineWidth = 0.7f;
+    const float OutLineDepth = 0.001f;
+    RenderHair(m_RenderInfo.BorderColor, OnePixDown,Vec3(OutLineWidth, 0.0f, OutLineDepth));
+    RenderHair(m_RenderInfo.BorderColor, OnePixDown,Vec3(-OutLineWidth, 0.0f, OutLineDepth));
+    RenderHair(m_RenderInfo.BorderColor, OnePixDown,Vec3(0.0f, OutLineWidth, OutLineDepth));
+    RenderHair(m_RenderInfo.BorderColor, OnePixDown,Vec3(0.0f, -OutLineWidth, OutLineDepth));
+    RenderHair(m_RenderInfo.HairColor  , OnePixDown);
+
+}
+
+void CHair::RenderHair(Color _Color, bool _OnePixelDown ,Vec3 _offset)
+{
+    auto vec = m_RenderInfo.vecHairNodes;
     static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::HAIR);
     for (size_t i = 1; i < vec.size(); ++i)
     {
         tHair data = {};
-        data.vOffset = (vec[i].vOffset) - (vec[0].vOffset) + Vec2(0,4);
+        data.vHairColor = (Vec4)_Color;
+        data.vOffset = Vec3((vec[i].vOffset - vec[0].vOffset), 0) + Vec3(0, 4, 0) +_offset;
         data.vScale = Vec2(10, 10) * vec[i].vScale;
-        data.vHairColor = (Vec4)m_RenderInfo.HairColor;
         data.bang = 0;
         pCB->SetData(&data);
         pCB->UpdateData();
         GetMesh()->render();
     }
 
+
     //bang render
     GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_vecBangTex[m_RenderInfo.ThisFrameBangIdx]);
     tHair data = {};
-    data.vOffset = Vec2(0, 6);
-    data.vScale = Vec2(((int)m_RenderInfo.facing) * 10,  10);
-    data.vHairColor = (Vec4)m_RenderInfo.HairColor;
+    data.vHairColor = (Vec4)_Color;
+    data.vOffset = Vec2(0, 6) + _offset;
+    if (true == _OnePixelDown)
+    {
+        data.vOffset = data.vOffset +  Vec3(0, -1, 0);
+    }
+    data.vScale = Vec2(((int)m_RenderInfo.facing) * 10, 10);
     data.bang = 1;
     pCB->SetData(&data);
     pCB->UpdateData();
     GetMesh()->render();
-
 }
+
 
 
