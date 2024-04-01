@@ -175,10 +175,11 @@ void CPlayerScript::begin()
     m_pPlayerHairGO->SetName(L"PlayerHair");
     m_pPlayerHairGO->AddComponent(new CTransform);
     m_pPlayerHairGO->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+    m_pPlayerHairGO->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
     m_pHairComp = new CHair;
     m_pPlayerHairGO->AddComponent(m_pHairComp);
 
-    CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(m_pPlayerHairGO, LAYER_PLAYER, false);
+    CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(m_pPlayerHairGO, LAYER_MONSTER, false);
     GetOwner()->AddChild(m_pPlayerHairGO);
     //Add(Hair = new PlayerHair(Sprite));
     //Add(Sprite);
@@ -669,40 +670,40 @@ void CPlayerScript::Update()
         //if (windTimeout > 0)
         //    windTimeout -= DT;
 
-        // Hair
-        //{
-        //    var windDir = windDirection;
-        //    if (ForceStrongWindHair.Length() > 0)
-        //        windDir = ForceStrongWindHair;
+        //Hair
+        {
+            Vec2 windDir = windDirection;
+            if (ForceStrongWindHair.Length() > 0)
+                windDir = ForceStrongWindHair;
 
-        //    if (windTimeout > 0 && windDir.X != 0)
-        //    {
-        //        windHairTimer += DT * 8f;
+            if (windTimeout > 0 && windDir.x != 0)
+            {
+                windHairTimer += DT * 8.f;
 
-        //        Hair.StepPerSegment = new Vector2(windDir.X * 5f, (float)Math.Sin(windHairTimer));
-        //        Hair.StepInFacingPerSegment = 0f;
-        //        Hair.StepApproach = 128f;
-        //        Hair.StepYSinePerSegment = 0;
-        //    }
-        //    else if (Dashes > 1)
-        //    {
-        //        Hair.StepPerSegment = new Vector2((float)Math.Sin(Scene.TimeActive * 2) * 0.7f - (int)Facing * 3, (float)Math.Sin(Scene.TimeActive * 1f));
-        //        Hair.StepInFacingPerSegment = 0f;
-        //        Hair.StepApproach = 90f;
-        //        Hair.StepYSinePerSegment = 1f;
+                m_pHairUpdate->StepPerSegment = Vec2(windDir.x * 5.f, (float)sinf(windHairTimer));
+                m_pHairUpdate->StepInFacingPerSegment = 0.f;
+                m_pHairUpdate->StepApproach = 128.f;
+                m_pHairUpdate->StepYSinePerSegment = 0;
+            }
+            else if (Dashes > 1)
+            {
+                m_pHairUpdate->StepPerSegment = Vec2((float)sinf(DT*4 * 2) * 0.7f - (int)Facing * 3, (float)sinf(DT * 4 * 1.f));
+                m_pHairUpdate->StepInFacingPerSegment = 0.f;
+                m_pHairUpdate->StepApproach = 90.f;
+                m_pHairUpdate->StepYSinePerSegment = 1.f;
 
-        //        Hair.StepPerSegment.Y += windDir.Y * 2f;
-        //    }
-        //    else
-        //    {
-        //        Hair.StepPerSegment = new Vector2(0, 2f);
-        //        Hair.StepInFacingPerSegment = 0.5f;
-        //        Hair.StepApproach = 64f;
-        //        Hair.StepYSinePerSegment = 0;
+                m_pHairUpdate->StepPerSegment.y += windDir.y * 2.f;
+            }
+            else
+            {
+                m_pHairUpdate->StepPerSegment = Vec2(0.f, 2.f);
+                m_pHairUpdate->StepInFacingPerSegment = 0.5f;
+                m_pHairUpdate->StepApproach = 64.f;
+                m_pHairUpdate->StepYSinePerSegment = 0;
 
-        //        Hair.StepPerSegment.Y += windDir.Y * 0.5f;
-        //    }
-        //}
+                m_pHairUpdate->StepPerSegment.y += windDir.y * 0.5f;
+            }
+        }
 
         //if (StateMachine->GetCurState() == StRedDash)
         //    Sprite.HairCount = 1;
@@ -934,6 +935,7 @@ void CPlayerScript::Update()
 }
 void CPlayerScript::UpdateSprite()
 {
+    Facing = GetOwner()->m_facing;
     auto SpriteScale = Animator2D()->GetMulScale();
 
     //Tween

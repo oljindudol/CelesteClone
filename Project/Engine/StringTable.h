@@ -2,8 +2,8 @@
 
 
 // Image Path
-//#define STR_FILE_PATH_HAIR L"\\texture\\Gameplay\\hair\\hair00.png"
-#define STR_FILE_PATH_HAIR L"\\texture\\Effect1.png"
+#define STR_FILE_PATH_HAIR L"\\texture\\Gameplay\\hair\\hair00.png"
+//#define STR_FILE_PATH_HAIR L"\\texture\\Effect1.png"
 #define STR_FOLDER_PATH_BANGS L"\\texture\\Gameplay\\hair\\bangs"
 #define STR_FOLDER_PATH_PLAYERANIMATION L"\\texture\\Gameplay\\madeline"
 #define STR_FOLDER_PATH_FORE_TILE L"\\texture\\Gameplay\\tilemap\\foretile"
@@ -32,6 +32,7 @@
 
 
 /////////////// fx Path ///////////////
+#define STR_FILE_PATH_PlayerShader L"shader\\player.fx"
 #define STR_FILE_PATH_Std2dShader L"shader\\std2d.fx"
 #define STR_FILE_PATH_DebugShader L"shader\\debug.fx"
 #define STR_FILE_PATH_ParticleShader L"shader\\particle.fx"
@@ -44,6 +45,8 @@
 
 
 // std2.fx functions name
+#define STR_FUNC_NAME_VTXShaderHair "VS_Hair"
+#define STR_FUNC_NAME_PIXShaderHair "PS_Hair"
 #define STR_FUNC_NAME_VTXShaderStd2d "VS_Std2D"
 #define STR_FUNC_NAME_PIXShaderStd2d "PS_Std2D"
 #define STR_FUNC_NAME_VTXShaderGrayFilter "VS_GrayFilter"
@@ -94,6 +97,7 @@
 
 
 // Shader
+#define STR_KEY_PlayerShader L"PlayerShader"
 #define STR_KEY_Std2dShader L"Std2DShader"
 #define STR_KEY_EffectShader L"EffectShader"
 #define STR_KEY_TileMapShader L"TileMapShader"

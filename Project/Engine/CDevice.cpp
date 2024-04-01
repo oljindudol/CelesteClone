@@ -371,5 +371,8 @@ int CDevice::CreateConstBuffer()
 	m_arrCB[(UINT)CB_TYPE::GLOBAL_DATA] = new CConstBuffer(CB_TYPE::GLOBAL_DATA);
 	m_arrCB[(UINT)CB_TYPE::GLOBAL_DATA]->Create(sizeof(tGlobalData), 1);
 
+	m_arrCB[(UINT)CB_TYPE::HAIR] = new CConstBuffer(CB_TYPE::HAIR);
+	m_arrCB[(UINT)CB_TYPE::HAIR]->Create(sizeof(tHair), 1);
+
 	return S_OK;
 }

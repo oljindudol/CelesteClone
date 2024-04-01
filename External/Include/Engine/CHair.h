@@ -27,6 +27,7 @@ struct tRenderInfo
 	int		ThisFrameBangIdx;
 	Color   HairColor;
 	Color   BorderColor;
+	Facings facing;
 };
 
 class CHair
@@ -46,6 +47,7 @@ public:
 	void SetMetaData();
 	tPlayerHairInfo GettHairInfo();
 	auto& GetRenderInfoRef() { return m_RenderInfo; }
+	void SetRenderInfo(tRenderInfo _RenderInfo) { m_RenderInfo = _RenderInfo; }
 
 	void SetHairColor(const Color& _HairColor) { m_RenderInfo.HairColor= _HairColor;}
 	//void SetThisFrameBangIdx(int _ThisFrameBangIdx) { m_RenderInfo.ThisFrameBangIdx = _ThisFrameBangIdx; }

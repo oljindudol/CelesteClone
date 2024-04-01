@@ -81,6 +81,14 @@ cbuffer GLOBAL_DATA : register(b3)
     float2  globalpadding;
 }
 
+cbuffer HAIR_DATA : register(b4)
+{
+    float2 g_HairOffset; 
+    float2 g_HairScale;
+    float3 g_HairColor;
+    int g_Int_Bang;
+}
+
 
 Texture2D g_tex_0 : register(t0);
 Texture2D g_tex_1 : register(t1);

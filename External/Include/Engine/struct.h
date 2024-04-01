@@ -119,6 +119,15 @@ struct tSpawnCount
 // ==================
 // 상수버퍼 대응 구조체
 // ==================
+struct tHair
+{
+	Vec2 vOffset;
+	Vec2 vScale;
+	Vec3 vHairColor;
+	int bang;
+};
+
+
 struct tTransform
 {
 	Matrix	matWorld;

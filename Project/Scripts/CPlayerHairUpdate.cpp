@@ -50,7 +50,7 @@ void CPlayerHairUpdate::AfterUpdate()
 {
 	auto player = Sprite->m_Owner->GetOwner();
 	auto SpriteScale = player->Animator2D()->GetMulScale();
-	auto playerworldscale = player->Transform()->GetWorldScale();
+	auto playerworldpos = player->Transform()->GetWorldPos();
 	
 	auto& RenderInfoRef = Hair->GetRenderInfoRef();
 	auto& Nodes = RenderInfoRef.vecHairNodes;
@@ -59,7 +59,9 @@ void CPlayerHairUpdate::AfterUpdate()
 
 
 	Vec2 offset = Info.HairOffset * Vec2((float)facing, 1.f);
-	Nodes[0].vOffset = Vec2(playerworldscale.x, playerworldscale.y) + Vec2(0.f, -9.f * SpriteScale.y) + offset;
+	Nodes[0].vOffset = Vec2(playerworldpos.x, playerworldpos.y) + Vec2(0.f, -9.f * SpriteScale.y) + offset;
+	//Nodes[0].vOffset = Vec2(0.f, -9.f * SpriteScale.y) + offset;
+	//Nodes[0].vOffset = Vec2(Nodes[0].vOffset.x, -Nodes[0].vOffset.y);
 	Vec2 target = Nodes[0].vOffset + Vec2((float)(-(float)facing) * StepInFacingPerSegment * 2.f, (float)sinf((double)wave) * StepYSinePerSegment) + StepPerSegment;
 	Vec2 prev = Nodes[0].vOffset;
 	float maxdist = 3.f;
@@ -81,8 +83,11 @@ void CPlayerHairUpdate::AfterUpdate()
 			tmp.Normalize();
 			Nodes[i].vOffset = prev + tmp * maxdist;
 		}
+		//offset
+		//Nodes[i].vOffset = Vec2(Nodes[i].vOffset.x, -Nodes[i].vOffset.y);
 		target = Nodes[i].vOffset + Vec2((float)(-(float)facing) * StepInFacingPerSegment, (float)sin((double)(wave + (float)i * 0.8f)) * StepYSinePerSegment) + StepPerSegment;
 		prev = Nodes[i].vOffset;
+
 
 		// Scale
 		Nodes[i].vScale = GetHairScale(i);
@@ -95,16 +100,18 @@ void CPlayerHairUpdate::AfterUpdate()
 
 	// 헤어카운트 등록
 	RenderInfoRef.HairCnt =  Sprite->HairCount;
+	RenderInfoRef.facing = facing;
+	//Hair->SetRenderInfo(RenderInfoRef);
 }
 
 Vec2 CPlayerHairUpdate::GetHairScale(int index)
 {
 	auto player = Sprite->m_Owner->GetOwner();
-	auto Facing = player->m_facing;
+	//auto Facing = player->m_facing;
 	auto SpriteScale = player->Animator2D()->GetMulScale();
 
 	float scale = 0.25f + (1.f - (float)index / (float)Sprite->HairCount) * 0.75f;
-	return Vec2(((index == 0) ? ((float)Facing) : scale) * abs(SpriteScale.x), scale);
+	return Vec2(((index == 0) ? ((float)facing) : scale) * abs(SpriteScale.x), scale);
 }
 
 

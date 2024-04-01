@@ -158,10 +158,27 @@ void CAssetMgr::CreateDefaultMesh()
 
 void CAssetMgr::CreateDefaultGraphicsShader()
 {
+	Ptr<CGraphicsShader> pShader = nullptr;
+
+	// =================================
+	// HairShader
+	// =================================
+
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(STR_FILE_PATH_PlayerShader, STR_FUNC_NAME_VTXShaderHair);
+	pShader->CreatePixelShader(STR_FILE_PATH_PlayerShader, STR_FUNC_NAME_PIXShaderHair);
+
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::LESS);
+	pShader->SetBSType(BS_TYPE::DEFAULT);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
+
+	// Parameter	
+	AddAsset(STR_KEY_PlayerShader, pShader.Get());
+
 	// =================================
 	// Std2DShader
 	// =================================
-	Ptr<CGraphicsShader> pShader = nullptr;
 
 	pShader = new CGraphicsShader;	
 	pShader->CreateVertexShader(STR_FILE_PATH_Std2dShader, STR_FUNC_NAME_VTXShaderStd2d);
@@ -177,6 +194,9 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->AddTexParam(TEX_PARAM::TEX_0, "Output Texture 1");
 	
 	AddAsset(STR_KEY_Std2dShader, pShader.Get());
+
+
+
 
 	// =================================
 	// EffectShader
@@ -298,6 +318,11 @@ void CAssetMgr::CreateDefaultMaterial()
 {
 	CMaterial* pMtrl = nullptr;
 
+	// HairMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(STR_KEY_PlayerShader));
+	AddAsset<CMaterial>(STR_KEY_HairMeterial, pMtrl);
+
 	// Std2DMtrl
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(STR_KEY_Std2dShader));
@@ -347,10 +372,7 @@ void CAssetMgr::CreateDefaultMaterial()
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(STR_KEY_DebugShapeShader));
 	AddAsset<CMaterial>(STR_KEY_DebugMeterial, pMtrl);
 
-	// Std2DMtrl
-	pMtrl = new CMaterial(true);
-	pMtrl->SetShader(FindAsset<CGraphicsShader>(STR_KEY_Std2dShader));
-	AddAsset<CMaterial>(STR_KEY_HairMeterial, pMtrl);
+
 }
 
 
