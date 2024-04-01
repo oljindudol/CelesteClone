@@ -2,6 +2,7 @@
 
 #include "CTaskMgr.h"
 #include "CRenderMgr.h"
+#include <random>
 
 void GamePlayStatic::SpawnGameObject(CGameObject* _Target, int _LayerIdx)
 {
@@ -293,6 +294,14 @@ Color Lerp(Vec4 A, Vec4 B, float Alpha)
 	float a = Lerp(A.w, B.w, Alpha);
 	
 	return Color(r,g,b,a);
+}
+std::random_device rd;
+std::mt19937 gen(rd());
+
+int RandomInt(int _MaxValue)
+{
+	std::uniform_int_distribution<> dis(0, _MaxValue - 1);
+	return dis(gen);
 }
 
 void GamePlayStatic::InitLayerString()

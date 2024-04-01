@@ -10,6 +10,7 @@
 #include "CLayer.h"
 #include "CGameObject.h"
 #include "CRenderComponent.h"
+#include "CTimeMgr.h"
 
 #include "CAssetMgr.h"
 
@@ -61,6 +62,7 @@ void CCamera::begin()
 {
 	// 카메라를 우선순위값에 맞게 RenderMgr 에 등록시킴
 	CRenderMgr::GetInst()->RegisterCamera(this, m_CameraPriority);
+	ShakeEventInit();
 }
 
 void CCamera::finaltick()
@@ -99,7 +101,65 @@ void CCamera::finaltick()
 		m_matProj = XMMatrixPerspectiveFovLH(m_FOV, m_AspectRatio, 1.f, m_Far);
 	}
 
-	
+	ShakeEventProcess();
+}
+
+void CCamera::ShakeEventProcess()
+{
+	if (0 > m_ShakeTimer)
+	{
+		return;
+	}
+	else
+	{
+		if (0 > m_CoShakeTime)
+		{
+			m_CoShakeTime = Const_CoEventTime;
+
+			int value = (int)(m_ShakeTimer * 10.f);
+			if (m_ShakeDirection == Vec2())
+			{
+				m_CursSakeOffset = Vec2((float)(-(float)value + RandomInt(value * 2 + 1)), (float)(-(float)value + RandomInt(value * 2 + 1)));
+			}
+			else
+			{
+				if (m_LastDirectionalShake == 0)
+				{
+					m_LastDirectionalShake = 1;
+				}
+				else
+				{
+					m_LastDirectionalShake *= -1;
+				}
+				m_CursSakeOffset = -m_ShakeDirection * (float)m_LastDirectionalShake * (float)value;
+			}
+			//if (Settings.Instance.ScreenShake == ScreenshakeAmount.Half)
+			//{
+			//	float x = (float)Math.Sign(ShakeVector.X);
+			//	float y = (float)Math.Sign(ShakeVector.Y);
+			//	ShakeVector = new Vector2(x, y);
+			//}
+		}
+
+		//float decrease = (Settings.Instance.ScreenShake == ScreenshakeAmount.Half) ? 1.5f : 1f;
+		//shakeTimer -= Engine.RawDeltaTime * decrease;
+
+		m_CoShakeTime -= DT;
+		m_ShakeTimer -= DT;
+		if (0 > m_ShakeTimer)
+		{
+			ShakeEventInit();
+		}
+	}
+}
+
+void CCamera::ShakeEventInit()
+{
+	m_ShakeDirection = Vec2();
+	m_CursSakeOffset = Vec2();
+	m_ShakeTimer = 0.f;
+	m_CoShakeTime = 0.f;
+	m_LastDirectionalShake = 0;
 }
 
 void CCamera::SetCameraPriority(int _Priority)

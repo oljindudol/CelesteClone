@@ -39,9 +39,12 @@ private:
     vector<CGameObject*>    m_vecTransparent;
     vector<CGameObject*>    m_vecPostProcess;
 
+    const float Const_CoEventTime = 0.04f;
+
     Vec2  m_ShakeDirection;
     Vec2  m_CursSakeOffset;
-    float m_ShakeTimer = 0.f;
+    float m_ShakeTimer ;
+    float m_CoShakeTime ;
     int   m_LastDirectionalShake;
 
 public:
@@ -80,6 +83,8 @@ public:
 public:
     virtual void begin() override;
     virtual void finaltick() override;
+    void ShakeEventProcess();
+    void ShakeEventInit();
 
     void SortObject();
     void render();

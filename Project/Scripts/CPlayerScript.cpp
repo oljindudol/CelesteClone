@@ -21,6 +21,7 @@
 #include "CPlayerHairUpdate.h"
 #include "Engine\CTaskMgr.h"
 #include <Engine\CEngine.h>
+#include <Engine\CRenderMgr.h>
 
 //key bind
 #define GRABKEY KEY_PRESSED(S)
@@ -1566,7 +1567,7 @@ int CPlayerScript::DashUpdate()
         //    Speed *= SwimDashSpeedMult;
 
         DashDir = dir;
-        //SceneAs<Level>().DirectionalShake(DashDir, .2f);
+        CRenderMgr::GetInst()->DirectionalShake(DashDir, .2f);
 
         if (DashDir.x != 0)
             Facing = (Facings)Sign(DashDir.x);
