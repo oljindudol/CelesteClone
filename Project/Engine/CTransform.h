@@ -1,6 +1,8 @@
 #pragma once
 #include "CComponent.h"
 
+
+
 class CTransform :
     public CComponent
 {
@@ -18,6 +20,7 @@ private:
 public:
     virtual void finaltick() override;
     virtual void UpdateData() override;
+    virtual void UpdateData(Matrix _matWorld);
 
 public:
     void SetRelativePos(Vec3 _Pos) {m_vRelativePos = _Pos;}

@@ -170,6 +170,7 @@ call EngineCopy.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="CAfterImage.h" />
     <ClInclude Include="CAnim.h" />
     <ClInclude Include="CAsset.h" />
     <ClInclude Include="CAssetMgr.h" />
@@ -240,6 +241,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="struct.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CAfterImage.cpp" />
     <ClCompile Include="CAnim.cpp" />
     <ClCompile Include="CAsset.cpp" />
     <ClCompile Include="CAssetMgr.cpp" />

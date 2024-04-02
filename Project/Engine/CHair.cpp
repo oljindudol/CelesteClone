@@ -11,7 +11,6 @@
 CHair::CHair()
 	: CRenderComponent(COMPONENT_TYPE::PLAYERHAIR)
 {
-
 	//hair 텍스쳐 할당
 	m_HairTex = CAssetMgr::GetInst()->Load<CTexture>(STR_FILE_PATH_HAIR, STR_FILE_PATH_HAIR);
 	
@@ -30,7 +29,6 @@ CHair::CHair()
 	//매쉬 메테리얼 할당
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_HairMeterial));
-    //GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_HairTex);
     SetMetaData();
 }
 
@@ -124,10 +122,10 @@ tPlayerHairInfo CHair::GettHairInfo()
 
 void CHair::finaltick()
 {
-    if (CRenderMgr::GetInst()->IsDebugPosition())
-    {
-        GamePlayStatic::DrawDebugCross(Transform()->GetWorldPos(), 20.f, Vec3(0.f, 1.f, 0.f), true);
-    }
+    //if (CRenderMgr::GetInst()->IsDebugPosition())
+    //{
+    //    GamePlayStatic::DrawDebugCross(Transform()->GetWorldPos(), 20.f, Vec3(0.f, 1.f, 0.f), true);
+    //}
 }
 
 void CHair::UpdateData()
@@ -159,7 +157,6 @@ void CHair::render()
     //hair render
     GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_HairTex);
 
-    //Transform()->SetRelativePos(originpos - Vec3(vec[0].vOffset.x, vec[0].vOffset.y, 0.f));
     Transform()->UpdateData();
 
     //RenderHair(m_RenderInfo.BorderColor, Vec3(1 , 0,1));
@@ -174,12 +171,12 @@ void CHair::render()
         OnePixDown = true;
     }
 
+    auto BC = m_RenderInfo.BorderColor;
     auto HC = m_RenderInfo.HairColor;
-    auto BC = m_RenderInfo.HairColor;
     auto alpha = 0.3f;
 
     const float OutLineWidth = 0.7f;
-    const float OutLineDepth = 0.01f;
+    const float OutLineDepth = 0.001f;
 
     RenderHair(BC, OnePixDown, Vec3(OutLineWidth, 0.0f, OutLineDepth));
     RenderHair(BC, OnePixDown, Vec3(-OutLineWidth, 0.0f, OutLineDepth));

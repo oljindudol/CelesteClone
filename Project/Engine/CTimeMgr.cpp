@@ -68,7 +68,6 @@ void CTimeMgr::tick()
 	++m_iCall;	
 	g_global.g_time += (float)m_DeltaTime;	
 
-	m_DeltaTime /= 10.f;
 	//if(KEY_PRESSED(F))
 	//{
 	//	Freeze(.05f);

@@ -28,6 +28,7 @@ struct tRenderInfo
 	Color   HairColor;
 	Color   BorderColor;
 	Facings facing;
+	bool	BangOnePixelDown;
 };
 
 class CHair
@@ -42,11 +43,13 @@ private:
 
 private:
 	tRenderInfo m_RenderInfo;
+	void RenderHair(Color Color, bool _OnePixelDown, Vec3 offset = Vec3(0, 0, 0));
 
 public:
 	void SetMetaData();
 	tPlayerHairInfo GettHairInfo();
 	auto& GetRenderInfoRef() { return m_RenderInfo; }
+	auto& GetRenderInfo() { return m_RenderInfo; }
 	void SetRenderInfo(tRenderInfo _RenderInfo) { m_RenderInfo = _RenderInfo; }
 
 	void SetHairColor(const Color& _HairColor) { m_RenderInfo.HairColor= _HairColor;}
@@ -57,7 +60,6 @@ public:
 	virtual void finaltick() override;
 	virtual void UpdateData() override;
 	virtual void render() override;
-	void RenderHair(Color Color, bool _OnePixelDown,Vec3 offset = Vec3(0, 0,0 ) );
 	CLONE(CHair);
 	CHair();
 	~CHair();
