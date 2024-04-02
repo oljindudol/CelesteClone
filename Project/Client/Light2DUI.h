@@ -10,5 +10,9 @@ public:
 public:
     Light2DUI();
     ~Light2DUI();
+
+private:
+    vector<string> m_items;
+
 };
 

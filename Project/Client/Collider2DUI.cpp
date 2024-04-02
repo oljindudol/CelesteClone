@@ -52,10 +52,6 @@ void Collider2DUI::render_update()
 
 	// Coltype ÄÞº¸
 	ImGui::SetNextItemWidth(150);
-
-
-	
-
 	if (ImGui::BeginCombo("##comboColType",ToString(enumname).c_str())) {
 		for (int i = 0; i < m_items.size(); i++) {
 			const bool isSelected = ((int)ctype == i);
@@ -70,7 +66,6 @@ void Collider2DUI::render_update()
 		}
 		ImGui::EndCombo();
 	}
-
 	Collider->SetColliderType(ctype);
 
 }
