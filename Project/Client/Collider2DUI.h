@@ -7,5 +7,8 @@ class Collider2DUI :
 public:
     Collider2DUI();
     ~Collider2DUI();
+
+private:
+    vector<enum class COLLIDER2D_TYPE> m_items;
 };
 

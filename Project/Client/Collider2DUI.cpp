@@ -10,6 +10,11 @@ Collider2DUI::Collider2DUI()
 {
 	SetSize(ImVec2(0.f, 120.f));
 	SetComopnentTitle("Collider2D");
+
+	for (int i = 0; i < (int)COLLIDER2D_TYPE::COL_TYPE_END; ++i)
+	{
+		m_items.push_back((COLLIDER2D_TYPE)i);
+	}
 }
 
 Collider2DUI::~Collider2DUI()
@@ -47,17 +52,14 @@ void Collider2DUI::render_update()
 
 	// Coltype ÄÞº¸
 	ImGui::SetNextItemWidth(150);
-	vector<COLLIDER2D_TYPE> items;
-	for (int i = 0; i < (int)COLLIDER2D_TYPE::COL_TYPE_END; ++i)
-	{
-		items.push_back((COLLIDER2D_TYPE)i);
-	}
+
+
 	
 
 	if (ImGui::BeginCombo("##comboColType",ToString(enumname).c_str())) {
-		for (int i = 0; i < items.size(); i++) {
+		for (int i = 0; i < m_items.size(); i++) {
 			const bool isSelected = ((int)ctype == i);
-			if (ImGui::Selectable(ToString(magic_enum::enum_name(items[i])).c_str(), isSelected)) {
+			if (ImGui::Selectable(ToString(magic_enum::enum_name(m_items[i])).c_str(), isSelected)) {
 				ctype = (COLLIDER2D_TYPE)i;
 			}
 
