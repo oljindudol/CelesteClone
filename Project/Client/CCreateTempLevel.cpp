@@ -158,23 +158,23 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj = nullptr;
 
 	// Backgruond Object »ý¼º
-	//pObj = new CGameObject;
-	//pObj->SetName(L"Background");
+	pObj = new CGameObject;
+	pObj->SetName(L"Background");
 
-	//pObj->AddComponent(new CTransform);
-	//pObj->AddComponent(new CMeshRender);
-	//pObj->AddComponent(new CBackgroundScript);
+	pObj->AddComponent(new CTransform);
+	pObj->AddComponent(new CMeshRender);
+	pObj->AddComponent(new CBackgroundScript);
 
-	//pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 600.f));
-	//pObj->Transform()->SetRelativeScale(Vec3(1600.f, 800.f, 1.f));
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 300.f));
+	pObj->Transform()->SetRelativeScale(Vec3(1600.f, 800.f, 1.f));
 
-	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	//pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_BackGroundMeterial));
+	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_BackGroundMeterial));
 
-	//Ptr<CTexture> pTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.jpg");
-	//pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, pTex);
+	Ptr<CTexture> pTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.png");
+	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, pTex);
 
-	//pTempLevel->AddObject(pObj, L"Background", false);
+	pTempLevel->AddObject(pObj, LAYER_BACKGROUND, false);
 
 
 	// TileMap Object

@@ -60,6 +60,13 @@ float4 PS_Std2D(VS_OUT _in) : SV_Target
         else
         {
             vColor = g_anim2d_tex.Sample(g_sam_1, vUV);
+            
+            float fAlpha = 1.f - saturate(dot(vColor.rb, vColor.rb) / 2.f);
+            if (fAlpha < 0.1f)
+            {
+            // ÇÈ¼¿ ½¦ÀÌ´õ¸¦ Áß°£¿¡ Æó±âÃ³¸®
+                discard; //clip(-1);            
+            }
         }
     }
     else
@@ -128,6 +135,13 @@ float4 PS_Std2D_Effect(VS_OUT _in) : SV_Target
         else
         {
             vColor = g_anim2d_tex.Sample(g_sam_1, vUV);
+            float fAlpha = 1.f - saturate(dot(vColor.rb, vColor.rb) / 2.f);
+        
+            if (fAlpha < 0.1f)
+            {
+            // ÇÈ¼¿ ½¦ÀÌ´õ¸¦ Áß°£¿¡ Æó±âÃ³¸®
+                discard; //clip(-1);            
+            }
         }
     }
     else

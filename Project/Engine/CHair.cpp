@@ -174,15 +174,25 @@ void CHair::render()
         OnePixDown = true;
     }
 
-
+    auto HC = m_RenderInfo.HairColor;
+    auto BC = m_RenderInfo.HairColor;
+    auto alpha = 0.3f;
 
     const float OutLineWidth = 0.7f;
-    const float OutLineDepth = 0.001f;
-    RenderHair(m_RenderInfo.BorderColor, OnePixDown,Vec3(OutLineWidth, 0.0f, OutLineDepth));
-    RenderHair(m_RenderInfo.BorderColor, OnePixDown,Vec3(-OutLineWidth, 0.0f, OutLineDepth));
-    RenderHair(m_RenderInfo.BorderColor, OnePixDown,Vec3(0.0f, OutLineWidth, OutLineDepth));
-    RenderHair(m_RenderInfo.BorderColor, OnePixDown,Vec3(0.0f, -OutLineWidth, OutLineDepth));
-    RenderHair(m_RenderInfo.HairColor  , OnePixDown);
+    const float OutLineDepth = 0.01f;
+
+    RenderHair(BC, OnePixDown, Vec3(OutLineWidth, 0.0f, OutLineDepth));
+    RenderHair(BC, OnePixDown, Vec3(-OutLineWidth, 0.0f, OutLineDepth));
+    RenderHair(BC, OnePixDown, Vec3(0.0f, OutLineWidth, OutLineDepth));
+    RenderHair(BC, OnePixDown, Vec3(0.0f, -OutLineWidth, OutLineDepth));
+    RenderHair(HC, OnePixDown);
+
+    //RenderHair(Vec4(BC.x, BC.y, BC.z, alpha), OnePixDown,Vec3(OutLineWidth, 0.0f, OutLineDepth));
+    //RenderHair(Vec4(BC.x, BC.y, BC.z, alpha), OnePixDown,Vec3(-OutLineWidth, 0.0f, OutLineDepth));
+    //RenderHair(Vec4(BC.x, BC.y, BC.z, alpha), OnePixDown,Vec3(0.0f, OutLineWidth, OutLineDepth));
+    //RenderHair(Vec4(BC.x, BC.y, BC.z, alpha), OnePixDown,Vec3(0.0f, -OutLineWidth, OutLineDepth));
+    //RenderHair(Vec4(HC.x, HC.y, HC.z, alpha), OnePixDown);
+    //RenderHair(m_RenderInfo.HairColor, OnePixDown);
 
 }
 

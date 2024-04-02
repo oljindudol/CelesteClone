@@ -541,7 +541,7 @@
       <Filter>ShaderCode\Render</Filter>
     </FxCompile>
     <FxCompile Include="tilemap.fx">
-      <Filter>ShaderCode\Util</Filter>
+      <Filter>ShaderCode\Render</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
