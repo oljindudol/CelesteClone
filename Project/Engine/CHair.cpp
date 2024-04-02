@@ -37,48 +37,43 @@ CHair::~CHair()
 }
 
 
-
-tPlayerHairInfo CHair::GettHairInfo()
+void CHair::RenderHair(Color _Color, Vec3 _offset)
 {
-    tPlayerHairInfo ret = {};
-    auto p = GetOwner()->GetParent();
-    auto Animator = p->Animator2D();
-    if(nullptr == Animator)
-        return ret;
-    if(nullptr == Animator->GetCurAnim())
-        return ret;
+    auto vec = m_RenderInfo.vecHairNodes;
+    static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::HAIR);
+    for (size_t i = 1; i < vec.size(); ++i)
+    {
+        tHair data = {};
+        data.vHairColor = (Vec4)_Color;
+        data.vOffset = Vec3((vec[i].vOffset - vec[0].vOffset), 0) + Vec3(0, 4, 0) + _offset;
+        ////오프셋 계산 이관실패1
+        //data.vOffset = Vec3((vec[i].vOffset),0.f) + Vec3(0, 4, 0) + _offset;// - vec[0].vOffset), 0) + Vec3(0, 4, 0) +_offset;
+        data.vScale = Vec2(10, 10) * vec[i].vScale;
+        //data.bang = 0;
+        pCB->SetData(&data);
+        pCB->UpdateData();
+        GetMesh()->render();
+    }
 
-    auto AnimName = Animator->GetCurAnimName();
-    auto AnimIdx = Animator->GetCurAnim()->GetCurIdx();
 
-    string key = ToString(AnimName) + std::to_string(AnimIdx);
-    auto iter = m_umHairInfo.find(key);
-    if (m_umHairInfo.end() != iter)
-        ret = iter->second;
-
-    return ret;
+    //bang render
+    GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_vecBangTex[m_RenderInfo.ThisFrameBangIdx]);
+    GetMaterial()->UpdateData();
+    tHair data = {};
+    data.vHairColor = (Vec4)_Color;
+    data.vOffset = Vec2(0, 6) + _offset;
+    if (true == m_RenderInfo.BangOnePixelDown)
+    {
+        data.vOffset = data.vOffset + Vec3(0, -1, 0);
+    }
+    data.vScale = Vec2(((int)m_RenderInfo.facing) * 10, 10);
+    //data.bang = 1;
+    pCB->SetData(&data);
+    pCB->UpdateData();
+    GetMesh()->render();
 }
 
-void CHair::finaltick()
-{
-    //if (CRenderMgr::GetInst()->IsDebugPosition())
-    //{
-    //    GamePlayStatic::DrawDebugCross(Transform()->GetWorldPos(), 20.f, Vec3(0.f, 1.f, 0.f), true);
-    //}
-}
 
-void CHair::UpdateData()
-{
-    //if (nullptr != GetMaterial())
-    //{
-    //    GetMaterial()->UpdateData();
-    //}
-
-    //auto originpos = Transform()->GetWorldPos();
-
-    ////Transform()->SetRelativePos(Vec3(originpos.x - 50.f, originpos.y - 50.f, originpos.z - 50.f));
-    //Transform()->UpdateData();
-}
 
 void CHair::render()
 {
@@ -88,13 +83,14 @@ void CHair::render()
 
     //UpdateData();
 
-    if (nullptr != GetMaterial())
-    {
-        GetMaterial()->UpdateData();
-    }
+    //if (nullptr != GetMaterial())
+    //{
+    //    GetMaterial()->UpdateData();
+    //}
 
     //hair render
     GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_HairTex);
+    GetMaterial()->UpdateData();
 
     Transform()->UpdateData();
 
@@ -132,43 +128,48 @@ void CHair::render()
 
 }
 
-void CHair::RenderHair(Color _Color ,Vec3 _offset)
+
+void CHair::finaltick()
 {
-    auto vec = m_RenderInfo.vecHairNodes;
-    static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::HAIR);
-    for (size_t i = 1; i < vec.size(); ++i)
-    {
-        tHair data = {};
-        data.vHairColor = (Vec4)_Color;
-        data.vOffset = Vec3((vec[i].vOffset - vec[0].vOffset), 0) + Vec3(0, 4, 0) + _offset;
-        ////오프셋 계산 이관실패1
-        //data.vOffset = Vec3((vec[i].vOffset),0.f) + Vec3(0, 4, 0) + _offset;// - vec[0].vOffset), 0) + Vec3(0, 4, 0) +_offset;
-        data.vScale = Vec2(10, 10) * vec[i].vScale;
-        data.bang = 0;
-        pCB->SetData(&data);
-        pCB->UpdateData();
-        GetMesh()->render();
-    }
-
-
-    //bang render
-    GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_vecBangTex[m_RenderInfo.ThisFrameBangIdx]);
-    tHair data = {};
-    data.vHairColor = (Vec4)_Color;
-    data.vOffset = Vec2(0, 6) + _offset;
-    if (true == m_RenderInfo.BangOnePixelDown)
-    {
-        data.vOffset = data.vOffset +  Vec3(0, -1, 0);
-    }
-    data.vScale = Vec2(((int)m_RenderInfo.facing) * 10, 10);
-    data.bang = 1;
-    pCB->SetData(&data);
-    pCB->UpdateData();
-    GetMesh()->render();
+    //if (CRenderMgr::GetInst()->IsDebugPosition())
+    //{
+    //    GamePlayStatic::DrawDebugCross(Transform()->GetWorldPos(), 20.f, Vec3(0.f, 1.f, 0.f), true);
+    //}
 }
 
+void CHair::UpdateData()
+{
+    //if (nullptr != GetMaterial())
+    //{
+    //    GetMaterial()->UpdateData();
+    //}
 
+    //auto originpos = Transform()->GetWorldPos();
 
+    ////Transform()->SetRelativePos(Vec3(originpos.x - 50.f, originpos.y - 50.f, originpos.z - 50.f));
+    //Transform()->UpdateData();
+}
+
+tPlayerHairInfo CHair::GettHairInfo()
+{
+    tPlayerHairInfo ret = {};
+    auto p = GetOwner()->GetParent();
+    auto Animator = p->Animator2D();
+    if (nullptr == Animator)
+        return ret;
+    if (nullptr == Animator->GetCurAnim())
+        return ret;
+
+    auto AnimName = Animator->GetCurAnimName();
+    auto AnimIdx = Animator->GetCurAnim()->GetCurIdx();
+
+    string key = ToString(AnimName) + std::to_string(AnimIdx);
+    auto iter = m_umHairInfo.find(key);
+    if (m_umHairInfo.end() != iter)
+        ret = iter->second;
+
+    return ret;
+}
 
 void CHair::SetMetaData()
 {

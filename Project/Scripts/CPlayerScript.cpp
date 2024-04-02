@@ -331,6 +331,7 @@ void CPlayerScript::tick()
             pMtrl->SetScalarParam(SCALAR_PARAM::INT_0, 0);
         }
     }
+    //GetPhysics()->Update();
 
     StateMachine->Update();
     Update();
@@ -339,7 +340,6 @@ void CPlayerScript::tick()
     m_pHairUpdate->Update();
     m_pHairUpdate->AfterUpdate();
     PushAfterImageEvent();
-    //GetPhysics()->Update();
 
     //static float f = 0.f;
     //f += DT * 0.3f;
@@ -1708,10 +1708,10 @@ void CPlayerScript::PushAfterImageEvent()
     Event.AccTime = 0.0f;
 
     //플레이어
-    Event.PlayerWorldMat = GetOwner()->Transform()->GetWorldMat();
+    Event.PlayerWorldMat = m_pPlayerHairGO->Transform()->GetWorldMat();
     Event.facing = GetOwner()->m_facing;
     Event.Color = Sprite->Color;
-        //플레이어 텍스쳐
+    //플레이어 텍스쳐
     auto anim = GetOwner()->Animator2D()->GetCurAnim();
     auto& vecfrm = anim->GetVecFrm();
     Event.PlayerAnimTex = vecfrm[anim->GetCurIdx()].pFrameTex;
@@ -1719,8 +1719,10 @@ void CPlayerScript::PushAfterImageEvent()
     //헤어
     Event.HairInfo = m_pHairComp->GetRenderInfo();
 
-    m_AfterImage->PushEvent(Event);
 
+
+
+    m_AfterImage->PushEvent(Event);
     m_bAfterImageRequest = false;
 }
 

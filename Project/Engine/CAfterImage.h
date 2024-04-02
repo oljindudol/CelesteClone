@@ -27,9 +27,10 @@ class CAfterImage :
 private:
     Ptr<CTexture> m_HairTex;
     vector<Ptr<CTexture>> m_vecBangTex;
+    tRenderInfo m_RenderInfo = {};
 
-    void RenderPlayer(Color Color, Vec3 offset = Vec3(0, 0, 0));
-    void RenderHair(Color Color, Vec3 offset = Vec3(0, 0, 0));
+    void RenderPlayer(Color _Color, Facings _facing, Vec3 _offset = Vec3(0, 0, 0));
+    void RenderHair(Color _Color, Vec3 _offset = Vec3(0, 0, 0));
     list< tAfterImageEvent> m_EventList;
 
 public:

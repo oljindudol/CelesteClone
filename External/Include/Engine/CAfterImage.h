@@ -5,16 +5,18 @@
 
 struct tAfterImageEvent
 {
-    //공통
+    //공통 정보.
     float Duration;
     float AccTime;
-    //플레이어
+
+    //플레이어 정보.
     Matrix PlayerWorldMat;
     Facings facing;
-    //알파값도 여기에 직접세팅
+    //                알파값도 여기에 직접세팅
     Color Color;
     Ptr<CTexture> PlayerAnimTex;
 
+    //헤어 정보.
     tRenderInfo HairInfo;
 };
 
@@ -25,9 +27,10 @@ class CAfterImage :
 private:
     Ptr<CTexture> m_HairTex;
     vector<Ptr<CTexture>> m_vecBangTex;
+    tRenderInfo m_RenderInfo = {};
 
-    void RenderPlayer(Color Color, Vec3 offset = Vec3(0, 0, 0));
-    void RenderHair(Color Color, Vec3 offset = Vec3(0, 0, 0));
+    void RenderPlayer(Color _Color, Facings _facing, Vec3 _offset = Vec3(0, 0, 0));
+    void RenderHair(Color _Color, Vec3 _offset = Vec3(0, 0, 0));
     list< tAfterImageEvent> m_EventList;
 
 public:

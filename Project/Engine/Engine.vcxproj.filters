@@ -176,7 +176,7 @@
       <Filter>08. Component\RenderComponent</Filter>
     </ClInclude>
     <ClInclude Include="CAfterImage.h">
-      <Filter>08. Component\RenderComponent\05.AfterImage</Filter>
+      <Filter>08. Component\RenderComponent\05. AfterImage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -340,7 +340,7 @@
       <Filter>08. Component\RenderComponent</Filter>
     </ClCompile>
     <ClCompile Include="CAfterImage.cpp">
-      <Filter>08. Component\RenderComponent\05.AfterImage</Filter>
+      <Filter>08. Component\RenderComponent\05. AfterImage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -509,7 +509,7 @@
     <Filter Include="08. Component\RenderComponent\04. Hair">
       <UniqueIdentifier>{e6be9a6e-00bc-4c5f-9b20-7c2cf2002bbb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="08. Component\RenderComponent\05.AfterImage">
+    <Filter Include="08. Component\RenderComponent\05. AfterImage">
       <UniqueIdentifier>{f914cc3f-115f-4bf4-ae0a-83a2bf8a683f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

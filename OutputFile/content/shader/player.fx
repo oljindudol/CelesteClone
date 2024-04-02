@@ -79,10 +79,19 @@ float4 PS_Hair(VS_OUT _in) : SV_Target
         }
         else
         {
-            //vColor = float4(1.f, 0.f, 0.f, 1.f);
+        
             vColor = g_HairColor;
-        //vColor = float4(g_HairColor.rgb, .5f);
+        //if (1 == g_Int_Bang)
+        //{
+        //    vColor.a = 0.1f;
+        //
+        //}
+        //else
+        //{
+        //    vColor = g_HairColor;
+        //}
             //vColor = float4(1.f, 0.f, 0.f, 1.f);
+            //vColor = float4(g_HairColor.rgb, .5f);
         }
     //}
 

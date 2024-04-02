@@ -72,6 +72,8 @@ void CTimeMgr::tick()
 	//{
 	//	Freeze(.05f);
 	//}
+	
+	//m_DeltaTime *= 0.1f;
 
 }
 
