@@ -30,11 +30,11 @@ CAfterImage::~CAfterImage()
 {
 }
 
-void CAfterImage::RenderPlayer(Color Color, bool _OnePixelDown, Vec3 offset)
+void CAfterImage::RenderPlayer(Color Color, Vec3 offset)
 {
 }
 
-void CAfterImage::RenderHair(Color Color, bool _OnePixelDown, Vec3 offset)
+void CAfterImage::RenderHair(Color Color, Vec3 offset)
 {
 }
 
@@ -62,15 +62,6 @@ void CAfterImage::render()
 			
 			
 			//헤어 랜더
-			bool OnePixDown = false;
-			//auto PAniator = GetOwner()->GetParent()->Animator2D();
-			//if (L"idle" == PAniator->GetCurAnimName()
-			//    && 2< PAniator->GetCurAnim()->GetCurIdx())
-			//{
-			//    OnePixDown = true;
-			//}
-
-
 
 			//auto HC = iter->m_RenderInfo.HairColor;
 			//auto BC = m_RenderInfo.HairColor;

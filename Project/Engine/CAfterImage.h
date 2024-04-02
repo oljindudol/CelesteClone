@@ -26,8 +26,8 @@ private:
     Ptr<CTexture> m_HairTex;
     vector<Ptr<CTexture>> m_vecBangTex;
 
-    void RenderPlayer(Color Color, bool _OnePixelDown, Vec3 offset = Vec3(0, 0, 0));
-    void RenderHair(Color Color, bool _OnePixelDown, Vec3 offset = Vec3(0, 0, 0));
+    void RenderPlayer(Color Color, Vec3 offset = Vec3(0, 0, 0));
+    void RenderHair(Color Color, Vec3 offset = Vec3(0, 0, 0));
     list< tAfterImageEvent> m_EventList;
 
 public:

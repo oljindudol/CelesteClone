@@ -112,16 +112,16 @@ void CHair::render()
 
     auto BC = m_RenderInfo.BorderColor;
     auto HC = m_RenderInfo.HairColor;
-    auto alpha = 0.3f;
 
     const float OutLineWidth = 0.7f;
-    const float OutLineDepth = 0.001f;
+    const float OutLineDepth = 0.002f;
+    const float HairDepth = 0.001f;
 
     RenderHair(BC, Vec3(OutLineWidth, 0.0f, OutLineDepth));
     RenderHair(BC, Vec3(-OutLineWidth, 0.0f, OutLineDepth));
     RenderHair(BC, Vec3(0.0f, OutLineWidth, OutLineDepth));
     RenderHair(BC, Vec3(0.0f, -OutLineWidth, OutLineDepth));
-    RenderHair(HC);
+    RenderHair(HC, Vec3(0.0f, 0.f, HairDepth)) ;
 
     //RenderHair(Vec4(BC.x, BC.y, BC.z, alpha), OnePixDown,Vec3(OutLineWidth, 0.0f, OutLineDepth));
     //RenderHair(Vec4(BC.x, BC.y, BC.z, alpha), OnePixDown,Vec3(-OutLineWidth, 0.0f, OutLineDepth));

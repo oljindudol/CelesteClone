@@ -22,6 +22,7 @@
 #include "Engine\CTaskMgr.h"
 #include <Engine\CEngine.h>
 #include <Engine\CRenderMgr.h>
+#include <Engine\CAfterImage.h>
 
 //key bind
 #define GRABKEY KEY_PRESSED(S)
@@ -33,125 +34,134 @@
 #define DOWNKEY KEY_PRESSED(DOWN)
 #define null nullptr
 
-CPlayerScript::CPlayerScript()
-	: CScript(PLAYERSCRIPT)
+
+
+
+void CPlayerScript::CreateSplitParticles()
 {
-	//Depth = Depths.Player;
-	//Tag = Tags.Persistent;
-    
-	// sweat sprite
-	//sweatSprite = GFX.SpriteBank.Create("player_sweat");
-	//Add(sweatSprite);
+}
+
+
+#pragma region Constructor & Begin
+
+CPlayerScript::CPlayerScript()
+    : CScript(PLAYERSCRIPT)
+{
+    //Depth = Depths.Player;
+    //Tag = Tags.Persistent;
+
+    // sweat sprite
+    //sweatSprite = GFX.SpriteBank.Create("player_sweat");
+    //Add(sweatSprite);
     Celeste = CEngine::GetInst();
 
-	// physics
-	Collider = normalHitbox;
-	hurtbox = normalHurtbox;
-	// physics델리게이트 함수
-	//onCollideH = OnCollideH;
-	//onCollideV = OnCollideV;
+    // physics
+    Collider = normalHitbox;
+    hurtbox = normalHurtbox;
+    // physics델리게이트 함수
+    //onCollideH = OnCollideH;
+    //onCollideV = OnCollideV;
 
-	StateMachine = new CCustomStateMachine<CPlayerScript>(this , (int)PLAYER_STATE::StEND);
-	StateMachine->SetCallbacks( StNormal,ToString( magic_enum::enum_name(StNormal)), &CPlayerScript::NormalUpdate, &CPlayerScript::NormalBegin, &CPlayerScript::NormalEnd, nullptr);
-	StateMachine->SetCallbacks(StDash, ToString(magic_enum::enum_name(StDash)), &CPlayerScript::DashUpdate, &CPlayerScript::DashBegin, &CPlayerScript::DashEnd, nullptr);
+    StateMachine = new CCustomStateMachine<CPlayerScript>(this, (int)PLAYER_STATE::StEND);
+    StateMachine->SetCallbacks(StNormal, ToString(magic_enum::enum_name(StNormal)), &CPlayerScript::NormalUpdate, &CPlayerScript::NormalBegin, &CPlayerScript::NormalEnd, nullptr);
+    StateMachine->SetCallbacks(StDash, ToString(magic_enum::enum_name(StDash)), &CPlayerScript::DashUpdate, &CPlayerScript::DashBegin, &CPlayerScript::DashEnd, nullptr);
 
-	// other stuff
-	// Leader = 아이템따라오는것 , wind,light 
-	//Add(Leader = new Leader(new Vector2(0, -8)));
-	lastAim = Vector2(1,0);
-	Facing = FacingsRight;
-	//chaserStates = new List<ChaserState>();
-	//triggersInside = new HashSet<Trigger>();
-	//Add(Light = new VertexLight(normalLightOffset, Color.White, 1f, 32, 64));
-	//Add(new WaterInteraction(() = > { return StateMachine.State == StDash || StateMachine.State == StReflectionFall; }));
-    
-	//Wind
-	//Add(new WindMover(WindMove));
+    // other stuff
+    // Leader = 아이템따라오는것 , wind,light 
+    //Add(Leader = new Leader(new Vector2(0, -8)));
+    lastAim = Vector2(1, 0);
+    Facing = FacingsRight;
+    //chaserStates = new List<ChaserState>();
+    //triggersInside = new HashSet<Trigger>();
+    //Add(Light = new VertexLight(normalLightOffset, Color.White, 1f, 32, 64));
+    //Add(new WaterInteraction(() = > { return StateMachine.State == StDash || StateMachine.State == StReflectionFall; }));
 
-	//Add(wallSlideSfx = new SoundSource());
-	//Add(swimSurfaceLoopSfx = new SoundSource());
+    //Wind
+    //Add(new WindMover(WindMove));
 
-	//Sprite.OnFrameChange = (anim) = >
-	//{
-	//	if (Scene != null && !Dead)
-	//	{
-	//		// footsteps
-	//		var frame = Sprite.CurrentAnimationFrame;
-	//		if ((anim.Equals(PlayerSprite.RunCarry) && (frame == 0 || frame == 6)) ||
-	//			(anim.Equals(PlayerSprite.RunFast) && (frame == 0 || frame == 6)) ||
-	//			(anim.Equals(PlayerSprite.RunSlow) && (frame == 0 || frame == 6)) ||
-	//			(anim.Equals(PlayerSprite.Walk) && (frame == 0 || frame == 6)) ||
-	//			(anim.Equals(PlayerSprite.RunStumble) && frame == 6) ||
-	//			(anim.Equals(PlayerSprite.Flip) && frame == 4) ||
-	//			(anim.Equals(PlayerSprite.RunWind) && (frame == 0 || frame == 6)) ||
-	//			(anim.Equals("idleC") && Sprite.Mode == PlayerSpriteMode.MadelineNoBackpack && (frame == 3 || frame == 6 || frame == 8 || frame == 11)) ||
-	//			(anim.Equals("carryTheoWalk") && (frame == 0 || frame == 6)))
-	//		{
-	//			var landed = SurfaceIndex.GetPlatformByPriority(CollideAll<Platform>(Position + Vector2.UnitY, temp));
-	//			if (landed != null)
-	//				Play(Sfxs.char_mad_footstep, SurfaceIndex.Param, landed.GetStepSoundIndex(this));
-	//		}
-	//		// climbing (holds)
-	//		else if ((anim.Equals(PlayerSprite.ClimbUp) && (frame == 5)) ||
-	//			(anim.Equals(PlayerSprite.ClimbDown) && (frame == 5)))
-	//		{
-	//			var holding = SurfaceIndex.GetPlatformByPriority(CollideAll<Solid>(Center + Vector2.UnitX * (int)Facing, temp));
-	//			if (holding != null)
-	//				Play(Sfxs.char_mad_handhold, SurfaceIndex.Param, holding.GetWallSoundIndex(this, (int)Facing));
-	//		}
-	//		else if (anim.Equals("wakeUp") && frame == 19)
-	//			Play(Sfxs.char_mad_campfire_stand);
-	//		else if (anim.Equals("sitDown") && frame == 12)
-	//			Play(Sfxs.char_mad_summit_sit);
-	//		else if (anim.Equals("push") && (frame == 8 || frame == 15))
-	//			Dust.BurstFG(Position + new Vector2(-(int)Facing * 5, -1), new Vector2(-(int)Facing, -0.5f).Angle(), 1, 0);
-	//	}
-	//};
+    //Add(wallSlideSfx = new SoundSource());
+    //Add(swimSurfaceLoopSfx = new SoundSource());
 
-	//Sprite.OnLastFrame = (anim) = >
-	//{
-	//	if (Scene != null && !Dead && Sprite.CurrentAnimationID == "idle" && !level.InCutscene && idleTimer > 3f)
-	//	{
-	//		if (Calc.Random.Chance(0.2f))
-	//		{
-	//			var next = "";
-	//			if (Sprite.Mode == PlayerSpriteMode.Madeline)
-	//				next = (level.CoreMode == Session.CoreModes.Hot ? idleWarmOptions : idleColdOptions).Choose();
-	//			else
-	//				next = idleNoBackpackOptions.Choose();
+    //Sprite.OnFrameChange = (anim) = >
+    //{
+    //	if (Scene != null && !Dead)
+    //	{
+    //		// footsteps
+    //		var frame = Sprite.CurrentAnimationFrame;
+    //		if ((anim.Equals(PlayerSprite.RunCarry) && (frame == 0 || frame == 6)) ||
+    //			(anim.Equals(PlayerSprite.RunFast) && (frame == 0 || frame == 6)) ||
+    //			(anim.Equals(PlayerSprite.RunSlow) && (frame == 0 || frame == 6)) ||
+    //			(anim.Equals(PlayerSprite.Walk) && (frame == 0 || frame == 6)) ||
+    //			(anim.Equals(PlayerSprite.RunStumble) && frame == 6) ||
+    //			(anim.Equals(PlayerSprite.Flip) && frame == 4) ||
+    //			(anim.Equals(PlayerSprite.RunWind) && (frame == 0 || frame == 6)) ||
+    //			(anim.Equals("idleC") && Sprite.Mode == PlayerSpriteMode.MadelineNoBackpack && (frame == 3 || frame == 6 || frame == 8 || frame == 11)) ||
+    //			(anim.Equals("carryTheoWalk") && (frame == 0 || frame == 6)))
+    //		{
+    //			var landed = SurfaceIndex.GetPlatformByPriority(CollideAll<Platform>(Position + Vector2.UnitY, temp));
+    //			if (landed != null)
+    //				Play(Sfxs.char_mad_footstep, SurfaceIndex.Param, landed.GetStepSoundIndex(this));
+    //		}
+    //		// climbing (holds)
+    //		else if ((anim.Equals(PlayerSprite.ClimbUp) && (frame == 5)) ||
+    //			(anim.Equals(PlayerSprite.ClimbDown) && (frame == 5)))
+    //		{
+    //			var holding = SurfaceIndex.GetPlatformByPriority(CollideAll<Solid>(Center + Vector2.UnitX * (int)Facing, temp));
+    //			if (holding != null)
+    //				Play(Sfxs.char_mad_handhold, SurfaceIndex.Param, holding.GetWallSoundIndex(this, (int)Facing));
+    //		}
+    //		else if (anim.Equals("wakeUp") && frame == 19)
+    //			Play(Sfxs.char_mad_campfire_stand);
+    //		else if (anim.Equals("sitDown") && frame == 12)
+    //			Play(Sfxs.char_mad_summit_sit);
+    //		else if (anim.Equals("push") && (frame == 8 || frame == 15))
+    //			Dust.BurstFG(Position + new Vector2(-(int)Facing * 5, -1), new Vector2(-(int)Facing, -0.5f).Angle(), 1, 0);
+    //	}
+    //};
 
-	//			if (!string.IsNullOrEmpty(next))
-	//			{
-	//				Sprite.Play(next);
+    //Sprite.OnLastFrame = (anim) = >
+    //{
+    //	if (Scene != null && !Dead && Sprite.CurrentAnimationID == "idle" && !level.InCutscene && idleTimer > 3f)
+    //	{
+    //		if (Calc.Random.Chance(0.2f))
+    //		{
+    //			var next = "";
+    //			if (Sprite.Mode == PlayerSpriteMode.Madeline)
+    //				next = (level.CoreMode == Session.CoreModes.Hot ? idleWarmOptions : idleColdOptions).Choose();
+    //			else
+    //				next = idleNoBackpackOptions.Choose();
 
-	//				if (Sprite.Mode == PlayerSpriteMode.Madeline)
-	//				{
-	//					if (next == "idleB")
-	//						idleSfx = Play(Sfxs.char_mad_idle_scratch);
-	//					else if (next == "idleC")
-	//						idleSfx = Play(Sfxs.char_mad_idle_sneeze);
-	//				}
-	//				else if (next == "idleA")
-	//					idleSfx = Play(Sfxs.char_mad_idle_crackknuckles);
-	//			}
-	//		}
-	//	}
-	//};
+    //			if (!string.IsNullOrEmpty(next))
+    //			{
+    //				Sprite.Play(next);
 
-	// cancel special idle sounds if the anim changed
-	//Sprite.OnChange = (last, next) = >
-	//{
-	//	if ((last == "idleB" || last == "idleC") && next != null && !next.StartsWith("idle") && idleSfx != null)
-	//		Audio.Stop(idleSfx);
-	//};
+    //				if (Sprite.Mode == PlayerSpriteMode.Madeline)
+    //				{
+    //					if (next == "idleB")
+    //						idleSfx = Play(Sfxs.char_mad_idle_scratch);
+    //					else if (next == "idleC")
+    //						idleSfx = Play(Sfxs.char_mad_idle_sneeze);
+    //				}
+    //				else if (next == "idleA")
+    //					idleSfx = Play(Sfxs.char_mad_idle_crackknuckles);
+    //			}
+    //		}
+    //	}
+    //};
 
-	//Add(reflection = new MirrorReflection());
+    // cancel special idle sounds if the anim changed
+    //Sprite.OnChange = (last, next) = >
+    //{
+    //	if ((last == "idleB" || last == "idleC") && next != null && !next.StartsWith("idle") && idleSfx != null)
+    //		Audio.Stop(idleSfx);
+    //};
+
+    //Add(reflection = new MirrorReflection());
 
 
 
 
 }
-
 CPlayerScript::~CPlayerScript()
 {
     if (nullptr != StateMachine)
@@ -167,216 +177,67 @@ CPlayerScript::~CPlayerScript()
         delete m_pHairUpdate;
     }
 }
-
 void CPlayerScript::begin()
 {
-    //hair sprite
+    //Hair
     Sprite = new CPlayerSprite(this, PlayerSpriteMode::Madeline);
     startHairCount = Sprite->HairCount;
 
     m_pPlayerHairGO = new CGameObject;
     m_pPlayerHairGO->SetName(L"PlayerHair");
+    //hair component
+    m_pHairComp = new CHair;
+    m_pPlayerHairGO->AddComponent(m_pHairComp);
+    //Tranform
     m_pPlayerHairGO->AddComponent(new CTransform);
     m_pPlayerHairGO->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
     m_pPlayerHairGO->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
-    m_pHairComp = new CHair;
-    m_pPlayerHairGO->AddComponent(m_pHairComp);
-
-    CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(m_pPlayerHairGO, LAYER_MONSTER, false);
+    //레벨에넣고 Player Object에 자식으로 넣는다
+    CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(m_pPlayerHairGO, LAYER_PLAYER_EFFECT, false);
     GetOwner()->AddChild(m_pPlayerHairGO);
     //Add(Hair = new PlayerHair(Sprite));
     //Add(Sprite);
-
     m_pHairUpdate = new CPlayerHairUpdate(Sprite, m_pHairComp);
     m_pHairUpdate->Color = NormalHairColor;
 
+    auto m_pPlayerAfterImageGO = new CGameObject;
+    m_pPlayerAfterImageGO->SetName(L"PlayerAfterImage");
+    //After Image
+    m_AfterImage = new CAfterImage;
+    m_pPlayerAfterImageGO->AddComponent(m_AfterImage);
+    //Tranform
+    m_pPlayerAfterImageGO->AddComponent(new CTransform);
+    m_pPlayerAfterImageGO->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+    m_pPlayerAfterImageGO->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+    //레벨에넣고 Player Object에 자식으로 넣는다
+    CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(m_pPlayerAfterImageGO, LAYER_PLAYER_EFFECT, false);
+    GetOwner()->AddChild(m_pPlayerAfterImageGO);
 
+
+    //플레이어 애님들 생성(낱장,폴더)
     std::filesystem::path base_path = CPathMgr::GetContentPath();
     wstring OriginPath = base_path;
 
     OriginPath += STR_FOLDER_PATH_PLAYERANIMATION;
-	auto folders = getFoldersFromDirectory(OriginPath);
-	
-	//auto ty = Transform()->GetRelativeScale().y;
-	for (auto& f : folders)
-	{
-		auto rel = std::filesystem::relative(f, OriginPath);
+    auto folders = getFoldersFromDirectory(OriginPath);
 
-		Animator2D()->CreateFromFolder(rel,f, 0.08f , Vec2(0.f, -0.375f) );
-	}
+    //auto ty = Transform()->GetRelativeScale().y;
+    for (auto& f : folders)
+    {
+        auto rel = std::filesystem::relative(f, OriginPath);
 
-	GetRenderComponent()->GetDynamicMaterial();
+        Animator2D()->CreateFromFolder(rel, f, 0.08f, Vec2(0.f, -0.375f));
+    }
+    GetRenderComponent()->GetDynamicMaterial();
+    auto a = Animator2D();
+    Animator2D()->Play(L"idle");
 
-	auto a = Animator2D();
-	Animator2D()->Play(L"idle");
+    //SetPhysics(new CPhysics(GetOwner()));
 
-	//SetPhysics(new CPhysics(GetOwner()));
-
-	StateMachine->Begin();
+    StateMachine->Begin();
 
     CTaskMgr::GetInst()->TriggetObjectEvent();
 }
-
-void CPlayerScript::tick()
-{
-	Vec3 vPos = Transform()->GetRelativePos();
-	Vec3 vRot = Transform()->GetRelativeRotation();
-
-
-	auto a = Animator2D();
-	if (KEY_PRESSED(KEY::UP))
-		//vPos.y += DT * m_Speed;	
-	if (KEY_TAP(KEY::UP))
-		Animator2D()->Play(L"MOVE_UP");
-	if (KEY_RELEASED(UP))
-		Animator2D()->Play(L"IDLE_UP");
-	
-	if (KEY_PRESSED(KEY::DOWN))
-		//vPos.y -= DT * m_Speed;
-	if (KEY_TAP(KEY::DOWN))
-		Animator2D()->Play(L"MOVE_DOWN");
-	if (KEY_RELEASED(DOWN))
-		Animator2D()->Play(L"IDLE_DOWN");
-
-	if (KEY_PRESSED(KEY::LEFT))
-		//vPos.x -= DT * m_Speed;
-	if (KEY_TAP(KEY::LEFT))
-		Animator2D()->Play(L"MOVE_LEFT");
-	if (KEY_RELEASED(LEFT))
-		Animator2D()->Play(L"IDLE_LEFT");
-
-	if (KEY_PRESSED(KEY::RIGHT))
-		//vPos.x += DT * m_Speed;
-	if (KEY_TAP(KEY::RIGHT))
-		Animator2D()->Play(L"MOVE_RIGHT");
-	if (KEY_RELEASED(RIGHT))
-		Animator2D()->Play(L"IDLE_RIGHT");
-
-	if (KEY_PRESSED(KEY::X))
-	{
-		vRot.x += DT * XM_PI;
-	}
-
-	if (KEY_PRESSED(KEY::Y))
-	{
-		vRot.y += DT * XM_PI;
-	}
-
-	if (KEY_PRESSED(KEY::Z))
-	{
-		vRot.z += DT * XM_PI;
-	}
-	
-	Transform()->SetRelativePos(vPos);
-	Transform()->SetRelativeRotation(vRot);
-
-	if (KEY_TAP(KEY::SPACE))
-	{
-		Instantiate(m_Missile, Transform()->GetWorldPos(), 0);
-		//GamePlayStatic::Play2DSound(L"sound\\DM.wav", 1, 0.5f, false);
-		GamePlayStatic::Play2DBGM(L"sound\\DM.wav", 0.5f);
-	}
-
-	if (KEY_PRESSED(KEY::SPACE))
-	{
-		Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial();
-		if (nullptr != pMtrl)
-		{
-			pMtrl->SetScalarParam(SCALAR_PARAM::INT_0, 1);
-		}
-	}
-	else if (KEY_RELEASED(KEY::SPACE))
-	{
-		Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial();
-		if (nullptr != pMtrl)
-		{
-			pMtrl->SetScalarParam(SCALAR_PARAM::INT_0, 0);
-		}
-	}
-
-	StateMachine->Update();
-	Update();
-
-    UpdateHair(true);
-    m_pHairUpdate->Update();
-    m_pHairUpdate->AfterUpdate();
-
-	//GetPhysics()->Update();
-
-	//static float f = 0.f;
-	//f += DT * 0.3f;
-	//GetRenderComponent()->GetMaterial()->SetScalarParam(SCALAR_PARAM::FLOAT_1, f);
-
-	//GamePlayStatic::DrawDebugRect(Vec3(0.f, 0.f, 0.f), Vec3(200.f, 200.f, 1.f), Vec3(0.f, 0.f, 0.f), Vec3(1.f, 1.f, 1.f), true, 20);
-	//GamePlayStatic::DrawDebugCircle(Vec3(0.f, 0.f, 0.f), 200.f, Vec3(0.f, 1.f, 1.f), true);
-}
-
-void CPlayerScript::UpdateHair(bool applyGravity)
-{
-    if (StateMachine->GetCurState() == 19)
-    {
-        m_pHairUpdate->Color = Sprite->Color;
-        applyGravity = false;
-    }
-    else if (Dashes == 0 && Dashes < MaxDashes)
-    {
-        if (Sprite->Mode == PlayerSpriteMode::MadelineAsBadeline)
-        {
-            m_pHairUpdate->Color = (Color)Lerp((Vec4)m_pHairUpdate->Color, (Vec4)UsedBadelineHairColor, 6.f * DT);
-        }
-        else
-        {
-            m_pHairUpdate->Color = (Color)Lerp((Vec4)m_pHairUpdate->Color, (Vec4)UsedHairColor, 6.f * DT);
-        }
-    }
-    else
-    {
-        Color color;
-        if (lastDashes != Dashes)
-        {
-            color = FlashHairColor;
-            hairFlashTimer = 0.12f;
-        }
-        else if (hairFlashTimer > 0.f)
-        {
-            color = FlashHairColor;
-            hairFlashTimer -= DT;
-        }
-        else if (Sprite->Mode == PlayerSpriteMode::MadelineAsBadeline)
-        {
-            if (Dashes == 2)
-            {
-                color = TwoDashesBadelineHairColor;
-            }
-            else
-            {
-                color = NormalBadelineHairColor;
-            }
-        }
-        else if (Dashes == 2)
-        {
-            color = TwoDashesHairColor;
-        }
-        else
-        {
-            color = NormalHairColor;
-        }
-        m_pHairUpdate->Color = color;
-    }
-    //if (OverrideHairColor != null)
-    //{
-    //    m_pHairUpdate->Color = OverrideHairColor;
-    //}
-    m_pHairUpdate->facing = Facing;
-    m_pHairUpdate->SimulateMotion = applyGravity;
-    lastDashes = Dashes;
-}
-
-void CPlayerScript::UpdateRender()
-{
-
-}
-
 void CPlayerScript::StartHair()
 {
     if (startHairCalled)
@@ -389,34 +250,10 @@ void CPlayerScript::StartHair()
     UpdateHair(true);
 }
 
-void CPlayerScript::CreateSplitParticles()
-{
-}
+#pragma endregion
 
-void CPlayerScript::BeginOverlap(CCollider2D* _Collider
-	, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
-{
-	Ptr<CMaterial> pMtrl = GetRenderComponent()->GetDynamicMaterial();
-}
 
-void CPlayerScript::Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
-{
-	
-}
-
-void CPlayerScript::EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
-{
-}
-
-void CPlayerScript::SaveToFile(FILE* _File)
-{
-	//fwrite(&m_Speed, sizeof(float), 1, _File);
-}
-
-void CPlayerScript::LoadFromFile(FILE* _File)
-{
-	//fread(&m_Speed, sizeof(float), 1, _File);
-}
+#pragma region tick & Update
 
 void CPlayerScript::Update()
 {
@@ -640,8 +477,16 @@ void CPlayerScript::Update()
         //}
 
         //Aiming
-        lastAim = Vec2(inputx, inputy);
-        lastAim.Normalize();
+        if (0 == inputx && 0 == inputy)
+        {
+            lastAim = Vec2(Facing, 0);
+        }
+        else
+        {
+            lastAim = Vec2(inputx, inputy);
+            lastAim.Normalize();
+        }
+
 
         //Wall Speed Retention
         //if (wallSpeedRetentionTimer > 0)
@@ -690,7 +535,7 @@ void CPlayerScript::Update()
             }
             else if (Dashes > 1)
             {
-                m_pHairUpdate->StepPerSegment = Vec2((float)sinf(DT*4 * 2) * 0.7f - (int)Facing * 3, (float)sinf(DT * 4 * 1.f));
+                m_pHairUpdate->StepPerSegment = Vec2((float)sinf(DT * 4 * 2) * 0.7f - (int)Facing * 3, (float)sinf(DT * 4 * 1.f));
                 m_pHairUpdate->StepInFacingPerSegment = 0.f;
                 m_pHairUpdate->StepApproach = 90.f;
                 m_pHairUpdate->StepYSinePerSegment = 1.f;
@@ -1048,7 +893,7 @@ void CPlayerScript::UpdateSprite()
                     //}
                     else
                     {
-                        if (Sprite->CurrentAnimationID != "" && !(string::npos != Sprite->CurrentAnimationID.find("idle")) )
+                        if (Sprite->CurrentAnimationID != "" && !(string::npos != Sprite->CurrentAnimationID.find("idle")))
                             Sprite->Play(Sprite->Idle);
                     }
                 }
@@ -1123,6 +968,172 @@ void CPlayerScript::UpdateSprite()
     //        Sprite->Rate = 1.f;
     //}
 }
+void CPlayerScript::tick()
+{
+    Vec3 vPos = Transform()->GetRelativePos();
+    Vec3 vRot = Transform()->GetRelativeRotation();
+
+
+    auto a = Animator2D();
+    if (KEY_PRESSED(KEY::UP))
+        //vPos.y += DT * m_Speed;	
+        if (KEY_TAP(KEY::UP))
+            Animator2D()->Play(L"MOVE_UP");
+    if (KEY_RELEASED(UP))
+        Animator2D()->Play(L"IDLE_UP");
+
+    if (KEY_PRESSED(KEY::DOWN))
+        //vPos.y -= DT * m_Speed;
+        if (KEY_TAP(KEY::DOWN))
+            Animator2D()->Play(L"MOVE_DOWN");
+    if (KEY_RELEASED(DOWN))
+        Animator2D()->Play(L"IDLE_DOWN");
+
+    if (KEY_PRESSED(KEY::LEFT))
+        //vPos.x -= DT * m_Speed;
+        if (KEY_TAP(KEY::LEFT))
+            Animator2D()->Play(L"MOVE_LEFT");
+    if (KEY_RELEASED(LEFT))
+        Animator2D()->Play(L"IDLE_LEFT");
+
+    if (KEY_PRESSED(KEY::RIGHT))
+        //vPos.x += DT * m_Speed;
+        if (KEY_TAP(KEY::RIGHT))
+            Animator2D()->Play(L"MOVE_RIGHT");
+    if (KEY_RELEASED(RIGHT))
+        Animator2D()->Play(L"IDLE_RIGHT");
+
+    if (KEY_PRESSED(KEY::X))
+    {
+        vRot.x += DT * XM_PI;
+    }
+
+    if (KEY_PRESSED(KEY::Y))
+    {
+        vRot.y += DT * XM_PI;
+    }
+
+    if (KEY_PRESSED(KEY::Z))
+    {
+        vRot.z += DT * XM_PI;
+    }
+
+    Transform()->SetRelativePos(vPos);
+    Transform()->SetRelativeRotation(vRot);
+
+    if (KEY_TAP(KEY::SPACE))
+    {
+        Instantiate(m_Missile, Transform()->GetWorldPos(), 0);
+        //GamePlayStatic::Play2DSound(L"sound\\DM.wav", 1, 0.5f, false);
+        GamePlayStatic::Play2DBGM(L"sound\\DM.wav", 0.5f);
+    }
+
+    if (KEY_PRESSED(KEY::SPACE))
+    {
+        Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial();
+        if (nullptr != pMtrl)
+        {
+            pMtrl->SetScalarParam(SCALAR_PARAM::INT_0, 1);
+        }
+    }
+    else if (KEY_RELEASED(KEY::SPACE))
+    {
+        Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial();
+        if (nullptr != pMtrl)
+        {
+            pMtrl->SetScalarParam(SCALAR_PARAM::INT_0, 0);
+        }
+    }
+
+    StateMachine->Update();
+    Update();
+
+    UpdateHair(true);
+    m_pHairUpdate->Update();
+    m_pHairUpdate->AfterUpdate();
+    PushAfterImageEvent();
+    //GetPhysics()->Update();
+
+    //static float f = 0.f;
+    //f += DT * 0.3f;
+    //GetRenderComponent()->GetMaterial()->SetScalarParam(SCALAR_PARAM::FLOAT_1, f);
+
+    //GamePlayStatic::DrawDebugRect(Vec3(0.f, 0.f, 0.f), Vec3(200.f, 200.f, 1.f), Vec3(0.f, 0.f, 0.f), Vec3(1.f, 1.f, 1.f), true, 20);
+    //GamePlayStatic::DrawDebugCircle(Vec3(0.f, 0.f, 0.f), 200.f, Vec3(0.f, 1.f, 1.f), true);
+}
+void CPlayerScript::UpdateHair(bool applyGravity)
+{
+    if (StateMachine->GetCurState() == 19)
+    {
+        m_pHairUpdate->Color = Sprite->Color;
+        applyGravity = false;
+    }
+    else if (Dashes == 0 && Dashes < MaxDashes)
+    {
+        if (Sprite->Mode == PlayerSpriteMode::MadelineAsBadeline)
+        {
+            m_pHairUpdate->Color = (Color)Lerp((Vec4)m_pHairUpdate->Color, (Vec4)UsedBadelineHairColor, 6.f * DT);
+        }
+        else
+        {
+            m_pHairUpdate->Color = (Color)Lerp((Vec4)m_pHairUpdate->Color, (Vec4)UsedHairColor, 6.f * DT);
+        }
+    }
+    else
+    {
+        Color color;
+        if (lastDashes != Dashes)
+        {
+            color = FlashHairColor;
+            hairFlashTimer = 0.12f;
+        }
+        else if (hairFlashTimer > 0.f)
+        {
+            color = FlashHairColor;
+            hairFlashTimer -= DT;
+        }
+        else if (Sprite->Mode == PlayerSpriteMode::MadelineAsBadeline)
+        {
+            if (Dashes == 2)
+            {
+                color = NormalBadelineHairColor;
+                //color = TwoDashesBadelineHairColor;
+            }
+            else
+            {
+                color = TwoDashesBadelineHairColor;
+                //color = NormalBadelineHairColor;
+            }
+        }
+        else if (Dashes == 2)
+        {
+            //color = TwoDashesHairColor;
+            color = NormalHairColor;
+        }
+        else
+        {
+            color = TwoDashesHairColor;
+            //color = NormalHairColor;
+        }
+        m_pHairUpdate->Color = color;
+    }
+    //if (OverrideHairColor != null)
+    //{
+    //    m_pHairUpdate->Color = OverrideHairColor;
+    //}
+    m_pHairUpdate->facing = Facing;
+    m_pHairUpdate->SimulateMotion = applyGravity;
+    lastDashes = Dashes;
+}
+void CPlayerScript::UpdateRender()
+{
+
+}
+
+#pragma endregion
+
+
+#pragma region About Normal State
 
 void CPlayerScript::SetGround()
 {
@@ -1420,6 +1431,15 @@ void CPlayerScript::NormalEnd()
     hopWaitX = 0;
 }
 
+#pragma endregion
+
+
+#pragma region About Dash
+
+void CPlayerScript::CreateTrail()
+{
+    m_bAfterImageRequest = true;
+}
 void CPlayerScript::CallDashEvents()
 {
     if (!calledDashEvents)
@@ -1469,9 +1489,6 @@ void CPlayerScript::CallDashEvents()
             //CurrentBooster = null;
         //}
     }
-}
-void CPlayerScript::CreateTrail()
-{
 }
 int CPlayerScript::DashUpdate()
 {
@@ -1606,7 +1623,7 @@ int CPlayerScript::DashUpdate()
         //}
 
         //Stick to Swap Blocks
-        swapCancel = Vec2(1,1);
+        swapCancel = Vec2(1, 1);
         //foreach(SwapBlock swapBlock in Scene.Tracker.GetEntities<SwapBlock>())
         //{
         //    if (CollideCheck(swapBlock, Position + Vector2.UnitY))
@@ -1624,7 +1641,7 @@ int CPlayerScript::DashUpdate()
         ++DashCoroutineCnt;
         return StDash;
     }
-    if (2 == DashCoroutineCnt && DashCoroutineTimer<0.f )
+    if (2 == DashCoroutineCnt && DashCoroutineTimer < 0.f)
     {
         CreateTrail();
 
@@ -1666,7 +1683,7 @@ void CPlayerScript::DashBegin()
 
     dashAttackTimer = DashAttackTime;
     beforeDashSpeed = Speed;
-    Speed = Vec2(0.f,0.f);
+    Speed = Vec2(0.f, 0.f);
     DashDir = Vec2(0.f, 0.f);
 
     if (!onGround && Ducking() && CanUnDuck())
@@ -1679,7 +1696,44 @@ void CPlayerScript::DashEnd()
     CallDashEvents();
     demoDashed = false;
 }
+void CPlayerScript::PushAfterImageEvent()
+{
+    if (false == m_bAfterImageRequest)
+        return;
 
 
 
+    m_bAfterImageRequest = false;
+}
 
+#pragma endregion
+
+
+#pragma region FrameWork Script Legacy
+
+void CPlayerScript::BeginOverlap(CCollider2D* _Collider
+    , CGameObject* _OtherObj, CCollider2D* _OtherCollider)
+{
+    Ptr<CMaterial> pMtrl = GetRenderComponent()->GetDynamicMaterial();
+}
+
+void CPlayerScript::Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
+{
+
+}
+
+void CPlayerScript::EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
+{
+}
+
+void CPlayerScript::SaveToFile(FILE* _File)
+{
+    //fwrite(&m_Speed, sizeof(float), 1, _File);
+}
+
+void CPlayerScript::LoadFromFile(FILE* _File)
+{
+    //fread(&m_Speed, sizeof(float), 1, _File);
+}
+
+#pragma endregion

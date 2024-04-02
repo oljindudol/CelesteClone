@@ -208,18 +208,19 @@ public:
     // TODO:
     //Booster CurrentBooster;
     Color OverrideHairColor = HexToColor("9B3FB5");
-
-    // hair
-    const Color NormalHairColor = HexToColor("AC3232");
-    const Color FlyPowerHairColor = HexToColor("F2EB6D");
-    const Color UsedHairColor = HexToColor("44B7FF");
-    const Color FlashHairColor = HexToColor("FFFFFF");
-    const Color TwoDashesHairColor = HexToColor("ff6def");
-
-    const Color UsedBadelineHairColor = HexToColor("44B7FF");
-    const Color TwoDashesBadelineHairColor = HexToColor("ff6def");
     const Color NormalBadelineHairColor = HexToColor("9B3FB5");
 
+    // hair
+    const Color UsedHairColor = HexToColor("44B7FF");
+    const Color UsedBadelineHairColor = HexToColor("44B7FF");
+
+    const Color TwoDashesHairColor = HexToColor("ff6def");
+    const Color TwoDashesBadelineHairColor = TwoDashesHairColor;//HexToColor("ff6def");
+
+    const Color NormalHairColor = HexToColor("AC3232");
+    const Color FlyPowerHairColor = HexToColor("F2EB6D");
+
+    const Color FlashHairColor = HexToColor("FFFFFF");
     // level-start intro
     enum IntroTypes { Transition, Respawn, WalkInRight, WalkInLeft, Jump, WakeUp, Fall, TempleMirrorVoid, None };
     IntroTypes IntroType;
@@ -319,6 +320,11 @@ public:
 private:
     bool startHairCalled = false;
     class CEngine* Celeste;
+
+    bool  m_bAfterImageRequest = false;
+    class CAfterImage* m_AfterImage;
+    void PushAfterImageEvent();
+
 
 #pragma region functions
 public:
