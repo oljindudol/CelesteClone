@@ -57,8 +57,8 @@ void Animator2DUI::render_update()
 	ImGui::SameLine();
 	auto ms =  pAnimator2D->GetMulScale();
 	ImGui::DragFloat2("##MulScaleDrag", &ms.x, 0.1f, 0.1f);
-	ms.x = floatClamp(ms.x, 0.05f);
-	ms.y = floatClamp(ms.y, 0.05f);
+	ms.x = ClampFloat(ms.x, 0.05f);
+	ms.y = ClampFloat(ms.y, 0.05f);
 	pAnimator2D->SetMulScale(ms);
 
 	if (ImGui::Button("SAVE"))

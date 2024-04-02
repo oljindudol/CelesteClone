@@ -52,7 +52,7 @@ void CameraUI::render_update()
     float ffar = pCamera->GetFar();
     ImGui::Text("Far"); ImGui::SameLine();
     ImGui::DragFloat("Far", &ffar);
-    ffar = floatClamp(ffar, 1.f);
+    ffar = ClampFloat(ffar, 1.f);
     pCamera->SetFar(ffar);
 
     //Á÷±³

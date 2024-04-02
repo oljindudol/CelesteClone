@@ -130,7 +130,7 @@ void TileMapEditor::render_update()
 	//ImGui::InputInt2("##Tile Map Size", m_arrFaceTileCnt);
 	//m_arrFaceTileCnt[0] = 
 	// (m_arrFaceTileCnt[0], 0, INT_MAX);
-	//m_arrFaceTileCnt[1] = intClamp(m_arrFaceTileCnt[1], 0, INT_MAX);
+	//m_arrFaceTileCnt[1] = ClampInt(m_arrFaceTileCnt[1], 0, INT_MAX);
 
 	//ImGui::Spacing();
 	//

@@ -178,7 +178,7 @@ void LoadWString(wstring& _str, FILE* _FILE)
 	_str = szBuff;
 }
 
-int intClamp(int _input, int _min, int _max)
+int ClampInt(int _input, int _min, int _max)
 {
 	if (_min > _input)
 		return _min;
@@ -189,7 +189,7 @@ int intClamp(int _input, int _min, int _max)
 	return _input;
 }
 
-float floatClamp(float _input, float _min)
+float ClampFloat(float _input, float _min)
 {
 	if (_min > _input)
 		return _min;
@@ -197,7 +197,7 @@ float floatClamp(float _input, float _min)
 	return _input;
 }
 
-float floatClamp(float _input, float _min, float _max)
+float ClampFloat(float _input, float _min, float _max)
 {
 	if (_min > _input)
 		return _min;
