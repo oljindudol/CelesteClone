@@ -149,7 +149,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pLight->AddComponent(new CLight2D);
 
 	pLight->Light2D()->SetLightType(LIGHT_TYPE::DIRECTIONAL);
-	pLight->Light2D()->SetAmbient(Vec3(0.8f, 0.8f, 0.8f));
+	pLight->Light2D()->SetAmbient(Vec3(1.f, 1.f, 1.f));
 	pTempLevel->AddObject(pLight, LAYER_LIGHT);
 
 	CGameObject* pObj = nullptr;
