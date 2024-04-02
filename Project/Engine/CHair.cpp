@@ -37,67 +37,6 @@ CHair::~CHair()
 }
 
 
-void CHair::SetMetaData()
-{
-    auto conpath = CPathMgr::GetContentPath();
-    wstring fp = conpath;
-    fp += L"metadata";
-    string filepath = ToString(fp);
-
-    std::ifstream file(filepath);
-    std::string line;
-
-    if (!file.is_open()) {
-        std::cerr << "파일을 열 수 없습니다: " << filepath << std::endl;
-        return;
-    }
-
-    while (getline(file, line)) {
-        std::istringstream lineStream(line);
-        std::string path, hairData;
-        size_t startPos, endPos;
-
-        // path 파싱
-        startPos = line.find("path=\"") + 6;
-        endPos = line.find("\"", startPos);
-        path = line.substr(startPos, endPos - startPos);
-
-        // hair 데이터 파싱
-        startPos = line.find("hair=\"", endPos) + 6;
-        endPos = line.find("\"", startPos);
-        hairData = line.substr(startPos, endPos - startPos);
-
-        std::istringstream hairStream(hairData);
-        std::string hairItem;
-        int idx = 0;
-
-        while (getline(hairStream, hairItem, '|')) {
-            tPlayerHairInfo info;
-            if (hairItem == "x") {
-                info.HasHair = false;
-            }
-            else {
-                std::istringstream itemStream(hairItem);
-                std::string part;
-                getline(itemStream, part, ',');
-                info.HairOffset.x = std::stoi(part);
-                getline(itemStream, part, ',');
-                size_t colonPos = part.find(':');
-                if (colonPos != std::string::npos) {
-                    info.HairOffset.y = std::stoi(part.substr(0, colonPos));
-                    info.BangFrame = std::stoi(part.substr(colonPos + 1));
-                }
-                else {
-                    info.HairOffset.y = std::stoi(part);
-                }
-            }
-            m_umHairInfo[path + std::to_string(idx)] = info;
-            ++idx;
-        }
-    }
-
-
-}
 
 tPlayerHairInfo CHair::GettHairInfo()
 {
@@ -163,13 +102,13 @@ void CHair::render()
     //RenderHair(m_RenderInfo.BorderColor, Vec3(-1, 0,1));
     //RenderHair(m_RenderInfo.BorderColor, Vec3(0 , 1,1));
     //RenderHair(m_RenderInfo.BorderColor, Vec3(0, -1,1));
-    bool OnePixDown = false;
-    auto PAniator = GetOwner()->GetParent()->Animator2D();
-    if (L"idle" == PAniator->GetCurAnimName()
-        && 2< PAniator->GetCurAnim()->GetCurIdx())
-    {
-        OnePixDown = true;
-    }
+    //bool OnePixDown = false;
+    //auto PAniator = GetOwner()->GetParent()->Animator2D();
+    //if (L"idle" == PAniator->GetCurAnimName()
+    //    && 2< PAniator->GetCurAnim()->GetCurIdx())
+    //{
+    //    OnePixDown = true;
+    //}
 
     auto BC = m_RenderInfo.BorderColor;
     auto HC = m_RenderInfo.HairColor;
@@ -178,11 +117,11 @@ void CHair::render()
     const float OutLineWidth = 0.7f;
     const float OutLineDepth = 0.001f;
 
-    RenderHair(BC, OnePixDown, Vec3(OutLineWidth, 0.0f, OutLineDepth));
-    RenderHair(BC, OnePixDown, Vec3(-OutLineWidth, 0.0f, OutLineDepth));
-    RenderHair(BC, OnePixDown, Vec3(0.0f, OutLineWidth, OutLineDepth));
-    RenderHair(BC, OnePixDown, Vec3(0.0f, -OutLineWidth, OutLineDepth));
-    RenderHair(HC, OnePixDown);
+    RenderHair(BC, Vec3(OutLineWidth, 0.0f, OutLineDepth));
+    RenderHair(BC, Vec3(-OutLineWidth, 0.0f, OutLineDepth));
+    RenderHair(BC, Vec3(0.0f, OutLineWidth, OutLineDepth));
+    RenderHair(BC, Vec3(0.0f, -OutLineWidth, OutLineDepth));
+    RenderHair(HC);
 
     //RenderHair(Vec4(BC.x, BC.y, BC.z, alpha), OnePixDown,Vec3(OutLineWidth, 0.0f, OutLineDepth));
     //RenderHair(Vec4(BC.x, BC.y, BC.z, alpha), OnePixDown,Vec3(-OutLineWidth, 0.0f, OutLineDepth));
@@ -193,7 +132,7 @@ void CHair::render()
 
 }
 
-void CHair::RenderHair(Color _Color, bool _OnePixelDown ,Vec3 _offset)
+void CHair::RenderHair(Color _Color ,Vec3 _offset)
 {
     auto vec = m_RenderInfo.vecHairNodes;
     static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::HAIR);
@@ -215,7 +154,7 @@ void CHair::RenderHair(Color _Color, bool _OnePixelDown ,Vec3 _offset)
     tHair data = {};
     data.vHairColor = (Vec4)_Color;
     data.vOffset = Vec2(0, 6) + _offset;
-    if (true == _OnePixelDown)
+    if (true == m_RenderInfo.BangOnePixelDown)
     {
         data.vOffset = data.vOffset +  Vec3(0, -1, 0);
     }
@@ -228,3 +167,65 @@ void CHair::RenderHair(Color _Color, bool _OnePixelDown ,Vec3 _offset)
 
 
 
+
+void CHair::SetMetaData()
+{
+    auto conpath = CPathMgr::GetContentPath();
+    wstring fp = conpath;
+    fp += L"metadata";
+    string filepath = ToString(fp);
+
+    std::ifstream file(filepath);
+    std::string line;
+
+    if (!file.is_open()) {
+        std::cerr << "파일을 열 수 없습니다: " << filepath << std::endl;
+        return;
+    }
+
+    while (getline(file, line)) {
+        std::istringstream lineStream(line);
+        std::string path, hairData;
+        size_t startPos, endPos;
+
+        // path 파싱
+        startPos = line.find("path=\"") + 6;
+        endPos = line.find("\"", startPos);
+        path = line.substr(startPos, endPos - startPos);
+
+        // hair 데이터 파싱
+        startPos = line.find("hair=\"", endPos) + 6;
+        endPos = line.find("\"", startPos);
+        hairData = line.substr(startPos, endPos - startPos);
+
+        std::istringstream hairStream(hairData);
+        std::string hairItem;
+        int idx = 0;
+
+        while (getline(hairStream, hairItem, '|')) {
+            tPlayerHairInfo info;
+            if (hairItem == "x") {
+                info.HasHair = false;
+            }
+            else {
+                std::istringstream itemStream(hairItem);
+                std::string part;
+                getline(itemStream, part, ',');
+                info.HairOffset.x = std::stoi(part);
+                getline(itemStream, part, ',');
+                size_t colonPos = part.find(':');
+                if (colonPos != std::string::npos) {
+                    info.HairOffset.y = std::stoi(part.substr(0, colonPos));
+                    info.BangFrame = std::stoi(part.substr(colonPos + 1));
+                }
+                else {
+                    info.HairOffset.y = std::stoi(part);
+                }
+            }
+            m_umHairInfo[path + std::to_string(idx)] = info;
+            ++idx;
+        }
+    }
+
+
+}

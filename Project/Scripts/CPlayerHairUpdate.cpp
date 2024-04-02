@@ -3,6 +3,8 @@
 #include "CPlayerSprite.h"
 #include <Engine\CHair.h>
 #include "CPlayerScript.h"
+#include <Engine\CAnimator2D.h>
+#include <Engine\CAnim.h>
 
 
 
@@ -103,6 +105,16 @@ void CPlayerHairUpdate::AfterUpdate()
 	RenderInfoRef.facing = facing;
 	RenderInfoRef.HairColor = Color;
 	//Hair->SetRenderInfo(RenderInfoRef);
+
+	bool OnePixDown = false;
+	auto PAniator = Hair->GetOwner()->GetParent()->Animator2D();
+	if (L"idle" == PAniator->GetCurAnimName()
+		&& 2 < PAniator->GetCurAnim()->GetCurIdx())
+	{
+		OnePixDown = true;
+	}
+	RenderInfoRef.BangOnePixelDown = OnePixDown;
+
 }
 
 Vec2 CPlayerHairUpdate::GetHairScale(int index)

@@ -43,7 +43,7 @@ private:
 
 private:
 	tRenderInfo m_RenderInfo;
-	void RenderHair(Color Color, bool _OnePixelDown, Vec3 offset = Vec3(0, 0, 0));
+	void RenderHair(Color Color, Vec3 offset = Vec3(0, 0, 0));
 
 public:
 	void SetMetaData();
