@@ -49,23 +49,23 @@ float4 PS_Hair(VS_OUT _in) : SV_Target
     
     if (g_vec4_1.w == 3.14f)
         return float4(1.f, 1.f, 0.f, 1.f);
-    if(g_Int_Bang)
-    {
-        vColor = g_tex_0.Sample(g_sam_1, _in.vUV);
-        float fAlpha = vColor.a;
-        if (fAlpha > 0.9f)
-        {
-            vColor = g_HairColor;
-            //vColor = float4(g_HairColor, 1.f);
-            //vColor = float4(1.f, 0.f, 0.f, 1.f);
-        }
-        else
-        {
-            discard;
-        }
-    }
-    else
-    {
+    //if(g_Int_Bang)
+    //{
+    //    vColor = g_tex_0.Sample(g_sam_1, _in.vUV);
+    //    float fAlpha = vColor.a;
+    //    if (fAlpha > 0.9f)
+    //    {
+    //        vColor = g_HairColor;
+    //        //vColor = float4(g_HairColor, 1.f);
+    //        //vColor = float4(1.f, 0.f, 0.f, 1.f);
+    //    }
+    //    else
+    //    {
+    //        discard;
+    //    }
+    //}
+    //else
+    //{
         //vColor = g_tex_0.Sample(g_sam_1, _in.vUV + float2(g_time * 0.1, 0.f));
         vColor = g_tex_0.Sample(g_sam_1, _in.vUV);
         float fAlpha = vColor.a;
@@ -84,7 +84,7 @@ float4 PS_Hair(VS_OUT _in) : SV_Target
             //vColor = float4(g_HairColor, 1.f);
             //vColor = float4(1.f, 0.f, 0.f, 1.f);
         }
-    }
+    //}
 
 
     
@@ -92,23 +92,23 @@ float4 PS_Hair(VS_OUT _in) : SV_Target
     // 광원의 타입별 처리
     // 광원이 여러개일 때 처리
     //g_Light2DCount;    
-    //tLightColor LightColor = (tLightColor) 0.f;
-    //
-    //for (int i = 0; i < g_Light2DCount; ++i)
-    //{
-    //    CalLight2D(_in.vWorldPos, i, LightColor);
-    //}
-    //
-    //vColor.rgb *= (LightColor.vColor.rgb + LightColor.vAmbient.rgb);
-    //    
-    //if (0.f == vColor.a)
-    //    discard;
-    //
-    //float x = g_NoiseTex.Sample(g_sam_0, _in.vUV).x;
-    //if (0 > x - g_float_1)
-    //{
-    //    discard;
-    //}
+    tLightColor LightColor = (tLightColor) 0.f;
+    
+    for (int i = 0; i < g_Light2DCount; ++i)
+    {
+        CalLight2D(_in.vWorldPos, i, LightColor);
+    }
+    
+    vColor.rgb *= (LightColor.vColor.rgb + LightColor.vAmbient.rgb);
+        
+    if (0.f == vColor.a)
+        discard;
+    
+    float x = g_NoiseTex.Sample(g_sam_0, _in.vUV).x;
+    if (0 > x - g_float_1)
+    {
+        discard;
+    }
     
     return vColor;
 }
