@@ -115,6 +115,11 @@ void CPlayerHairUpdate::AfterUpdate()
 	}
 	RenderInfoRef.BangOnePixelDown = OnePixDown;
 
+	//오프셋 계산 이관실패1
+	//for (size_t i = 1;i< Nodes.size(); ++i)
+	//{
+	//	Nodes[i].vOffset = Nodes[i].vOffset - Nodes[0].vOffset;
+	//}
 }
 
 Vec2 CPlayerHairUpdate::GetHairScale(int index)

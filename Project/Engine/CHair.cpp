@@ -140,7 +140,9 @@ void CHair::RenderHair(Color _Color ,Vec3 _offset)
     {
         tHair data = {};
         data.vHairColor = (Vec4)_Color;
-        data.vOffset = Vec3((vec[i].vOffset - vec[0].vOffset), 0) + Vec3(0, 4, 0) +_offset;
+        data.vOffset = Vec3((vec[i].vOffset - vec[0].vOffset), 0) + Vec3(0, 4, 0) + _offset;
+        ////오프셋 계산 이관실패1
+        //data.vOffset = Vec3((vec[i].vOffset),0.f) + Vec3(0, 4, 0) + _offset;// - vec[0].vOffset), 0) + Vec3(0, 4, 0) +_offset;
         data.vScale = Vec2(10, 10) * vec[i].vScale;
         data.bang = 0;
         pCB->SetData(&data);
