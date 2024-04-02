@@ -5,16 +5,18 @@
 
 struct tAfterImageEvent
 {
-    //공통
+    //공통 정보.
     float Duration;
     float AccTime;
-    //플레이어
+
+    //플레이어 정보.
     Matrix PlayerWorldMat;
     Facings facing;
-    //알파값도 여기에 직접세팅
+    //                알파값도 여기에 직접세팅
     Color Color;
     Ptr<CTexture> PlayerAnimTex;
 
+    //헤어 정보.
     tRenderInfo HairInfo;
 };
 
