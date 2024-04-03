@@ -214,6 +214,26 @@ void CPlayerScript::begin()
     GetOwner()->AddChild(m_pPlayerAfterImageGO);
 
 
+    // PostProcess 오브젝트 추가
+    auto m_ShokeWave = new CGameObject;
+    m_ShokeWave->SetName(L"PlayerShockWave");
+
+    m_ShokeWave->AddComponent(new CTransform);
+    m_ShokeWave->AddComponent(new CMeshRender);
+
+    m_ShokeWave->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+    m_ShokeWave->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
+    m_ShokeWave->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    auto Mat = CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_ShockWaveMeterial);
+    //auto Mat = CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_GrayFilterMeterial);
+    m_ShokeWave->MeshRender()->SetMaterial(Mat);
+    m_ShokeWave->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\noise\\noise_03.jpg", L"texture\\noise\\noise_03.jpg"));
+
+
+    CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(m_ShokeWave, LAYER_PLAYER_EFFECT, false);
+    GetOwner()->AddChild(m_ShokeWave);
+
+
     //플레이어 애님들 생성(낱장,폴더)
     std::filesystem::path base_path = CPathMgr::GetContentPath();
     wstring OriginPath = base_path;
@@ -260,6 +280,11 @@ void CPlayerScript::tick()
     Vec3 vPos = Transform()->GetRelativePos();
     Vec3 vRot = Transform()->GetRelativeRotation();
 
+
+    if (KEY_PRESSED(KEY::W))
+    {
+        onGround = !onGround;
+    }
 
     auto a = Animator2D();
     if (KEY_PRESSED(KEY::UP))

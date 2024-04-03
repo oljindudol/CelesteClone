@@ -68,6 +68,10 @@
 #define STR_FUNC_NAME_VTXShaderDistorton "VS_Distortion"
 #define STR_FUNC_NAME_PIXShaderDistorton "PS_Distortion"
 
+// postprocess.fx functions name
+#define STR_FUNC_NAME_VTXShaderDistorton "VS_ShockWave"
+#define STR_FUNC_NAME_PIXShaderDistorton "PS_ShockWave"
+
 
 // debug.fx functions name
 #define STR_FUNC_NAME_VTXShaderDebugShape "VS_DebugShape"
@@ -108,6 +112,7 @@
 #define STR_KEY_DebugShapeShader L"DebugShapeShader"
 #define STR_KEY_HairShader L"PlayerHairShader"
 #define STR_KEY_BangShader L"PlayerBangShader"
+#define STR_KEY_ShockWaveShader L"ShockWaveShader"
 
 
 // Material
@@ -121,6 +126,7 @@
 #define STR_KEY_DebugMeterial L"DebugShapeMtrl"
 #define STR_KEY_HairMeterial L"PlayerHairMtrl"
 #define STR_KEY_BangMeterial L"PlayerBangMtrl"
+#define STR_KEY_ShockWaveMeterial L"ShockWaveMtrl"
 
 
 

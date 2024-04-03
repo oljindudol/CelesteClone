@@ -161,6 +161,26 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	Ptr<CGraphicsShader> pShader = nullptr;
 
 	// =================================
+	// Distortion Shader	
+	// RS_TYPE		: CULL_BACK
+	// DS_TYPE		: NO_TEST_NO_WRITE
+	// BS_TYPE		: Default
+	// Domain		: DOMAIN_POSTPROCESS
+	// =================================
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(STR_FILE_PATH_PostProcessShader, STR_FUNC_NAME_VTXShaderDistorton);
+	pShader->CreatePixelShader(STR_FILE_PATH_PostProcessShader, STR_FUNC_NAME_PIXShaderDistorton);
+
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_TEST_NO_WRITE);
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_POSTPROCESS);
+
+	AddAsset(STR_KEY_ShockWaveShader, pShader.Get());
+
+
+
+
+	// =================================
 	// HairShader
 	// =================================
 
@@ -172,7 +192,6 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	pShader->SetDSType(DS_TYPE::LESS);
 	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
 	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_MASKED);
-
 	// Parameter	
 	AddAsset(STR_KEY_PlayerShader, pShader.Get());
 
@@ -317,6 +336,12 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 void CAssetMgr::CreateDefaultMaterial()
 {
 	CMaterial* pMtrl = nullptr;
+
+	// DistortionMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(STR_KEY_ShockWaveShader));
+	AddAsset<CMaterial>(STR_KEY_ShockWaveMeterial, pMtrl);
+
 
 	// HairMtrl
 	pMtrl = new CMaterial(true);

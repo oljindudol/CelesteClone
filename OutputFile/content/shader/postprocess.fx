@@ -14,7 +14,106 @@ struct VS_OUT
 {
     float4 vPosition : SV_Position;
     float2 vUV : TEXCOORD;
+    float2 vCenter : CENTER;
 };
+
+#define TrueRender float2(160.f, 85.f)
+// ==========
+// Shock Wave
+// ==========
+VS_OUT VS_ShockWave(VS_IN _in)
+{
+    VS_OUT output = (VS_OUT) 0.f;
+    float2 center = float2(0.f, 0.f);
+    
+    output.vPosition = float4(_in.vPos * 2.f, 1.f);
+    //output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
+    output.vUV = _in.vUV;
+    float2 proj = mul(float4(center, 1.f, 1.f), g_matWVP);
+    center = proj.xy;
+    //output.vCenter = proj.xy;
+    center = (center + (float2(TrueRender.x, TrueRender.y) / 2.f)) / TrueRender;
+    //center = (center + float2(1.f, 1.f)) / 2.f;
+    output.vCenter = float2(center.x,  1- center.y);
+    
+    return output;
+    
+    //VS_OUT output = (VS_OUT) 0.f;
+    //float3 center = float3(0.f, 0.f, 0.f);
+    //
+    //_in.vPos = _in.vPos - float3(g_vOffset, 0.f);
+    //output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
+    //output.vCenter = mul(float4(center, 1.f), g_matWVP);
+    //
+    ////output.vUV = _in.vUV / float2(2.f, 2.f); // / g_RenderResolution * float2(100.f, 100.f);
+    //output.vUV = _in.vUV; // * float2(100.f / g_RenderResolution.x, 100.f / g_RenderResolution.y);
+    //return output;
+}
+
+float rand(float2 co)
+{
+    return frac(sin(dot(co.xy, float2(12.9898f, 78.233f))) * 43758.5453);
+}
+
+
+float4 PS_ShockWave(VS_OUT _in) : SV_Target
+{
+     //Sawtooth function to pulse from centre.
+    float offset = (g_time - floor(g_time)) / g_time;
+    float CurrentTime = (g_time) * (offset);
+    
+    float3 WaveParams = float3(10.0, 0.8, 0.1);
+    
+    float ratio = TrueRender.y / TrueRender.x;
+    
+    //Use this if you want to place the centre with the mouse instead
+    float2 Wafloatentre = _in.vCenter.xy * float2(1.f, 0.5f); // float2( _in.vCenter.xy / TrueRender.xy);
+       
+    //float2 Wafloatentre = float2(0.5, 0.5);
+    //Wafloatentre.y *= ratio;
+   
+    float2 texCoord = _in.vUV; //_in.vPosition.xy / g_RenderResolution.xy;
+    //texCoord.y *= ratio;
+    float Dist = distance(float2(texCoord.x, texCoord.y * ratio), float2(Wafloatentre.x, Wafloatentre.y * ratio));
+    //float Dist = distance(texCoord, Wafloatentre);
+    
+	
+    float4 Color = g_postprocess.Sample(g_sam_0, texCoord);
+    
+    //Only distort the pixels within the parameter distance from the centre
+    if ((Dist <= ((CurrentTime) + (WaveParams.z))) &&
+	(Dist >= ((CurrentTime) - (WaveParams.z))))
+    {
+        //The pixel offset distance based on the input parameters
+        float Diff = (Dist - CurrentTime);
+        float ScaleDiff = (1.0 - pow(abs(Diff * WaveParams.x), WaveParams.y));
+        float DiffTime = (Diff * ScaleDiff);
+        
+        //The direction of the distortion
+        float2 DiffTexCoord = normalize(texCoord - Wafloatentre);
+        
+        //Perform the distortion and reduce the effect over time
+        texCoord += ((DiffTexCoord * DiffTime) / (CurrentTime * Dist * 40.0));
+        Color = g_postprocess.Sample(g_sam_0, texCoord);
+        
+        //Blow out the color and reduce the effect over time
+        Color += (Color * ScaleDiff) / (CurrentTime * Dist * 40.0);
+    }
+    
+    return Color;
+    
+
+}
+
+
+
+
+
+
+
+
+
+
 
 // ==========
 // GrayFilter
@@ -48,6 +147,13 @@ VS_OUT VS_Distortion(VS_IN _in)
 {
     VS_OUT output = (VS_OUT) 0.f;
     
+    //_in.vPos = _in.vPos - float3(g_vOffset, 0.f);
+    //output.vPosition = float4(_in.vPos * .5f, 1.f);
+    //output.vUV = _in.vUV;
+    //
+    //return output;
+    
+    _in.vPos = _in.vPos - float3(g_vOffset, 0.f);
     output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
     output.vUV = _in.vUV;
     
@@ -79,6 +185,10 @@ float4 PS_Distortion(VS_OUT _in) : SV_Target
     
     return vColor;
 }
+
+
+
+
 
 
 #endif

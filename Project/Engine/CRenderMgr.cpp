@@ -38,9 +38,16 @@ void CRenderMgr::tick()
 	Ptr<CTexture> pDSTex = CAssetMgr::GetInst()->FindAsset<CTexture>(L"DepthStencilTex");
 	CONTEXT->OMSetRenderTargets(1, pRTTex->GetRTV().GetAddressOf(), pDSTex->GetDSV().Get());
 	
+	static const Vec4 White = Vec4(1.f, 1.f, 1.f, 1.f);
+	static const Vec4 Black = Vec4(0.f, 0.f, 0.f, 1.f);
+	static const Vec4 Red = Vec4(1.f, 1.f, 1.f, 1.f);
+	static const Vec4 Green = Vec4(0.f, 1.f, 0.f, 1.f);
+	static const Vec4 Blue = Vec4(0.f, 0.f, 1.f, 1.f);
+	static const Vec4 Yellow = Vec4(1.f, 1.f, 0.f, 1.f);
+	static const Vec4 Mazenta = Vec4(1.f, 0.f, 1.f, 1.f);
+
 	//Vec4 vClearColor = Vec4(0.3f, 0.3f, 0.3f, 1.f);
-	Vec4 vClearColor = Vec4(1.f, 0.f, 0.f, 1.f);
-	CDevice::GetInst()->ClearRenderTarget(vClearColor);
+	CDevice::GetInst()->ClearRenderTarget(Mazenta);
 
 	UpdateData();
 
