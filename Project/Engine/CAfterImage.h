@@ -11,6 +11,8 @@ struct tAfterImageEvent
 
     //플레이어 정보.
     Matrix PlayerWorldMat;
+    Matrix HairWorldMat;
+    Vec2 vMult;
     Facings facing;
     //                알파값도 여기에 직접세팅
     Color Color;
@@ -29,7 +31,7 @@ private:
     vector<Ptr<CTexture>> m_vecBangTex;
     tRenderInfo m_RenderInfo = {};
 
-    void RenderPlayer(Color _Color, Facings _facing, Vec3 _offset = Vec3(0, 0, 0));
+    void RenderPlayer(Color _Color, Facings _facing, Vec3 _MulScale = Vec3(1.f, 1.f, 1.f));
     void RenderHair(Color _Color, Vec3 _offset = Vec3(0, 0, 0));
     list< tAfterImageEvent> m_EventList;
 

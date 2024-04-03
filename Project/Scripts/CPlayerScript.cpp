@@ -1708,8 +1708,10 @@ void CPlayerScript::PushAfterImageEvent()
     Event.AccTime = 0.0f;
 
     //플레이어
-    Event.PlayerWorldMat = m_pPlayerHairGO->Transform()->GetWorldMat();
+    Event.PlayerWorldMat = GetOwner()->Transform()->GetWorldMat();
+    Event.HairWorldMat = m_pPlayerHairGO->Transform()->GetWorldMat();
     Event.facing = GetOwner()->m_facing;
+    Event.vMult = GetOwner()->Animator2D()->GetMulScale();
     Event.Color = Sprite->Color;
     //플레이어 텍스쳐
     auto anim = GetOwner()->Animator2D()->GetCurAnim();

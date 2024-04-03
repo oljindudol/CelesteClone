@@ -24,11 +24,21 @@ VS_OUT VS_Hair(VS_IN _in)
 {
     VS_OUT output = (VS_OUT) 0.f;
     
+    if(1 == g_Int_Bang)
+    {
+        _in.vPos = _in.vPos - g_HairOffset;
+        _in.vPos = _in.vPos * float3(g_HairScale, 1.f);
+    }
+    else
+    {
+        _in.vPos = _in.vPos * float3(g_HairScale, 1.f);
+        _in.vPos = _in.vPos + g_HairOffset;
+    }
+    
 
-    _in.vPos = _in.vPos * float3(g_HairScale, 1.f);
-    //_in.vPos = _in.vPos * float3(10.f,10.f, 1.f);
+    
+    
 
-    _in.vPos = _in.vPos + g_HairOffset;
 
     
     

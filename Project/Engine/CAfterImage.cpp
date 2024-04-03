@@ -36,14 +36,14 @@ CAfterImage::~CAfterImage()
 
 
 
-void CAfterImage::RenderPlayer(Color _Color, Facings _facing,Vec3 _offset)
+void CAfterImage::RenderPlayer(Color _Color, Facings _facing,Vec3 _MulScale)
 {
 	static CConstBuffer* CBp = CDevice::GetInst()->GetConstBuffer(CB_TYPE::HAIR);
 
 	tHair data = {};
 	data.vHairColor = (Vec4)_Color;
-	data.vOffset = _offset;
-	data.vScale = Vec2(_facing * 32, 32);
+	data.vOffset = Vec3(0.f,-0.375f, 0.f);
+	data.vScale = Vec3((_facing)*_MulScale.x, _MulScale.y, _MulScale.z);
 	data.bang = 1;
 	CBp->SetData(&data);
 	CBp->UpdateData();
@@ -68,7 +68,6 @@ void CAfterImage::render()
 			Matrix mat2 = iter->PlayerWorldMat;
 
 
-			Transform()->UpdateData(iter->PlayerWorldMat);
 
 			float percent = iter->AccTime / iter->Duration;
 			float alpha = (percent < 1.f) ? (0.75f * (1 - pow(percent, 3))) : 0.f;
@@ -85,10 +84,11 @@ void CAfterImage::render()
 
 
 			//플레이어 랜더
-			static const float PlayerYOffset = (0.5f) * 32.f;
+			//static const float PlayerYOffset = (0.5f) * 32.f;
+			Transform()->UpdateData(iter->PlayerWorldMat);
 			GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, iter->PlayerAnimTex );
 			GetMaterial()->UpdateData();
-			RenderPlayer(HC, iter->facing, Vec3(0, 0, PlayerYOffset));
+			RenderPlayer(HC, iter->facing, Vec3(iter->vMult, 1.f));
 
 
 			//헤어 랜더
@@ -98,6 +98,7 @@ void CAfterImage::render()
 			//RenderHair(BC, Vec3(-OutLineWidth, 0.0f, OutLineDepth));
 			//RenderHair(BC, Vec3(0.0f, OutLineWidth, OutLineDepth));
 			//RenderHair(BC, Vec3(0.0f, -OutLineWidth, OutLineDepth));
+			Transform()->UpdateData(iter->HairWorldMat);
 			RenderHair(HC ,Vec3(0.0f, 0.f, HairDepth));
 
 			++iter;
