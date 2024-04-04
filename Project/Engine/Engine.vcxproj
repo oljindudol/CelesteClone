@@ -214,6 +214,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CScript.h" />
     <ClInclude Include="CSetColorShader.h" />
     <ClInclude Include="CShader.h" />
+    <ClInclude Include="CShockWave.h" />
     <ClInclude Include="CSound.h" />
     <ClInclude Include="CState.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
@@ -286,6 +287,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CScript.cpp" />
     <ClCompile Include="CSetColorShader.cpp" />
     <ClCompile Include="CShader.cpp" />
+    <ClCompile Include="CShockWave.cpp" />
     <ClCompile Include="CSound.cpp" />
     <ClCompile Include="CState.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>

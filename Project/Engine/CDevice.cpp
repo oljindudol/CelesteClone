@@ -374,5 +374,8 @@ int CDevice::CreateConstBuffer()
 	m_arrCB[(UINT)CB_TYPE::HAIR] = new CConstBuffer(CB_TYPE::HAIR);
 	m_arrCB[(UINT)CB_TYPE::HAIR]->Create(sizeof(tHair), 1);
 
+	m_arrCB[(UINT)CB_TYPE::SHOCKWAVE_DATA] = new CConstBuffer(CB_TYPE::SHOCKWAVE_DATA);
+	m_arrCB[(UINT)CB_TYPE::SHOCKWAVE_DATA]->Create(sizeof(tShock), 1);
+
 	return S_OK;
 }

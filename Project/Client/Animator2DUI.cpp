@@ -61,6 +61,7 @@ void Animator2DUI::render_update()
 	ms.y = ClampFloat(ms.y, 0.05f);
 	pAnimator2D->SetMulScale(ms);
 
+
 	if (ImGui::Button("SAVE"))
 	{
 	}

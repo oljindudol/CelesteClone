@@ -31,7 +31,6 @@ VS_OUT VS_ShockWave(VS_IN _in)
     output.vUV = _in.vUV;
     float2 proj = mul(float4(center, 1.f, 1.f), g_matWVP);
     center = proj.xy;
-    //output.vCenter = proj.xy;
     center = (center + (float2(TrueRender.x, TrueRender.y) / 2.f)) / TrueRender;
     output.vCenter = float2(center.x,  1- center.y);
     
@@ -55,14 +54,18 @@ float rand(float2 co)
 }
 
 
+
 float4 PS_ShockWave(VS_OUT _in) : SV_Target
 {
      //Sawtooth function to pulse from centre.
-    float offset = (g_time - floor(g_time)) / g_time;
-    float CurrentTime = (g_time) * (offset);
+    float offset = (g_ShockAcctime - floor(g_ShockAcctime)) / g_ShockAcctime;
+    float CurrentTime = (g_ShockAcctime) * (offset);
+    CurrentTime /= 12.f;
+    
     
     //float3 WaveParams = float3(10.0, 0.8, 0.1);
-    float3 WaveParams = float3(10.0, 0.8, 0.03f);
+    //y: 왜곡되는 강도 , z:왜곡되는 범위
+    float3 WaveParams = float3(.5f, 0.1, 0.1f);
     
     float ratio = TrueRender.y / TrueRender.x;
     
@@ -79,8 +82,8 @@ float4 PS_ShockWave(VS_OUT _in) : SV_Target
     
 	
     float4 Color = g_postprocess.Sample(g_sam_0, texCoord);
-    
-    float maxDist = .4f;
+    float minDist = 0.045f;
+    float maxDist = .1f;
     float fadeOutFactor = 1.0 - (Dist / maxDist);
     
     //Only distort the pixels within the parameter distance from the centre
@@ -97,11 +100,43 @@ float4 PS_ShockWave(VS_OUT _in) : SV_Target
         float2 DiffTexCoord = normalize(texCoord - Wafloatentre);
         
         //Perform the distortion and reduce the effect over time
-        texCoord += ((DiffTexCoord * DiffTime) / (CurrentTime * Dist * 40.0 /2));
+        //파형의 왜곡정도(작을때큼)
+        float degree = 10.f;
+        // 감쇠 계수 계산
+        // 왜곡 강도 최대치를 결정하는 반지름의 절반 값
+        float halfMaxDist = maxDist * .5f;
+        // 거리에 따른 왜곡 강도 조절을 위한 계수 계산
+        float distortionStrength = 1.0 - abs(Dist - halfMaxDist) / halfMaxDist;
+        //float distortionStrength = max(0.0, (Dist - minDist) / (maxDist - minDist));
+        
+        // 시간에 따른 왜곡 강도 조절
+        float timeFactor = 1.f - smoothstep(0.0, 1.f, g_ShockAcctime);
+        
+        texCoord += ((DiffTexCoord * DiffTime) * timeFactor / (CurrentTime * Dist * 40.0 * degree)) * distortionStrength;
         Color = g_postprocess.Sample(g_sam_0, texCoord);
+        float4 OriginColor = Color;
         
         //Blow out the color and reduce the effect over time
-        Color += (Color * ScaleDiff) / (CurrentTime * Dist * 40.0);
+        //파형의 보간감소
+        float decline = 10000.f;
+        Color += (Color * ScaleDiff) / (CurrentTime * Dist * 40.0 * decline);
+        
+        //거리에따른 색상강도조정
+        Color *= fadeOutFactor;
+
+        
+        //// 노이즈 텍스처 샘플링
+        //float4 noise = g_tex_0.Sample(g_sam_0, texCoord);
+        //// 노이즈 강도 조절
+        //float noiseIntensity = 0.01 + 0.99 * (1 - fadeOutFactor); // 예시로, fadeOutFactor에 따라 노이즈 강도가 0.5에서 1.0 사이로 조절됩니다.
+        //// 최종 색상에 노이즈 적용
+        //Color += noise * noiseIntensity;
+        
+        
+        //최대밝기조절
+        Color = min(OriginColor * 1.2f, Color);
+        //최소밝기조절
+        Color = max(OriginColor, Color / 1.f);
     }
     
     return Color;

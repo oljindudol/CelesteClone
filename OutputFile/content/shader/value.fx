@@ -90,6 +90,13 @@ cbuffer HAIR_DATA : register(b4)
     int hairpadding[2];
 }
 
+cbuffer SHOCK_DATA : register(b5)
+{
+    float  g_ShockAcctime;
+    float3 shockpadding;
+}
+
+
 
 Texture2D g_tex_0 : register(t0);
 Texture2D g_tex_1 : register(t1);

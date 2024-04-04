@@ -326,6 +326,8 @@ private:
 
     class CAfterImage* m_AfterImage;
     void PushAfterImageEvent();
+    class CShockWave* m_ShockWave;
+    void SetShockWaveEvent();
 
 
 #pragma region functions

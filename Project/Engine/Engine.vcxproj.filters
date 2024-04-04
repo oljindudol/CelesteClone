@@ -178,6 +178,9 @@
     <ClInclude Include="CAfterImage.h">
       <Filter>08. Component\RenderComponent\05. AfterImage</Filter>
     </ClInclude>
+    <ClInclude Include="CShockWave.h">
+      <Filter>08. Component\RenderComponent\06. ShockWave</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -341,6 +344,9 @@
     </ClCompile>
     <ClCompile Include="CAfterImage.cpp">
       <Filter>08. Component\RenderComponent\05. AfterImage</Filter>
+    </ClCompile>
+    <ClCompile Include="CShockWave.cpp">
+      <Filter>08. Component\RenderComponent\06. ShockWave</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -511,6 +517,9 @@
     </Filter>
     <Filter Include="08. Component\RenderComponent\05. AfterImage">
       <UniqueIdentifier>{f914cc3f-115f-4bf4-ae0a-83a2bf8a683f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\06. ShockWave">
+      <UniqueIdentifier>{eed39ee8-07c2-47ef-bf9c-194535046ec2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

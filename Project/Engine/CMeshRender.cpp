@@ -56,7 +56,5 @@ void CMeshRender::render()
 
 	UpdateData();
 
-
-
 	GetMesh()->render();
 }

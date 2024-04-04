@@ -119,6 +119,13 @@ struct tSpawnCount
 // ==================
 // 상수버퍼 대응 구조체
 // ==================
+struct tShock
+{
+	float ShockAccTime;
+	float padding[3];
+};
+
+
 struct tHair
 {
 	Vec4 vHairColor;

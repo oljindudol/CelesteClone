@@ -23,6 +23,7 @@
 #include <Engine\CEngine.h>
 #include <Engine\CRenderMgr.h>
 #include <Engine\CAfterImage.h>
+#include <Engine\CShockWave.h>
 
 //key bind
 #define GRABKEY KEY_PRESSED(S)
@@ -215,23 +216,24 @@ void CPlayerScript::begin()
 
 
     // PostProcess 오브젝트 추가
-    auto m_ShokeWave = new CGameObject;
-    m_ShokeWave->SetName(L"PlayerShockWave");
+    auto m_ShockObj = new CGameObject;
+    m_ShockObj->SetName(L"PlayerShockWave");
 
-    m_ShokeWave->AddComponent(new CTransform);
-    m_ShokeWave->AddComponent(new CMeshRender);
+    m_ShockObj->AddComponent(new CTransform);
+    m_ShockWave = new CShockWave;
+    m_ShockObj->AddComponent(m_ShockWave);
 
-    m_ShokeWave->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-    m_ShokeWave->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 1.f));
-    m_ShokeWave->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    auto Mat = CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_ShockWaveMeterial);
-    //auto Mat = CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_GrayFilterMeterial);
-    m_ShokeWave->MeshRender()->SetMaterial(Mat);
-    m_ShokeWave->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\noise\\noise_03.jpg", L"texture\\noise\\noise_03.jpg"));
+    m_ShockObj->Transform()->SetAbsolute(false);
+    m_ShockObj->Transform()->SetRelativePos(Vec3(0.f, .375f, 0.f));
+    m_ShockObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
 
+    //m_ShockObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+    //auto Mat = CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_ShockWaveMeterial);
+    //m_ShockObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_ShockWaveMeterial));
+    //m_ShockObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\noise\\noise_03.jpg", L"texture\\noise\\noise_03.jpg"));
 
-    CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(m_ShokeWave, LAYER_PLAYER_EFFECT, false);
-    GetOwner()->AddChild(m_ShokeWave);
+    CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(m_ShockObj, LAYER_PLAYER_EFFECT, false);
+    GetOwner()->AddChild(m_ShockObj);
 
 
     //플레이어 애님들 생성(낱장,폴더)
@@ -1606,6 +1608,7 @@ int CPlayerScript::DashUpdate()
 
         DashDir = dir;
         CRenderMgr::GetInst()->DirectionalShake(DashDir, .2f);
+        SetShockWaveEvent();
 
         if (DashDir.x != 0)
             Facing = (Facings)Sign(DashDir.x);
@@ -1751,6 +1754,15 @@ void CPlayerScript::PushAfterImageEvent()
 
     m_AfterImage->PushEvent(Event);
     m_bAfterImageRequest = false;
+}
+void CPlayerScript::SetShockWaveEvent()
+{
+    tShockEvent SE= {};
+    
+    SE.ShockMat = m_ShockWave->Transform()->GetWorldMat();
+    SE.AccTime = 0.f;
+
+    m_ShockWave->PushShockEvent(SE);
 }
 
 #pragma endregion
