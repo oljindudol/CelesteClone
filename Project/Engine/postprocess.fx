@@ -33,7 +33,6 @@ VS_OUT VS_ShockWave(VS_IN _in)
     center = proj.xy;
     //output.vCenter = proj.xy;
     center = (center + (float2(TrueRender.x, TrueRender.y) / 2.f)) / TrueRender;
-    //center = (center + float2(1.f, 1.f)) / 2.f;
     output.vCenter = float2(center.x,  1- center.y);
     
     return output;
@@ -62,12 +61,13 @@ float4 PS_ShockWave(VS_OUT _in) : SV_Target
     float offset = (g_time - floor(g_time)) / g_time;
     float CurrentTime = (g_time) * (offset);
     
-    float3 WaveParams = float3(10.0, 0.8, 0.1);
+    //float3 WaveParams = float3(10.0, 0.8, 0.1);
+    float3 WaveParams = float3(10.0, 0.8, 0.03f);
     
     float ratio = TrueRender.y / TrueRender.x;
     
     //Use this if you want to place the centre with the mouse instead
-    float2 Wafloatentre = _in.vCenter.xy * float2(1.f, 0.5f); // float2( _in.vCenter.xy / TrueRender.xy);
+    float2 Wafloatentre = _in.vCenter.xy * float2(1.f, 0.5f) - float2(0.f, -0.25f); // float2( _in.vCenter.xy / TrueRender.xy);
        
     //float2 Wafloatentre = float2(0.5, 0.5);
     //Wafloatentre.y *= ratio;
@@ -80,9 +80,13 @@ float4 PS_ShockWave(VS_OUT _in) : SV_Target
 	
     float4 Color = g_postprocess.Sample(g_sam_0, texCoord);
     
+    float maxDist = .4f;
+    float fadeOutFactor = 1.0 - (Dist / maxDist);
+    
     //Only distort the pixels within the parameter distance from the centre
     if ((Dist <= ((CurrentTime) + (WaveParams.z))) &&
-	(Dist >= ((CurrentTime) - (WaveParams.z))))
+	(Dist >= ((CurrentTime) - (WaveParams.z)))
+     && (Dist <= maxDist))
     {
         //The pixel offset distance based on the input parameters
         float Diff = (Dist - CurrentTime);
@@ -93,7 +97,7 @@ float4 PS_ShockWave(VS_OUT _in) : SV_Target
         float2 DiffTexCoord = normalize(texCoord - Wafloatentre);
         
         //Perform the distortion and reduce the effect over time
-        texCoord += ((DiffTexCoord * DiffTime) / (CurrentTime * Dist * 40.0));
+        texCoord += ((DiffTexCoord * DiffTime) / (CurrentTime * Dist * 40.0 /2));
         Color = g_postprocess.Sample(g_sam_0, texCoord);
         
         //Blow out the color and reduce the effect over time
@@ -101,7 +105,6 @@ float4 PS_ShockWave(VS_OUT _in) : SV_Target
     }
     
     return Color;
-    
 
 }
 
