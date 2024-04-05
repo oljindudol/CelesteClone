@@ -218,32 +218,34 @@ void CPlayerScript::begin()
     // PostProcess 오브젝트 추가
     auto m_ShockObj = new CGameObject;
     m_ShockObj->SetName(L"PlayerShockWave");
-
     m_ShockObj->AddComponent(new CTransform);
     m_ShockWave = new CShockWave;
     m_ShockObj->AddComponent(m_ShockWave);
-
     m_ShockObj->Transform()->SetAbsolute(false);
     m_ShockObj->Transform()->SetRelativePos(Vec3(0.f, .375f, 0.f));
     m_ShockObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
-
-    //m_ShockObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-    //auto Mat = CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_ShockWaveMeterial);
-    //m_ShockObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_ShockWaveMeterial));
-    //m_ShockObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\noise\\noise_03.jpg", L"texture\\noise\\noise_03.jpg"));
-
     CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(m_ShockObj, LAYER_PLAYER_EFFECT, false);
     GetOwner()->AddChild(m_ShockObj);
+
+
+    // Particle 오브젝트 추가
+    auto m_ParticleObj = new CGameObject;
+    m_ParticleObj->SetName(L"PlayerParticle");
+    m_ParticleObj->AddComponent(new CTransform);
+    auto m_Particle = new CParticleSystem;
+    m_ParticleObj->AddComponent(m_Particle);
+    m_ParticleObj->Transform()->SetAbsolute(false);
+    m_ParticleObj->Transform()->SetRelativePos(Vec3(0.f, .375f, 0.f));
+    m_ParticleObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+    CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(m_ParticleObj, LAYER_PLAYER_EFFECT, false);
+    GetOwner()->AddChild(m_ParticleObj);
 
 
     //플레이어 애님들 생성(낱장,폴더)
     std::filesystem::path base_path = CPathMgr::GetContentPath();
     wstring OriginPath = base_path;
-
     OriginPath += STR_FOLDER_PATH_PLAYERANIMATION;
     auto folders = getFoldersFromDirectory(OriginPath);
-
-    //auto ty = Transform()->GetRelativeScale().y;
     for (auto& f : folders)
     {
         auto rel = std::filesystem::relative(f, OriginPath);
@@ -254,10 +256,13 @@ void CPlayerScript::begin()
     auto a = Animator2D();
     Animator2D()->Play(L"idle");
 
+    //피직스
     //SetPhysics(new CPhysics(GetOwner()));
 
+    //스머
     StateMachine->Begin();
 
+    //Imgui 자식오브젝트 업데이트용
     CTaskMgr::GetInst()->TriggetObjectEvent();
 }
 void CPlayerScript::StartHair()
