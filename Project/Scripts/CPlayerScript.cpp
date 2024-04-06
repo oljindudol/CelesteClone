@@ -24,7 +24,7 @@
 #include <Engine\CRenderMgr.h>
 #include <Engine\CAfterImage.h>
 #include <Engine\CShockWave.h>
-#include <Engine\CParticleSystem.h>
+#include <Engine\CCustomParticleSystem.h>
 
 //key bind
 #define GRABKEY KEY_PRESSED(S)
@@ -233,7 +233,7 @@ void CPlayerScript::begin()
     auto m_ParticleObj = new CGameObject;
     m_ParticleObj->SetName(L"PlayerParticle");
     m_ParticleObj->AddComponent(new CTransform);
-    auto m_Particle = new CParticleSystem;
+    auto m_Particle = new CCustomParticleSystem;
     m_ParticleObj->AddComponent(m_Particle);
     m_ParticleObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
     CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(m_ParticleObj, LAYER_PLAYER_EFFECT, false);
