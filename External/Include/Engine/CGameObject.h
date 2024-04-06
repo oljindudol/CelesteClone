@@ -49,6 +49,7 @@ public:
     GET_COMPONENT(TileMap, TILEMAP);
     GET_COMPONENT(Hair, PLAYERHAIR);
     GET_COMPONENT(AfterImage, AFTERIMAGE);
+    GET_COMPONENT(ParticleSystem, PARTICLESYSTEM);
 
 
 
