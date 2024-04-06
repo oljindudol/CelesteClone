@@ -35,6 +35,9 @@ public:
     tParticleModule GetModule() {
         return m_Module;
     }
+    void SetModule(tParticleModule _Module) {
+        m_Module = _Module;
+    }
     CParticleSystem();
     CParticleSystem(const CParticleSystem& _OriginParticle);
     ~CParticleSystem();
