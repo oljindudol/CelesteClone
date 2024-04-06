@@ -27,6 +27,7 @@ public:
     void GenerateParticle(const Vec4& _Color , const Vec4& _VibColor) { 
         m_bThisFrameGenerate = true; 
         m_Module.vSpawnColor = _Color;
+        m_Module.VibColor = _VibColor;
     }
     void GenerateParticle(const Vec4& _Color) {
         m_bThisFrameGenerate = true;

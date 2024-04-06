@@ -41,36 +41,34 @@ void ParticleSystemUI::render_update()
 
 	static ImVec4 ModuleColor = Burgundy;
 
-	// Drag Module
+
+
+	// VibColor
 	ImGui::Separator();
-	CreateStaticColorButton("Drag Module", ModuleColor);
+	CreateStaticColorButton("VibColor Module", ModuleColor);
 	ImGui::SameLine();
-	if (1 == CurModule.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG] )
-	{
+	if (1 == CurModule.arrModuleCheck[(UINT)PARTICLE_MODULE::Vibration]) {
 		ImGui::PushStyleColor(ImGuiCol_Button, Green);
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Green);
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, Green);
-		if (ImGui::Button("On##DragModule"))
-		{
-			NewModule.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG] = 0;
+		if (ImGui::Button("On##VibColor")) {
+			NewModule.arrModuleCheck[(UINT)PARTICLE_MODULE::Vibration] = 0;
 		}
 		ImGui::PopStyleColor(3);
 	}
-	else
-	{
+	else {
 		ImGui::PushStyleColor(ImGuiCol_Button, Gray);
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Gray);
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, Gray);
-		if (ImGui::Button("Off##DragModule"))
-		{
-			NewModule.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG] = 1;
+		if (ImGui::Button("Off##VibColor")) {
+			NewModule.arrModuleCheck[(UINT)PARTICLE_MODULE::Vibration] = 1;
 		}
 		ImGui::PopStyleColor(3);
 	}
-	ImGui::Text("DragTime"); ImGui::SameLine();
-	ImGui::DragFloat("##DragTime", &NewModule.DragTime, 0.01f, 0.01f, 10000.f);
-
-
+	ImGui::Text("VibColorTerm"); ImGui::SameLine();
+	ImGui::DragFloat("##VibColorTerm", &NewModule.VibTime, 0.01f, 0.0f, 1.0f);
+	ImGui::Text("Vib Color"); ImGui::SameLine();
+	ImGui::ColorEdit4("##Vib Color", &NewModule.VibColor.x);
 
 	// Spawn Module
 	ImGui::Separator();
@@ -184,6 +182,36 @@ void ParticleSystemUI::render_update()
 	ImGui::DragFloat4("##FixedDirection", &NewModule.FixedDirection.x, 0.1, 0, 1000);
 	ImGui::Text("FixedAngle"); ImGui::SameLine();
 	ImGui::DragFloat("##FixedAngle", &NewModule.FixedAngle, 0.1, 0, 1000);
+
+	// Drag Module
+	ImGui::Separator();
+	CreateStaticColorButton("Drag Module", ModuleColor);
+	ImGui::SameLine();
+	if (1 == CurModule.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG])
+	{
+		ImGui::PushStyleColor(ImGuiCol_Button, Green);
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Green);
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, Green);
+		if (ImGui::Button("On##DragModule"))
+		{
+			NewModule.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG] = 0;
+		}
+		ImGui::PopStyleColor(3);
+	}
+	else
+	{
+		ImGui::PushStyleColor(ImGuiCol_Button, Gray);
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Gray);
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, Gray);
+		if (ImGui::Button("Off##DragModule"))
+		{
+			NewModule.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG] = 1;
+		}
+		ImGui::PopStyleColor(3);
+	}
+	ImGui::Text("DragTime"); ImGui::SameLine();
+	ImGui::DragFloat("##DragTime", &NewModule.DragTime, 0.01f, 0.01f, 10000.f);
+
 
 	// Scale Module
 	ImGui::Separator();
@@ -312,6 +340,8 @@ void ParticleSystemUI::render_update()
 	}
 	ImGui::Text("AlphaMaxAge"); ImGui::SameLine();
 	ImGui::DragFloat("##AlphaMaxAge", &NewModule.AlphaMaxAge, 0.1f, 0.0f, 10.0f);
+
+
 
 
 

@@ -8,6 +8,7 @@
 #include "CAssetMgr.h"
 #include "CMesh.h"
 #include "CMaterial.h"
+#include "CKeyMgr.h"
 
 CCustomParticleSystem::CCustomParticleSystem()
 	: CRenderComponent(COMPONENT_TYPE::CUSTOMPARTICLESYSTEM)
@@ -88,6 +89,8 @@ CCustomParticleSystem::CCustomParticleSystem()
 	m_Module.AlphaBasedLife = 1; // 0 : off, 1 : NomrlizedAge, 2: Age
 	m_Module.AlphaMaxAge = 2.8f;
 
+	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::Vibration] = 1;
+	m_Module.VibTime = 0.3f;
 
 	m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(STR_FILE_PATH_PARTICLE_GENERAL
 		, STR_FILE_PATH_PARTICLE_GENERAL);
@@ -129,7 +132,16 @@ CCustomParticleSystem::~CCustomParticleSystem()
 
 void CCustomParticleSystem::finaltick()
 {
+	static bool sw = false;
+	if (KEY_TAP(T))
+	{
+		sw = !sw;
+	}
 
+	if (true == sw)
+	{
+		m_bThisFrameGenerate = true;
+	}
 
 	m_Time += DT;
 

@@ -149,6 +149,8 @@ float4 PS_CustomParticle(GS_OUT _in) : SV_Target
         vOutColor.a = vSampleColor.a;
     }
     
+    
+    
     // 렌더모듈이 켜져 있으면
     if (module.arrModuleCheck[6])
     {

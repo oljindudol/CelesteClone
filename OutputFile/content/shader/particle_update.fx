@@ -46,6 +46,11 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
             
             if (AliveCount == Origin)
             {
+                Particle.ColorOrigin = Module.vSpawnColor;
+                Particle.ColorVibra = Module.VibColor;
+                Particle.ColorAcctime = 0.f;
+                
+                
                 Particle.Active = 1;
                 Particle.vNoiseForce = (float3) 0.f;
                 Particle.NoiseForceTime = 0.f;
@@ -149,6 +154,30 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
         {
             Particle.vWorldScale = Particle.vWorldInitScale * (1.f + (Module.vScaleRatio - 1.f) * Particle.NomalizedAge);
         }        
+        
+        // 색상진동 모듈이 켜져있으면
+        if (1 == Module.arrModuleCheck[7])
+        {
+            if (0.f == Particle.ColorAcctime
+            || (Module.VibTime < g_time - Particle.ColorAcctime))
+            {
+                Particle.ColorAcctime = g_time;
+                float iout;
+                float2 uv;
+                uv.x = modf(g_time, iout);
+                uv.y = modf(g_time, iout);
+            
+                float4 vRand = g_NoiseTex.SampleLevel(g_sam_0, uv, 0);
+                Particle.vColor = Particle.ColorOrigin * vRand.x + Particle.ColorVibra * (1 - vRand.x);
+            }
+            else
+            {
+            
+            }
+        }
+        
+        
+        
         
         // Noise Force
         if (Module.arrModuleCheck[4])

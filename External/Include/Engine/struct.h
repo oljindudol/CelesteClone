@@ -64,6 +64,11 @@ struct tParticle
 	float	Age;			// 현재 나이
 	float	Life;			// 수명
 	int		Active;			// 활성화, 비활성화 여부
+
+	Vec4    ColorOrigin;
+	Vec4	ColorVibra;     // 원래 색상과 진동할 색상
+	float   ColorAcctime;   // 진동하지않은 누적시간
+	int     padding[3];
 };
 
 struct tParticleModule
@@ -107,6 +112,8 @@ struct tParticleModule
 
 	// Module On / Off
 	int arrModuleCheck[(UINT)PARTICLE_MODULE::END];
+	Vec4  VibColor; //진동색깔
+	float VibTime;// 진동주기
 };
 
 struct tSpawnCount

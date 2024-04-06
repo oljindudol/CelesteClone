@@ -48,6 +48,11 @@ struct tParticle
     float   Age; // 현재 나이
     float   Life; // 수명
     int     Active; // 활성화, 비활성화 여부
+    
+    float4 ColorOrigin;
+    float4 ColorVibra; // 원래 색상과 진동할 색상
+    float  ColorAcctime; // 진동하지않은 누적시간
+    int    padding[3];
 };
 
 struct tParticleModule
@@ -91,9 +96,12 @@ struct tParticleModule
     float   AlphaMaxAge;        // 알파가 0 가 되기까지의 수명
     
     // Module Active Check
-    int     arrModuleCheck[7];
+    int     arrModuleCheck[8];
+    // Vib Color
+    float4  VibColor;
+    float   VibTime;
     
-    int3    modulepadding;
+    int     modulepadding;
 };
 
 

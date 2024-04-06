@@ -303,6 +303,7 @@ enum class PARTICLE_MODULE
 	CALCULATE_FORCE,// 주어진 힘을 계산하는 모듈
 
 	RENDER,			// 렌더링 때의 옵션 관련
+	Vibration,		// 색상진동
 
 	END,
 };

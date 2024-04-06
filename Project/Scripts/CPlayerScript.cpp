@@ -1705,8 +1705,15 @@ int CPlayerScript::DashUpdate()
 
     if (Speed != Vec2(0.f, 0.f))//&& level.OnInterval(0.02f))
     {
-        Color c = wasDashB ? NormalHairColor : UsedHairColor;
-        m_Particle->GenerateParticle(c);
+        static const Color Normal = HexToColor("AC3232");
+        static const Color Used = HexToColor("44B7FF");
+
+        static const Color NormalVib = HexToColor("FFFFFF");
+        static const Color UsedVib = HexToColor("FFFFFF");
+
+        Color c = wasDashB ? Normal : Used;
+        Color c2 = wasDashB ? NormalVib : UsedVib;
+        m_Particle->GenerateParticle(c,c2);
         //level.ParticlesFG.Emit(wasDashB ? P_DashB : P_DashA, Center + Calc.Random.Range(Vector2.One * -2, Vector2.One * 2), DashDir.Angle());
     }
     return StDash;
