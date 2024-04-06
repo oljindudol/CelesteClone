@@ -24,9 +24,14 @@ private:
 
 
 public:
-    void GenerateParticle() { m_bThisFrameGenerate = true; }
-    void SetParticleColor(Vec4 _Color) { m_Module.vSpawnColor = _Color; }
-
+    void GenerateParticle(const Vec4& _Color , const Vec4& _VibColor) { 
+        m_bThisFrameGenerate = true; 
+        m_Module.vSpawnColor = _Color;
+    }
+    void GenerateParticle(const Vec4& _Color) {
+        m_bThisFrameGenerate = true;
+        m_Module.vSpawnColor = _Color;
+    }
 
     virtual void UpdateData() override;
     virtual void finaltick() override;

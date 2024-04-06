@@ -233,7 +233,7 @@ void CPlayerScript::begin()
     auto m_ParticleObj = new CGameObject;
     m_ParticleObj->SetName(L"PlayerParticle");
     m_ParticleObj->AddComponent(new CTransform);
-    auto m_Particle = new CCustomParticleSystem;
+    m_Particle = new CCustomParticleSystem;
     m_ParticleObj->AddComponent(m_Particle);
     m_ParticleObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
     CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(m_ParticleObj, LAYER_PLAYER_EFFECT, false);
@@ -1472,6 +1472,7 @@ void CPlayerScript::NormalBegin()
 void CPlayerScript::NormalEnd()
 {
     wallBoostTimer = 0;
+    wallBoostTimer = 0;
     wallSpeedRetentionTimer = 0;
     hopWaitX = 0;
 }
@@ -1700,8 +1701,14 @@ int CPlayerScript::DashUpdate()
         return StNormal;
     }
 
-    //if (Speed != Vec2(0.f,0.f) &&)// level.OnInterval(0.02f))
-    //    level.ParticlesFG.Emit(wasDashB ? P_DashB : P_DashA, Center + Calc.Random.Range(Vector2.One * -2, Vector2.One * 2), DashDir.Angle());
+
+
+    if (Speed != Vec2(0.f, 0.f))//&& level.OnInterval(0.02f))
+    {
+        Color c = wasDashB ? NormalHairColor : UsedHairColor;
+        m_Particle->GenerateParticle(c);
+        //level.ParticlesFG.Emit(wasDashB ? P_DashB : P_DashA, Center + Calc.Random.Range(Vector2.One * -2, Vector2.One * 2), DashDir.Angle());
+    }
     return StDash;
 }
 void CPlayerScript::DashBegin()

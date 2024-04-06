@@ -20,8 +20,19 @@ private:
     Ptr<CTexture>           m_ParticleTex;
 
     float                   m_Time;
+    bool                    m_bThisFrameGenerate;
+
 
 public:
+    void GenerateParticle(const Vec4& _Color , const Vec4& _VibColor) { 
+        m_bThisFrameGenerate = true; 
+        m_Module.vSpawnColor = _Color;
+    }
+    void GenerateParticle(const Vec4& _Color) {
+        m_bThisFrameGenerate = true;
+        m_Module.vSpawnColor = _Color;
+    }
+
     virtual void UpdateData() override;
     virtual void finaltick() override;
     virtual void render() override;

@@ -56,7 +56,7 @@ CCustomParticleSystem::CCustomParticleSystem()
 	m_Module.SpawnShape = 1; // 0 : Sphere, 1 : Box
 	m_Module.Radius = 100.f;
 	m_Module.vSpawnBoxScale = Vec4(10.f, 10.f, 0.f, 0.f);
-	m_Module.SpawnRate = 38;
+	m_Module.SpawnRate = 60;
 
 	// Add Velocity Module
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 1;
@@ -129,6 +129,8 @@ CCustomParticleSystem::~CCustomParticleSystem()
 
 void CCustomParticleSystem::finaltick()
 {
+
+
 	m_Time += DT;
 
 	if ((1.f / m_Module.SpawnRate) < m_Time)
@@ -138,8 +140,15 @@ void CCustomParticleSystem::finaltick()
 
 		// 스폰 간격을 제외한 잔량을 남은 누적시간으로 설정
 		m_Time -= (1.f / m_Module.SpawnRate) * floorf(fSpawnCount);
-
-		tSpawnCount count = tSpawnCount{ (int)fSpawnCount, 0, 0, 0 };
+		tSpawnCount count;
+		if (true == m_bThisFrameGenerate)
+		{
+			count = tSpawnCount{ (int)fSpawnCount, 0, 0, 0 };
+		}
+		else
+		{
+			count = tSpawnCount{ 0, 0, 0, 0 };
+		}
 		m_SpawnCountBuffer->SetData(&count);
 	}
 	else
@@ -159,6 +168,8 @@ void CCustomParticleSystem::finaltick()
 	m_CSParticleUpdate->SetParticleSpawnCount(m_SpawnCountBuffer);
 	m_CSParticleUpdate->SetParticleWorldPos(Transform()->GetWorldPos());
 	m_CSParticleUpdate->Execute();
+
+	m_bThisFrameGenerate = false;
 }
 
 void CCustomParticleSystem::render()
