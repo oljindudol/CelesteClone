@@ -8,9 +8,11 @@
 #include "CAnimator2D.h"
 #include "CLight2D.h"
 #include "CTileMap.h"
-#include "CParticleSystem.h"
 #include "CHair.h"
 #include "CAfterImage.h"
+#include "CShockWave.h"
+#include "CParticleSystem.h"
+#include "CCustomParticleSystem.h"
 
 //#include "CCollider3D.h"
 //#include "CAnimator3D.h"

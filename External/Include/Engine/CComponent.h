@@ -38,6 +38,7 @@ public:
     GET_OTHER_COMPONENT(Hair);
     GET_OTHER_COMPONENT(AfterImage);
     GET_OTHER_COMPONENT(ParticleSystem);
+    GET_OTHER_COMPONENT(CustomParticleSystem);
    
     CRenderComponent* GetRenderComponent() { return m_Owner->GetRenderComopnent();}
 

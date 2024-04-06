@@ -17,7 +17,7 @@ CParticleSystem::CParticleSystem()
 {
 	// 전용 메쉬와 전용 재질 사용
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(STR_KEY_PointMesh));
-	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_CustomParticleMeterial));
+	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_ParticleMeterial));
 
 	// 렌더링 해상도
 	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
