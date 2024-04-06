@@ -160,6 +160,24 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 {
 	Ptr<CGraphicsShader> pShader = nullptr;
 
+	// ====================
+	// ParticleRenderShader(Custom)
+	// ====================
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(STR_FILE_PATH_ParticleShader, STR_FUNC_NAME_VTXShaderParticle);
+	pShader->CreateGeometryShader(STR_FILE_PATH_ParticleShader, STR_FUNC_NAME_GEOShaderParticleCustom);
+	pShader->CreatePixelShader(STR_FILE_PATH_ParticleShader, STR_FUNC_NAME_PIXShaderParticleCustom);
+
+	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_WRITE);		// 깊이 테스트는 진행, 깊이는 기록 X
+	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+	AddAsset(STR_KEY_CustomParticleRenderShader, pShader.Get());
+
+
 	// =================================
 	// Distortion Shader	
 	// RS_TYPE		: CULL_BACK
@@ -336,6 +354,11 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 void CAssetMgr::CreateDefaultMaterial()
 {
 	CMaterial* pMtrl = nullptr;
+
+	// DistortionMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(STR_KEY_CustomParticleRenderShader));
+	AddAsset<CMaterial>(STR_KEY_CustomParticleMeterial, pMtrl);
 
 	// DistortionMtrl
 	pMtrl = new CMaterial(true);

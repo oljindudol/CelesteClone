@@ -17,7 +17,7 @@ CParticleSystem::CParticleSystem()
 {
 	// 전용 메쉬와 전용 재질 사용
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(STR_KEY_PointMesh));
-	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_ParticleMeterial));
+	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_CustomParticleMeterial));
 
 	// 렌더링 해상도
 	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
@@ -90,10 +90,8 @@ CParticleSystem::CParticleSystem()
 	m_Module.AlphaMaxAge = 2.f;
 
 
-
-
-	m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\particle\\ray.png"
-														, L"texture\\particle\\ray.png");
+	m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(STR_FILE_PATH_RAY
+														, STR_FILE_PATH_RAY);
 }
 
 CParticleSystem::CParticleSystem(const CParticleSystem& _OriginParticle)

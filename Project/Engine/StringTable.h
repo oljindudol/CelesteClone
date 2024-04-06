@@ -7,6 +7,10 @@
 #define STR_FOLDER_PATH_BANGS L"\\texture\\Gameplay\\hair\\bangs"
 #define STR_FOLDER_PATH_PLAYERANIMATION L"\\texture\\Gameplay\\madeline"
 #define STR_FOLDER_PATH_FORE_TILE L"\\texture\\Gameplay\\tilemap\\foretile"
+#define STR_FILE_PATH_PARTICLE_GENERAL L"\\texture\\Gameplay\\particle\\General\\particle1by1.png"
+#define STR_FILE_PATH_RAY L"texture\\particle\\ray.png"
+
+
 
 // Imgui UI String
 
@@ -36,7 +40,6 @@
 #define STR_FILE_PATH_Std2dShader L"shader\\std2d.fx"
 #define STR_FILE_PATH_DebugShader L"shader\\debug.fx"
 #define STR_FILE_PATH_ParticleShader L"shader\\particle.fx"
-#define STR_FILE_PATH_ParticleUpdateShader L"shader\\particle_update.fx"
 #define STR_FILE_PATH_PostProcessShader L"shader\\postprocess.fx"
 #define STR_FILE_PATH_TileMapShader L"shader\\tilemap.fx"
 
@@ -62,6 +65,9 @@
 #define STR_FUNC_NAME_VTXShaderParticle "VS_Particle"
 #define STR_FUNC_NAME_GEOShaderParticle "GS_Particle"
 #define STR_FUNC_NAME_PIXShaderParticle "PS_Particle"
+
+#define STR_FUNC_NAME_GEOShaderParticleCustom "GS_CustomParticle"
+#define STR_FUNC_NAME_PIXShaderParticleCustom "PS_CustomParticle"
 
 
 // postprocess.fx functions name
@@ -113,6 +119,7 @@
 #define STR_KEY_HairShader L"PlayerHairShader"
 #define STR_KEY_BangShader L"PlayerBangShader"
 #define STR_KEY_ShockWaveShader L"ShockWaveShader"
+#define STR_KEY_CustomParticleRenderShader L"CustomParticleRenderShader"
 
 
 // Material
@@ -127,6 +134,7 @@
 #define STR_KEY_HairMeterial L"PlayerHairMtrl"
 #define STR_KEY_BangMeterial L"PlayerBangMtrl"
 #define STR_KEY_ShockWaveMeterial L"ShockWaveMtrl"
+#define STR_KEY_CustomParticleMeterial L"CustomParticleMtrl"
 
 
 
