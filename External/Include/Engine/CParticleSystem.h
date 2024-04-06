@@ -32,6 +32,9 @@ public:
     virtual void LoadFromFile(FILE* _File) override;
     CLONE(CParticleSystem);
 public:
+    tParticleModule GetModule() {
+        return m_Module;
+    }
     CParticleSystem();
     CParticleSystem(const CParticleSystem& _OriginParticle);
     ~CParticleSystem();

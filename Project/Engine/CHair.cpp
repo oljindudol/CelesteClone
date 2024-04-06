@@ -110,8 +110,8 @@ void CHair::render()
     auto HC = m_RenderInfo.HairColor;
 
     const float OutLineWidth = 0.7f;
-    const float OutLineDepth = 0.002f;
-    const float HairDepth = 0.001f;
+    const float OutLineDepth = 0.02f;
+    const float HairDepth = 0.01f;
 
     RenderHair(BC, Vec3(OutLineWidth, 0.0f, OutLineDepth));
     RenderHair(BC, Vec3(-OutLineWidth, 0.0f, OutLineDepth));

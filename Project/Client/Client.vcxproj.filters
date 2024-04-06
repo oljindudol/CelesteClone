@@ -277,6 +277,9 @@
     <ClInclude Include="TileMapEditor.h">
       <Filter>02. UI\3. Inspector\ComponentUI\TileMap</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleSystemUI.h">
+      <Filter>02. UI\3. Inspector\ComponentUI\ParticleSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Client.rc">
@@ -427,6 +430,9 @@
     </ClCompile>
     <ClCompile Include="TileMapEditor.cpp">
       <Filter>02. UI\3. Inspector\ComponentUI\TileMap</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystemUI.cpp">
+      <Filter>02. UI\3. Inspector\ComponentUI\ParticleSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

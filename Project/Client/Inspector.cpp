@@ -58,15 +58,16 @@ void Inspector::SetTargetObject(CGameObject* _Object)
 	}
 
 	// 해당 오브젝트가 보유하고 있는 Script 에 맞추어서 ScriptUI 를 활성화 시킨다.
-	if (nullptr == _Object)
-	{
-		for (size_t i = 0; i < m_vecScriptUI.size(); ++i)
-		{
-			m_vecScriptUI[i]->Deactivate();
-		}
-	}
-	else
-	{
+	//if (nullptr == _Object)
+	//{
+	//	for (size_t i = 0; i < m_vecScriptUI.size(); ++i)
+	//	{
+	//		m_vecScriptUI[i]->Deactivate();
+	//	}
+	//}
+	//else
+	//{
+
 		if (m_vecScriptUI.size() < _Object->GetScripts().size())
 		{
 			ResizeScriptUI(_Object->GetScripts().size());
@@ -77,7 +78,7 @@ void Inspector::SetTargetObject(CGameObject* _Object)
 		{
 			m_vecScriptUI[i]->SetScript(vecScripts[i]);			
 		}
-	}
+	//}
 
 
 	// AssetUI 비활성화

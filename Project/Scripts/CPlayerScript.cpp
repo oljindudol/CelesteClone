@@ -234,8 +234,6 @@ void CPlayerScript::begin()
     m_ParticleObj->AddComponent(new CTransform);
     auto m_Particle = new CParticleSystem;
     m_ParticleObj->AddComponent(m_Particle);
-    m_ParticleObj->Transform()->SetAbsolute(false);
-    m_ParticleObj->Transform()->SetRelativePos(Vec3(0.f, .375f, 0.f));
     m_ParticleObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
     CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(m_ParticleObj, LAYER_PLAYER_EFFECT, false);
     GetOwner()->AddChild(m_ParticleObj);
@@ -288,10 +286,7 @@ void CPlayerScript::tick()
     Vec3 vRot = Transform()->GetRelativeRotation();
 
 
-    if (KEY_PRESSED(KEY::W))
-    {
-        onGround = !onGround;
-    }
+
 
     auto a = Animator2D();
     if (KEY_PRESSED(KEY::UP))
@@ -340,29 +335,29 @@ void CPlayerScript::tick()
     Transform()->SetRelativePos(vPos);
     Transform()->SetRelativeRotation(vRot);
 
-    if (KEY_TAP(KEY::SPACE))
-    {
-        Instantiate(m_Missile, Transform()->GetWorldPos(), 0);
-        //GamePlayStatic::Play2DSound(L"sound\\DM.wav", 1, 0.5f, false);
-        GamePlayStatic::Play2DBGM(L"sound\\DM.wav", 0.5f);
-    }
+    //if (KEY_TAP(KEY::SPACE))
+    //{
+    //    Instantiate(m_Missile, Transform()->GetWorldPos(), 0);
+    //    //GamePlayStatic::Play2DSound(L"sound\\DM.wav", 1, 0.5f, false);
+    //    GamePlayStatic::Play2DBGM(L"sound\\DM.wav", 0.5f);
+    //}
 
-    if (KEY_PRESSED(KEY::SPACE))
-    {
-        Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial();
-        if (nullptr != pMtrl)
-        {
-            pMtrl->SetScalarParam(SCALAR_PARAM::INT_0, 1);
-        }
-    }
-    else if (KEY_RELEASED(KEY::SPACE))
-    {
-        Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial();
-        if (nullptr != pMtrl)
-        {
-            pMtrl->SetScalarParam(SCALAR_PARAM::INT_0, 0);
-        }
-    }
+    //if (KEY_PRESSED(KEY::SPACE))
+    //{
+    //    Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial();
+    //    if (nullptr != pMtrl)
+    //    {
+    //        pMtrl->SetScalarParam(SCALAR_PARAM::INT_0, 1);
+    //    }
+    //}
+    //else if (KEY_RELEASED(KEY::SPACE))
+    //{
+    //    Ptr<CMaterial> pMtrl = MeshRender()->GetMaterial();
+    //    if (nullptr != pMtrl)
+    //    {
+    //        pMtrl->SetScalarParam(SCALAR_PARAM::INT_0, 0);
+    //    }
+    //}
     //GetPhysics()->Update();
 
     StateMachine->Update();
@@ -372,6 +367,23 @@ void CPlayerScript::tick()
     m_pHairUpdate->Update();
     m_pHairUpdate->AfterUpdate();
     PushAfterImageEvent();
+
+    //DEBUG STATE
+    static bool DEBUG_STATE = false;
+    if (KEY_TAP(KEY::SPACE))
+    {
+        DEBUG_STATE = !DEBUG_STATE;
+        if (DEBUG_STATE)
+        {
+            onGround = true;
+            Transform()->SetRelativePos(Vec3(0, 0, Transform()->GetRelativePos().z));
+            Speed = Vec2(0, 0);
+        }
+        else
+        {
+            onGround = false;
+        }
+    }
 
     //static float f = 0.f;
     //f += DT * 0.3f;

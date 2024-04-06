@@ -3,11 +3,8 @@
 class MeshRenderUI :
     public ComponentUI
 {
-
 public:
     virtual void render_update() override;
-
-
 
 public:
     void MeshSelect(DWORD_PTR _ptr);
