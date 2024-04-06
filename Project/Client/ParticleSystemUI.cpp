@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "ParticleSystemUI.h"
-#include "Engine\CParticleSystem.h"
+#include "Engine\CCustomParticleSystem.h"
 
 ParticleSystemUI::ParticleSystemUI()
-	: ComponentUI("ParticleSystem", "##ParticleSystem", COMPONENT_TYPE::PARTICLESYSTEM)
+	: ComponentUI("ParticleSystem", "##ParticleSystem", COMPONENT_TYPE::CUSTOMPARTICLESYSTEM)
 {
 	SetSize(ImVec2(0.f, 800.f));
 	SetComopnentTitle("ParticleSystemUI");
@@ -35,7 +35,7 @@ void ParticleSystemUI::render_update()
 	static const ImVec4 Burgundy = ImVec4(0.5647f, 0.f, 0.1255f, 1.0f);
 
 	auto TO = GetTargetObject();
-	auto pPS = TO->ParticleSystem();
+	auto pPS = TO->CustomParticleSystem();
 	tParticleModule CurModule = pPS->GetModule();
 	tParticleModule NewModule = CurModule;
 

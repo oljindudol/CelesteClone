@@ -11,6 +11,7 @@
 #include "CHair.h"
 #include "CAfterImage.h"
 #include "CShockWave.h"
+#include "CParticleSystem.h"
 #include "CCustomParticleSystem.h"
 
 //#include "CCollider3D.h"

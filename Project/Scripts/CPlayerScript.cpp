@@ -24,6 +24,7 @@
 #include <Engine\CRenderMgr.h>
 #include <Engine\CAfterImage.h>
 #include <Engine\CShockWave.h>
+#include <Engine\CParticleSystem.h>
 
 //key bind
 #define GRABKEY KEY_PRESSED(S)
