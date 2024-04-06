@@ -180,6 +180,7 @@ call CodeGen.exe</Command>
     <ClInclude Include="CPlayerHairUpdate.h" />
     <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CPlayerSprite.h" />
+    <ClInclude Include="CRandomScript.h" />
     <ClInclude Include="CScriptMgr.h" />
     <ClInclude Include="CCustomStateMachine.h" />
     <ClInclude Include="framework.h" />
@@ -200,6 +201,7 @@ call CodeGen.exe</Command>
     <ClCompile Include="CPlayerHairUpdate.cpp" />
     <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CPlayerSprite.cpp" />
+    <ClCompile Include="CRandomScript.cpp" />
     <ClCompile Include="CScriptMgr.cpp" />
     <ClCompile Include="CCustomStateMachine.cpp" />
     <ClCompile Include="pch.cpp">

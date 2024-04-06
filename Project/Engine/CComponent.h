@@ -37,6 +37,7 @@ public:
     GET_OTHER_COMPONENT(StateMachine);
     GET_OTHER_COMPONENT(Hair);
     GET_OTHER_COMPONENT(AfterImage);
+    GET_OTHER_COMPONENT(ParticleSystem);
    
     CRenderComponent* GetRenderComponent() { return m_Owner->GetRenderComopnent();}
 
@@ -52,4 +53,3 @@ public:
 
     friend class CGameObject;
 };
-

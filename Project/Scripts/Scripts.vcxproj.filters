@@ -8,31 +8,34 @@
       <Filter>Default</Filter>
     </ClInclude>
     <ClInclude Include="CBackgroundScript.h">
-      <Filter>Scripts</Filter>
+      <Filter>02. Scripts</Filter>
     </ClInclude>
     <ClInclude Include="CMissileScript.h">
-      <Filter>Scripts</Filter>
+      <Filter>02. Scripts</Filter>
     </ClInclude>
     <ClInclude Include="CScriptMgr.h">
       <Filter>ScriptMgr</Filter>
     </ClInclude>
     <ClInclude Include="CMonsterScript.h">
-      <Filter>Scripts</Filter>
+      <Filter>02. Scripts</Filter>
     </ClInclude>
     <ClInclude Include="CCameraMoveScript.h">
-      <Filter>Scripts</Filter>
+      <Filter>02. Scripts</Filter>
     </ClInclude>
     <ClInclude Include="CPlatFormScript.h">
-      <Filter>Scripts</Filter>
+      <Filter>02. Scripts</Filter>
     </ClInclude>
     <ClInclude Include="CPlayerSprite.h" />
     <ClInclude Include="CPlayerHairUpdate.h" />
-    <ClInclude Include="CPlayerScript.h" />
     <ClInclude Include="CPhysics.h">
       <Filter>phy</Filter>
     </ClInclude>
     <ClInclude Include="CCustomStateMachine.h">
       <Filter>CustomStateMachine</Filter>
+    </ClInclude>
+    <ClInclude Include="CRandomScript.h" />
+    <ClInclude Include="CPlayerScript.h">
+      <Filter>02. Scripts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -43,39 +46,39 @@
       <Filter>Default</Filter>
     </ClCompile>
     <ClCompile Include="CBackgroundScript.cpp">
-      <Filter>Scripts</Filter>
+      <Filter>02. Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CMissileScript.cpp">
-      <Filter>Scripts</Filter>
+      <Filter>02. Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CScriptMgr.cpp">
       <Filter>ScriptMgr</Filter>
     </ClCompile>
     <ClCompile Include="CMonsterScript.cpp">
-      <Filter>Scripts</Filter>
+      <Filter>02. Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CCameraMoveScript.cpp">
-      <Filter>Scripts</Filter>
+      <Filter>02. Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CPlatFormScript.cpp">
-      <Filter>Scripts</Filter>
+      <Filter>02. Scripts</Filter>
     </ClCompile>
     <ClCompile Include="CPlayerSprite.cpp" />
     <ClCompile Include="CPlayerHairUpdate.cpp" />
-    <ClCompile Include="CPlayerScript.cpp" />
     <ClCompile Include="CPhysics.cpp">
       <Filter>phy</Filter>
     </ClCompile>
     <ClCompile Include="CCustomStateMachine.cpp">
       <Filter>CustomStateMachine</Filter>
     </ClCompile>
+    <ClCompile Include="CRandomScript.cpp" />
+    <ClCompile Include="CPlayerScript.cpp">
+      <Filter>02. Scripts</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
       <UniqueIdentifier>{4f2f6642-c0f0-494a-9d81-0124398fdb95}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Scripts">
-      <UniqueIdentifier>{af5c3808-4d30-476b-b2ab-d844558017d2}</UniqueIdentifier>
     </Filter>
     <Filter Include="ScriptMgr">
       <UniqueIdentifier>{b42de7fc-e585-40cf-9c65-79e91e2b59d4}</UniqueIdentifier>
@@ -85,6 +88,9 @@
     </Filter>
     <Filter Include="phy">
       <UniqueIdentifier>{c0d5068e-fc5a-47ea-8c44-f006933d78c4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Scripts">
+      <UniqueIdentifier>{af5c3808-4d30-476b-b2ab-d844558017d2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

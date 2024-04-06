@@ -20,7 +20,7 @@ void ParticleSystemUI::render_update()
 
 	auto TO = GetTargetObject();
 
-	TO->Transform();
+	//TO->Transform();
 
 }
 

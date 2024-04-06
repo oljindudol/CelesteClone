@@ -1,7 +1,86 @@
 ﻿#include "pch.h"
 #include "PathMgr.h"
 
+#include <fstream>
+#include <iostream>
+using std::ofstream;
 vector<wstring> g_vecName;
+vector<wstring> g_vecStateNames;
+
+void MakeStateMgrHeader(wstring strHeaderPath);
+void MakeStateMgrCPP();
+void NameInput() {
+	wstring solPath = CPathMgr::GetProjectPath();
+	wstring filterPath = solPath + L"..\\Project\\Scripts\\Scripts.vcxproj.filters";
+
+	wifstream fin;
+	fin.open(filterPath);
+	wstring line;
+	wstring header;
+	bool isheader = false;
+	wcout << L"Script!!=======================" << endl;
+	while (getline(fin, line))
+	{
+
+		if (line.find(L".cpp") != string::npos) {
+			isheader = false;
+			continue;
+		}
+
+		if (line.find(L".h") != string::npos) {
+			int start = line.find(L"\"");
+			int end = line.find(L".");
+
+			header = line.substr(start + 1, end - start - 1);
+			isheader = true;
+		}
+
+		if (line.find(L"<Filter>02. Scripts") != string::npos) {
+			if (isheader) {
+				wcout << header << endl;
+				g_vecName.push_back(header);
+			}
+		}
+
+	}
+}
+
+void StateNameInput() {
+	wstring solPath = CPathMgr::GetProjectPath();
+	wstring filterPath = solPath + L"..\\Project\\Scripts\\Scripts.vcxproj.filters";
+
+	wifstream fin;
+	fin.open(filterPath);
+	wstring line;
+	wstring header;
+	bool isheader = false;
+	wcout <<endl <<  L"States!!=======================" << endl;
+	while (getline(fin, line))
+	{
+
+		if (line.find(L".cpp") != string::npos) {
+			isheader = false;
+			continue;
+		}
+
+		if (line.find(L".h") != string::npos) {
+			int start = line.find(L"\"");
+			int end = line.find(L".");
+
+			header = line.substr(start + 1, end - start - 1);
+			isheader = true;
+		}
+
+		if (line.find(L"<Filter>08. States") != string::npos) {
+			if (isheader) {
+				wcout << header << endl;
+				g_vecStateNames.push_back(header);
+			}
+		}
+
+	}
+	getchar();
+}
 
 int main()
 {
@@ -9,6 +88,8 @@ int main()
 	wstring strProjPath = CPathMgr::GetProjectPath();
 	wstring strCppPath = strProjPath + L"\\Scripts\\CScriptMgr.cpp";
 	wstring strHeaderPath = strProjPath + L"\\Scripts\\CScriptMgr.h";
+	wstring strStateCppPath = strProjPath + L"\\Scripts\\CStateMgr.cpp";
+	wstring strStateHeaderPath = strProjPath + L"\\Scripts\\CStateMgr.h";
 
 	// 1. 현재 존재하는 모든 스크립트를 알아내야함.
 	wstring strScriptIncludePath = CPathMgr::GetIncludePath();
@@ -17,6 +98,12 @@ int main()
 	WIN32_FIND_DATA tData = {};
 	HANDLE handle = FindFirstFile(wstring(strScriptCode + L"\\*.h").c_str(), &tData);
 
+
+	NameInput();
+	StateNameInput();
+
+	MakeStateMgrHeader(strStateHeaderPath);
+	MakeStateMgrCPP();
 	if (INVALID_HANDLE_VALUE == handle)
 		return 0;
 
@@ -41,67 +128,8 @@ int main()
 		fclose(pExeptList);
 	}
 
-	while (true)
-	{
-		// 예외가 아닌경우, 스크립트 이름으로 본다.
-		bool bExeption = false;
-		for (size_t i = 0; i < strExept.size(); ++i)
-		{
-			if (!wcscmp(tData.cFileName, strExept[i].c_str()))
-			{
-				bExeption = true;
-				break;
-			}
-		}
-
-		if (!bExeption)
-		{
-			g_vecName.push_back(wstring(tData.cFileName).substr(0, wcslen(tData.cFileName) - 2));
-		}		
-				
-		if (!FindNextFile(handle, &tData))
-			break;
-	}
 
 	FindClose(handle);
-
-	// 이전에 CodeGen 이 실행할때 체크해둔 스크립트 목록
-	FILE* pScriptListFile = nullptr;
-	_wfopen_s(&pScriptListFile, L"ScriptList.txt", L"r");
-
-	if (nullptr != pScriptListFile)
-	{
-		wchar_t szScriptName[50] = L"";
-		vector<wstring> strCurScriptList;
-		while (true)
-		{
-			int iLen = fwscanf_s(pScriptListFile, L"%s", szScriptName, 50);
-			if (iLen == -1)
-				break;
-
-			strCurScriptList.push_back(szScriptName);
-		}
-		fclose(pScriptListFile);
-
-
-		if (g_vecName.size() == strCurScriptList.size())
-		{
-			bool bSame = true;
-			for (UINT i = 0; i < g_vecName.size(); ++i)
-			{
-				if (g_vecName[i] != strCurScriptList[i])
-				{
-					// 같지 않은게 1개이상 있다
-					bSame = false;
-					break;
-				}
-			}
-
-			// 이전 목록과, 현재 스크립트 목록이 완전 일치한다(변경사항 없다)
-			if (bSame)
-				return 0;
-		}
-	}
 
 
 	FILE* pFile = NULL;
@@ -116,7 +144,7 @@ int main()
 
 
 
-	fwprintf_s(pFile, L"enum SCRIPT_TYPE\n{\n");
+	fwprintf_s(pFile, L"enum class SCRIPT_TYPE\n{\n");
 	for (UINT i = 0; i < g_vecName.size(); ++i)
 	{
 		wstring strScriptUpperName = L"";
@@ -144,6 +172,7 @@ int main()
 
 
 	fclose(pFile);
+
 
 	//====================
 	// ScriptMgr cpp 작성
@@ -251,4 +280,115 @@ int main()
 	fclose(pFile);
 
 	return 0;
+}
+
+void MakeStateMgrHeader(wstring strHeaderPath)
+{
+	wstring solPath = CPathMgr::GetProjectPath();
+	wstring Path = solPath + L"..\\Project\\Scripts\\CStateMgr.h";
+	wfstream fout;
+	fout.open(Path);
+
+	if (!fout.is_open()) return;
+
+
+	fout << L"#pragma once" << endl << endl;
+	fout << L"#include <vector>" << endl;
+	fout << L"#include <string>" << endl << endl;
+
+	fout << L"enum class STATE_TYPE" << endl << L"{" << endl;
+
+	for (UINT i = 0; i < g_vecStateNames.size(); ++i)
+	{
+		wstring strScriptUpperName = L"";
+		for (UINT j = 1; j < g_vecStateNames[i].size(); ++j)
+		{
+			strScriptUpperName += toupper(g_vecStateNames[i][j]);
+		}
+
+		fout << L"\t" << strScriptUpperName << L"," << endl;
+	}
+	fout << L"\tEND," << endl;
+	fout << L"};" << endl << endl;
+
+	fout << L"using namespace std;" << endl << endl;
+	fout << L"class CState;" << endl << endl;
+	fout << L"class CStateMgr" << endl << L"{" << endl;
+	fout << L"public: " << endl;
+	fout << L"\tstatic void GetStateInfo(vector<wstring>& _vec);" << endl;
+	fout << L"\tstatic CState* GetState(const wstring& _strStateName);" << endl;
+	fout << L"\tstatic CState* GetState(UINT _iStateType);" << endl;
+	fout << L"\tstatic const wchar_t* GetStateName(CState* _pState);" << endl << L"};" << endl;
+
+}
+
+void MakeStateMgrCPP()
+{
+
+	wstring solPath = CPathMgr::GetProjectPath();
+	wstring Path = solPath + L"..\\Project\\Scripts\\CStateMgr.cpp";
+	wfstream fout(Path);
+
+	// 헤더 입력
+	fout << L"#include \"pch.h\"" << endl;
+	fout << L"#include \"CStateMgr.h\"" << endl << endl;
+
+	for (UINT i = 0; i < g_vecStateNames.size(); ++i)
+	{
+		fout << L"#include \"" << g_vecStateNames[i] << L".h\"" << endl;
+	}
+
+	// 첫 번째 함수 작성
+	fout << L"\nvoid CStateMgr::GetStateInfo(vector<wstring>& _vec)" << endl << "{" << endl;
+
+	for (UINT i = 0; i < g_vecStateNames.size(); ++i)
+	{
+		fout << L"\t_vec.push_back(L\"" << g_vecStateNames[i] << L"\");" << endl;
+	}
+	fout << L"}" << endl << endl;
+
+	// 두번째 함수 작성
+	fout << L"CState * CStateMgr::GetState(const wstring& _strStateName)" << endl << "{" << endl;
+
+	for (UINT i = 0; i < g_vecStateNames.size(); ++i)
+	{
+		fout << L"\tif (L\"" << g_vecStateNames[i] << L"\" == _strStateName)" << endl;
+		fout << L"\t\treturn new " << g_vecStateNames[i] << L";" << endl;
+	}
+	fout << L"\treturn nullptr;" << endl << "}" << endl << endl;
+
+	// 세번째 함수
+	fout << L"CState * CStateMgr::GetState(UINT _iStateType)" << endl << "{" << endl;
+
+	fout << L"\tswitch (_iStateType)" << endl << "\t{" << endl;
+	for (UINT i = 0; i < g_vecStateNames.size(); ++i)
+	{
+		wstring strStateUpperName = L"";
+		for (UINT j = 1; j < g_vecStateNames[i].size(); ++j)
+		{
+			strStateUpperName += toupper(g_vecStateNames[i][j]);
+		}
+		fout << L"\tcase (UINT)STATE_TYPE::" << strStateUpperName << L":" << endl;
+		fout << L"\t\treturn new " << g_vecStateNames[i] << L";" << endl;
+		fout << L"\t\tbreak;" << endl;
+	}
+	fout << L"\t}\n\treturn nullptr;" << endl << "}" << endl << endl;
+
+	// 네번째 함수
+	fout << L"const wchar_t * CStateMgr::GetStateName(CState * _pState)" << endl << "{" << endl;
+	fout << L"\tswitch ((STATE_TYPE)_pState->GetStateType())" << endl << "\t{" << endl;
+	for (UINT i = 0; i < g_vecStateNames.size(); ++i)
+	{
+		fout << L"\tcase STATE_TYPE::";
+
+		wstring strStateUpperName = L"";
+		for (UINT j = 1; j < g_vecStateNames[i].size(); ++j)
+		{
+			strStateUpperName += toupper(g_vecStateNames[i][j]);
+		}
+		fout << strStateUpperName;
+		fout << L":" << endl << "\t\treturn " << L"L\"" << g_vecStateNames[i];
+		fout << L"\";" << endl << "\t\tbreak;" << endl << endl;
+	}
+	fout << L"\t}" << endl << "\treturn nullptr;" << endl << "}";
 }

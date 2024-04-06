@@ -1,7 +1,6 @@
 targetver.h
 pch.h
 framework.h
-CScriptMgr.h
 CPhysics.h
 CustomStateMachine.h
 CPlayerSprite.h

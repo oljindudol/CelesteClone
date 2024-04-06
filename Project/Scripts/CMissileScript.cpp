@@ -4,7 +4,7 @@
 
 CMissileScript::CMissileScript()
 	: m_fSpeed(1500.f)
-	, CScript(MISSILESCRIPT)
+	, CScript((UINT)SCRIPT_TYPE::MISSILESCRIPT)
 {
 }
 

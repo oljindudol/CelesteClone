@@ -1,0 +1,7 @@
+CBackgroundScript
+CCameraMoveScript
+CMissileScript
+CMonsterScript
+CPhysics
+CPlatFormScript
+CPlayerScript

@@ -5,7 +5,7 @@
 #include <Engine/CLevel.h>
 
 CMonsterScript::CMonsterScript()
-	: CScript(MONSTERSCRIPT)
+	: CScript((UINT)SCRIPT_TYPE::MONSTERSCRIPT)
 	, m_DetectRange(400.f)
 	, m_Speed(50.f)
 {

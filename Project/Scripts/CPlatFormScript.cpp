@@ -4,7 +4,7 @@
 #include "CPlayerScript.h"
 
 CPlatFormScript::CPlatFormScript()
-	: CScript(PLATFORMSCRIPT)
+	: CScript((UINT)SCRIPT_TYPE::PLATFORMSCRIPT)
 {
 }
 

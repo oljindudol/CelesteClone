@@ -46,7 +46,7 @@ void CPlayerScript::CreateSplitParticles()
 #pragma region Constructor & Begin
 
 CPlayerScript::CPlayerScript()
-    : CScript(PLAYERSCRIPT)
+    : CScript((UINT)SCRIPT_TYPE::PLAYERSCRIPT)
 {
     //Depth = Depths.Player;
     //Tag = Tags.Persistent;

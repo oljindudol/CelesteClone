@@ -11,6 +11,7 @@ class CCamera;
 class CCollider2D;
 class CLight2D;
 class CStateMachine;
+class CParticleSystem;
 
 class CGameObject :
     public CEntity
@@ -49,6 +50,7 @@ public:
     GET_COMPONENT(TileMap, TILEMAP);
     GET_COMPONENT(Hair, PLAYERHAIR);
     GET_COMPONENT(AfterImage, AFTERIMAGE);
+    GET_COMPONENT(ParticleSystem, PARTICLESYSTEM);
 
 
 

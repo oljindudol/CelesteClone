@@ -11,6 +11,7 @@ class CCamera;
 class CCollider2D;
 class CLight2D;
 class CStateMachine;
+class CParticleSystem;
 
 class CGameObject :
     public CEntity
