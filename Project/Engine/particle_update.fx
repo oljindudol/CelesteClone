@@ -46,10 +46,10 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
             
             if (AliveCount == Origin)
             {
+                //1. 색상진동
                 Particle.ColorOrigin = Module.vSpawnColor;
                 Particle.ColorVibra = Module.VibColor;
                 Particle.ColorAcctime = 0.f;
-                
                 
                 Particle.Active = 1;
                 Particle.vNoiseForce = (float3) 0.f;
@@ -125,6 +125,21 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
                      Particle.vVelocity.xyz = float3(0.f, 0.f, 0.f);
                 }
                 
+                //2. 애니메이션 파티클
+                if (1 == Module.arrModuleCheck[8] && 0 != Module.NumberOfAtlas)
+                {
+                    float ran = vRand[2];
+                    if (Module.NumberOfAtlas == ran)
+                    {
+                        ran - 1;
+                    }
+                    ran = ran * Module.NumberOfAtlas;
+                    
+                    Particle.AtlasIdx = floor(ran);
+                    Particle.CurFrameIdx = 0;
+                    Particle.AccTime = 0.f;
+                }
+                
                 break;
             }            
         }        
@@ -162,7 +177,7 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
             Particle.vWorldScale = Particle.vWorldInitScale * (1.f + (Module.vScaleRatio - 1.f) * Particle.NomalizedAge);
         }        
         
-        // 색상진동 모듈이 켜져있으면
+        // 1. 색상진동 모듈이 켜져있으면
         if (1 == Module.arrModuleCheck[7])
         {
             if (0.f == Particle.ColorAcctime
@@ -183,6 +198,20 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
             }
         }
         
+        // 2. Animation
+        if (1 == Module.arrModuleCheck[8])
+        {
+            if (Particle.AccTime == 0.f
+            || (Module.FrameDuration < g_time - Particle.AccTime))
+            {
+                Particle.CurFrameIdx = (Particle.CurFrameIdx+1) % Module.NumberOfFrame[Particle.AtlasIdx];
+                Particle.AccTime = g_time;
+            }
+            else 
+            {
+
+            }
+        }
         
         
         

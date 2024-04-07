@@ -109,6 +109,13 @@ CAnimatedParticleSystem::CAnimatedParticleSystem() :
 	m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(STR_FILE_PATH_PARTICLE_STARS
 		, STR_FILE_PATH_PARTICLE_STARS);
 
+	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::Animation] = 1;
+	m_Module.FrameDuration = 0.3f;
+	m_Module.NumberOfAtlas = 3;
+	m_Module.NumberOfFrame[0] = 8;
+	m_Module.NumberOfFrame[1] = 8;
+	m_Module.NumberOfFrame[2] = 8;
+
 }
 
 CAnimatedParticleSystem::CAnimatedParticleSystem(const CAnimatedParticleSystem& _OriginParticle)

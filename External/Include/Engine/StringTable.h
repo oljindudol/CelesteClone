@@ -18,7 +18,7 @@
 #define STR_FILE_PATH_RAY L"texture\\particle\\ray.png"
 
 #define STR_FOLDER_PATH_PARTICLE_STARS L"\\texture\\Gameplay\\particle\\stars"
-#define STR_FILE_PATH_PARTICLE_STARS L"\\texture\\Gameplay\\particle\\stars\\a00.png"
+#define STR_FILE_PATH_PARTICLE_STARS L"\\texture\\Gameplay\\particle\\stars\\a.png"
 
 
 

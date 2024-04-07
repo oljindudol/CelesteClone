@@ -105,7 +105,7 @@ struct tParticleModule
     // Animation
     float FrameDuration;
     int NumberOfAtlas;
-    int AnimMaxIdx[6];
+    int NumberOfFrame[6];
     
     // Module Active Check
     int arrModuleCheck[9];

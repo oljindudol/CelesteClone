@@ -120,7 +120,7 @@ struct tParticleModule
 	//애님모듈
 	float FrameDuration; // 듀레이션
 	int   NumberOfAtlas;  //아틀라스갯수
-	int   AnimMaxIdx[6];//n번째 아틀라스가 몇장의 프레임으로 이루어져있는지
+	int   NumberOfFrame[6];//n번째 아틀라스가 몇장의 프레임으로 이루어져있는지
 
 	// Module On / Off
 	int arrModuleCheck[(UINT)PARTICLE_MODULE::END];

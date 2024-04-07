@@ -150,8 +150,16 @@ float4 PS_AnimatedParticle(GS_OUT _in) : SV_Target
     //    vOutColor.a = vSampleColor.a;
     //}
     
+    //particle.CurFrameIdx;
+    //particle.AtlasIdx;
+    //module.NumberOfAtlas;
+    //module.NumberOfFrame;
     
-    float4 vSampleColor = g_texarr_0.Sample(g_sam_0, float3(_in.vUV,2.f));
+    float uvunit = 1.f/module.NumberOfFrame[particle.AtlasIdx];
+    float left = uvunit * particle.CurFrameIdx;
+    float newUVx = _in.vUV.x * uvunit + left;
+    
+    float4 vSampleColor = g_texarr_0.Sample(g_sam_0, float3(float2(newUVx, _in.vUV.y), particle.AtlasIdx));
     vOutColor.rgb *= vSampleColor.rgb;
     vOutColor.a = vSampleColor.a;
     
