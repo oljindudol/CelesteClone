@@ -98,7 +98,9 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
                       
                 // 스폰 Mass 설정
                 Particle.Mass = clamp(vRand1[0], Module.MinMass, Module.MaxMass);
-                              
+                float newspeed = Module.MinSpeed + vRand[2] * (Module.MaxSpeed - Module.MinSpeed);
+                
+                
                 // Add VelocityModule
                 if (Module.arrModuleCheck[3])
                 {
@@ -116,7 +118,7 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
                     if (2 == Module.AddVelocityType)
                     {
                         float3 vDir = normalize(Module.FixedDirection);
-                        Particle.vVelocity.xyz = vDir * clamp(vRand[2], Module.MinSpeed, Module.MaxSpeed);
+                        Particle.vVelocity.xyz = vDir * newspeed;
                     }
 
                 }

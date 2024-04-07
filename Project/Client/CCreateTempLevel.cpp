@@ -131,7 +131,7 @@ void CCreateTempLevel::CreateTempLevel()
 	auto pChidObj = new CGameObject;
 	pChidObj->SetName(L"Rain");
 	pChidObj->AddComponent(new CTransform);
-	pChidObj->Transform()->SetRelativePos(Vec3(1.f, 190.f, 190.f));
+	pChidObj->Transform()->SetRelativePos(Vec3(1.f, 160.f, 130.f));
 	pChidObj->AddComponent(new CAnimatedParticleSystem);
 	pCamObj->AddChild(pChidObj);
 

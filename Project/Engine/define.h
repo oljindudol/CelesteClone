@@ -306,6 +306,7 @@ enum class PARTICLE_MODULE
 	RENDER,			// 렌더링 때의 옵션 관련
 	Vibration,		// 색상진동
 	Animation,		// 애니메이션
+	ORIGINALCOLOR,	// 원본색상쓰기
 
 	END,
 };

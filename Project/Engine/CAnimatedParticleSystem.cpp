@@ -48,22 +48,22 @@ CAnimatedParticleSystem::CAnimatedParticleSystem() :
 
 	m_Module.SpaceType = 1;
 	m_Module.vSpawnColor = Vec4(1.f, 1.f, 1.f, 1.f);
-	m_Module.vSpawnMinScale = Vec4(15.f, 15.f, 1.f, 1.f);
-	m_Module.vSpawnMaxScale = Vec4(15.f, 15.f, 1.f, 1.f);
+	m_Module.vSpawnMinScale = Vec4(7.f, 7.f, 1.f, 1.f);
+	m_Module.vSpawnMaxScale = Vec4(20.f, 20.f, 1.f, 1.f);
 	m_Module.MinLife = 60.f;
 	m_Module.MaxLife = 60.f;
 	m_Module.MinMass = 1.f;
 	m_Module.MaxMass = 1.f;
 	m_Module.SpawnShape = 1; // 0 : Sphere, 1 : Box
 	m_Module.Radius = 100.f;
-	m_Module.vSpawnBoxScale = Vec4(1200.f, 150.f, 150.f, 0.f);
-	m_Module.SpawnRate = 1.5f;
+	m_Module.vSpawnBoxScale = Vec4(1000.f, 1.f, 45.f, 0.f);
+	m_Module.SpawnRate = 11.f;
 
 	// Add Velocity Module
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 1 ;
 	m_Module.AddVelocityType = 2; // 0 : From Center, 1: To Center, 2: Fix Direction
 	m_Module.MinSpeed = 15;
-	m_Module.MaxSpeed = 55;
+	m_Module.MaxSpeed = 50;
 	m_Module.FixedDirection = Vec4(0.f, -1.f, 0.f, 0.f);
 	m_Module.FixedAngle;
 
@@ -115,6 +115,8 @@ CAnimatedParticleSystem::CAnimatedParticleSystem() :
 	m_Module.NumberOfFrame[0] = 8;
 	m_Module.NumberOfFrame[1] = 8;
 	m_Module.NumberOfFrame[2] = 8;
+
+	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ORIGINALCOLOR] = 1;
 
 }
 

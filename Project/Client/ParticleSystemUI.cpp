@@ -5,7 +5,7 @@
 ParticleSystemUI::ParticleSystemUI()
 	: ComponentUI("ParticleSystem", "##ParticleSystem", COMPONENT_TYPE::AIMATEDPARTICLESYSTEM)
 {
-	SetSize(ImVec2(0.f, 800.f));
+	SetSize(ImVec2(0.f, 1000.f));
 	SetComopnentTitle("ParticleSystemUI");
 }
 
@@ -350,9 +350,28 @@ void ParticleSystemUI::render_update()
 	ImGui::Text("AlphaMaxAge"); ImGui::SameLine();
 	ImGui::DragFloat("##AlphaMaxAge", &NewModule.AlphaMaxAge, 0.1f, 0.0f, 10.0f);
 
-
-
-
+	ImGui::Separator();
+	ImGui::Text("OriginalColor:"); ImGui::SameLine();
+	CreateStaticColorButton("OriginalColor", ModuleColor);
+	ImGui::SameLine();
+	if (1 == CurModule.arrModuleCheck[(UINT)PARTICLE_MODULE::ORIGINALCOLOR]) {
+		ImGui::PushStyleColor(ImGuiCol_Button, Green);
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Green);
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, Green);
+		if (ImGui::Button("On##OriginalColor")) {
+			NewModule.arrModuleCheck[(UINT)PARTICLE_MODULE::ORIGINALCOLOR] = 0;
+		}
+		ImGui::PopStyleColor(3);
+	}
+	else {
+		ImGui::PushStyleColor(ImGuiCol_Button, Gray);
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Gray);
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, Gray);
+		if (ImGui::Button("Off##OriginalColor")) {
+			NewModule.arrModuleCheck[(UINT)PARTICLE_MODULE::ORIGINALCOLOR] = 1;
+		}
+		ImGui::PopStyleColor(3);
+	}
 
 	pPS->SetModule(NewModule);
 

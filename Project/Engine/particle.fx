@@ -140,8 +140,16 @@ float4 PS_AnimatedParticle(GS_OUT _in) : SV_Target
     tParticleModule module = g_ParticleModule[0];
     
     // 출력 색상
-    float4 vOutColor = particle.vColor;
-    vOutColor.a = 1.f;
+    float4 vOutColor;
+    if (module.arrModuleCheck[9])
+    {
+        vOutColor = float4(1.f, 1.f, 1.f, 1.f);
+    }
+    else
+    {
+        vOutColor = particle.vColor;
+        vOutColor.a = 1.f;
+    }
     
     //if (g_btex_0)
     //{
