@@ -80,7 +80,8 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
                 {
                     Particle.vLocalPos.x = vRand[0] * Module.vSpawnBoxScale.x - (Module.vSpawnBoxScale.x / 2.f);
                     Particle.vLocalPos.y = vRand[1] * Module.vSpawnBoxScale.y - (Module.vSpawnBoxScale.y / 2.f);
-                    Particle.vLocalPos.z = 0.f;
+                    Particle.vLocalPos.z = vRand[2] * Module.vSpawnBoxScale.z - (Module.vSpawnBoxScale.z / 2.f);
+                    //Particle.vLocalPos.z = 0.f;
                 }               
                 
                 Particle.vWorldPos.xyz = Particle.vLocalPos.xyz + CenterPos;                
@@ -112,6 +113,12 @@ void CS_ParticleUpdate(uint3 id : SV_DispatchThreadID)
                         float3 vDir = -normalize(Particle.vLocalPos.xyz);
                         Particle.vVelocity.xyz = vDir * clamp(vRand[2], Module.MinSpeed, Module.MaxSpeed);
                     }
+                    if (2 == Module.AddVelocityType)
+                    {
+                        float3 vDir = normalize(Module.FixedDirection);
+                        Particle.vVelocity.xyz = vDir * clamp(vRand[2], Module.MinSpeed, Module.MaxSpeed);
+                    }
+
                 }
                 else
                 {

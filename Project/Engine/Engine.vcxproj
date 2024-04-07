@@ -172,6 +172,7 @@ call EngineCopy.bat</Command>
   <ItemGroup>
     <ClInclude Include="CAfterImage.h" />
     <ClInclude Include="CAnim.h" />
+    <ClInclude Include="CAnimatedParticleSystem.h" />
     <ClInclude Include="CAsset.h" />
     <ClInclude Include="CAssetMgr.h" />
     <ClInclude Include="CBlackboard.h" />
@@ -245,6 +246,7 @@ call EngineCopy.bat</Command>
   <ItemGroup>
     <ClCompile Include="CAfterImage.cpp" />
     <ClCompile Include="CAnim.cpp" />
+    <ClCompile Include="CAnimatedParticleSystem.cpp" />
     <ClCompile Include="CAsset.cpp" />
     <ClCompile Include="CAssetMgr.cpp" />
     <ClCompile Include="CAsssetMgr_init.cpp" />

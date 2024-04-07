@@ -131,7 +131,7 @@ void ParticleSystemUI::render_update()
 	ImGui::Text("Radius"); ImGui::SameLine();
 	ImGui::DragFloat("##Radius", &NewModule.Radius, 1.0f, 0.0f, 1000.0f);
 	ImGui::Text("Box Scale"); ImGui::SameLine();
-	ImGui::DragFloat4("##Box Scale", &NewModule.vSpawnBoxScale.x, 0.1f, 0.0f, 100.0f);
+	ImGui::DragFloat4("##Box Scale", &NewModule.vSpawnBoxScale.x, 0.1f, 0.0f, 1000.0f);
 	ImGui::Text("Spawn Rate"); ImGui::SameLine();
 	ImGui::DragInt("##Spawn Rate", &NewModule.SpawnRate, 1, 0, 1000);
 
@@ -179,9 +179,9 @@ void ParticleSystemUI::render_update()
 	ImGui::Text("Max Speed"); ImGui::SameLine();
 	ImGui::DragFloat("##Max Speed", &NewModule.MaxSpeed, 1, 0, 1000);
 	ImGui::Text("FixedDirection"); ImGui::SameLine();
-	ImGui::DragFloat4("##FixedDirection", &NewModule.FixedDirection.x, 0.1, 0, 1000);
-	ImGui::Text("FixedAngle"); ImGui::SameLine();
-	ImGui::DragFloat("##FixedAngle", &NewModule.FixedAngle, 0.1, 0, 1000);
+	ImGui::DragFloat4("##FixedDirection", &NewModule.FixedDirection.x, 0.1, -100, 100);
+	//ImGui::Text("FixedAngle"); ImGui::SameLine();
+	//ImGui::DragFloat("##FixedAngle", &NewModule.FixedAngle, 0.1, 0, 1000);
 
 	// Drag Module
 	ImGui::Separator();
