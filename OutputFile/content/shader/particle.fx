@@ -143,13 +143,18 @@ float4 PS_AnimatedParticle(GS_OUT _in) : SV_Target
     float4 vOutColor = particle.vColor;
     vOutColor.a = 1.f;
     
-    if (g_btex_0)
-    {
-        float4 vSampleColor = g_tex_0.Sample(g_sam_0, _in.vUV);
-        vOutColor.rgb *= vSampleColor.rgb;
-        vOutColor.a = vSampleColor.a;
-    }
+    //if (g_btex_0)
+    //{
+    //    float4 vSampleColor = g_tex_0.Sample(g_sam_0, _in.vUV);
+    //    vOutColor.rgb *= vSampleColor.rgb;
+    //    vOutColor.a = vSampleColor.a;
+    //}
     
+    
+    //vOutColor = float4(1.f, 0.f, 0.f, vOutColor.a);
+    float4 vSampleColor = g_texarr_0.Sample(g_sam_0, float3(_in.vUV,2.f));
+    vOutColor.rgb *= vSampleColor.rgb;
+    vOutColor.a = vSampleColor.a;
     
     
     // 렌더모듈이 켜져 있으면

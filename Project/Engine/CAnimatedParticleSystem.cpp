@@ -211,6 +211,7 @@ void CAnimatedParticleSystem::render()
 	// 파티클 개별 랜더링 -> 인스턴싱
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 0);
 	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_ParticleTex);
+	GetMaterial()->SetTexParam(TEX_PARAM::TEXARR_0, m_ParticleArrTex);
 	GetMaterial()->UpdateData();
 
 	GetMesh()->render_asparticle(m_MaxParticleCount);
