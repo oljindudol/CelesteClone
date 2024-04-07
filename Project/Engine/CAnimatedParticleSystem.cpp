@@ -1,10 +1,17 @@
 #include "pch.h"
 #include "CAnimatedParticleSystem.h"
+#include "CDevice.h"
+#include "CStructuredBuffer.h"
 
+#include "CTimeMgr.h"
+
+#include "CAssetMgr.h"
+#include "CMesh.h"
+#include "CMaterial.h"
 
 
 CAnimatedParticleSystem::CAnimatedParticleSystem() : 
-	CRenderComponent(COMPONENT_TYPE::CUSTOMPARTICLESYSTEM)
+	CRenderComponent(COMPONENT_TYPE::AIMATEDPARTICLESYSTEM)
 , m_ParticleBuffer(nullptr)
 , m_MaxParticleCount(1000)
 {
@@ -122,24 +129,111 @@ CAnimatedParticleSystem::~CAnimatedParticleSystem()
 		delete m_SpawnCountBuffer;
 }
 
-void CAnimatedParticleSystem::UpdateData()
-{
-}
-
 void CAnimatedParticleSystem::finaltick()
 {
+
+	//if (KEY_TAP(T))
+	//{
+	//	m_bDebug = !m_bDebug;
+	//}
+
+	if (true == m_bDebug)
+	{
+		m_bThisFrameGenerate = true;
+	}
+
+	m_Time += DT;
+
+	if ((1.f / m_Module.SpawnRate) < m_Time)
+	{
+		// 누적 시간을 스폰 간격으로 나눈 값
+		float fSpawnCount = m_Time / (1.f / m_Module.SpawnRate);
+
+		// 스폰 간격을 제외한 잔량을 남은 누적시간으로 설정
+		m_Time -= (1.f / m_Module.SpawnRate) * floorf(fSpawnCount);
+		tSpawnCount count;
+		if (true == m_bThisFrameGenerate)
+		{
+			count = tSpawnCount{ (int)fSpawnCount, 0, 0, 0 };
+		}
+		else
+		{
+			count = tSpawnCount{ 0, 0, 0, 0 };
+		}
+		m_SpawnCountBuffer->SetData(&count);
+	}
+	else
+	{
+		tSpawnCount count = tSpawnCount{ 0, 0, 0, 0 };
+		m_SpawnCountBuffer->SetData(&count);
+	}
+
+
+	// 파티클 모듈정보 업데이트
+	m_ParticleModuleBuffer->SetData(&m_Module);
+	m_ParticleModuleBuffer->UpdateData_CS_SRV(20);
+
+	// 파티클 업데이트 컴퓨트 쉐이더
+	m_CSParticleUpdate->SetParticleBuffer(m_ParticleBuffer);
+	m_CSParticleUpdate->SetParticleModuleBuffer(m_ParticleModuleBuffer);
+	m_CSParticleUpdate->SetParticleSpawnCount(m_SpawnCountBuffer);
+	m_CSParticleUpdate->SetParticleWorldPos(Transform()->GetWorldPos());
+	m_CSParticleUpdate->Execute();
+
+	m_bThisFrameGenerate = false;
 }
 
 void CAnimatedParticleSystem::render()
+{
+	// View, Proj 행렬 전달
+	Transform()->UpdateData();
+
+	// ParticleBuffer 바인딩
+	m_ParticleBuffer->UpdateData(20);
+	m_ParticleModuleBuffer->UpdateData(21);
+
+	// 모든 파티클 렌더링
+	// 파티클 개별 랜더링 -> 인스턴싱
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 0);
+	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_ParticleTex);
+	GetMaterial()->UpdateData();
+
+	GetMesh()->render_asparticle(m_MaxParticleCount);
+
+	// 렌더링때 사용한 리소스 바인딩 Clear
+	m_ParticleBuffer->Clear(20);
+	m_ParticleModuleBuffer->Clear(21);
+}
+void CAnimatedParticleSystem::UpdateData()
 {
 }
 
 void CAnimatedParticleSystem::SaveToFile(FILE* _File)
 {
+	// 파티클 최대 갯수 및 모듈 정보 저장
+	fwrite(&m_MaxParticleCount, sizeof(UINT), 1, _File);
+	fwrite(&m_Module, sizeof(tParticleModule), 1, _File);
+
+	// 사용하던 CS 가 누군지 저장
+	//SaveAssetRef(m_CSParticleUpdate, _File);
+
+	// 파티클 입자 텍스쳐 정보 저장
+	SaveAssetRef(m_ParticleTex, _File);
 }
 
 void CAnimatedParticleSystem::LoadFromFile(FILE* _File)
 {
+	// 파티클 최대 갯수 및 모듈 정보 로드
+	fread(&m_MaxParticleCount, sizeof(UINT), 1, _File);
+	fread(&m_Module, sizeof(tParticleModule), 1, _File);
+
+	// 사용하던 CS 가 누군지 로드
+	/*Ptr<CComputeShader> cs;
+	LoadAssetRef(cs, _File);
+	m_CSParticleUpdate = (CParticleUpdate*)cs.Get();*/
+
+	// 파티클 입자 텍스쳐 정보 로드
+	LoadAssetRef(m_ParticleTex, _File);
 }
 
 

@@ -33,9 +33,7 @@
     <ClInclude Include="CCustomStateMachine.h">
       <Filter>CustomStateMachine</Filter>
     </ClInclude>
-    <ClInclude Include="CPlayerScript.h">
-      <Filter>02. Scripts</Filter>
-    </ClInclude>
+    <ClInclude Include="CPlayerScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -70,9 +68,7 @@
     <ClCompile Include="CCustomStateMachine.cpp">
       <Filter>CustomStateMachine</Filter>
     </ClCompile>
-    <ClCompile Include="CPlayerScript.cpp">
-      <Filter>02. Scripts</Filter>
-    </ClCompile>
+    <ClCompile Include="CPlayerScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">

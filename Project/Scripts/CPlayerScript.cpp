@@ -25,6 +25,7 @@
 #include <Engine\CAfterImage.h>
 #include <Engine\CShockWave.h>
 #include <Engine\CCustomParticleSystem.h>
+#include <Engine\CAnimatedParticleSystem.h>
 
 //key bind
 #define GRABKEY KEY_PRESSED(S)
@@ -233,11 +234,22 @@ void CPlayerScript::begin()
     auto m_ParticleObj = new CGameObject;
     m_ParticleObj->SetName(L"PlayerParticle");
     m_ParticleObj->AddComponent(new CTransform);
+    m_ParticleObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
     m_Particle = new CCustomParticleSystem;
     m_ParticleObj->AddComponent(m_Particle);
-    m_ParticleObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
     CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(m_ParticleObj, LAYER_PLAYER_EFFECT, false);
     GetOwner()->AddChild(m_ParticleObj);
+
+    m_ParticleObj = nullptr;
+    // Particle 오브젝트 추가
+    m_ParticleObj = new CGameObject;
+    m_ParticleObj->SetName(L"PlayerAPS");
+    m_ParticleObj->AddComponent(new CTransform);
+    m_ParticleObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+    m_ParticleObj->AddComponent(new CAnimatedParticleSystem);
+    CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(m_ParticleObj, LAYER_PLAYER_EFFECT, false);
+    GetOwner()->AddChild(m_ParticleObj);
+
 
 
     //플레이어 애님들 생성(낱장,폴더)

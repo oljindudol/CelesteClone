@@ -13,6 +13,7 @@
 #include "CShockWave.h"
 #include "CParticleSystem.h"
 #include "CCustomParticleSystem.h"
+#include "CAnimatedParticleSystem.h"
 
 //#include "CCollider3D.h"
 //#include "CAnimator3D.h"

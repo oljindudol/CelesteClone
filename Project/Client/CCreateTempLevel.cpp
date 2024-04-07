@@ -260,7 +260,14 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_Std2dMeterial));
 	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Strawberry.png", L"texture\\Strawberry.png"));
 
+	//auto pChidObj = new CGameObject;
+	//pChidObj->SetName(L"Rain");
+	//pChidObj->AddComponent(new CTransform);
+	//pChidObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+	//pChidObj->AddComponent(new CAnimatedParticleSystem);
 	pTempLevel->AddObject(pObj, LAYER_PLAYER, false);
+	//pObj->AddChild(pChidObj);
+
 
 
 	// Monster Object »ý¼º

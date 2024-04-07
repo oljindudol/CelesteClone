@@ -10,6 +10,7 @@
 #define STR_FILE_PATH_PARTICLE_GENERAL L"\\texture\\Gameplay\\particle\\General\\particle1by1.png"
 #define STR_FILE_PATH_RAY L"texture\\particle\\ray.png"
 
+#define STR_FOLDER_PATH_PARTICLE_STARS L"\\texture\\Gameplay\\particle\\stars"
 
 
 // Imgui UI String

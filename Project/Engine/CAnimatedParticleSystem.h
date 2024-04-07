@@ -19,6 +19,7 @@ private:
 
     float                   m_Time;
     bool                    m_bThisFrameGenerate;
+    bool                    m_bDebug = false;
 
 
 public:
@@ -46,6 +47,8 @@ public:
     void SetModule(tParticleModule _Module) {
         m_Module = _Module;
     }
+    void SetDebug(bool _bDebug) { m_bDebug = _bDebug; }
+    bool GetDebug() { return m_bDebug; }
     CAnimatedParticleSystem();
     CAnimatedParticleSystem(const CAnimatedParticleSystem& _OriginParticle);
     ~CAnimatedParticleSystem();

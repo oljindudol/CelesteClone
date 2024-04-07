@@ -13,6 +13,7 @@ class CLight2D;
 class CStateMachine;
 class CParticleSystem;
 class CCustomParticleSystem;
+class CAnimatedParticleSystem;
 
 class CGameObject :
     public CEntity
@@ -53,6 +54,7 @@ public:
     GET_COMPONENT(AfterImage, AFTERIMAGE);
     GET_COMPONENT(ParticleSystem, PARTICLESYSTEM);
     GET_COMPONENT(CustomParticleSystem, CUSTOMPARTICLESYSTEM);
+    GET_COMPONENT(AnimatedParticleSystem, AIMATEDPARTICLESYSTEM);
 
 
 

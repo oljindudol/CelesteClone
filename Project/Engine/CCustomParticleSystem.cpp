@@ -208,7 +208,6 @@ void CCustomParticleSystem::render()
 
 void CCustomParticleSystem::UpdateData()
 {
-
 }
 
 void CCustomParticleSystem::SaveToFile(FILE* _File)
