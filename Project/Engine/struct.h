@@ -68,85 +68,10 @@ struct tParticle
 	Vec4    ColorOrigin;
 	Vec4	ColorVibra;     // 원래 색상과 진동할 색상
 	float   ColorAcctime;   // 진동하지않은 누적시간
-	int     padding[3];
-};
-
-struct tAnimatedParticle
-{
-	Vec4	vLocalPos;		// 로컬 위치
-	Vec4	vWorldPos;		// 윌드 위치
-	Vec4	vWorldInitScale;// 초기 크기
-	Vec4	vWorldScale;	// 크기
-	Vec4	vWorldRotation;	// 회전값
-	Vec3	vVelocity;		// 속도
-	Vec4	vColor;			// 색상
-	Vec4	vForce;			// 입자에 적용된 누적 힘 총량
-	Vec3	vNoiseForce;	// NoiseForce 모듈로 인한 랜덤 힘
-	float	NoiseForceTime;	// NoiseForce 를 세팅받은 시간
-
-	float	NormalizeAge;	// Age 를 Life 기준으로 정규화한 값
-	float	Mass;			// 질량
-	float	Age;			// 현재 나이
-	float	Life;			// 수명
-	int		Active;			// 활성화, 비활성화 여부
-
-	Vec4    ColorOrigin;
-	Vec4	ColorVibra;     // 원래 색상과 진동할 색상
-	float   ColorAcctime;   // 진동하지않은 누적시간
 
 	int		AtlasIdx;		// 부여받은 Anim
 	int		CurFrameIdx;	// 현재Frame
 	float	AccTime;		// 현재frame누적시간
-};
-
-struct tAnimatedParticleModule
-{
-	// Sapwn 모듈
-	Vec4	vSpawnColor;	// 초기 컬러
-	Vec4	vSpawnMinScale;	// 초기 최소 크기
-	Vec4	vSpawnMaxScale;	// 초기 최대 크기	
-
-	float	MinLife;		// 최소 수명
-	float	MaxLife;		// 최대 수명
-	float	MinMass;		// 최소 질량
-	float	MaxMass;		// 최대 질량
-	float	SpawnRate;		// 초당 생성 개수
-	int		SpaceType;		// 좌표계(0 : LocalSpace, 1 : WorldSpace)
-	int		SpawnShape;		// 스폰 범위(0 : Sphere, 1 : Box)
-	float	Radius;			// SpawnShape 가 Sphere 인 경우, 반지름 길이
-	Vec4	vSpawnBoxScale;	// SpawnShape 가 Box 인 경우, Box 의 크기
-
-	// Add Velocity
-	int		AddVelocityType;// 0 : From Center, 1: To Center, 2: Fix Direction
-	float	MinSpeed;
-	float	MaxSpeed;
-	float	FixedAngle;		// 해당 방향에서 랜덤범위 각도
-	Vec4	FixedDirection;	// 지정 방향
-
-	// Scale
-	Vec4	vScaleRatio;
-
-	// Noise Force
-	float	NoiseForceScale;
-	float	NoiseForceTerm;
-
-	// Drag
-	float	DragTime;	// 감속시키는데 걸리는 시간
-
-	// Render
-	int		VelocityAlignment;  // 1 : On, 0 : Off
-	int		AlphaBasedLife;		// 0 : off, 1 : NomrlizedAge, 2: Age
-	float	AlphaMaxAge;
-
-	// Module On / Off
-	int arrModuleCheck[(UINT)PARTICLE_MODULE::END];
-	Vec4  VibColor; //진동색깔
-	float VibTime;// 진동주기
-
-	//애님모듈
-	float FrameDuration;
-	int   MaxAtlasIdx;
-	int   AnimMaxIdx[6];
 };
 
 
@@ -189,10 +114,16 @@ struct tParticleModule
 	int		AlphaBasedLife;		// 0 : off, 1 : NomrlizedAge, 2: Age
 	float	AlphaMaxAge;
 
-	// Module On / Off
-	int arrModuleCheck[(UINT)PARTICLE_MODULE::END];
 	Vec4  VibColor; //진동색깔
 	float VibTime;// 진동주기
+
+	//애님모듈
+	float FrameDuration; // 듀레이션
+	int   NumberOfAtlas;  //아틀라스갯수
+	int   AnimMaxIdx[6];//n번째 아틀라스가 몇장의 프레임으로 이루어져있는지
+
+	// Module On / Off
+	int arrModuleCheck[(UINT)PARTICLE_MODULE::END];
 };
 
 struct tSpawnCount

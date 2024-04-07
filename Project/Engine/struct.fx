@@ -52,7 +52,10 @@ struct tParticle
     float4 ColorOrigin;
     float4 ColorVibra; // 원래 색상과 진동할 색상
     float  ColorAcctime; // 진동하지않은 누적시간
-    int    padding[3];
+    
+    int AtlasIdx; // 부여받은 Anim
+    int CurFrameIdx; // 현재Frame
+    float AccTime; // 현재frame누적시간
 };
 
 struct tParticleModule
@@ -95,13 +98,17 @@ struct tParticleModule
     int     AlphaBasedLife;     // 0 : off, 1 : NomrlizedAge, 2: Age
     float   AlphaMaxAge;        // 알파가 0 가 되기까지의 수명
     
-    // Module Active Check
-    int     arrModuleCheck[8];
     // Vib Color
     float4  VibColor;
     float   VibTime;
     
-    int     modulepadding;
+    // Animation
+    float FrameDuration;
+    int NumberOfAtlas;
+    int AnimMaxIdx[6];
+    
+    // Module Active Check
+    int arrModuleCheck[9];
 };
 
 
