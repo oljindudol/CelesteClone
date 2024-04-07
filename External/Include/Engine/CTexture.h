@@ -22,6 +22,7 @@ private:
 private:
     virtual int Load(const wstring& _strFilePath) override;
     int CreateArrayTexture(const vector<std::pair<Ptr<CTexture>, Vec2>>& _vecTex, int _iMapLevel);
+    int CreateArrayTexture(const vector<Ptr<CTexture>>& _vecTex, int _iMapLevel);
     int Create(UINT _Width, UINT _Height
         , DXGI_FORMAT _Format, UINT _BindFlag
         , D3D11_USAGE _Usage = D3D11_USAGE_DEFAULT);

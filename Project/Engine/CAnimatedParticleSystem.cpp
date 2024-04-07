@@ -17,7 +17,7 @@ CAnimatedParticleSystem::CAnimatedParticleSystem() :
 {
 	// 전용 메쉬와 전용 재질 사용
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(STR_KEY_PointMesh));
-	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_CustomParticleMeterial));
+	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_AnimatedParticleMeterial));
 
 	// 렌더링 해상도
 	Vec2 vResol = CDevice::GetInst()->GetRenderResolution();
@@ -48,22 +48,22 @@ CAnimatedParticleSystem::CAnimatedParticleSystem() :
 
 	m_Module.SpaceType = 1;
 	m_Module.vSpawnColor = Vec4(1.f, 1.f, 1.f, 1.f);
-	m_Module.vSpawnMinScale = Vec4(1.f, 1.f, 1.f, 1.f);
-	m_Module.vSpawnMaxScale = Vec4(1.f, 1.f, 1.f, 1.f);
-	m_Module.MinLife = 15.f;
-	m_Module.MaxLife = 15.f;
+	m_Module.vSpawnMinScale = Vec4(15.f, 15.f, 1.f, 1.f);
+	m_Module.vSpawnMaxScale = Vec4(15.f, 15.f, 1.f, 1.f);
+	m_Module.MinLife = 60.f;
+	m_Module.MaxLife = 60.f;
 	m_Module.MinMass = 1.f;
 	m_Module.MaxMass = 1.f;
 	m_Module.SpawnShape = 1; // 0 : Sphere, 1 : Box
 	m_Module.Radius = 100.f;
-	m_Module.vSpawnBoxScale = Vec4(350.f, 1.f, 0.f, 0.f);
-	m_Module.SpawnRate = 20;
+	m_Module.vSpawnBoxScale = Vec4(1200.f, 150.f, 150.f, 0.f);
+	m_Module.SpawnRate = 1.5f;
 
 	// Add Velocity Module
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 1 ;
 	m_Module.AddVelocityType = 2; // 0 : From Center, 1: To Center, 2: Fix Direction
-	m_Module.MinSpeed = 30;
-	m_Module.MaxSpeed = 30;
+	m_Module.MinSpeed = 15;
+	m_Module.MaxSpeed = 55;
 	m_Module.FixedDirection = Vec4(0.f, -1.f, 0.f, 0.f);
 	m_Module.FixedAngle;
 
@@ -72,13 +72,13 @@ CAnimatedParticleSystem::CAnimatedParticleSystem() :
 	m_Module.vScaleRatio = Vec3(0.1f, 0.1f, 0.1f);
 
 	// Noise Force
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE] = 1;
+	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE] = 0;
 	m_Module.NoiseForceScale = 5.f;
 	m_Module.NoiseForceTerm = 0.3f;
 
 	// Drag Module
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG] = 1;
-	m_Module.DragTime = 15.f;
+	m_Module.DragTime = 60.f;
 
 	// Calculate Force
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::CALCULATE_FORCE] = 1;
@@ -94,17 +94,21 @@ CAnimatedParticleSystem::CAnimatedParticleSystem() :
 	m_Module.VibColor =Vec4(1.f, 1.f, 1.f, 1.f);
 
 	Ptr<CTexture> tex = nullptr;
-	STR_FOLDER_PATH_PARTICLE_STARS;
 	std::filesystem::path base_path = CPathMgr::GetContentPath();
 	wstring OriginPath = base_path;
 	OriginPath += STR_FOLDER_PATH_PARTICLE_STARS;
 	auto images = getImagesFromDirectory(OriginPath);
 	for (auto& i : images)
 	{
-		auto rel = std::filesystem::relative(i, OriginPath);
-		m_vecParticleTex.push_back(CAssetMgr::GetInst()->Load<CTexture>(rel, rel));
+		auto rel = std::filesystem::relative(i, base_path);
+		auto tex = CAssetMgr::GetInst()->Load<CTexture>(rel, rel);
+		m_vecParticleTex.push_back(tex);
 	}
-	m_ParticleArrTex = CAssetMgr::GetInst()->CreateArrayTexture(L"TileMapTextureArray", m_vecParticleTex, 1);
+	m_ParticleArrTex = CAssetMgr::GetInst()->CreateArrayTexture(STR_KEY_TEXARR_ANIMATED_PARTICLE, m_vecParticleTex, 1);
+
+	m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(STR_FILE_PATH_PARTICLE_STARS
+		, STR_FILE_PATH_PARTICLE_STARS);
+
 }
 
 CAnimatedParticleSystem::CAnimatedParticleSystem(const CAnimatedParticleSystem& _OriginParticle)

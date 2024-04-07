@@ -1,6 +1,13 @@
 #pragma once
 
 
+
+//TextureArr
+#define STR_KEY_TEXARR_FORE_TILE L"TileMapForeGroundTextureArray"
+#define STR_KEY_TEXARR_BACK_TILE L"TileMapBakcGroundTextureArray"
+#define STR_KEY_TEXARR_ANIMATED_PARTICLE L"TileMapBakcGroundTextureArray"
+
+
 // Image Path
 #define STR_FILE_PATH_HAIR L"\\texture\\Gameplay\\hair\\hair00.png"
 //#define STR_FILE_PATH_HAIR L"\\texture\\Effect1.png"
@@ -11,6 +18,8 @@
 #define STR_FILE_PATH_RAY L"texture\\particle\\ray.png"
 
 #define STR_FOLDER_PATH_PARTICLE_STARS L"\\texture\\Gameplay\\particle\\stars"
+#define STR_FILE_PATH_PARTICLE_STARS L"\\texture\\Gameplay\\particle\\stars\\a00.png"
+
 
 
 // Imgui UI String
@@ -68,8 +77,9 @@
 #define STR_FUNC_NAME_PIXShaderParticle "PS_Particle"
 
 #define STR_FUNC_NAME_GEOShaderParticleCustom "GS_CustomParticle"
-#define STR_FUNC_NAME_PIXShaderParticleCustom "PS_CustomParticle"
+//#define STR_FUNC_NAME_PIXShaderParticleCustom "PS_CustomParticle"
 
+#define STR_FUNC_NAME_PIXShaderParticleAnimated "PS_AnimatedParticle"
 
 // postprocess.fx functions name
 #define STR_FUNC_NAME_VTXShaderDistorton "VS_Distortion"
@@ -121,6 +131,7 @@
 #define STR_KEY_BangShader L"PlayerBangShader"
 #define STR_KEY_ShockWaveShader L"ShockWaveShader"
 #define STR_KEY_CustomParticleRenderShader L"CustomParticleRenderShader"
+#define STR_KEY_AnimatedParticleRenderShader L"AnimatedParticleRenderShader"
 
 
 // Material
@@ -136,6 +147,7 @@
 #define STR_KEY_BangMeterial L"PlayerBangMtrl"
 #define STR_KEY_ShockWaveMeterial L"ShockWaveMtrl"
 #define STR_KEY_CustomParticleMeterial L"CustomParticleMtrl"
+#define STR_KEY_AnimatedParticleMeterial L"AnimatedParticleMtrl"
 
 
 

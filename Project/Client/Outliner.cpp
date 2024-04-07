@@ -120,9 +120,7 @@ void Outliner::DragDropObject(DWORD_PTR _Dest, DWORD_PTR _Source)
 	if(nullptr != pDestNode)
 		pDestObj = (CGameObject*)pDestNode->GetData();
 
-	CGameObject* pSourceObj = nullptr;
-	if (nullptr != pSourceNode)
-		pSourceObj = (CGameObject*)pSourceNode->GetData();
+	CGameObject* pSourceObj = (CGameObject*)pSourceNode->GetData();
 
 	// 부모 오브젝트가 자신의 자식오브젝트의 자식으로 들어가려는 경우는 방지
 	if (pDestObj != nullptr && pDestObj->IsAncestor(pSourceObj))

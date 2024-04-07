@@ -110,7 +110,7 @@ struct tAnimatedParticleModule
 	float	MaxLife;		// 최대 수명
 	float	MinMass;		// 최소 질량
 	float	MaxMass;		// 최대 질량
-	int		SpawnRate;		// 초당 생성 개수
+	float	SpawnRate;		// 초당 생성 개수
 	int		SpaceType;		// 좌표계(0 : LocalSpace, 1 : WorldSpace)
 	int		SpawnShape;		// 스폰 범위(0 : Sphere, 1 : Box)
 	float	Radius;			// SpawnShape 가 Sphere 인 경우, 반지름 길이
@@ -161,7 +161,7 @@ struct tParticleModule
 	float	MaxLife;		// 최대 수명
 	float	MinMass;		// 최소 질량
 	float	MaxMass;		// 최대 질량
-	int		SpawnRate;		// 초당 생성 개수
+	float	SpawnRate;		// 초당 생성 개수
 	int		SpaceType;		// 좌표계(0 : LocalSpace, 1 : WorldSpace)
 	int		SpawnShape;		// 스폰 범위(0 : Sphere, 1 : Box)
 	float	Radius;			// SpawnShape 가 Sphere 인 경우, 반지름 길이

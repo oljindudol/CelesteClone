@@ -47,6 +47,7 @@ public:
     void AddAsset(const wstring& _strKey, CAsset* _Asset);
 
     Ptr<CTexture> CreateArrayTexture(const wstring& _strKey, const vector<std::pair<Ptr<CTexture>, Vec2>>& _vecTex, int _iMapLevel);
+    Ptr<CTexture> CreateArrayTexture(const wstring& _strKey, const vector<Ptr<CTexture>>& _vecTex, int _iMapLevel);
 
     Ptr<CTexture> UpdateArrayTexture(const wstring& _strKey, const vector<std::pair<Ptr<CTexture>, Vec2>>& _vecTex, int _iMapLevel);
 

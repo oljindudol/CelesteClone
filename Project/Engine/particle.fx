@@ -133,7 +133,8 @@ void GS_CustomParticle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStr
     //}
 }
 
-float4 PS_CustomParticle(GS_OUT _in) : SV_Target
+
+float4 PS_AnimatedParticle(GS_OUT _in) : SV_Target
 {
     tParticle particle = g_ParticleBuffer[_in.InstID];
     tParticleModule module = g_ParticleModule[0];
