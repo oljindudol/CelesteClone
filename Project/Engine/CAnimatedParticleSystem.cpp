@@ -47,24 +47,24 @@ CAnimatedParticleSystem::CAnimatedParticleSystem() :
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] = 1;
 
 	m_Module.SpaceType = 1;
-	m_Module.vSpawnColor = Vec4(1.f, 0.f, 0.f, 1.f);
+	m_Module.vSpawnColor = Vec4(1.f, 1.f, 1.f, 1.f);
 	m_Module.vSpawnMinScale = Vec4(1.f, 1.f, 1.f, 1.f);
 	m_Module.vSpawnMaxScale = Vec4(1.f, 1.f, 1.f, 1.f);
-	m_Module.MinLife = 2.5f;
-	m_Module.MaxLife = 2.5f;
+	m_Module.MinLife = 15.f;
+	m_Module.MaxLife = 15.f;
 	m_Module.MinMass = 1.f;
 	m_Module.MaxMass = 1.f;
 	m_Module.SpawnShape = 1; // 0 : Sphere, 1 : Box
 	m_Module.Radius = 100.f;
-	m_Module.vSpawnBoxScale = Vec4(10.f, 10.f, 0.f, 0.f);
-	m_Module.SpawnRate = 60;
+	m_Module.vSpawnBoxScale = Vec4(350.f, 1.f, 0.f, 0.f);
+	m_Module.SpawnRate = 20;
 
 	// Add Velocity Module
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 1;
-	m_Module.AddVelocityType = 0; // 0 : From Center, 1: To Center, 2: Fix Direction
-	m_Module.MinSpeed = 5;
-	m_Module.MaxSpeed = 5;
-	m_Module.FixedDirection;
+	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 1 ;
+	m_Module.AddVelocityType = 2; // 0 : From Center, 1: To Center, 2: Fix Direction
+	m_Module.MinSpeed = 30;
+	m_Module.MaxSpeed = 30;
+	m_Module.FixedDirection = Vec4(0.f, -1.f, 0.f, 0.f);
 	m_Module.FixedAngle;
 
 	// Scale
@@ -78,7 +78,7 @@ CAnimatedParticleSystem::CAnimatedParticleSystem() :
 
 	// Drag Module
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG] = 1;
-	m_Module.DragTime = 3.f;
+	m_Module.DragTime = 15.f;
 
 	// Calculate Force
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::CALCULATE_FORCE] = 1;
@@ -91,9 +91,20 @@ CAnimatedParticleSystem::CAnimatedParticleSystem() :
 
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::Vibration] = 1;
 	m_Module.VibTime = 0.3f;
+	m_Module.VibColor =Vec4(1.f, 1.f, 1.f, 1.f);
 
-	m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(STR_FILE_PATH_PARTICLE_GENERAL
-		, STR_FILE_PATH_PARTICLE_GENERAL);
+	Ptr<CTexture> tex = nullptr;
+	STR_FOLDER_PATH_PARTICLE_STARS;
+	std::filesystem::path base_path = CPathMgr::GetContentPath();
+	wstring OriginPath = base_path;
+	OriginPath += STR_FOLDER_PATH_PARTICLE_STARS;
+	auto images = getImagesFromDirectory(OriginPath);
+	for (auto& i : images)
+	{
+		auto rel = std::filesystem::relative(i, OriginPath);
+		m_vecParticleTex.push_back(CAssetMgr::GetInst()->Load<CTexture>(rel, rel));
+	}
+	m_ParticleArrTex = CAssetMgr::GetInst()->CreateArrayTexture(L"TileMapTextureArray", m_vecParticleTex, 1);
 }
 
 CAnimatedParticleSystem::CAnimatedParticleSystem(const CAnimatedParticleSystem& _OriginParticle)

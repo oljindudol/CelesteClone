@@ -47,7 +47,7 @@ void CRenderMgr::tick()
 	static const Vec4 Mazenta = Vec4(1.f, 0.f, 1.f, 1.f);
 
 	//Vec4 vClearColor = Vec4(0.3f, 0.3f, 0.3f, 1.f);
-	CDevice::GetInst()->ClearRenderTarget(Mazenta);
+	CDevice::GetInst()->ClearRenderTarget(Black);
 
 	UpdateData();
 

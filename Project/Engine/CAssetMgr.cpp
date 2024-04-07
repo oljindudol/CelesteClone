@@ -48,6 +48,26 @@ Ptr<CTexture> CAssetMgr::CreateArrayTexture(const wstring& _strKey ,const vector
 	return pTex;
 }
 
+
+Ptr<CTexture> CAssetMgr::CreateArrayTexture(const wstring& _strKey, const vector<Ptr<CTexture>>& _vecTex, int _iMapLevel)
+{
+	// 생성하려는 텍스쳐와 동일한 키의 텍스쳐가 이미 AssetMgr 에 있다면
+	Ptr<CTexture> pTex = FindAsset<CTexture>(_strKey);
+	assert(!pTex.Get());
+
+	pTex = new CTexture(true);
+
+	if (FAILED(pTex->CreateArrayTexture(_vecTex, _iMapLevel)))
+	{
+		MessageBox(nullptr, L"텍스쳐배열 생성 실패", L"리소스 생성 실패", MB_OK);
+		return nullptr;
+	}
+
+	AddAsset<CTexture>(_strKey, pTex.Get());
+
+	return pTex;
+}
+
 Ptr<CTexture> CAssetMgr::UpdateArrayTexture(const wstring& _strKey, const vector<std::pair<Ptr<CTexture>, Vec2>>& _vecTex, int _iMapLevel)
 {
 	// 생성하려는 텍스쳐와 동일한 키의 텍스쳐가 이미 AssetMgr 에 있다면

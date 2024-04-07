@@ -16,10 +16,12 @@ private:
     Ptr<CParticleUpdate>    m_CSParticleUpdate;
 
     Ptr<CTexture>           m_ParticleTex;
+    vector<Ptr<CTexture>>   m_vecParticleTex;
+    Ptr<CTexture>           m_ParticleArrTex;
 
     float                   m_Time;
     bool                    m_bThisFrameGenerate;
-    bool                    m_bDebug = false;
+    bool                    m_bDebug = true;
 
 
 public:

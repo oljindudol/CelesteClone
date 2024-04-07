@@ -25,8 +25,6 @@
     <ClInclude Include="CPlatFormScript.h">
       <Filter>02. Scripts</Filter>
     </ClInclude>
-    <ClInclude Include="CPlayerSprite.h" />
-    <ClInclude Include="CPlayerHairUpdate.h" />
     <ClInclude Include="CPhysics.h">
       <Filter>phy</Filter>
     </ClInclude>
@@ -34,6 +32,12 @@
       <Filter>CustomStateMachine</Filter>
     </ClInclude>
     <ClInclude Include="CPlayerScript.h" />
+    <ClInclude Include="CPlayerHairUpdate.h">
+      <Filter>About Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerSprite.h">
+      <Filter>About Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -60,8 +64,6 @@
     <ClCompile Include="CPlatFormScript.cpp">
       <Filter>02. Scripts</Filter>
     </ClCompile>
-    <ClCompile Include="CPlayerSprite.cpp" />
-    <ClCompile Include="CPlayerHairUpdate.cpp" />
     <ClCompile Include="CPhysics.cpp">
       <Filter>phy</Filter>
     </ClCompile>
@@ -69,6 +71,12 @@
       <Filter>CustomStateMachine</Filter>
     </ClCompile>
     <ClCompile Include="CPlayerScript.cpp" />
+    <ClCompile Include="CPlayerHairUpdate.cpp">
+      <Filter>About Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerSprite.cpp">
+      <Filter>About Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -85,6 +93,9 @@
     </Filter>
     <Filter Include="02. Scripts">
       <UniqueIdentifier>{af5c3808-4d30-476b-b2ab-d844558017d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="About Player">
+      <UniqueIdentifier>{ed407317-dcdd-4828-b9f2-373198dc96e9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

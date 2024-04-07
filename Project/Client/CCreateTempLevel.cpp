@@ -128,6 +128,15 @@ void CCreateTempLevel::CreateTempLevel()
 
 	pTempLevel->AddObject(pCamObj, LAYER_DEFAULT);
 
+	auto pChidObj = new CGameObject;
+	pChidObj->SetName(L"Rain");
+	pChidObj->AddComponent(new CTransform);
+	pChidObj->Transform()->SetRelativePos(Vec3(1.f, 90.f, 90.f));
+	pChidObj->AddComponent(new CAnimatedParticleSystem);
+	pCamObj->AddChild(pChidObj);
+
+
+
 	// UI 朝五虞 持失
 	pCamObj = new CGameObject;
 	pCamObj->SetName(L"UICamera");
@@ -158,23 +167,19 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj = nullptr;
 
 	// Backgruond Object 持失
-	pObj = new CGameObject;
-	pObj->SetName(L"Background");
+	//pObj = new CGameObject;
+	//pObj->SetName(L"Background");
+	//pObj->AddComponent(new CTransform);
+	//pObj->AddComponent(new CMeshRender);
+	//pObj->AddComponent(new CBackgroundScript);
+	//pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 300.f));
+	//pObj->Transform()->SetRelativeScale(Vec3(1600.f, 800.f, 1.f));
+	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+	//pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_BackGroundMeterial));
+	//Ptr<CTexture> pTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.png");
+	//pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, pTex);
 
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
-	pObj->AddComponent(new CBackgroundScript);
-
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 300.f));
-	pObj->Transform()->SetRelativeScale(Vec3(1600.f, 800.f, 1.f));
-
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_BackGroundMeterial));
-
-	Ptr<CTexture> pTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.png");
-	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, pTex);
-
-	pTempLevel->AddObject(pObj, LAYER_BACKGROUND, false);
+	//pTempLevel->AddObject(pObj, LAYER_BACKGROUND, false);
 
 
 	// TileMap Object
@@ -185,21 +190,13 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CTileMap);
 
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 91.f));
-
 	//Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\snow.png", L"texture\\snow.png");
 	//pObj->TileMap()->SetTileAtlas(pTileAtlas);
 
-	//pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\girder.png", L"texture\\girder.png");
-	//pObj->TileMap()->SetTileAtlas(pTileAtlas);
-
 	static const std::filesystem::path base_path = CPathMgr::GetContentPath();
-
 	wstring ForeTilePath = base_path;
 	ForeTilePath += STR_FOLDER_PATH_FORE_TILE;
-
-
 	auto files = getImagesFromDirectory(ForeTilePath);
-
 
 	for (auto& p : files)
 	{
@@ -207,11 +204,8 @@ void CCreateTempLevel::CreateTempLevel()
 		Ptr<CTexture> pAtlasTex = CAssetMgr::GetInst()->Load<CTexture>(relative_path, relative_path);
 		pObj->TileMap()->SetTileAtlas(pAtlasTex);
 	}
-
-
 	Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->CreateArrayTexture(L"TileMapTextureArray", pObj->TileMap()->GetTileAtlases() , 1);
 	pObj->TileMap()->SetArrAtlas(pTileAtlas);
-
 
 	pTempLevel->AddObject(pObj, LAYER_FORETILE, false);
 	pObj->TileMap()->SetRowCol(40, 23);

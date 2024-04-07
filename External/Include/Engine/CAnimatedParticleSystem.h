@@ -19,7 +19,7 @@ private:
 
     float                   m_Time;
     bool                    m_bThisFrameGenerate;
-    bool                    m_bDebug = false;
+    bool                    m_bDebug = true;
 
 
 public:
