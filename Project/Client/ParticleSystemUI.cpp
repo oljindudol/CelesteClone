@@ -42,6 +42,12 @@ void ParticleSystemUI::render_update()
 	static ImVec4 ModuleColor = Burgundy;
 
 
+	bool bDebug = pPS->GetDebug();
+	ImGui::Text("Debug"); ImGui::SameLine();
+	ImGui::Checkbox("##Debug", &bDebug);
+	pPS->SetDebug(bDebug);
+
+
 
 	// VibColor
 	ImGui::Separator();
@@ -135,6 +141,32 @@ void ParticleSystemUI::render_update()
 	ImGui::Text("Spawn Rate"); ImGui::SameLine();
 	ImGui::DragInt("##Spawn Rate", &NewModule.SpawnRate, 1, 0, 1000);
 
+	// Scale Module
+	ImGui::Separator();
+	CreateStaticColorButton("Scale Module", ModuleColor);
+	ImGui::SameLine();
+	if (1 == CurModule.arrModuleCheck[(UINT)PARTICLE_MODULE::SCALE]) {
+		ImGui::PushStyleColor(ImGuiCol_Button, Green);
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Green);
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, Green);
+		if (ImGui::Button("On##ScaleModule")) {
+			NewModule.arrModuleCheck[(UINT)PARTICLE_MODULE::SCALE] = 0;
+		}
+		ImGui::PopStyleColor(3);
+	}
+	else {
+		ImGui::PushStyleColor(ImGuiCol_Button, Gray);
+		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Gray);
+		ImGui::PushStyleColor(ImGuiCol_ButtonActive, Gray);
+		if (ImGui::Button("Off##ScaleModule")) {
+			NewModule.arrModuleCheck[(UINT)PARTICLE_MODULE::SCALE] = 1;
+		}
+		ImGui::PopStyleColor(3);
+	}
+	ImGui::Text("Scale Ratio"); ImGui::SameLine();
+	ImGui::DragFloat3("##Scale Ratio", &NewModule.vScaleRatio.x, 0.01f, 0.0f, 10.0f);
+
+
 	// Add Velocity Module
 	ImGui::Separator();
 	CreateStaticColorButton("Add Velocity Module", ModuleColor);
@@ -213,30 +245,7 @@ void ParticleSystemUI::render_update()
 	ImGui::DragFloat("##DragTime", &NewModule.DragTime, 0.01f, 0.01f, 10000.f);
 
 
-	// Scale Module
-	ImGui::Separator();
-	CreateStaticColorButton("Scale Module", ModuleColor);
-	ImGui::SameLine();
-	if (1 == CurModule.arrModuleCheck[(UINT)PARTICLE_MODULE::SCALE]) {
-		ImGui::PushStyleColor(ImGuiCol_Button, Green);
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Green);
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, Green);
-		if (ImGui::Button("On##ScaleModule")) {
-			NewModule.arrModuleCheck[(UINT)PARTICLE_MODULE::SCALE] = 0;
-		}
-		ImGui::PopStyleColor(3);
-	}
-	else {
-		ImGui::PushStyleColor(ImGuiCol_Button, Gray);
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Gray);
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, Gray);
-		if (ImGui::Button("Off##ScaleModule")) {
-			NewModule.arrModuleCheck[(UINT)PARTICLE_MODULE::SCALE] = 1;
-		}
-		ImGui::PopStyleColor(3);
-	}
-	ImGui::Text("Scale Ratio"); ImGui::SameLine();
-	ImGui::DragFloat3("##Scale Ratio", &NewModule.vScaleRatio.x, 0.01f, 0.0f, 10.0f);
+
 
 
 	// Noise Force

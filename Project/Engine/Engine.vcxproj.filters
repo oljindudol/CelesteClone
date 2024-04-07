@@ -184,7 +184,9 @@
     <ClInclude Include="CCustomParticleSystem.h">
       <Filter>08. Component\RenderComponent\07. CustomParticleSystem</Filter>
     </ClInclude>
-    <ClInclude Include="CAnimatedParticleSystem.h" />
+    <ClInclude Include="CAnimatedParticleSystem.h">
+      <Filter>08. Component\RenderComponent\08. AnimatedParticleSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -355,7 +357,9 @@
     <ClCompile Include="CCustomParticleSystem.cpp">
       <Filter>08. Component\RenderComponent\07. CustomParticleSystem</Filter>
     </ClCompile>
-    <ClCompile Include="CAnimatedParticleSystem.cpp" />
+    <ClCompile Include="CAnimatedParticleSystem.cpp">
+      <Filter>08. Component\RenderComponent\08. AnimatedParticleSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -531,6 +535,9 @@
     </Filter>
     <Filter Include="08. Component\RenderComponent\07. CustomParticleSystem">
       <UniqueIdentifier>{0ae0cef2-0c58-4ef5-a3c2-738ec78fce0e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\08. AnimatedParticleSystem">
+      <UniqueIdentifier>{8252787f-54c4-47d3-9041-f9ada4b2933c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

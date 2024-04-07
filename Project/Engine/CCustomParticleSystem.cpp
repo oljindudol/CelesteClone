@@ -132,13 +132,13 @@ CCustomParticleSystem::~CCustomParticleSystem()
 
 void CCustomParticleSystem::finaltick()
 {
-	static bool sw = false;
-	if (KEY_TAP(T))
-	{
-		sw = !sw;
-	}
+	
+	//if (KEY_TAP(T))
+	//{
+	//	m_bDebug = !m_bDebug;
+	//}
 
-	if (true == sw)
+	if (true == m_bDebug)
 	{
 		m_bThisFrameGenerate = true;
 	}
