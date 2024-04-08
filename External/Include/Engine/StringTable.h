@@ -63,6 +63,7 @@
 
 #define STR_FILE_PATH_SetColorShader L"shader\\setcolor.fx"
 #define STR_FILE_PATH_ParticleUpdateShader L"shader\\particle_update.fx"
+#define STR_FILE_PATH_DreamParticleShader L"shader\\dreamparticle.fx"
 
 
 // std2.fx functions name
@@ -101,6 +102,10 @@
 // debug.fx functions name
 #define STR_FUNC_NAME_VTXShaderDebugShape "VS_DebugShape"
 #define STR_FUNC_NAME_PIXShaderDebugShape "PS_DebugShape"
+
+// dreamparticle.fx
+#define STR_FUNC_NAME_GEOShaderDreamParticle "GS_DreamParticle"
+#define STR_FUNC_NAME_PIXShaderDreamParticle "PS_DreamParticle"
 
 
 // computershader.fx functions name
@@ -142,6 +147,7 @@
 #define STR_KEY_ShockWaveShader L"ShockWaveShader"
 #define STR_KEY_CustomParticleRenderShader L"CustomParticleRenderShader"
 #define STR_KEY_AnimatedParticleRenderShader L"AnimatedParticleRenderShader"
+#define STR_KEY_DreamParticleRenderShader L"DreamParticleRenderShader"
 
 
 // Material

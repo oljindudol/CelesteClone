@@ -166,6 +166,25 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	// ====================
 	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(STR_FILE_PATH_ParticleShader, STR_FUNC_NAME_VTXShaderParticle);
+	pShader->CreateGeometryShader(STR_FILE_PATH_DreamParticleShader, STR_FUNC_NAME_GEOShaderDreamParticle);
+	pShader->CreatePixelShader(STR_FILE_PATH_DreamParticleShader, STR_FUNC_NAME_PIXShaderDreamParticle);
+
+	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::NO_WRITE);		// 깊이 테스트는 진행, 깊이는 기록 X
+	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_TRANSPARENT);
+
+	AddAsset(STR_KEY_DreamParticleRenderShader, pShader.Get());
+
+
+
+	// ====================
+	// AnimatedParticleRenderShader(Custom) 기본GS+애니메이터PS
+	// ====================
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(STR_FILE_PATH_ParticleShader, STR_FUNC_NAME_VTXShaderParticle);
 	pShader->CreateGeometryShader(STR_FILE_PATH_ParticleShader, STR_FUNC_NAME_GEOShaderParticle);
 	pShader->CreatePixelShader(STR_FILE_PATH_ParticleShader, STR_FUNC_NAME_PIXShaderParticleAnimated);
 

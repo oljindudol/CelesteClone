@@ -597,5 +597,8 @@
     <FxCompile Include="tilemap.fx">
       <Filter>ShaderCode\Render</Filter>
     </FxCompile>
+    <FxCompile Include="dreamparticle.fx">
+      <Filter>ShaderCode\Render</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

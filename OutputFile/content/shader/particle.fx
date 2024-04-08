@@ -45,6 +45,11 @@ struct GS_OUT
     uint InstID : FOG;
 };
 
+
+
+// CustomParticle 전용 GS
+// CustomParticle 전용 GS 
+// CustomParticle 전용 GS 
 [maxvertexcount(6)]
 void GS_CustomParticle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
 {
