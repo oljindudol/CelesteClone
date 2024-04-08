@@ -50,15 +50,15 @@ CDreamBlockParticleSystem::CDreamBlockParticleSystem() :
 	m_Module.SpaceType = 1;
 	m_Module.vSpawnColor = Vec4(1.f, 1.f, 1.f, 1.f);
 	m_Module.vSpawnMinScale = Vec4(7.f, 7.f, 1.f, 1.f);
-	m_Module.vSpawnMaxScale = Vec4(20.f, 20.f, 1.f, 1.f);
-	m_Module.MinLife = 60.f;
-	m_Module.MaxLife = 60.f;
+	m_Module.vSpawnMaxScale = Vec4(7.f, 7.f, 1.f, 1.f);
+	m_Module.MinLife = 3.f;
+	m_Module.MaxLife = 3.f;
 	m_Module.MinMass = 1.f;
 	m_Module.MaxMass = 1.f;
 	m_Module.SpawnShape = 1; // 0 : Sphere, 1 : Box
 	m_Module.Radius = 100.f;
-	m_Module.vSpawnBoxScale = Vec4(200.f, 100.f, 50.f, 0.f);
-	m_Module.SpawnRate = 50.f;
+	m_Module.vSpawnBoxScale = Vec4(200.f, 150.f, 0.f, 0.f);
+	m_Module.SpawnRate = 500.f;
 
 	// Add Velocity Module
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 1;
@@ -220,6 +220,10 @@ void CDreamBlockParticleSystem::render()
 	// 모든 파티클 렌더링
 	// 파티클 개별 랜더링 -> 인스턴싱
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 0);
+	auto pos = Transform()->GetWorldPos();
+	auto scale = Transform()->GetWorldScale();
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4( pos.x,pos.y,0.f,0.f));
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_1, Vec4(scale.x,scale.y, scale.z,0.f));
 	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_ParticleTex);
 	GetMaterial()->SetTexParam(TEX_PARAM::TEXARR_0, m_ParticleArrTex);
 	GetMaterial()->UpdateData();
