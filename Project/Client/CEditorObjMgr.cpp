@@ -37,8 +37,6 @@ void CEditorObjMgr::init()
 	//해상도에따라 0.25f or 0.1666666f
 	pEditorCam->Camera()->SetScale(.25f);
 
-
-
 	m_vecEditorObj.push_back(pEditorCam);
 
 	// Editor 용 카메라로서 렌더매니저에 등록

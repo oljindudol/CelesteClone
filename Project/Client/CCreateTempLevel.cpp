@@ -30,6 +30,7 @@
 #include "CIdleState.h"
 #include "CTraceState.h"
 #include <Scripts/CPlatFormScript.h>
+#include <Engine\CDreamBlockParticleSystem.h>
 
 
 void CCreateTempLevel::Init()
@@ -132,7 +133,9 @@ void CCreateTempLevel::CreateTempLevel()
 	pChidObj->SetName(L"Rain");
 	pChidObj->AddComponent(new CTransform);
 	pChidObj->Transform()->SetRelativePos(Vec3(1.f, 160.f, 130.f));
-	pChidObj->AddComponent(new CAnimatedParticleSystem);
+	//pChidObj->AddComponent(new CAnimatedParticleSystem);
+	pChidObj->AddComponent(new CDreamBlockParticleSystem);
+
 	pCamObj->AddChild(pChidObj);
 
 
