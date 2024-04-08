@@ -187,6 +187,9 @@
     <ClInclude Include="CAnimatedParticleSystem.h">
       <Filter>08. Component\RenderComponent\08. AnimatedParticleSystem</Filter>
     </ClInclude>
+    <ClInclude Include="CDreamParticleUpdate.h">
+      <Filter>ShaderCode\Compute\DreamParticleUpdate</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -359,6 +362,9 @@
     </ClCompile>
     <ClCompile Include="CAnimatedParticleSystem.cpp">
       <Filter>08. Component\RenderComponent\08. AnimatedParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="CDreamParticleUpdate.cpp">
+      <Filter>ShaderCode\Compute\DreamParticleUpdate</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -538,6 +544,9 @@
     </Filter>
     <Filter Include="08. Component\RenderComponent\08. AnimatedParticleSystem">
       <UniqueIdentifier>{8252787f-54c4-47d3-9041-f9ada4b2933c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ShaderCode\Compute\DreamParticleUpdate">
+      <UniqueIdentifier>{45b29323-fb07-4f94-9790-5830f46ea701}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

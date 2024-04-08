@@ -184,6 +184,7 @@ call EngineCopy.bat</Command>
     <ClInclude Include="CConstBuffer.h" />
     <ClInclude Include="CCustomParticleSystem.h" />
     <ClInclude Include="CDevice.h" />
+    <ClInclude Include="CDreamParticleUpdate.h" />
     <ClInclude Include="CEngine.h" />
     <ClInclude Include="CEntity.h" />
     <ClInclude Include="CAnimator2D.h" />
@@ -259,6 +260,7 @@ call EngineCopy.bat</Command>
     <ClCompile Include="CConstBuffer.cpp" />
     <ClCompile Include="CCustomParticleSystem.cpp" />
     <ClCompile Include="CDevice.cpp" />
+    <ClCompile Include="CDreamParticleUpdate.cpp" />
     <ClCompile Include="CEngine.cpp" />
     <ClCompile Include="CEntity.cpp" />
     <ClCompile Include="CAnimator2D.cpp" />
