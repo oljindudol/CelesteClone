@@ -190,6 +190,9 @@
     <ClInclude Include="CDreamParticleUpdate.h">
       <Filter>ShaderCode\Compute\DreamParticleUpdate</Filter>
     </ClInclude>
+    <ClInclude Include="CDreamBlockParticleSystem.h">
+      <Filter>08. Component\RenderComponent\09. DreamBlockParticleSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -365,6 +368,9 @@
     </ClCompile>
     <ClCompile Include="CDreamParticleUpdate.cpp">
       <Filter>ShaderCode\Compute\DreamParticleUpdate</Filter>
+    </ClCompile>
+    <ClCompile Include="CDreamBlockParticleSystem.cpp">
+      <Filter>08. Component\RenderComponent\09. DreamBlockParticleSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -547,6 +553,9 @@
     </Filter>
     <Filter Include="ShaderCode\Compute\DreamParticleUpdate">
       <UniqueIdentifier>{45b29323-fb07-4f94-9790-5830f46ea701}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\09. DreamBlockParticleSystem">
+      <UniqueIdentifier>{a2d02f4a-4be1-49f8-a898-fccce934221a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
