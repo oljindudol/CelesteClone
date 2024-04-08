@@ -90,7 +90,7 @@ CDreamBlockParticleSystem::CDreamBlockParticleSystem() :
 	m_Module.AlphaBasedLife = 1; // 0 : off, 1 : NomrlizedAge, 2: Age
 	m_Module.AlphaMaxAge = 2.8f;
 
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::Vibration] = 1;
+	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::VIBRATION] = 1;
 	m_Module.VibTime = 0.3f;
 	m_Module.VibColor = Vec4(1.f, 1.f, 1.f, 1.f);
 
@@ -110,7 +110,7 @@ CDreamBlockParticleSystem::CDreamBlockParticleSystem() :
 	m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(STR_FILE_PATH_PARTICLE_STARS
 		, STR_FILE_PATH_PARTICLE_STARS);
 
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::Animation] = 1;
+	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ANIMATION] = 1;
 	m_Module.FrameDuration = 0.3f;
 	m_Module.NumberOfAtlas = 3;
 	m_Module.NumberOfFrame[0] = 8;

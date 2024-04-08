@@ -46,12 +46,12 @@ void ParticleSystemUI::render_update()
 	ImGui::Separator();
 	CreateStaticColorButton("VibColor Module", ModuleColor);
 	ImGui::SameLine();
-	if (1 == CurModule.arrModuleCheck[(UINT)PARTICLE_MODULE::Vibration]) {
+	if (1 == CurModule.arrModuleCheck[(UINT)PARTICLE_MODULE::VIBRATION]) {
 		ImGui::PushStyleColor(ImGuiCol_Button, Green);
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Green);
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, Green);
 		if (ImGui::Button("On##VibColor")) {
-			NewModule.arrModuleCheck[(UINT)PARTICLE_MODULE::Vibration] = 0;
+			NewModule.arrModuleCheck[(UINT)PARTICLE_MODULE::VIBRATION] = 0;
 		}
 		ImGui::PopStyleColor(3);
 	}
@@ -60,7 +60,7 @@ void ParticleSystemUI::render_update()
 		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Gray);
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, Gray);
 		if (ImGui::Button("Off##VibColor")) {
-			NewModule.arrModuleCheck[(UINT)PARTICLE_MODULE::Vibration] = 1;
+			NewModule.arrModuleCheck[(UINT)PARTICLE_MODULE::VIBRATION] = 1;
 		}
 		ImGui::PopStyleColor(3);
 	}
@@ -344,7 +344,6 @@ void ParticleSystemUI::render_update()
 	ImGui::DragFloat("##AlphaMaxAge", &NewModule.AlphaMaxAge, 0.1f, 0.0f, 10.0f);
 
 	ImGui::Separator();
-	ImGui::Text("OriginalColor:"); ImGui::SameLine();
 	CreateStaticColorButton("OriginalColor", ModuleColor);
 	ImGui::SameLine();
 	if (1 == CurModule.arrModuleCheck[(UINT)PARTICLE_MODULE::ORIGINALCOLOR]) {
