@@ -4,8 +4,8 @@
 #include "value.fx"
 #include "struct.fx"
 
-StructuredBuffer<tParticle> g_ParticleBuffer : register(t20);
-StructuredBuffer<tParticleModule> g_ParticleModule : register(t21);
+StructuredBuffer<tDreamParticle> g_ParticleBuffer : register(t20);
+StructuredBuffer<tDreamParticleModule> g_ParticleModule : register(t21);
 
 #define Particle g_ParticleBuffer[_in.iInstID]
 
@@ -39,7 +39,7 @@ void GS_DreamParticle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStre
     GS_OUT output_cross[4] = { (GS_OUT) 0.f, (GS_OUT) 0.f, (GS_OUT) 0.f, (GS_OUT) 0.f };
         
     // GS 가 담당하는 파티클 정보를 가져온다.    
-    tParticle particle = g_ParticleBuffer[_in[0].InstID];
+    tDreamParticle particle = g_ParticleBuffer[_in[0].InstID];
     if (0 == particle.Active)
     {
         return;
@@ -141,8 +141,8 @@ void GS_DreamParticle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStre
 // DreamParticle 전용 PS
 float4 PS_DreamParticle(GS_OUT _in) : SV_Target
 {
-    tParticle particle = g_ParticleBuffer[_in.InstID];
-    tParticleModule module = g_ParticleModule[0];
+    tDreamParticle particle = g_ParticleBuffer[_in.InstID];
+    tDreamParticleModule module = g_ParticleModule[0];
     
     // 출력 색상
     float4 vOutColor;
