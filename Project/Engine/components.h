@@ -14,6 +14,7 @@
 #include "CParticleSystem.h"
 #include "CCustomParticleSystem.h"
 #include "CAnimatedParticleSystem.h"
+#include "CDreamBlockParticleSystem.h"
 
 //#include "CCollider3D.h"
 //#include "CAnimator3D.h"

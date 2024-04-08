@@ -163,6 +163,7 @@
     <ClInclude Include="AssetUI.h" />
     <ClInclude Include="CameraUI.h" />
     <ClInclude Include="CCreateTempLevel.h" />
+    <ClInclude Include="DreamBlockParticleSystemUI.h" />
     <ClInclude Include="CEditorObjMgr.h" />
     <ClInclude Include="CGameObjectEx.h" />
     <ClInclude Include="CIdleState.h" />
@@ -215,6 +216,7 @@
     <ClCompile Include="AssetUI.cpp" />
     <ClCompile Include="CameraUI.cpp" />
     <ClCompile Include="CCreateTempLevel.cpp" />
+    <ClCompile Include="DreamBlockParticleSystemUI.cpp" />
     <ClCompile Include="CEditorObjMgr.cpp" />
     <ClCompile Include="CGameObjectEx.cpp" />
     <ClCompile Include="CIdleState.cpp" />

@@ -16,6 +16,15 @@ UI::~UI()
 	Delete_Vec(m_vecChildUI);
 }
 
+void UI::CreateStaticColorButton(const string& _name, const ImVec4& _Color)
+{
+	ImGui::PushStyleColor(ImGuiCol_Button, _Color);
+	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, _Color);
+	ImGui::PushStyleColor(ImGuiCol_ButtonActive, _Color);
+	ImGui::Button(_name.c_str());
+	ImGui::PopStyleColor(3);
+}
+
 void UI::tick()
 {
 

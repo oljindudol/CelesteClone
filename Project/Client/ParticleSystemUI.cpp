@@ -13,14 +13,7 @@ ParticleSystemUI::~ParticleSystemUI()
 {
 }
 
-void CreateStaticColorButton(const string& _name, const ImVec4& _Color)
-{
-	ImGui::PushStyleColor(ImGuiCol_Button, _Color);
-	ImGui::PushStyleColor(ImGuiCol_ButtonHovered, _Color);
-	ImGui::PushStyleColor(ImGuiCol_ButtonActive, _Color);
-	ImGui::Button(_name.c_str());
-	ImGui::PopStyleColor(3);
-}
+
 
 
 void ParticleSystemUI::render_update()
@@ -377,7 +370,4 @@ void ParticleSystemUI::render_update()
 
 }
 
-void ParticleSystemUI::MaterialSelect(DWORD_PTR _ptr)
-{
-}
 

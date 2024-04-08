@@ -14,6 +14,7 @@ class CStateMachine;
 class CParticleSystem;
 class CCustomParticleSystem;
 class CAnimatedParticleSystem;
+class CDreamBlockParticleSystem;
 
 class CGameObject :
     public CEntity
@@ -55,7 +56,7 @@ public:
     GET_COMPONENT(ParticleSystem, PARTICLESYSTEM);
     GET_COMPONENT(CustomParticleSystem, CUSTOMPARTICLESYSTEM);
     GET_COMPONENT(AnimatedParticleSystem, AIMATEDPARTICLESYSTEM);
-
+    GET_COMPONENT(DreamBlockParticleSystem, DREAMBLOCKPARTICLESYSTEM);
 
 
     int GetLayerIdx() { return m_iLayerIdx; }

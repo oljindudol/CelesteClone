@@ -36,6 +36,7 @@ public:
 	virtual void Deactivate() { m_bActive = false; }
 	bool IsActivate() { return m_bActive; }
 	void SetModal(bool _Modal) { m_bModal = _Modal; }
+	void CreateStaticColorButton(const string& _name, const ImVec4& _Color);
 
 
 public:

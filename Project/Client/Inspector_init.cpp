@@ -20,6 +20,7 @@ void Inspector::CreateChildUI()
 #include "TileMapUI.h"
 #include "CameraUI.h"
 #include "ParticleSystemUI.h"
+#include "DreamBlockParticleSystemUI.h"
 
 void Inspector::CreateComponentUI()
 {
@@ -54,6 +55,10 @@ void Inspector::CreateComponentUI()
 	m_arrComUI[(UINT)COMPONENT_TYPE::AIMATEDPARTICLESYSTEM] = new ParticleSystemUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::AIMATEDPARTICLESYSTEM]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::AIMATEDPARTICLESYSTEM]);
+
+	m_arrComUI[(UINT)COMPONENT_TYPE::DREAMBLOCKPARTICLESYSTEM] = new DreamBlockParticleSystemUI;
+	m_arrComUI[(UINT)COMPONENT_TYPE::DREAMBLOCKPARTICLESYSTEM]->Deactivate();
+	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::DREAMBLOCKPARTICLESYSTEM]);
 
 
 }
