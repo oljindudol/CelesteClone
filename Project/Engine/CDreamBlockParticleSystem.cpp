@@ -58,7 +58,7 @@ CDreamBlockParticleSystem::CDreamBlockParticleSystem() :
 	m_Module.SpawnShape = 1; // 0 : Sphere, 1 : Box
 	m_Module.Radius = 100.f;
 	m_Module.vSpawnBoxScale = Vec4(200.f, 150.f, 0.f, 0.f);
-	m_Module.SpawnRate = 500.f;
+	m_Module.SpawnRate = 0.3f;
 
 	// Add Velocity Module
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 1;
@@ -82,7 +82,7 @@ CDreamBlockParticleSystem::CDreamBlockParticleSystem() :
 	m_Module.DragTime = 60.f;
 
 	// Calculate Force
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::CALCULATE_FORCE] = 1;
+	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::CALCULATE_FORCE] = 0;
 
 	// Render 
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::RENDER] = 1;
@@ -91,13 +91,13 @@ CDreamBlockParticleSystem::CDreamBlockParticleSystem() :
 	m_Module.AlphaMaxAge = 2.8f;
 
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::VIBRATION] = 1;
-	m_Module.VibTime = 0.3f;
+	m_Module.VibTime = 0.1f;
 	m_Module.VibColor = Vec4(1.f, 1.f, 1.f, 1.f);
 
 	Ptr<CTexture> tex = nullptr;
 	std::filesystem::path base_path = CPathMgr::GetContentPath();
 	wstring OriginPath = base_path;
-	OriginPath += STR_FOLDER_PATH_PARTICLE_STARS;
+	OriginPath += STR_FOLDER_PATH_DREAMBLOCK;
 	auto images = getImagesFromDirectory(OriginPath);
 	for (auto& i : images)
 	{
@@ -105,17 +105,17 @@ CDreamBlockParticleSystem::CDreamBlockParticleSystem() :
 		auto tex = CAssetMgr::GetInst()->Load<CTexture>(rel, rel);
 		m_vecParticleTex.push_back(tex);
 	}
-	m_ParticleArrTex = CAssetMgr::GetInst()->CreateArrayTexture(STR_KEY_TEXARR_ANIMATED_PARTICLE, m_vecParticleTex, 1);
+	m_ParticleArrTex = CAssetMgr::GetInst()->CreateArrayTexture(STR_KEY_TEXARR_DREAMBLOCK_PARTICLE, m_vecParticleTex, 1);
 
 	m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(STR_FILE_PATH_PARTICLE_STARS
 		, STR_FILE_PATH_PARTICLE_STARS);
 
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ANIMATION] = 1;
 	m_Module.FrameDuration = 0.3f;
-	m_Module.NumberOfAtlas = 3;
-	m_Module.NumberOfFrame[0] = 8;
-	m_Module.NumberOfFrame[1] = 8;
-	m_Module.NumberOfFrame[2] = 8;
+	m_Module.NumberOfAtlas = 1;
+	m_Module.NumberOfFrame[0] = 3;
+	//m_Module.NumberOfFrame[1] = 8;
+	//m_Module.NumberOfFrame[2] = 8;
 
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ORIGINALCOLOR] = 1;
 

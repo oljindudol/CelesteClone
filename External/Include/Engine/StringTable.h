@@ -12,7 +12,8 @@
 //TextureArr
 #define STR_KEY_TEXARR_FORE_TILE L"TileMapForeGroundTextureArray"
 #define STR_KEY_TEXARR_BACK_TILE L"TileMapBakcGroundTextureArray"
-#define STR_KEY_TEXARR_ANIMATED_PARTICLE L"TileMapBakcGroundTextureArray"
+#define STR_KEY_TEXARR_ANIMATED_PARTICLE L"AniMatedParticleTextureArray"
+#define STR_KEY_TEXARR_DREAMBLOCK_PARTICLE L"DreamBlockTextureArray"
 
 
 // Image Path
@@ -28,6 +29,7 @@
 #define STR_FOLDER_PATH_PARTICLE_STARS L"\\texture\\Gameplay\\particle\\stars"
 #define STR_FILE_PATH_PARTICLE_STARS L"\\texture\\Gameplay\\particle\\stars\\a.png"
 
+#define STR_FOLDER_PATH_DREAMBLOCK L"\\texture\\Gameplay\\dreamblock"
 
 
 // Imgui UI String
