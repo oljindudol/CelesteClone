@@ -134,9 +134,9 @@ void CCreateTempLevel::CreateTempLevel()
 	pChidObj->AddComponent(new CTransform);
 	pChidObj->Transform()->SetRelativePos(Vec3(1.f, 160.f, 130.f));
 	//pChidObj->AddComponent(new CAnimatedParticleSystem);
-	pChidObj->AddComponent(new CDreamBlockParticleSystem);
 
 	pCamObj->AddChild(pChidObj);
+	pChidObj = nullptr;
 
 
 
@@ -166,9 +166,20 @@ void CCreateTempLevel::CreateTempLevel()
 
 	CGameObject* pObj = nullptr;
 
+	//드림블럭
+	pObj = new CGameObject;
+	pObj->SetName(L"DreamBlock");
+	pObj->AddComponent(new CTransform);
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 91.f));
+	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 0.f));
+	pObj->AddComponent(new CCollider2D);
+	pObj->Collider2D()->SetOffsetScale(Vec2(1, 1));
+	pObj->AddComponent(new CDreamBlockParticleSystem);
+	pTempLevel->AddObject(pObj, LAYER_FORETILE);
+
 
 	pObj = nullptr;
-
+	pChidObj = nullptr;
 	// Backgruond Object 생성
 	//pObj = new CGameObject;
 	//pObj->SetName(L"Background");

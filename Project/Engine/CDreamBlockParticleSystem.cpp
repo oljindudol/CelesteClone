@@ -57,8 +57,8 @@ CDreamBlockParticleSystem::CDreamBlockParticleSystem() :
 	m_Module.MaxMass = 1.f;
 	m_Module.SpawnShape = 1; // 0 : Sphere, 1 : Box
 	m_Module.Radius = 100.f;
-	m_Module.vSpawnBoxScale = Vec4(1000.f, 1.f, 45.f, 0.f);
-	m_Module.SpawnRate = 11.f;
+	m_Module.vSpawnBoxScale = Vec4(200.f, 100.f, 50.f, 0.f);
+	m_Module.SpawnRate = 50.f;
 
 	// Add Velocity Module
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 1;
