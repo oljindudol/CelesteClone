@@ -106,6 +106,7 @@
 // computershader.fx functions name
 #define STR_FUNC_NAME_CSShaderSetColor "CS_SetColor"
 #define STR_FUNC_NAME_CSShaderParticleUpdate "CS_ParticleUpdate"
+#define STR_FUNC_NAME_CSShaderDreamParticleUpdate "CS_DreamParticleUpdate"
 
 
 ////////// Resource Key ///////////////
