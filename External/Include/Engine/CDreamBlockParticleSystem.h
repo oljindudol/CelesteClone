@@ -8,7 +8,7 @@ private:
     CStructuredBuffer* m_ParticleBuffer;
     UINT                    m_MaxParticleCount;
 
-    tParticleModule         m_Module;
+    tDreamParticleModule         m_Module;
     CStructuredBuffer* m_ParticleModuleBuffer;
 
     CStructuredBuffer* m_SpawnCountBuffer;
@@ -44,10 +44,10 @@ public:
     virtual void LoadFromFile(FILE* _File) override;
     CLONE(CDreamBlockParticleSystem);
 public:
-    tParticleModule GetModule() {
+    tDreamParticleModule GetModule() {
         return m_Module;
     }
-    void SetModule(tParticleModule _Module) {
+    void SetModule(tDreamParticleModule _Module) {
         m_Module = _Module;
     }
     void SetDebug(bool _bDebug) { m_bDebug = _bDebug; }

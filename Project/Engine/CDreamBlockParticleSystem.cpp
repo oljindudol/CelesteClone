@@ -23,16 +23,16 @@ CDreamBlockParticleSystem::CDreamBlockParticleSystem() :
 
 	// 파티클을 저장하는 구조화 버퍼
 	m_ParticleBuffer = new CStructuredBuffer;
-	m_ParticleBuffer->Create(sizeof(tParticle), m_MaxParticleCount, SB_TYPE::READ_WRITE, true);
+	m_ParticleBuffer->Create(sizeof(tDreamParticle), m_MaxParticleCount, SB_TYPE::READ_WRITE, true);
 
 	// 파티클 모듈정보를 저장하는 구조화버퍼
 	m_ParticleModuleBuffer = new CStructuredBuffer;
 	UINT ModuleAddSize = 0;
-	if (sizeof(tParticleModule) % 16 != 0)
+	if (sizeof(tDreamParticleModule) % 16 != 0)
 	{
-		ModuleAddSize = 16 - (sizeof(tParticleModule) % 16);
+		ModuleAddSize = 16 - (sizeof(tDreamParticleModule) % 16);
 	}
-	m_ParticleModuleBuffer->Create(sizeof(tParticleModule) + ModuleAddSize, 1, SB_TYPE::READ_ONLY, true);
+	m_ParticleModuleBuffer->Create(sizeof(tDreamParticleModule) + ModuleAddSize, 1, SB_TYPE::READ_ONLY, true);
 
 	// 파티클 업데이트용 컴퓨트 쉐이더 참조
 	//m_CSParticleUpdate = (CParticleUpdate*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(STR_KEY_ParticleUpdateShader).Get();
@@ -239,7 +239,7 @@ void CDreamBlockParticleSystem::SaveToFile(FILE* _File)
 {
 	// 파티클 최대 갯수 및 모듈 정보 저장
 	fwrite(&m_MaxParticleCount, sizeof(UINT), 1, _File);
-	fwrite(&m_Module, sizeof(tParticleModule), 1, _File);
+	fwrite(&m_Module, sizeof(tDreamParticleModule), 1, _File);
 
 	// 사용하던 CS 가 누군지 저장
 	//SaveAssetRef(m_CSParticleUpdate, _File);
@@ -252,7 +252,7 @@ void CDreamBlockParticleSystem::LoadFromFile(FILE* _File)
 {
 	// 파티클 최대 갯수 및 모듈 정보 로드
 	fread(&m_MaxParticleCount, sizeof(UINT), 1, _File);
-	fread(&m_Module, sizeof(tParticleModule), 1, _File);
+	fread(&m_Module, sizeof(tDreamParticleModule), 1, _File);
 
 	// 사용하던 CS 가 누군지 로드
 	/*Ptr<CComputeShader> cs;

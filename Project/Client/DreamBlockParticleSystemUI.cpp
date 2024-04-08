@@ -28,8 +28,8 @@ void DreamBlockParticleSystemUI::render_update()
 
 	auto TO = GetTargetObject();
 	auto pPS = TO->DreamBlockParticleSystem();
-	tParticleModule CurModule = pPS->GetModule();
-	tParticleModule NewModule = CurModule;
+	tDreamParticleModule CurModule = pPS->GetModule();
+	tDreamParticleModule NewModule = CurModule;
 
 	static ImVec4 ModuleColor = Burgundy;
 
