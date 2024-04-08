@@ -8,7 +8,7 @@
 TileMapUI::TileMapUI()
 	: ComponentUI("TileMap", "##TileMap", COMPONENT_TYPE::TILEMAP)
 {
-	SetSize(ImVec2(0.f, 120.f));
+	SetSize(ImVec2(0.f, 300.f));
 	SetComopnentTitle("TileMap");
 }
 
@@ -23,6 +23,15 @@ void TileMapUI::render_update()
 
 	ComponentUI::render_update();
 
+	if (ImGui::Button("CreateTileFab"))
+	{
+		GetTargetObject()->TileMap()->CreateTileFab();
+	}
+	if (ImGui::Button("LoadTileFab"))
+	{
+		GetTargetObject()->TileMap()->LoadTileFab();
+	}
+
 
 	//============= 1. Å¸ÀÏ°¹¼ö =============
 
@@ -35,6 +44,9 @@ void TileMapUI::render_update()
 	ImGui::Text("Grid Visible"); ImGui::SameLine();
 	ImGui::Checkbox("##Grid Visible", &visible);
 	GetTargetObject()->TileMap()->SetGridVisible(visible);
+
+
+
 
 	Face[0] = (int)GetTargetObject()->TileMap()->GetRow();
 	Face[1] = (int)GetTargetObject()->TileMap()->GetCol();

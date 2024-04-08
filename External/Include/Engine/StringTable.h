@@ -1,6 +1,13 @@
 #pragma once
 
 
+//About Tile Map
+#define STR_KEY_TILEFAP_FORE_GROUND L"TileFore"
+#define STR_KEY_TILEFAP_Back_GROUND L"TileBack"
+
+#define STR_KEY_TILEFAB_PATH L"\\tilefab\\"
+
+
 
 //TextureArr
 #define STR_KEY_TEXARR_FORE_TILE L"TileMapForeGroundTextureArray"
@@ -14,6 +21,7 @@
 #define STR_FOLDER_PATH_BANGS L"\\texture\\Gameplay\\hair\\bangs"
 #define STR_FOLDER_PATH_PLAYERANIMATION L"\\texture\\Gameplay\\madeline"
 #define STR_FOLDER_PATH_FORE_TILE L"\\texture\\Gameplay\\tilemap\\foretile"
+#define STR_FOLDER_PATH_BACK_TILE L"\\texture\\Gameplay\\tilemap\\backtile"
 #define STR_FILE_PATH_PARTICLE_GENERAL L"\\texture\\Gameplay\\particle\\General\\particle1by1.png"
 #define STR_FILE_PATH_RAY L"texture\\particle\\ray.png"
 

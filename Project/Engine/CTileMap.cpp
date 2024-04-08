@@ -257,3 +257,52 @@ void CTileMap::LoadFromFile(FILE* _File)
 	m_vecTileInfo.reserve(InfoCount);
 	fread(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
 }
+
+void CTileMap::CreateTileFab()
+{
+	const static wstring extention = L".txt";
+	// Level 을 저장할 경로
+	wstring strFabPath = CPathMgr::GetContentPath();
+	strFabPath += STR_KEY_TILEFAB_PATH;
+	strFabPath += GetOwner()->GetName();
+	strFabPath += extention;
+
+
+	FILE* pFile = nullptr;
+	_wfopen_s(&pFile, strFabPath.c_str(), L"wb");
+
+	//트랜스폼 정보저장
+	auto rpos = Transform()->GetRelativePos();
+	fwrite(&rpos, sizeof(Vec3), 1, pFile);
+
+	//타일info 저장
+	size_t InfoCount = m_vecTileInfo.size();
+	fwrite(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, pFile);
+
+	fclose(pFile);
+}
+
+void CTileMap::LoadTileFab()
+{
+	const static wstring extention = L".txt";
+	// Level 을 저장할 경로
+	wstring strFabPath = CPathMgr::GetContentPath();
+	strFabPath += STR_KEY_TILEFAB_PATH;
+	strFabPath += GetOwner()->GetName();
+	strFabPath += extention;
+
+	FILE* pFile = nullptr;
+	_wfopen_s(&pFile, strFabPath.c_str(), L"rb");
+	//assert(pFile);
+
+	//트랜스폼 정보 불러오기
+	Vec3 rpos =Vec3();
+	fread(&rpos, sizeof(Vec3), 1, pFile);
+	Transform()->SetRelativePos(rpos);
+
+	//타일info 불러오기
+	size_t InfoCount = m_vecTileInfo.size();
+	fread(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, pFile);
+
+	fclose(pFile);
+}

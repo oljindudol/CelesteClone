@@ -181,17 +181,15 @@ void CCreateTempLevel::CreateTempLevel()
 
 	//pTempLevel->AddObject(pObj, LAYER_BACKGROUND, false);
 
-
+	int TileNum = 0;
 	// TileMap Object
 	pObj = new CGameObject;
-	pObj->SetName(L"TileMap");
+	pObj->SetName(STR_KEY_TILEFAP_FORE_GROUND);
 
 	pObj->AddComponent(new CTransform);
 	pObj->AddComponent(new CTileMap);
 
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 91.f));
-	//Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\snow.png", L"texture\\snow.png");
-	//pObj->TileMap()->SetTileAtlas(pTileAtlas);
 
 	static const std::filesystem::path base_path = CPathMgr::GetContentPath();
 	wstring ForeTilePath = base_path;

@@ -135,6 +135,10 @@ public:
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
+
+    void CreateTileFab();
+    void LoadTileFab();
+
     CLONE(CTileMap);
 public:
     CTileMap();
