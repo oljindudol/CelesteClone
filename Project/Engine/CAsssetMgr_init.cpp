@@ -393,11 +393,15 @@ void CAssetMgr::CreateDefaultMaterial()
 {
 	CMaterial* pMtrl = nullptr;
 
+	// DreamParticleMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(STR_KEY_DreamParticleRenderShader));
+	AddAsset<CMaterial>(STR_KEY_DreamParticleMeterial, pMtrl);
+
 	// AnimatedParticleMtrl
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(STR_KEY_AnimatedParticleRenderShader));
 	AddAsset<CMaterial>(STR_KEY_AnimatedParticleMeterial, pMtrl);
-
 
 	// CustomParticleMtrl
 	pMtrl = new CMaterial(true);
@@ -408,7 +412,6 @@ void CAssetMgr::CreateDefaultMaterial()
 	pMtrl = new CMaterial(true);
 	pMtrl->SetShader(FindAsset<CGraphicsShader>(STR_KEY_ShockWaveShader));
 	AddAsset<CMaterial>(STR_KEY_ShockWaveMeterial, pMtrl);
-
 
 	// HairMtrl
 	pMtrl = new CMaterial(true);

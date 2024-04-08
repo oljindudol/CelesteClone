@@ -164,6 +164,7 @@
 #define STR_KEY_ShockWaveMeterial L"ShockWaveMtrl"
 #define STR_KEY_CustomParticleMeterial L"CustomParticleMtrl"
 #define STR_KEY_AnimatedParticleMeterial L"AnimatedParticleMtrl"
+#define STR_KEY_DreamParticleMeterial L"DreamParticleMtrl"
 
 
 
