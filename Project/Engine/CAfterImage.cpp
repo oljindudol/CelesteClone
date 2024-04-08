@@ -71,13 +71,13 @@ void CAfterImage::render()
 
 			float percent = iter->AccTime / iter->Duration;
 			float alpha = (percent < 1.f) ? (0.75f * (1 - pow(percent, 3))) : 0.f;
-			auto BC = m_RenderInfo.BorderColor;
-			auto HC = m_RenderInfo.HairColor;
+			//auto BC = m_RenderInfo.BorderColor;
+			auto HC = iter->Color;//m_RenderInfo.HairColor;
 
-			BC = Color(BC.x , BC.y , BC.z , BC.w * alpha);
-			HC = Color(HC.x , HC.y , HC.z , HC.w * alpha);
+			//BC = Color(BC.x , BC.y , BC.z , BC.w * alpha);
+			//HC = Color(HC.x , HC.y , HC.z , HC.w * alpha);
 			//BC = Color(BC.x * alpha, BC.y * alpha, BC.z * alpha, BC.w * alpha);
-			//HC = Color(HC.x * alpha, HC.y * alpha, HC.z * alpha, HC.w * alpha);
+			HC = Color(HC.x * alpha, HC.y * alpha, HC.z * alpha, HC.w * alpha);
 			const float OutLineWidth = 0.5f;
 			const float OutLineDepth = 0.002f;
 			const float HairDepth = 0.001f;

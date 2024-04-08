@@ -1774,7 +1774,18 @@ void CPlayerScript::PushAfterImageEvent()
     Event.HairWorldMat = m_pPlayerHairGO->Transform()->GetWorldMat();
     Event.facing = GetOwner()->m_facing;
     Event.vMult = GetOwner()->Animator2D()->GetMulScale();
-    Event.Color = Sprite->Color;
+    static const Color Normal = HexToColor("AC3232");
+    //static const Color Normal = HexToColor("ff6def");
+    //static const Color Normal = HexToColor("44B7FF");
+
+    //static const Color Used = HexToColor("AC3232");
+    //static const Color Used = HexToColor("ff6def");
+    static const Color Used = HexToColor("44B7FF");
+
+    Color c = wasDashB ? Normal : Used;
+
+
+    Event.Color = c;
     //플레이어 텍스쳐
     auto anim = GetOwner()->Animator2D()->GetCurAnim();
     auto& vecfrm = anim->GetVecFrm();

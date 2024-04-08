@@ -471,3 +471,10 @@ void TileMapEditor::_OptimizeCollisionArea()
 void TileMapEditor::GetEndIdxOfRectArea(int** _grid, int _startX, int _startY, int& _endX, int& _endY)
 {
 }
+
+void TileMapEditor::Activate()
+{
+	UI::Activate();
+
+	GetTargetObject()->TileMap()->SetGridVisible(true);
+}

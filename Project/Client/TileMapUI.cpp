@@ -23,6 +23,10 @@ void TileMapUI::render_update()
 
 	ComponentUI::render_update();
 
+	if (ImGui::Button("ClearTIle"))
+	{
+		GetTargetObject()->TileMap()->ClearTile();
+	}
 	if (ImGui::Button("CreateTileFab"))
 	{
 		GetTargetObject()->TileMap()->CreateTileFab();
@@ -115,5 +119,11 @@ void TileMapUI::render_update()
 		pEdit->Activate();
 	}
 
+}
+
+void TileMapUI::Activate()
+{
+	UI::Activate();
+	GetTargetObject()->TileMap()->SetGridVisible(true);
 }
 

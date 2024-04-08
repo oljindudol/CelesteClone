@@ -136,6 +136,7 @@ public:
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
 
+    void ClearTile();
     void CreateTileFab();
     void LoadTileFab();
 

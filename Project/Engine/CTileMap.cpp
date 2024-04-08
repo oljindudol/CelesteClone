@@ -258,6 +258,15 @@ void CTileMap::LoadFromFile(FILE* _File)
 	fread(m_vecTileInfo.data(), sizeof(tTileInfo), InfoCount, _File);
 }
 
+void CTileMap::ClearTile()
+{
+	for (auto& ti : m_vecTileInfo)
+	{
+		ti.AtlasIdx = -1;
+		ti.TileIdx = -1;
+	}
+}
+
 void CTileMap::CreateTileFab()
 {
 	const static wstring extention = L".txt";
