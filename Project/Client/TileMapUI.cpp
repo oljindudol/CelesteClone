@@ -30,6 +30,12 @@ void TileMapUI::render_update()
 
 	static int FacePrev[2] = { 0, 0 };
 
+
+	auto visible = GetTargetObject()->TileMap()->GetGridVisible();
+	ImGui::Text("Grid Visible"); ImGui::SameLine();
+	ImGui::Checkbox("##Grid Visible", &visible);
+	GetTargetObject()->TileMap()->SetGridVisible(visible);
+
 	Face[0] = (int)GetTargetObject()->TileMap()->GetRow();
 	Face[1] = (int)GetTargetObject()->TileMap()->GetCol();
 
@@ -47,19 +53,21 @@ void TileMapUI::render_update()
 		Face[1] = min;
 	}
 
-	if (!(FacePrev[0] == Face[0] && FacePrev[1] == Face[1]))
-	{
-		GetTargetObject()->TileMap()->SetRowCol((UINT)Face[0], (UINT)Face[1]);
 
-		//for (int i = 0; i < Face[1]; ++i)
-		//{
-		//	for (int j = 0; j < Face[0]; ++j)
-		//	{
-		//		GetTargetObject()->TileMap()->SetTileIndexWithOutGridInit(i, j, i * Face[0] + j);
-		//	}
-		//}
-		GetTargetObject()->TileMap()->GridInit();
-	}
+
+	//if (!(FacePrev[0] == Face[0] && FacePrev[1] == Face[1]))
+	//{
+	//	GetTargetObject()->TileMap()->SetRowCol((UINT)Face[0], (UINT)Face[1]);
+	//
+	//	//for (int i = 0; i < Face[1]; ++i)
+	//	//{
+	//	//	for (int j = 0; j < Face[0]; ++j)
+	//	//	{
+	//	//		GetTargetObject()->TileMap()->SetTileIndexWithOutGridInit(i, j, i * Face[0] + j);
+	//	//	}
+	//	//}
+	//	GetTargetObject()->TileMap()->GridInit();
+	//}
 
 	FacePrev[0] = Face[0];
 	FacePrev[1] = Face[1];

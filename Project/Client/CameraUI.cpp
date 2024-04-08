@@ -7,6 +7,7 @@
 #include <Engine/CLevelMgr.h>
 #include <Engine/CLevel.h>
 #include <Engine/CLayer.h>
+#include <Engine\CTransform.h>
 
 
 #include "CImGuiMgr.h"
@@ -48,6 +49,13 @@ void CameraUI::render_update()
     ImVec4 Green = ImVec4(0.f, 1.f, 0.f, 1.0f);
     ImVec4 Blue = ImVec4(0.f, 0.f, 1.f, 1.0f);
     ImVec4 Gray = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);
+
+    if(ImGui::Button("initialize pos"))
+    {
+        pTarget->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+        pTarget->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+    }
+
 
     float ffar = pCamera->GetFar();
     ImGui::Text("Far"); ImGui::SameLine();

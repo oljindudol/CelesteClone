@@ -210,17 +210,17 @@ void CCreateTempLevel::CreateTempLevel()
 	pTempLevel->AddObject(pObj, LAYER_FORETILE, false);
 	pObj->TileMap()->SetRowCol(40, 23);
 
-	auto& ti = pObj->TileMap()->GetTilesInfo();
-	for (int i = 840; i < 880; ++i)
-	{
-		ti[i].TileIdx= 0;
-		ti[i].AtlasIdx = 17;
-	}
-	for (int i = 880; i < 920; ++i)
-	{
-		ti[i].TileIdx = 6;
-		ti[i].AtlasIdx = 17;
-	}
+	//auto& ti = pObj->TileMap()->GetTilesInfo();
+	//for (int i = 840; i < 880; ++i)
+	//{
+	//	ti[i].TileIdx= 0;
+	//	ti[i].AtlasIdx = 17;
+	//}
+	//for (int i = 880; i < 920; ++i)
+	//{
+	//	ti[i].TileIdx = 6;
+	//	ti[i].AtlasIdx = 17;
+	//}
 
 	//for (int i = 0; i < 23; ++i)
 	//{

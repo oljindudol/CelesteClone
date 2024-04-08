@@ -54,7 +54,10 @@ private:
     int m_IdxHighLight;
 
 public:
-
+    bool GetGridVisible() { return m_bGridVisible; }
+    void SetGridVisible(bool _bGridVisible) {
+        m_bGridVisible = _bGridVisible;
+    }
 
     void SetRowCol(UINT _Row, UINT _Col);
     UINT GetRow() { return m_Row; }
