@@ -122,6 +122,7 @@
 // compute shader
 #define STR_KEY_SetColorShader L"SetColorShader"
 #define STR_KEY_ParticleUpdateShader L"ParticleUpdateShader"
+#define STR_KEY_DreamParticleUpdateShader L"DreamParticleUpdateShader"
 
 
 

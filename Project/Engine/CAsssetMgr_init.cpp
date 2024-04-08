@@ -5,6 +5,7 @@
 #include "CGraphicsShader.h"
 #include "CMaterial.h"
 
+
 void CAssetMgr::init()
 {
 	InitSound();
@@ -450,6 +451,7 @@ void CAssetMgr::CreateDefaultMaterial()
 
 
 
+#include "CDreamParticleUpdate.h"
 #include "CSetColorShader.h"
 #include "CParticleUpdate.h"
 void CAssetMgr::CreateDefaultComputeShader()
@@ -463,6 +465,10 @@ void CAssetMgr::CreateDefaultComputeShader()
 	// ParticleUpdateShader
 	pShader = new CParticleUpdate;
 	AddAsset(STR_KEY_ParticleUpdateShader, pShader.Get());
+
+	// DreamParticleUpdateShader
+	pShader = new CDreamParticleUpdate;
+	AddAsset(STR_KEY_DreamParticleUpdateShader, pShader.Get());
 }
 
 
