@@ -25,13 +25,23 @@ void DreamBlockParticleSystemUI::render_update()
 	static const ImVec4 Blue = ImVec4(0.f, 0.f, 1.f, 1.0f);
 	static const ImVec4 Gray = ImVec4(0.3f, 0.3f, 0.3f, 1.0f);
 	static const ImVec4 Burgundy = ImVec4(0.5647f, 0.f, 0.1255f, 1.0f);
+	static ImVec4 ModuleColor = Burgundy;
 
 	auto TO = GetTargetObject();
 	auto pPS = TO->DreamBlockParticleSystem();
+	if (ImGui::Button("Save"))
+	{
+		pPS->CreateDreamFab();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Load"))
+	{
+		pPS->LoadDreamFab();
+	}
+
 	tDreamParticleModule CurModule = pPS->GetModule();
 	tDreamParticleModule NewModule = CurModule;
 
-	static ImVec4 ModuleColor = Burgundy;
 	if (ImGui::Button("ReSpawn"))
 	{
 		pPS->DeleteParticle();
