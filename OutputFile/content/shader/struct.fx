@@ -45,6 +45,7 @@ struct tDreamParticle
 	float3	vRotationVelocity;		// 각속도
 
 	int		CurFrameIdx;			// 현재Frame
+	int		CurUvx;					// 현재Uv.x
 	float	AccTime;				// 현재frame누적시간
 
 	float4	vForce;					// 입자에 적용된 누적 힘 총량
@@ -52,6 +53,7 @@ struct tDreamParticle
 	float	NoiseForceTime;			// NoiseForce 를 세팅받은 시간
 
 	float	NoiseRotTime;			// NoiseRotVel 를 세팅받은 시간
+	int		padding[3];
 };
 
 struct tDreamParticleModule
