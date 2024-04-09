@@ -44,19 +44,6 @@ CDreamBlockParticleSystem::CDreamBlockParticleSystem() :
 	m_SpawnCountBuffer->Create(sizeof(tSpawnCount), 1, SB_TYPE::READ_WRITE, true);
 
 
-	// 초기 모듈 세팅		
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] = 1;
-
-	//m_Module.vSpawnColor = Vec4(1.f, 1.f, 1.f, 1.f);
-	//m_Module.vSpawnMinScale = Vec4(7.f, 7.f, 1.f, 1.f);
-	//m_Module.vSpawnMaxScale = Vec4(7.f, 7.f, 1.f, 1.f);
-	//m_Module.vSpawnBoxScale = Vec4(1000.f, 1000.f, 0.f, 0.f);
-	//m_Module.SpawnCount = 500.f;
-
-	// Noise Force
-	m_Module.arrModuleCheck[(UINT)DREAM_PARTICLE_MODULE::NOISE_FORCE] = 0;
-	m_Module.NoiseForceScale = 5.f;
-	m_Module.NoiseForceTerm = 0.3f;
 
 	m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(STR_FILE_PATH_DREAMBLOCK_PARTICLE
 		, STR_FILE_PATH_DREAMBLOCK_PARTICLE);
@@ -137,6 +124,11 @@ void CDreamBlockParticleSystem::finaltick()
 	m_CSParticleUpdate->SetParticleSpawnCount(m_SpawnCountBuffer);
 	m_CSParticleUpdate->SetParticleWorldPos(Transform()->GetWorldPos());
 	m_CSParticleUpdate->Execute();
+
+	if (0.f != DT)
+	{
+		CreateDreamFab();
+	}
 }
 
 
@@ -168,6 +160,11 @@ void CDreamBlockParticleSystem::render()
 	// 렌더링때 사용한 리소스 바인딩 Clear
 	m_ParticleBuffer->Clear(20);
 	m_ParticleModuleBuffer->Clear(21);
+}
+
+void CDreamBlockParticleSystem::begin()
+{
+	LoadDreamFab();
 }
 
 void CDreamBlockParticleSystem::CreateDreamFab()

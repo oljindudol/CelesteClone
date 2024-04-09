@@ -40,6 +40,7 @@ public:
     virtual void UpdateData() override;
     virtual void finaltick() override;
     virtual void render() override;
+    virtual void begin() override;
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
