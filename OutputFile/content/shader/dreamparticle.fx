@@ -124,15 +124,17 @@ void GS_DreamParticle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStre
         output[i].InstID = _in[0].InstID;
         output_cross[i].InstID = _in[0].InstID;
 
-        output[i].ClipDistance = (vClip[0].x > output[i].vPosition.x) ? -1 : 1;
-        output[i].ClipDistance = (vClip[1].x < output[i].vPosition.x) || (-1 == output[i].ClipDistance) ? -1 : 1;
-        output[i].ClipDistance = (vClip[0].y < output[i].vPosition.y) || (-1 == output[i].ClipDistance) ? -1 : 1;
-        output[i].ClipDistance = (vClip[1].y > output[i].vPosition.y) || (-1 == output[i].ClipDistance) ? -1 : 1;
+        //output[i].ClipDistance = 1;
+        //output[i].ClipDistance = (vClip[0].x > output[i].vPosition.x) ? -1 : 1;
+        //output[i].ClipDistance = (vClip[1].x < output[i].vPosition.x) || (-1 == output[i].ClipDistance) ? -1 : 1;
+        //output[i].ClipDistance = (vClip[0].y < output[i].vPosition.y) || (-1 == output[i].ClipDistance) ? -1 : 1;
+        //output[i].ClipDistance = (vClip[1].y > output[i].vPosition.y) || (-1 == output[i].ClipDistance) ? -1 : 1;
         
-        output_cross[i].ClipDistance = (vClip[0].x > output_cross[i].vPosition.x) ? -1 : 1;
-        output_cross[i].ClipDistance = (vClip[1].x < output_cross[i].vPosition.x) || (-1 == output_cross[i].ClipDistance) ? -1 : 1;
-        output_cross[i].ClipDistance = (vClip[0].y < output_cross[i].vPosition.y) || (-1 == output_cross[i].ClipDistance) ? -1 : 1;
-        output_cross[i].ClipDistance = (vClip[1].y > output_cross[i].vPosition.y) || (-1 == output_cross[i].ClipDistance) ? -1 : 1;
+        //output_cross[i].ClipDistance = 1;
+        //output_cross[i].ClipDistance = (vClip[0].x > output_cross[i].vPosition.x) ? -1 : 1;
+        //output_cross[i].ClipDistance = (vClip[1].x < output_cross[i].vPosition.x) || (-1 == output_cross[i].ClipDistance) ? -1 : 1;
+        //output_cross[i].ClipDistance = (vClip[0].y < output_cross[i].vPosition.y) || (-1 == output_cross[i].ClipDistance) ? -1 : 1;
+        //output_cross[i].ClipDistance = (vClip[1].y > output_cross[i].vPosition.y) || (-1 == output_cross[i].ClipDistance) ? -1 : 1;
     }
       
     _OutStream.Append(output[0]);

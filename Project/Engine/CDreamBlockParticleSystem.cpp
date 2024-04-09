@@ -51,14 +51,14 @@ CDreamBlockParticleSystem::CDreamBlockParticleSystem() :
 	m_Module.vSpawnColor = Vec4(1.f, 1.f, 1.f, 1.f);
 	m_Module.vSpawnMinScale = Vec4(7.f, 7.f, 1.f, 1.f);
 	m_Module.vSpawnMaxScale = Vec4(7.f, 7.f, 1.f, 1.f);
-	m_Module.MinLife = 3.f;
-	m_Module.MaxLife = 3.f;
+	m_Module.MinLife = 10.f;
+	m_Module.MaxLife = 10.f;
 	m_Module.MinMass = 1.f;
 	m_Module.MaxMass = 1.f;
 	m_Module.SpawnShape = 1; // 0 : Sphere, 1 : Box
 	m_Module.Radius = 100.f;
 	m_Module.vSpawnBoxScale = Vec4(200.f, 150.f, 0.f, 0.f);
-	m_Module.SpawnRate = 0.3f;
+	m_Module.SpawnRate = 5.f;
 
 	// Add Velocity Module
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 1;
