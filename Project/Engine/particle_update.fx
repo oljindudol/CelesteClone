@@ -79,7 +79,7 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
                 {
                     Particle.vLocalPos.x = vRand[0] * Module.vSpawnBoxScale.x - (Module.vSpawnBoxScale.x / 2.f);
                     Particle.vLocalPos.y = vRand[1] * Module.vSpawnBoxScale.y - (Module.vSpawnBoxScale.y / 2.f);
-                    Particle.vLocalPos.z = vRand[2] * Module.vSpawnBoxScale.z - (Module.vSpawnBoxScale.z / 2.f)+ 90.f;
+                    Particle.vLocalPos.z = vRand[2] * Module.vSpawnBoxScale.z - (Module.vSpawnBoxScale.z / 2.f)+ 180.f;
                     //Particle.vLocalPos.z = 0.f;
                 }
                 
