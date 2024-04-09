@@ -66,6 +66,7 @@
 
 #define STR_FILE_PATH_SetColorShader L"shader\\setcolor.fx"
 #define STR_FILE_PATH_ParticleUpdateShader L"shader\\particle_update.fx"
+#define STR_FILE_PATH_DreamParticleUpdateShader L"shader\\dreamparticle_update.fx"
 #define STR_FILE_PATH_DreamParticleShader L"shader\\dreamparticle.fx"
 
 

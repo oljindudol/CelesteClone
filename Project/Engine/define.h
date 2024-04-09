@@ -314,10 +314,8 @@ enum class PARTICLE_MODULE
 
 enum class DREAM_PARTICLE_MODULE
 {
-	SPAWN,			// 파티클 생성 관련
-	ORIGINALCOLOR,	// 원본색상쓰기
 	NOISE_FORCE,    // 힘노이즈
-	NOISE_DIRECTION, // 랜덤방향 회전
+	NOISE_ROTATION, // 랜덤방향 회전
 
 	//DRAG,			// 감속 관련 모듈
 	//SCALE,			// 크기 변화 모듈

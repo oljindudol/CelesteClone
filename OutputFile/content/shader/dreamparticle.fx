@@ -146,15 +146,11 @@ float4 PS_DreamParticle(GS_OUT _in) : SV_Target
     //    || _in.vClip[1].y > _in.vPosition.y)
     //    discard;
         
-    
-    
     // 출력 색상
     float4 vOutColor;
 
     vOutColor = particle.vColor;
     vOutColor.a = 1.f;
-
-
     
     //if (g_btex_0)
     //{
@@ -168,7 +164,7 @@ float4 PS_DreamParticle(GS_OUT _in) : SV_Target
     //module.NumberOfAtlas;
     //module.NumberOfFrame;
     
-    float uvunit = 1.f / module.NumberOfFrame[particle.AtlasIdx];
+    float uvunit = 1.f / 3.f;
     float left = uvunit * particle.CurFrameIdx;
     float newUVx = _in.vUV.x * uvunit + left;
     

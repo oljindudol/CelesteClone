@@ -35,13 +35,6 @@ VS_OUT VS_Hair(VS_IN _in)
         _in.vPos = _in.vPos + g_HairOffset;
     }
     
-
-    
-    
-
-
-    
-    
     output.vPosition = mul(float4(_in.vPos, 1.f), g_matWVP);
     output.vColor = _in.vColor;
     output.vUV = _in.vUV;

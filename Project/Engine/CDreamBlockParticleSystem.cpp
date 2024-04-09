@@ -36,7 +36,6 @@ CDreamBlockParticleSystem::CDreamBlockParticleSystem() :
 	m_ParticleModuleBuffer->Create(sizeof(tDreamParticleModule) + ModuleAddSize, 1, SB_TYPE::READ_ONLY, true);
 
 	// 파티클 업데이트용 컴퓨트 쉐이더 참조
-	//m_CSParticleUpdate = (CParticleUpdate*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(STR_KEY_ParticleUpdateShader).Get();
 	m_CSParticleUpdate = (CDreamParticleUpdate*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(STR_KEY_DreamParticleUpdateShader).Get();
 
 
@@ -48,76 +47,21 @@ CDreamBlockParticleSystem::CDreamBlockParticleSystem() :
 	// 초기 모듈 세팅		
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] = 1;
 
-	m_Module.SpaceType = 1;
-	m_Module.vSpawnColor = Vec4(1.f, 1.f, 1.f, 1.f);
-	m_Module.vSpawnMinScale = Vec4(7.f, 7.f, 1.f, 1.f);
-	m_Module.vSpawnMaxScale = Vec4(7.f, 7.f, 1.f, 1.f);
-	m_Module.MinLife = 100.f;
-	m_Module.MaxLife = 100.f;
-	m_Module.MinMass = 1.f;
-	m_Module.MaxMass = 1.f;
-	m_Module.SpawnShape = 1; // 0 : Sphere, 1 : Box
-	m_Module.Radius = 100.f;
-	m_Module.vSpawnBoxScale = Vec4(1000.f, 1000.f, 0.f, 0.f);
-	m_Module.SpawnRate = 500.f;
-
-	// Add Velocity Module
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 1;
-	m_Module.AddVelocityType = 2; // 0 : From Center, 1: To Center, 2: Fix Direction
-	m_Module.MinSpeed = 15;
-	m_Module.MaxSpeed = 50;
-	m_Module.FixedDirection = Vec4(0.f, -1.f, 0.f, 0.f);
-	m_Module.FixedAngle;
-
-	// Scale
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SCALE] = 0;
-	m_Module.vScaleRatio = Vec3(0.1f, 0.1f, 0.1f);
+	//m_Module.vSpawnColor = Vec4(1.f, 1.f, 1.f, 1.f);
+	//m_Module.vSpawnMinScale = Vec4(7.f, 7.f, 1.f, 1.f);
+	//m_Module.vSpawnMaxScale = Vec4(7.f, 7.f, 1.f, 1.f);
+	//m_Module.vSpawnBoxScale = Vec4(1000.f, 1000.f, 0.f, 0.f);
+	//m_Module.SpawnCount = 500.f;
 
 	// Noise Force
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::NOISE_FORCE] = 0;
+	m_Module.arrModuleCheck[(UINT)DREAM_PARTICLE_MODULE::NOISE_FORCE] = 0;
 	m_Module.NoiseForceScale = 5.f;
 	m_Module.NoiseForceTerm = 0.3f;
-
-	// Drag Module
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG] = 1;
-	m_Module.DragTime = 60.f;
-
-	// Calculate Force
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::CALCULATE_FORCE] = 0;
-
-	// Render 
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::RENDER] = 1;
-	m_Module.VelocityAlignment = 0; // 속도에 따른 방향 정렬
-	m_Module.AlphaBasedLife = 1; // 0 : off, 1 : NomrlizedAge, 2: Age
-	m_Module.AlphaMaxAge = 2.8f;
-
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::VIBRATION] = 1;
-	m_Module.VibTime = 0.1f;
-	m_Module.VibColor = Vec4(1.f, 1.f, 1.f, 1.f);
-
-	//Ptr<CTexture> tex = nullptr;
-	//std::filesystem::path base_path = CPathMgr::GetContentPath();
-	//wstring OriginPath = base_path;
-	//OriginPath += STR_FOLDER_PATH_DREAMBLOCK;
-	//auto images = getImagesFromDirectory(OriginPath);
-	//for (auto& i : images)
-	//{
-	//	auto rel = std::filesystem::relative(i, base_path);
-	//	auto tex = CAssetMgr::GetInst()->Load<CTexture>(rel, rel);
-	//	m_vecParticleTex.push_back(tex);
-	//}
-	//m_ParticleArrTex = CAssetMgr::GetInst()->CreateArrayTexture(STR_KEY_TEXARR_DREAMBLOCK_PARTICLE, m_vecParticleTex, 1);
 
 	m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(STR_FILE_PATH_DREAMBLOCK_PARTICLE
 		, STR_FILE_PATH_DREAMBLOCK_PARTICLE);
 
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ANIMATION] = 1;
 	m_Module.FrameDuration = 0.3f;
-	m_Module.NumberOfAtlas = 1;
-	m_Module.NumberOfFrame[0] = 3;
-
-	//m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ORIGINALCOLOR] = 1;
-
 }
 
 CDreamBlockParticleSystem::CDreamBlockParticleSystem(const CDreamBlockParticleSystem& _OriginParticle)
@@ -172,7 +116,7 @@ void CDreamBlockParticleSystem::finaltick()
 	}
 	else if (false == m_bThisFrameDelete && true == m_bThisFrameGenerate)
 	{
-		count = tSpawnCount{ (int)m_Module.SpawnRate, 0, 0, 0 };
+		count = tSpawnCount{ (int)m_Module.SpawnCount, 0, 0, 0 };
 		m_bThisFrameGenerate = false;
 	}
 	else

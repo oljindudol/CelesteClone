@@ -124,6 +124,5 @@ void TileMapUI::render_update()
 void TileMapUI::Activate()
 {
 	UI::Activate();
-	GetTargetObject()->TileMap()->SetGridVisible(true);
 }
 
