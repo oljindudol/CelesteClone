@@ -597,10 +597,10 @@
     <FxCompile Include="tilemap.fx">
       <Filter>ShaderCode\Render</Filter>
     </FxCompile>
-    <FxCompile Include="dreamparticle.fx">
-      <Filter>ShaderCode\Render</Filter>
-    </FxCompile>
     <FxCompile Include="dreamparticle_update.fx">
+      <Filter>ShaderCode\Compute\DreamParticleUpdate</Filter>
+    </FxCompile>
+    <FxCompile Include="dreamparticle.fx">
       <Filter>ShaderCode\Compute\DreamParticleUpdate</Filter>
     </FxCompile>
   </ItemGroup>

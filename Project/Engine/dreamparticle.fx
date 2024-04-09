@@ -152,13 +152,6 @@ float4 PS_DreamParticle(GS_OUT _in) : SV_Target
     vOutColor = particle.vColor;
     vOutColor.a = 1.f;
     
-    //if (g_btex_0)
-    //{
-    //    float4 vSampleColor = g_tex_0.Sample(g_sam_0, _in.vUV);
-    //    vOutColor.rgb *= vSampleColor.rgb;
-    //    vOutColor.a = vSampleColor.a;
-    //}
-    
     //particle.CurFrameIdx;
     //particle.AtlasIdx;
     //module.NumberOfAtlas;

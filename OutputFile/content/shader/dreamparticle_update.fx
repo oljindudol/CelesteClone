@@ -65,10 +65,10 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
                 Particle.vWorldPos.xyz = Particle.vLocalPos.xyz + CenterPos;
                 
                 // 스폰 컬러 설정
-                Particle.vColor = Module.vSpawnColor[0];
+                Particle.vColor = float4(1.f, 1.f, 1.f, 1.f); //Module.vSpawnColor[0];
                 
                 // 스폰 크기 설정                
-                Particle.vWorldScale = float4(7.f, 7.f, 1.f,1.f) * Module.vSpawnScale[0];
+                Particle.vWorldScale = float4(7.f, 7.f, 1.f, 1.f) * 1.f; //Module.vSpawnScale[0];
                                 
                 // 스폰 Life 설정
                 //Particle.Age = 0.f;
