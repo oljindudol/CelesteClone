@@ -30,6 +30,7 @@
 #define STR_FILE_PATH_PARTICLE_STARS L"\\texture\\Gameplay\\particle\\stars\\a.png"
 
 #define STR_FOLDER_PATH_DREAMBLOCK L"\\texture\\Gameplay\\dreamblock"
+#define STR_FILE_PATH_DREAMBLOCK_PARTICLE L"\\texture\\Gameplay\\dreamblock\\particles.png"
 
 
 // Imgui UI String

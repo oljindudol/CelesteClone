@@ -95,30 +95,28 @@ CDreamBlockParticleSystem::CDreamBlockParticleSystem() :
 	m_Module.VibTime = 0.1f;
 	m_Module.VibColor = Vec4(1.f, 1.f, 1.f, 1.f);
 
-	Ptr<CTexture> tex = nullptr;
-	std::filesystem::path base_path = CPathMgr::GetContentPath();
-	wstring OriginPath = base_path;
-	OriginPath += STR_FOLDER_PATH_DREAMBLOCK;
-	auto images = getImagesFromDirectory(OriginPath);
-	for (auto& i : images)
-	{
-		auto rel = std::filesystem::relative(i, base_path);
-		auto tex = CAssetMgr::GetInst()->Load<CTexture>(rel, rel);
-		m_vecParticleTex.push_back(tex);
-	}
-	m_ParticleArrTex = CAssetMgr::GetInst()->CreateArrayTexture(STR_KEY_TEXARR_DREAMBLOCK_PARTICLE, m_vecParticleTex, 1);
+	//Ptr<CTexture> tex = nullptr;
+	//std::filesystem::path base_path = CPathMgr::GetContentPath();
+	//wstring OriginPath = base_path;
+	//OriginPath += STR_FOLDER_PATH_DREAMBLOCK;
+	//auto images = getImagesFromDirectory(OriginPath);
+	//for (auto& i : images)
+	//{
+	//	auto rel = std::filesystem::relative(i, base_path);
+	//	auto tex = CAssetMgr::GetInst()->Load<CTexture>(rel, rel);
+	//	m_vecParticleTex.push_back(tex);
+	//}
+	//m_ParticleArrTex = CAssetMgr::GetInst()->CreateArrayTexture(STR_KEY_TEXARR_DREAMBLOCK_PARTICLE, m_vecParticleTex, 1);
 
-	m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(STR_FILE_PATH_PARTICLE_STARS
-		, STR_FILE_PATH_PARTICLE_STARS);
+	m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(STR_FILE_PATH_DREAMBLOCK_PARTICLE
+		, STR_FILE_PATH_DREAMBLOCK_PARTICLE);
 
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ANIMATION] = 1;
 	m_Module.FrameDuration = 0.3f;
 	m_Module.NumberOfAtlas = 1;
 	m_Module.NumberOfFrame[0] = 3;
-	//m_Module.NumberOfFrame[1] = 8;
-	//m_Module.NumberOfFrame[2] = 8;
 
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ORIGINALCOLOR] = 1;
+	//m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ORIGINALCOLOR] = 1;
 
 }
 
@@ -218,7 +216,7 @@ void CDreamBlockParticleSystem::render()
 	auto camerapos = CRenderMgr::GetInst()->GetCameraPos();
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_2, Vec4(camerapos.x, camerapos.y, camerapos.z, 0.f));
 	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_ParticleTex);
-	GetMaterial()->SetTexParam(TEX_PARAM::TEXARR_0, m_ParticleArrTex);
+	//GetMaterial()->SetTexParam(TEX_PARAM::TEXARR_0, m_ParticleArrTex);
 	GetMaterial()->UpdateData();
 
 	GetMesh()->render_asparticle(m_MaxParticleCount);

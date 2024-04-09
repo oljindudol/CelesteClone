@@ -104,7 +104,7 @@ void GS_DreamParticle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStre
     float squarebydepth = 1.5f;// 0=0.5 90=1 180 = 1.5
     float3 vCenterWorldPos = ParticleSystemCenterPos.xyz;
     float leftoffset = (CameraPos.x - vCenterWorldPos.x) / ParticleSystemCenterScale.x * 2.f; // 0 = 0 ,90 = 1 ,180 = 2
-    float topoffset = (CameraPos.y - vCenterWorldPos.y) / ParticleSystemCenterScale.y ;
+    float topoffset = (CameraPos.y - vCenterWorldPos.y) / ParticleSystemCenterScale.y * 2.f; // 0 = 0 ,90 = 1 ,180 = 2
     float4 vCenterViewPos = mul(float4(vCenterWorldPos, 1.f), g_matView);
     //vCenterViewPos = mul(vCenterViewPos, g_matProj);
     vClip[0] = float4((ParticleSystemCenterScale.x * (-squarebydepth - leftoffset)), (ParticleSystemCenterScale.y * (squarebydepth - topoffset)), 0.f, 1.f);
@@ -216,7 +216,8 @@ float4 PS_DreamParticle(GS_OUT _in) : SV_Target
     float left = uvunit * particle.CurFrameIdx;
     float newUVx = _in.vUV.x * uvunit + left;
     
-    float4 vSampleColor = g_texarr_0.Sample(g_sam_0, float3(float2(newUVx, _in.vUV.y), particle.AtlasIdx));
+    float4 vSampleColor = g_tex_0.Sample(g_sam_0, float2(newUVx, _in.vUV.y));
+    //float4 vSampleColor = g_texarr_0.Sample(g_sam_0, float3(float2(newUVx, _in.vUV.y), particle.AtlasIdx));
     vOutColor.rgb *= vSampleColor.rgb;
     vOutColor.a = vSampleColor.a;
     
