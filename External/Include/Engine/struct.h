@@ -61,7 +61,7 @@ struct tDreamParticle
 	Vec3	vRotationVelocity;		// 각속도
 
 	int		CurFrameIdx;			// 현재Frame
-	int		CurUvx;					// 현재Uv.x
+	float	CurUvx;					// 현재Uv.x
 	float	AccTime;				// 현재frame누적시간
 
 	Vec4	vForce;					// 입자에 적용된 누적 힘 총량
@@ -92,8 +92,8 @@ struct tDreamParticleModule
 	float	NoiseForceTerm;
 
 	// Noise Angle
-	float	Angle;				// 해당 방향에서 랜덤범위 각도
-	float	NoiseScaleTerm;
+	float	NoiseAngleScale;	// 랜덤각도 
+	float	NoiseAngleTerm;     // 
 
 	// 시차보정용(cpu에서 계산되어나오는값
 	// (ndc좌표와 scale을 보정하는 용도.)

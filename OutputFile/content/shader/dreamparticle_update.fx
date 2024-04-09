@@ -114,7 +114,7 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
                     Particle.CurFrameIdx = 1;
                 }
                 
-                Particle.AccTime = g_time +  vRand[2] * Module.FrameDuration;
+                Particle.AccTime = g_time +  vRand[2] * Module.FrameDuration*2;
                 
                 // 스폰 Mass 1고정
                 Particle.Mass = 1.f; 

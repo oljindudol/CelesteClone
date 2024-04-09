@@ -74,6 +74,7 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
                 {
                     Particle.Layer = 1;
                 }
+                float layer = Particle.Layer;
                 
                 // 랜덤 : 스폰위치,Depth는 설정대로  (SpawnShape는 box형식 고정)
                 Particle.vLocalPos.x = vRand[0] * Module.vSpawnBoxScale[0].x - (Module.vSpawnBoxScale[0].x / 2.f);
@@ -114,7 +115,7 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
                     Particle.CurFrameIdx = 1;
                 }
                 
-                Particle.AccTime = g_time +  vRand[2] * Module.FrameDuration;
+                Particle.AccTime = g_time +  vRand[2] * Module.FrameDuration*2;
                 
                 // 스폰 Mass 1고정
                 Particle.Mass = 1.f; 
