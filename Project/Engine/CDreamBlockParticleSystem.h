@@ -34,6 +34,9 @@ public:
         m_bThisFrameDelete = true;
     }
 
+    void CreateDreamFab();
+    void LoadDreamFab();
+
     virtual void UpdateData() override;
     virtual void finaltick() override;
     virtual void render() override;

@@ -170,6 +170,53 @@ void CDreamBlockParticleSystem::render()
 	m_ParticleModuleBuffer->Clear(21);
 }
 
+void CDreamBlockParticleSystem::CreateDreamFab()
+{
+	const static wstring extention = L".txt";
+	// Level 을 저장할 경로
+	wstring strFabPath = CPathMgr::GetContentPath();
+	strFabPath += STR_KEY_DREAMFAB_PATH;
+	strFabPath += GetOwner()->GetName();
+	strFabPath += extention;
+
+
+	FILE* pFile = nullptr;
+	_wfopen_s(&pFile, strFabPath.c_str(), L"wb");
+
+	//트랜스폼 정보저장
+	auto rpos = Transform()->GetRelativePos();
+	fwrite(&rpos, sizeof(Vec3), 1, pFile);
+
+	//모듈 info 저장
+	fwrite(&m_Module, sizeof(tDreamParticleModule), 1, pFile);
+
+	fclose(pFile);
+}
+
+void CDreamBlockParticleSystem::LoadDreamFab()
+{
+	const static wstring extention = L".txt";
+	// Level 을 저장할 경로
+	wstring strFabPath = CPathMgr::GetContentPath();
+	strFabPath += STR_KEY_DREAMFAB_PATH;
+	strFabPath += GetOwner()->GetName();
+	strFabPath += extention;
+
+	FILE* pFile = nullptr;
+	_wfopen_s(&pFile, strFabPath.c_str(), L"rb");
+	//assert(pFile);
+
+	//트랜스폼 정보 불러오기
+	Vec3 rpos = Vec3();
+	fread(&rpos, sizeof(Vec3), 1, pFile);
+	Transform()->SetRelativePos(rpos);
+
+	//모듈 info 불러오기
+	fread(&m_Module, sizeof(tDreamParticleModule), 1, pFile);
+
+	fclose(pFile);
+}
+
 void CDreamBlockParticleSystem::UpdateData()
 {
 }
