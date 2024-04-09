@@ -46,7 +46,7 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
                 Particle.vNoiseForce = (float3) 0.f;
                 Particle.NoiseForceTime = 0.f;
                 
-                // 랜덤
+                // 랜덤Generate
                 float2 vUV = float2((1.f / (MAX_COUNT - 1)) * id.x, 0.f);
                 
                 vUV.x += g_time * 0.2f;
@@ -57,53 +57,69 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
                 float4 vRand1 = g_NoiseTex.SampleLevel(g_sam_0, vUV - float2(0.1f, 0.1f), 0);
                 float4 vRand2 = g_NoiseTex.SampleLevel(g_sam_0, vUV - float2(0.2f, 0.2f), 0);
                 
-                // SpawnShape 가 box고정
+                // 랜덤 :레이어 할당(설정 비율대로)
+                float layersum = Module.vSpawnRate[0] + Module.vSpawnRate[1] + Module.vSpawnRate[2];
+                float layer0 = Module.vSpawnRate[0] / layersum;
+                float layer1 = Module.vSpawnRate[1] / layersum + layer0;
+                
+                if (layer0 > vRand[0] )
+                {
+                    Particle.Layer = 0;
+                }
+                else if (layer1 < vRand[0])
+                {
+                    Particle.Layer = 2;
+                }
+                else
+                {
+                    Particle.Layer = 1;
+                }
+                
+                // 랜덤 : 스폰위치,Depth는 설정대로  (SpawnShape는 box형식 고정)
                 Particle.vLocalPos.x = vRand[0] * Module.vSpawnBoxScale[0].x - (Module.vSpawnBoxScale[0].x / 2.f);
                 Particle.vLocalPos.y = vRand[1] * Module.vSpawnBoxScale[0].y - (Module.vSpawnBoxScale[0].y / 2.f);
                 Particle.vLocalPos.z = vRand[2] * Module.vSpawnBoxScale[0].z - (Module.vSpawnBoxScale[0].z / 2.f) + Module.vSpawnDepth[0];
 
                 Particle.vWorldPos.xyz = Particle.vLocalPos.xyz + CenterPos;
                 
-                // 스폰 컬러 설정
-                Particle.vColor = Module.vSpawnColor[0];
-                
                 // 스폰 크기 설정                
                 Particle.vWorldScale = Module.vSpawnScale[0];
-                                
-                // 스폰 Mass 설정
-                Particle.Mass = 1.f; 
                 
-                Particle.vVelocity.xyz = float3(0.f, 0.f, 0.f);
-                // Add VelocityModule
-                //if (Module.arrModuleCheck[3])
-                //{
-                //    // 0 : From Center
-                //    if (0 == Module.AddVelocityType)
-                //    {
-                //        float3 vDir = normalize(Particle.vLocalPos.xyz);
-                //        Particle.vVelocity.xyz = vDir * clamp(vRand[2], Module.MinSpeed, Module.MaxSpeed);
-                //    }
-                //    if (1 == Module.AddVelocityType)
-                //    {
-                //        float3 vDir = -normalize(Particle.vLocalPos.xyz);
-                //        Particle.vVelocity.xyz = vDir * clamp(vRand[2], Module.MinSpeed, Module.MaxSpeed);
-                //    }
-                //    if (2 == Module.AddVelocityType)
-                //    {
-                //        float3 vDir = normalize(Module.FixedDirection);
-                //        Particle.vVelocity.xyz = vDir * newspeed;
-                //    }
-                //
-                //}
-                //else
-                //{
-                //}
+                // 랜덤 : 스폰 컬러 
+                if (0.3333333f >  vRand[2])
+                {
+                    Particle.vColor = Module.vSpawnColor[0*0+0];
+                }
+                else if(0.6666666f < vRand[2])
+                {
+                    Particle.vColor = Module.vSpawnColor[0 * 0 +2];
+                }
+                else
+                {
+                    Particle.vColor = Module.vSpawnColor[0 * 0 + 1];
+                }
                 
                 //2. 애니메이션 파티클
-
-                Particle.CurFrameIdx = 0;
-                Particle.AccTime = 0.f;
+                // 랜덤 : 스폰 컬러 
+                if (0.3333333f > vRand[1])
+                {
+                    Particle.CurFrameIdx = 0;
+                }
+                else if (0.6666666f < vRand[1])
+                {
+                    Particle.CurFrameIdx = 2;
+                }
+                else
+                {
+                    Particle.CurFrameIdx = 1;
+                }
                 
+                Particle.AccTime = g_time +  vRand[2] * Module.FrameDuration;
+                
+                // 스폰 Mass 1고정
+                Particle.Mass = 1.f; 
+                // velocity 0고정
+                Particle.vVelocity.xyz = float3(0.f, 0.f, 0.f);
                 break;
             }
         }
