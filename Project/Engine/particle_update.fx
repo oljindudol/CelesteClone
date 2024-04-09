@@ -24,9 +24,6 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
     // 파티클이 비활성화 상태라면
     if (0 == Particle.Active)
     {
-        // 스폰 모듈 활성화 체크
-        if (0 == Module.arrModuleCheck[0])
-            return;
         
         while (0 < SpawnCount)
         {
@@ -45,11 +42,6 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
             
             if (AliveCount == Origin)
             {
-                //1. 색상진동
-                Particle.ColorOrigin = Module.vSpawnColor;
-                Particle.ColorVibra = Module.VibColor;
-                Particle.ColorAcctime = 0.f;
-                
                 Particle.Active = 1;
                 Particle.vNoiseForce = (float3) 0.f;
                 Particle.NoiseForceTime = 0.f;
@@ -65,23 +57,10 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
                 float4 vRand1 = g_NoiseTex.SampleLevel(g_sam_0, vUV - float2(0.1f, 0.1f), 0);
                 float4 vRand2 = g_NoiseTex.SampleLevel(g_sam_0, vUV - float2(0.2f, 0.2f), 0);
                 
-                // SpawnShape 가 Sphere 타입이라면
-                if (0 == Module.SpawnShape)
-                {
-                    float RandomRadius = vRand[0] * Module.Radius;
-                    float RandomAngle = vRand[1] * 2 * PI;
-                   
-                    // Particle 컴포넌트(본체) 의 중심위치(월드) 에서
-                    // 랜덤 각도, 랜덤 반지름에 해당하는 위치를 계산해서 파티클의 초기 위치로 준다.
-                    Particle.vLocalPos.xyz = float3(cos(RandomAngle), sin(RandomAngle), 0.f) * RandomRadius;
-                }
-                else
-                {
-                    Particle.vLocalPos.x = vRand[0] * Module.vSpawnBoxScale.x - (Module.vSpawnBoxScale.x / 2.f);
-                    Particle.vLocalPos.y = vRand[1] * Module.vSpawnBoxScale.y - (Module.vSpawnBoxScale.y / 2.f);
-                    Particle.vLocalPos.z = vRand[2] * Module.vSpawnBoxScale.z - (Module.vSpawnBoxScale.z / 2.f)+ 180.f;
-                    //Particle.vLocalPos.z = 0.f;
-                }
+                // SpawnShape 가 box고정
+                Particle.vLocalPos.x = vRand[0] * Module.vSpawnBoxScale.x - (Module.vSpawnBoxScale.x / 2.f);
+                Particle.vLocalPos.y = vRand[1] * Module.vSpawnBoxScale.y - (Module.vSpawnBoxScale.y / 2.f);
+                Particle.vLocalPos.z = vRand[2] * Module.vSpawnBoxScale.z - (Module.vSpawnBoxScale.z / 2.f) + 180.f;
                 
                 Particle.vWorldPos.xyz = Particle.vLocalPos.xyz + CenterPos;
                 
@@ -92,39 +71,39 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
                 Particle.vWorldInitScale = Particle.vWorldScale = (Module.vSpawnMaxScale - Module.vSpawnMinScale) * vRand[2] + Module.vSpawnMinScale;
                                 
                 // 스폰 Life 설정
-                Particle.Age = 0.f;
-                Particle.Life = (Module.MaxLife - Module.MinLife) * vRand[0] + Module.MaxLife;
+                //Particle.Age = 0.f;
+                //Particle.Life = (Module.MaxLife - Module.MinLife) * vRand[0] + Module.MaxLife;
                       
                 // 스폰 Mass 설정
-                Particle.Mass = clamp(vRand1[0], Module.MinMass, Module.MaxMass);
-                float newspeed = Module.MinSpeed + vRand[2] * (Module.MaxSpeed - Module.MinSpeed);
+                Particle.Mass = 1.f;// clamp(vRand1[0], Module.MinMass, Module.MaxMass);
+                //float newspeed = Module.MinSpeed + vRand[2] * (Module.MaxSpeed - Module.MinSpeed);
                 
                 
+                Particle.vVelocity.xyz = float3(0.f, 0.f, 0.f);
                 // Add VelocityModule
-                if (Module.arrModuleCheck[3])
-                {
-                    // 0 : From Center
-                    if (0 == Module.AddVelocityType)
-                    {
-                        float3 vDir = normalize(Particle.vLocalPos.xyz);
-                        Particle.vVelocity.xyz = vDir * clamp(vRand[2], Module.MinSpeed, Module.MaxSpeed);
-                    }
-                    if (1 == Module.AddVelocityType)
-                    {
-                        float3 vDir = -normalize(Particle.vLocalPos.xyz);
-                        Particle.vVelocity.xyz = vDir * clamp(vRand[2], Module.MinSpeed, Module.MaxSpeed);
-                    }
-                    if (2 == Module.AddVelocityType)
-                    {
-                        float3 vDir = normalize(Module.FixedDirection);
-                        Particle.vVelocity.xyz = vDir * newspeed;
-                    }
-
-                }
-                else
-                {
-                     Particle.vVelocity.xyz = float3(0.f, 0.f, 0.f);
-                }
+                //if (Module.arrModuleCheck[3])
+                //{
+                //    // 0 : From Center
+                //    if (0 == Module.AddVelocityType)
+                //    {
+                //        float3 vDir = normalize(Particle.vLocalPos.xyz);
+                //        Particle.vVelocity.xyz = vDir * clamp(vRand[2], Module.MinSpeed, Module.MaxSpeed);
+                //    }
+                //    if (1 == Module.AddVelocityType)
+                //    {
+                //        float3 vDir = -normalize(Particle.vLocalPos.xyz);
+                //        Particle.vVelocity.xyz = vDir * clamp(vRand[2], Module.MinSpeed, Module.MaxSpeed);
+                //    }
+                //    if (2 == Module.AddVelocityType)
+                //    {
+                //        float3 vDir = normalize(Module.FixedDirection);
+                //        Particle.vVelocity.xyz = vDir * newspeed;
+                //    }
+                //
+                //}
+                //else
+                //{
+                //}
                 
                 //2. 애니메이션 파티클
                 if (1 == Module.arrModuleCheck[8] && 0 != Module.NumberOfAtlas)
@@ -149,7 +128,7 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
     // 파티클이 활성화 상태라면
     else
     {
-        Particle.Age += g_dt;
+        //Particle.Age += g_dt;
         if (-1 == SpawnCount)
         {
             Particle.Active = 0;
@@ -170,34 +149,9 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
         Particle.vForce.xyz = float3(0.f, 0.f, 0.f);
         
         // Normalize Age 계산
-        Particle.NomalizedAge = Particle.Age / Particle.Life;
+        //Particle.NomalizedAge = Particle.Age / Particle.Life;
         
-        // Scale 모듈
-        if (Module.arrModuleCheck[2])
-        {
-            Particle.vWorldScale = Particle.vWorldInitScale * (1.f + (Module.vScaleRatio - 1.f) * Particle.NomalizedAge);
-        }
-        
-        // 1. 색상진동 모듈이 켜져있으면
-        if (1 == Module.arrModuleCheck[7])
-        {
-            if (0.f == Particle.ColorAcctime
-            || (Module.VibTime < g_time - Particle.ColorAcctime))
-            {
-                Particle.ColorAcctime = g_time;
-                float iout;
-                float2 uv;
-                uv.x = modf(g_time, iout);
-                uv.y = modf(g_time, iout);
-            
-                float4 vRand = g_NoiseTex.SampleLevel(g_sam_0, uv, 0);
-                Particle.vColor = Particle.ColorOrigin * vRand.x + Particle.ColorVibra * (1 - vRand.x);
-            }
-            else
-            {
-            
-            }
-        }
+
         
         // 2. Animation
         if (1 == Module.arrModuleCheck[8])
