@@ -60,8 +60,8 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
                 // SpawnShape 가 box고정
                 Particle.vLocalPos.x = vRand[0] * Module.vSpawnBoxScale[0].x - (Module.vSpawnBoxScale[0].x / 2.f);
                 Particle.vLocalPos.y = vRand[1] * Module.vSpawnBoxScale[0].y - (Module.vSpawnBoxScale[0].y / 2.f);
-                Particle.vLocalPos.z = vRand[2] * Module.vSpawnBoxScale[0].z - (Module.vSpawnBoxScale[0].z / 2.f) + 180.f;
-                
+                Particle.vLocalPos.z = vRand[2] * Module.vSpawnBoxScale[0].z - (Module.vSpawnBoxScale[0].z / 2.f) + Module.vSpawnDepth[0];
+
                 Particle.vWorldPos.xyz = Particle.vLocalPos.xyz + CenterPos;
                 
                 // 스폰 컬러 설정
@@ -70,13 +70,8 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
                 // 스폰 크기 설정                
                 Particle.vWorldScale = Module.vSpawnScale[0];
                                 
-                // 스폰 Life 설정
-                //Particle.Age = 0.f;
-                //Particle.Life = (Module.MaxLife - Module.MinLife) * vRand[0] + Module.MaxLife;
-                      
                 // 스폰 Mass 설정
-                Particle.Mass = 1.f; // clamp(vRand1[0], Module.MinMass, Module.MaxMass);
-                //float newspeed = Module.MinSpeed + vRand[2] * (Module.MaxSpeed - Module.MinSpeed);
+                Particle.Mass = 1.f; 
                 
                 
                 Particle.vVelocity.xyz = float3(0.f, 0.f, 0.f);
