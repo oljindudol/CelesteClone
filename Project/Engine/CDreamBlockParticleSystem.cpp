@@ -91,7 +91,7 @@ void CDreamBlockParticleSystem::finaltick()
 	//{
 	//	m_bThisFrameGenerate = true;
 	//}
-
+	UpdateParallaxCorrection();
 	m_Time += DT;
 
 
@@ -165,6 +165,18 @@ void CDreamBlockParticleSystem::render()
 void CDreamBlockParticleSystem::begin()
 {
 	LoadDreamFab();
+}
+
+void CDreamBlockParticleSystem::UpdateParallaxCorrection()
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		// 0=0.5 90=1 180 = 1.5
+		m_Module.NdcBoxbyDepth[i] = m_Module.vSpawnDepth[i] / 180.f + 0.5f;
+
+		// 0 = 0 ,90 = 1 ,180 = 2;
+		m_Module.ScaleMultibyDepth[i] = m_Module.vSpawnDepth[i] / 90.f;
+	}
 }
 
 void CDreamBlockParticleSystem::CreateDreamFab()

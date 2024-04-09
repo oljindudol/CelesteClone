@@ -73,7 +73,6 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
                 // 스폰 Mass 설정
                 Particle.Mass = 1.f; 
                 
-                
                 Particle.vVelocity.xyz = float3(0.f, 0.f, 0.f);
                 // Add VelocityModule
                 //if (Module.arrModuleCheck[3])

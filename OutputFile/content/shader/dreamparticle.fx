@@ -76,15 +76,18 @@ void GS_DreamParticle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStre
     output_cross[3].vUV = output[3].vUV = float2(0.f, 1.f);
         
     
+    tDreamParticleModule module = g_ParticleModule[0];
     float4 vClip[2];
-    float squarebydepth = 1.5f;// 0=0.5 90=1 180 = 1.5
+    int layer = 0; // particle.Layer;
+    float ndcboxbydepth = module.NdcBoxbyDepth[layer]; //1.5f;// 0=0.5 90=1 180 = 1.5
+    float scalemultibydepth = module.ScaleMultibyDepth[layer]; //2.f; // 0 = 0 ,90 = 1 ,180 = 2;
     float3 vCenterWorldPos = ParticleSystemCenterPos.xyz;
-    float leftoffset = (CameraPos.x - vCenterWorldPos.x) / ParticleSystemCenterScale.x * 2.f; // 0 = 0 ,90 = 1 ,180 = 2
-    float topoffset = (CameraPos.y - vCenterWorldPos.y) / ParticleSystemCenterScale.y * 2.f; // 0 = 0 ,90 = 1 ,180 = 2
+    float leftoffset = (CameraPos.x - vCenterWorldPos.x) / ParticleSystemCenterScale.x * scalemultibydepth;
+    float topoffset = (CameraPos.y - vCenterWorldPos.y) / ParticleSystemCenterScale.y * scalemultibydepth;
     float4 vCenterViewPos = mul(float4(vCenterWorldPos, 1.f), g_matView);
     //vCenterViewPos = mul(vCenterViewPos, g_matProj);
-    vClip[0] = float4((ParticleSystemCenterScale.x * (-squarebydepth - leftoffset)), (ParticleSystemCenterScale.y * (squarebydepth - topoffset)), 0.f, 1.f);
-    vClip[1] = float4((ParticleSystemCenterScale.x * (squarebydepth - leftoffset)), (ParticleSystemCenterScale.y * (-squarebydepth - topoffset)), 0.f, 1.f);
+    vClip[0] = float4((ParticleSystemCenterScale.x * (-ndcboxbydepth - leftoffset)), (ParticleSystemCenterScale.y * (ndcboxbydepth - topoffset)), 0.f, 1.f);
+    vClip[1] = float4((ParticleSystemCenterScale.x * (ndcboxbydepth - leftoffset)), (ParticleSystemCenterScale.y * (-ndcboxbydepth - topoffset)), 0.f, 1.f);
     //center view 좌표로이동, 투영행렬 적용
     for (int k = 0;k < 2; ++k)
     {

@@ -93,9 +93,14 @@ struct tDreamParticleModule
 	float	Angle;				// 해당 방향에서 랜덤범위 각도
 	float	NoiseScaleTerm;
 
+	// 시차보정용(cpu에서 계산되어나오는값
+	// (ndc좌표와 scale을 보정하는 용도.)
+	float NdcBoxbyDepth[3]; // 0=0.5 90=1 180 = 1.5
+	float ScaleMultibyDepth[3];// 0 = 0 ,90 = 1 ,180 = 2;
+
 	// Module On / Off
 	int arrModuleCheck[(UINT)DREAM_PARTICLE_MODULE::END];
-	int padding[3];
+	int padding;
 };
 
 
