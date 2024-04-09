@@ -37,8 +37,8 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
             // 이때 SpawnCount 를 오히려 늘려버리는 현상이 발생할 수 있다. 
             // InterlockedCompareExchange 를 통해서 예상한 값과 일치할 경우에만 
             // 교체를 하도록 하는 함수를 사용한다.
-            //InterlockedCompareExchange(SpawnCount, AliveCount, Exchange, Origin);
-            InterlockedExchange(SpawnCount, Exchange, Origin);
+            InterlockedCompareExchange(SpawnCount, AliveCount, Exchange, Origin);
+            //InterlockedExchange(SpawnCount, Exchange, Origin);
             
             if (AliveCount == Origin)
             {
