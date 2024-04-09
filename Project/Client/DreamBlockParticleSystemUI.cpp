@@ -64,18 +64,20 @@ void DreamBlockParticleSystemUI::render_update()
 	ImGui::DragFloat3("##Layer Spawn Rate", NewModule.vSpawnRate, .1f, 0.0f, 100.0f);
 
 
-
-
-	//ImGui::Text("Spawn Color"); ImGui::SameLine();
-	//ImGui::ColorEdit4("##Spawn Color", &NewModule.vSpawnColor.x);
-	//ImGui::Text("Min Scale"); ImGui::SameLine();
-	//ImGui::DragFloat4("##Min Scale", &NewModule.vSpawnMinScale.x, 0.1f, 0.0f, 1000.0f);
-	//ImGui::Text("Max Scale"); ImGui::SameLine();
-	//ImGui::DragFloat4("##Max Scale", &NewModule.vSpawnMaxScale.x, 0.1f, 0.0f, 1000.0f);
-	//ImGui::Text("Box Scale"); ImGui::SameLine();
-	//ImGui::DragFloat4("##Box Scale", &NewModule.vSpawnBoxScale.x, 0.1f, 0.0f, 1000.0f);
-
-
+	ImGui::Separator();
+	CreateStaticColorButton("LAYER 0", ModuleColor);
+	ImGui::Text("Box Scale"); ImGui::SameLine();
+	ImGui::DragFloat4("##Box Scale0", &NewModule.vSpawnBoxScale[0].x, 0.1f, 0.0f, 1000.0f);
+	ImGui::Text("Spawn Scale"); ImGui::SameLine();
+	ImGui::DragFloat("##Spawn Scale0", &NewModule.vSpawnScale[0], 0.1f, 0.0f, 1000.0f);
+	ImGui::Text("Spawn Depth"); ImGui::SameLine();
+	ImGui::DragFloat("##Spawn Depth0", &NewModule.vSpawnDepth[0], 0.1f, 0.0f, 1000.0f);
+	ImGui::Text("Random Color1"); ImGui::SameLine();
+	ImGui::ColorEdit4("##Random Color01", &NewModule.vSpawnColor[0].x);
+	ImGui::Text("Random Color2"); ImGui::SameLine();
+	ImGui::ColorEdit4("##Random Color02", &NewModule.vSpawnColor[1].x);
+	ImGui::Text("Random Color3"); ImGui::SameLine();
+	ImGui::ColorEdit4("##Random Color03", &NewModule.vSpawnColor[2].x);
 
 
 
