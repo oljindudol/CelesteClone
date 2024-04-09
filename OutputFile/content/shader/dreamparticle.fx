@@ -101,9 +101,9 @@ void GS_DreamParticle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStre
         }
     }
     float4 vClip[2];
-    float squarebydepth = 1.5f;
+    float squarebydepth = 1.5f;// 0=0.5 90=1 180 = 1.5
     float3 vCenterWorldPos = ParticleSystemCenterPos.xyz;
-    float leftoffset = (CameraPos.x - vCenterWorldPos.x) / ParticleSystemCenterScale.x *2.f;
+    float leftoffset = (CameraPos.x - vCenterWorldPos.x) / ParticleSystemCenterScale.x * 2.f; // 0 = 0 ,90 = 1 ,180 = 2
     float topoffset = (CameraPos.y - vCenterWorldPos.y) / ParticleSystemCenterScale.y ;
     float4 vCenterViewPos = mul(float4(vCenterWorldPos, 1.f), g_matView);
     //vCenterViewPos = mul(vCenterViewPos, g_matProj);

@@ -58,7 +58,7 @@ CDreamBlockParticleSystem::CDreamBlockParticleSystem() :
 	m_Module.MaxMass = 1.f;
 	m_Module.SpawnShape = 1; // 0 : Sphere, 1 : Box
 	m_Module.Radius = 100.f;
-	m_Module.vSpawnBoxScale = Vec4(400.f, 300.f, 0.f, 0.f);
+	m_Module.vSpawnBoxScale = Vec4(1000.f, 1000.f, 0.f, 0.f);
 	m_Module.SpawnRate = 500.f;
 
 	// Add Velocity Module
@@ -167,17 +167,22 @@ void CDreamBlockParticleSystem::finaltick()
 
 
 	tSpawnCount count = {};
-	if (true == m_bThisFrameGenerate)
-	{
-		count = tSpawnCount{ (int)m_Module.SpawnRate, 0, 0, 0 };
-		m_bThisFrameGenerate = false;
-	}
-
 	if (true == m_bThisFrameDelete)
 	{
 		count = tSpawnCount{ -1, 0, 0, 0 };
 		m_bThisFrameDelete = false;
 	}
+	else if (false == m_bThisFrameDelete && true == m_bThisFrameGenerate)
+	{
+		count = tSpawnCount{ (int)m_Module.SpawnRate, 0, 0, 0 };
+		m_bThisFrameGenerate = false;
+	}
+	else
+	{
+
+	}
+
+
 	m_SpawnCountBuffer->SetData(&count);
 
 	// 파티클 모듈정보 업데이트

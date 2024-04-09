@@ -32,7 +32,11 @@ void DreamBlockParticleSystemUI::render_update()
 	tDreamParticleModule NewModule = CurModule;
 
 	static ImVec4 ModuleColor = Burgundy;
-
+	if (ImGui::Button("ReSpawn"))
+	{
+		pPS->DeleteParticle();
+		pPS->GenerateParticle();
+	}
 	ImGui::SetNextItemWidth(50);
 	ImGui::Text("Spawn Rate"); ImGui::SameLine();
 	ImGui::DragFloat("##Spawn Rate", &NewModule.SpawnRate, 0.05f, 0, 1000); ImGui::SameLine();
