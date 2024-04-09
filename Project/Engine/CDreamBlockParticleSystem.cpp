@@ -103,7 +103,7 @@ void CDreamBlockParticleSystem::finaltick()
 	}
 	else if (false == m_bThisFrameDelete && true == m_bThisFrameGenerate)
 	{
-		count = tSpawnCount{ (int)m_Module.SpawnCount, 0, 0, 0 };
+		count = tSpawnCount{ m_Module.SpawnCount, 0, 0, 0 };
 		m_bThisFrameGenerate = false;
 	}
 	else
@@ -127,7 +127,7 @@ void CDreamBlockParticleSystem::finaltick()
 
 	if (0.f != DT)
 	{
-		CreateDreamFab();
+		//CreateDreamFab();
 	}
 }
 
@@ -164,7 +164,8 @@ void CDreamBlockParticleSystem::render()
 
 void CDreamBlockParticleSystem::begin()
 {
-	LoadDreamFab();
+	CRenderComponent::begin();
+	//LoadDreamFab();
 }
 
 void CDreamBlockParticleSystem::UpdateParallaxCorrection()

@@ -78,7 +78,7 @@ void GS_DreamParticle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStre
     
     tDreamParticleModule module = g_ParticleModule[0];
     float4 vClip[2];
-    int layer = 0; // particle.Layer;
+    int layer = particle.Layer;
     float ndcboxbydepth = module.NdcBoxbyDepth[layer]; //1.5f;// 0=0.5 90=1 180 = 1.5
     float scalemultibydepth = module.ScaleMultibyDepth[layer]; //2.f; // 0 = 0 ,90 = 1 ,180 = 2;
     float3 vCenterWorldPos = ParticleSystemCenterPos.xyz;
@@ -107,15 +107,15 @@ void GS_DreamParticle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStre
         output[i].InstID = _in[0].InstID;
         output_cross[i].InstID = _in[0].InstID;
 
-        output[i].ClipDistance = (vClip[0].x > output[i].vPosition.x) ? -1 : 1;
-        output[i].ClipDistance = (vClip[1].x < output[i].vPosition.x) || (-1 == output[i].ClipDistance) ? -1 : 1;
-        output[i].ClipDistance = (vClip[0].y < output[i].vPosition.y) || (-1 == output[i].ClipDistance) ? -1 : 1;
-        output[i].ClipDistance = (vClip[1].y > output[i].vPosition.y) || (-1 == output[i].ClipDistance) ? -1 : 1;
-        
-        output_cross[i].ClipDistance = (vClip[0].x > output_cross[i].vPosition.x) ? -1 : 1;
-        output_cross[i].ClipDistance = (vClip[1].x < output_cross[i].vPosition.x) || (-1 == output_cross[i].ClipDistance) ? -1 : 1;
-        output_cross[i].ClipDistance = (vClip[0].y < output_cross[i].vPosition.y) || (-1 == output_cross[i].ClipDistance) ? -1 : 1;
-        output_cross[i].ClipDistance = (vClip[1].y > output_cross[i].vPosition.y) || (-1 == output_cross[i].ClipDistance) ? -1 : 1;
+        //output[i].ClipDistance = (vClip[0].x > output[i].vPosition.x) ? -1 : 1;
+        //output[i].ClipDistance = (vClip[1].x < output[i].vPosition.x) || (-1 == output[i].ClipDistance) ? -1 : 1;
+        //output[i].ClipDistance = (vClip[0].y < output[i].vPosition.y) || (-1 == output[i].ClipDistance) ? -1 : 1;
+        //output[i].ClipDistance = (vClip[1].y > output[i].vPosition.y) || (-1 == output[i].ClipDistance) ? -1 : 1;
+        //
+        //output_cross[i].ClipDistance = (vClip[0].x > output_cross[i].vPosition.x) ? -1 : 1;
+        //output_cross[i].ClipDistance = (vClip[1].x < output_cross[i].vPosition.x) || (-1 == output_cross[i].ClipDistance) ? -1 : 1;
+        //output_cross[i].ClipDistance = (vClip[0].y < output_cross[i].vPosition.y) || (-1 == output_cross[i].ClipDistance) ? -1 : 1;
+        //output_cross[i].ClipDistance = (vClip[1].y > output_cross[i].vPosition.y) || (-1 == output_cross[i].ClipDistance) ? -1 : 1;
     }
       
     _OutStream.Append(output[0]);
@@ -161,7 +161,7 @@ float4 PS_DreamParticle(GS_OUT _in) : SV_Target
     //module.NumberOfFrame;
     
     float uvunit = 1.f / 3.f;
-    float left = uvunit * particle.CurFrameIdx;
+    float left = uvunit * particle.CurTrueIdx;
     float newUVx = _in.vUV.x * uvunit + left;
     
     float4 vSampleColor = g_tex_0.Sample(g_sam_0, float2(newUVx, _in.vUV.y));

@@ -47,9 +47,9 @@ void DreamBlockParticleSystemUI::render_update()
 		pPS->DeleteParticle();
 		pPS->GenerateParticle();
 	}
-	ImGui::Text("Spawn Rate"); ImGui::SameLine();
+	ImGui::Text("Spawn Count"); ImGui::SameLine();
 	ImGui::SetNextItemWidth(150);
-	ImGui::DragFloat("##Spawn Count", &NewModule.SpawnCount, 0.05f, 0, 1000); ImGui::SameLine();
+	ImGui::DragInt("##Spawn Count", &NewModule.SpawnCount, 1, 0, 1000); ImGui::SameLine();
 	if (ImGui::Button("Spawn"))
 	{
 		pPS->GenerateParticle(); 

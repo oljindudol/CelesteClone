@@ -62,11 +62,11 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
                 float layer0 = Module.vSpawnRate[0] / layersum;
                 float layer1 = Module.vSpawnRate[1] / layersum + layer0;
                 
-                if (layer0 > vRand[0] )
+                if (layer0 > vRand1[0] )
                 {
                     Particle.Layer = 0;
                 }
-                else if (layer1 < vRand[0])
+                else if (layer1 < vRand1[0])
                 {
                     Particle.Layer = 2;
                 }
@@ -74,46 +74,50 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
                 {
                     Particle.Layer = 1;
                 }
+                float layer = Particle.Layer;
                 
                 // 랜덤 : 스폰위치,Depth는 설정대로  (SpawnShape는 box형식 고정)
-                Particle.vLocalPos.x = vRand[0] * Module.vSpawnBoxScale[0].x - (Module.vSpawnBoxScale[0].x / 2.f);
-                Particle.vLocalPos.y = vRand[1] * Module.vSpawnBoxScale[0].y - (Module.vSpawnBoxScale[0].y / 2.f);
-                Particle.vLocalPos.z = vRand[2] * Module.vSpawnBoxScale[0].z - (Module.vSpawnBoxScale[0].z / 2.f) + Module.vSpawnDepth[0];
+                Particle.vLocalPos.x = vRand[0] * Module.vSpawnBoxScale[layer].x - (Module.vSpawnBoxScale[layer].x / 2.f);
+                Particle.vLocalPos.y = vRand[1] * Module.vSpawnBoxScale[layer].y - (Module.vSpawnBoxScale[layer].y / 2.f);
+                Particle.vLocalPos.z = vRand[2] * Module.vSpawnBoxScale[layer].z - (Module.vSpawnBoxScale[layer].z / 2.f) + Module.vSpawnDepth[layer];
 
                 Particle.vWorldPos.xyz = Particle.vLocalPos.xyz + CenterPos;
                 
                 // 스폰 크기 설정                
-                Particle.vWorldScale = Module.vSpawnScale[0];
+                Particle.vWorldScale = Module.vSpawnScale[layer];
                 
                 // 랜덤 : 스폰 컬러 
-                if (0.3333333f >  vRand[2])
+                if (0.3333333f >  vRand2[2])
                 {
-                    Particle.vColor = Module.vSpawnColor[0*0+0];
+                    Particle.vColor = Module.vSpawnColor[3 * layer + 0];
                 }
-                else if(0.6666666f < vRand[2])
+                else if(0.6666666f < vRand2[2])
                 {
-                    Particle.vColor = Module.vSpawnColor[0 * 0 +2];
+                    Particle.vColor = Module.vSpawnColor[3 * layer + 2];
                 }
                 else
                 {
-                    Particle.vColor = Module.vSpawnColor[0 * 0 + 1];
+                    Particle.vColor = Module.vSpawnColor[3 * layer + 1];
                 }
                 
-                //2. 애니메이션 파티클
-                // 랜덤 : 스폰 컬러 
-                if (0.3333333f > vRand[1])
+                // 랜덤 : 애니메이션 시작프레임
+                if(0 == layer)
                 {
-                    Particle.CurFrameIdx = 0;
+                    float ran = vRand[0] * 6 - 0.01f;
+                    Particle.CurFrameIdx = floor(ran);
                 }
-                else if (0.6666666f < vRand[1])
+                else if(1 == layer)
                 {
-                    Particle.CurFrameIdx = 2;
+                    float ran = vRand[0] * 4 - 0.01f;
+                    Particle.CurFrameIdx = floor(ran);
                 }
                 else
                 {
-                    Particle.CurFrameIdx = 1;
+                    float ran = vRand[0] * 2 - 0.01f;
+                    Particle.CurFrameIdx = floor(ran);
                 }
                 
+                // 랜덤 : 애니메이션 누적시간
                 Particle.AccTime = g_time +  vRand[2] * Module.FrameDuration*2;
                 
                 // 스폰 Mass 1고정
@@ -140,31 +144,83 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
         float3 Rand;
         GaussianSample(g_NoiseTex, g_NoiseTexResolution, vUV.x, Rand);
         
-        //vUV.x += g_time * 0.2f;
-        //vUV.y = sin(vUV.x * 20.f * PI) * 0.2f + g_time * 0.1f;
-        //float4 vRand = g_NoiseTex.SampleLevel(g_sam_0, vUV, 0);
-        
+        vUV.x += g_time * 0.2f;
+        vUV.y = sin(vUV.x * 20.f * PI) * 0.2f + g_time * 0.1f;
+        float4 vRand = g_NoiseTex.SampleLevel(g_sam_0, vUV, 0);
         
         // 이번 프레임에서 받는 힘을 초기화
         Particle.vForce.xyz = float3(0.f, 0.f, 0.f);
         
-        // Normalize Age 계산
-        //Particle.NomalizedAge = Particle.Age / Particle.Life;
-        
-
+        //int maxframe0 = 6;
+        //int maxframe1 = 4;
+        //int maxframe2 = 2;
+        //int layer = Particle.Layer;
+        //int trueidx;
         
         // 2. Animation
-
         if (Particle.AccTime == 0.f
         || (Module.FrameDuration < g_time - Particle.AccTime))
         {
-            Particle.CurFrameIdx = (Particle.CurFrameIdx + 1) % 3;
+            int layer = Particle.Layer;
+            int maxframe = (3 - layer) * 2;
+            
+            Particle.CurFrameIdx = (Particle.CurFrameIdx + 1) % maxframe;
             Particle.AccTime = g_time;
+            
+            //trueidx 계산
+            int trueidx;
+            if (Particle.CurFrameIdx < (maxframe / 2))
+            {
+                trueidx = Particle.CurFrameIdx;
+            }
+            else
+            {
+                trueidx = maxframe - Particle.CurFrameIdx - 1;
+            }
+            
+             Particle.CurTrueIdx = trueidx;
         }
-        else
-        {
+        
+        
+        
+        //if (0 == layer)
+        //{
+        //    if (Particle.AccTime == 0.f
+        //    || (Module.FrameDuration < g_time - Particle.AccTime))
+        //    {
+        //    Particle.CurFrameIdx = (Particle.CurFrameIdx + 1) % maxframe0;
+        //    Particle.AccTime = g_time;
+        //    }
+        //    //trueframe 계산
+        //    if (Particle.CurFrameIdx < (maxframe0 / 2))
+        //    {
+        //        trueidx = Particle.CurFrameIdx;
+        //    }
+        //    else
+        //    {
+        //        trueidx = maxframe0 - Particle.CurFrameIdx - 1;
+        //    }
+        //}
+        //else if (1 == layer)
+        //{
+        //    if (Particle.AccTime == 0.f
+        //    || (Module.FrameDuration < g_time - Particle.AccTime))
+        //    {
+        //    Particle.CurFrameIdx = (Particle.CurFrameIdx + 1) % maxframe1;
+        //    Particle.AccTime = g_time;
+        //    }
+        //}
+        //else
+        //{
+        //    if (Particle.AccTime == 0.f
+        //    || (Module.FrameDuration < g_time - Particle.AccTime))
+        //    {
+        //    Particle.CurFrameIdx = (Particle.CurFrameIdx + 1) % maxframe2;
+        //    Particle.AccTime = g_time;
+        //    }
+        //}
 
-        }
+ 
         
         
         //마이그레이션1

@@ -61,7 +61,7 @@ struct tDreamParticle
 	Vec3	vRotationVelocity;		// 각속도
 
 	int		CurFrameIdx;			// 현재Frame
-	float	CurUvx;					// 현재Uv.x
+	int 	CurTrueIdx;				// 아틀라스에서 진짜idx
 	float	AccTime;				// 현재frame누적시간
 
 	Vec4	vForce;					// 입자에 적용된 누적 힘 총량
@@ -75,7 +75,7 @@ struct tDreamParticle
 
 struct tDreamParticleModule
 {
-	float	SpawnCount;			// 크리에이트시 생성 개수
+	int		SpawnCount;			// 크리에이트시 생성 개수
 
 	// 레이어정보
 	float	vSpawnRate[3];		// 레이어1~3스폰비율
