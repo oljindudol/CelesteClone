@@ -157,42 +157,28 @@ CDreamBlockParticleSystem::~CDreamBlockParticleSystem()
 
 void CDreamBlockParticleSystem::finaltick()
 {	
-	//if (KEY_TAP(T))
-	//{
-	//	m_bDebug = !m_bDebug;
-	//}
 
-	if (true == m_bDebug)
-	{
-		m_bThisFrameGenerate = true;
-	}
+	//if (true == m_bDebug)
+	//{
+	//	m_bThisFrameGenerate = true;
+	//}
 
 	m_Time += DT;
 
-	if ((1.f / m_Module.SpawnRate) < m_Time)
-	{
-		// 누적 시간을 스폰 간격으로 나눈 값
-		float fSpawnCount = m_Time / (1.f / m_Module.SpawnRate);
 
-		// 스폰 간격을 제외한 잔량을 남은 누적시간으로 설정
-		m_Time -= (1.f / m_Module.SpawnRate) * floorf(fSpawnCount);
-		tSpawnCount count;
-		if (true == m_bThisFrameGenerate)
-		{
-			count = tSpawnCount{ (int)fSpawnCount, 0, 0, 0 };
-		}
-		else
-		{
-			count = tSpawnCount{ 0, 0, 0, 0 };
-		}
-		m_SpawnCountBuffer->SetData(&count);
-	}
-	else
+	tSpawnCount count = {};
+	if (true == m_bThisFrameGenerate)
 	{
-		tSpawnCount count = tSpawnCount{ 0, 0, 0, 0 };
-		m_SpawnCountBuffer->SetData(&count);
+		count = tSpawnCount{ (int)m_Module.SpawnRate, 0, 0, 0 };
+		m_bThisFrameGenerate = false;
 	}
 
+	if (true == m_bThisFrameDelete)
+	{
+		count = tSpawnCount{ -1, 0, 0, 0 };
+		m_bThisFrameDelete = false;
+	}
+	m_SpawnCountBuffer->SetData(&count);
 
 	// 파티클 모듈정보 업데이트
 	m_ParticleModuleBuffer->SetData(&m_Module);
@@ -204,13 +190,12 @@ void CDreamBlockParticleSystem::finaltick()
 	m_CSParticleUpdate->SetParticleSpawnCount(m_SpawnCountBuffer);
 	m_CSParticleUpdate->SetParticleWorldPos(Transform()->GetWorldPos());
 	m_CSParticleUpdate->Execute();
-
-	m_bThisFrameGenerate = false;
 }
 
 
 void CDreamBlockParticleSystem::render()
 {
+
 	// View, Proj 행렬 전달
 	Transform()->UpdateData();
 

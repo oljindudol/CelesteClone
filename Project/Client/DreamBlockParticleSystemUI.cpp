@@ -33,11 +33,24 @@ void DreamBlockParticleSystemUI::render_update()
 
 	static ImVec4 ModuleColor = Burgundy;
 
+	ImGui::SetNextItemWidth(50);
+	ImGui::Text("Spawn Rate"); ImGui::SameLine();
+	ImGui::DragFloat("##Spawn Rate", &NewModule.SpawnRate, 0.05f, 0, 1000); ImGui::SameLine();
+	if (ImGui::Button("Spawn"))
+	{
+		pPS->GenerateParticle(); 
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Delete"))
+	{
+		pPS->DeleteParticle();
+	}
 
-	bool bDebug = pPS->GetDebug();
-	ImGui::Text("Debug"); ImGui::SameLine();
-	ImGui::Checkbox("##Debug", &bDebug);
-	pPS->SetDebug(bDebug);
+
+	//bool bDebug = pPS->GetDebug();
+	//ImGui::Text("Debug"); ImGui::SameLine();
+	//ImGui::Checkbox("##Debug", &bDebug);
+	//pPS->SetDebug(bDebug);
 
 
 
@@ -130,8 +143,7 @@ void DreamBlockParticleSystemUI::render_update()
 	ImGui::DragFloat("##Radius", &NewModule.Radius, 1.0f, 0.0f, 1000.0f);
 	ImGui::Text("Box Scale"); ImGui::SameLine();
 	ImGui::DragFloat4("##Box Scale", &NewModule.vSpawnBoxScale.x, 0.1f, 0.0f, 1000.0f);
-	ImGui::Text("Spawn Rate"); ImGui::SameLine();
-	ImGui::DragFloat("##Spawn Rate", &NewModule.SpawnRate, 0.05f, 0, 1000);
+
 
 	// Scale Module
 	ImGui::Separator();

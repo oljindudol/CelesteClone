@@ -21,19 +21,17 @@ private:
     Ptr<CTexture>           m_ParticleArrTex;
 
     float                   m_Time;
-    bool                    m_bThisFrameGenerate;
+    bool                    m_bThisFrameGenerate = false;
+    bool                    m_bThisFrameDelete = false;
     bool                    m_bDebug = true;
 
 
 public:
-    void GenerateParticle(const Vec4& _Color, const Vec4& _VibColor) {
+    void GenerateParticle() {
         m_bThisFrameGenerate = true;
-        m_Module.vSpawnColor = _Color;
-        m_Module.VibColor = _VibColor;
     }
-    void GenerateParticle(const Vec4& _Color) {
-        m_bThisFrameGenerate = true;
-        m_Module.vSpawnColor = _Color;
+    void DeleteParticle() {
+        m_bThisFrameDelete = true;
     }
 
     virtual void UpdateData() override;
@@ -50,8 +48,6 @@ public:
     void SetModule(tDreamParticleModule _Module) {
         m_Module = _Module;
     }
-    void SetDebug(bool _bDebug) { m_bDebug = _bDebug; }
-    bool GetDebug() { return m_bDebug; }
     CDreamBlockParticleSystem();
     CDreamBlockParticleSystem(const CDreamBlockParticleSystem& _OriginParticle);
     ~CDreamBlockParticleSystem();

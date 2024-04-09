@@ -150,7 +150,7 @@ void CS_DreamParticleUpdate(uint3 id : SV_DispatchThreadID)
     else
     {
         Particle.Age += g_dt;
-        if (Particle.Life < Particle.Age)
+        if (-1 == SpawnCount)
         {
             Particle.Active = 0;
             return;
