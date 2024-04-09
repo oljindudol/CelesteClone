@@ -8,6 +8,7 @@
 #include "CMesh.h"
 #include "CMaterial.h"
 #include "CDreamBlockParticleSystem.h"
+#include "CRenderMgr.h"
 
 CDreamBlockParticleSystem::CDreamBlockParticleSystem() :
 	CRenderComponent(COMPONENT_TYPE::DREAMBLOCKPARTICLESYSTEM)
@@ -51,14 +52,14 @@ CDreamBlockParticleSystem::CDreamBlockParticleSystem() :
 	m_Module.vSpawnColor = Vec4(1.f, 1.f, 1.f, 1.f);
 	m_Module.vSpawnMinScale = Vec4(7.f, 7.f, 1.f, 1.f);
 	m_Module.vSpawnMaxScale = Vec4(7.f, 7.f, 1.f, 1.f);
-	m_Module.MinLife = 10.f;
-	m_Module.MaxLife = 10.f;
+	m_Module.MinLife = 100.f;
+	m_Module.MaxLife = 100.f;
 	m_Module.MinMass = 1.f;
 	m_Module.MaxMass = 1.f;
 	m_Module.SpawnShape = 1; // 0 : Sphere, 1 : Box
 	m_Module.Radius = 100.f;
-	m_Module.vSpawnBoxScale = Vec4(200.f, 150.f, 0.f, 0.f);
-	m_Module.SpawnRate = 5.f;
+	m_Module.vSpawnBoxScale = Vec4(400.f, 300.f, 0.f, 0.f);
+	m_Module.SpawnRate = 500.f;
 
 	// Add Velocity Module
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 1;
@@ -224,6 +225,8 @@ void CDreamBlockParticleSystem::render()
 	auto scale = Transform()->GetWorldScale();
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4( pos.x,pos.y,0.f,0.f));
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_1, Vec4(scale.x,scale.y, scale.z,0.f));
+	auto camerapos = CRenderMgr::GetInst()->GetCameraPos();
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_2, Vec4(camerapos.x, camerapos.y, camerapos.z, 0.f));
 	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_ParticleTex);
 	GetMaterial()->SetTexParam(TEX_PARAM::TEXARR_0, m_ParticleArrTex);
 	GetMaterial()->UpdateData();

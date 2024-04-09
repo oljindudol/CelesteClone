@@ -10,6 +10,7 @@ StructuredBuffer<tDreamParticleModule> g_ParticleModule : register(t21);
 #define Particle g_ParticleBuffer[_in.iInstID]
 #define ParticleSystemCenterPos   g_vec4_0
 #define ParticleSystemCenterScale g_vec4_1
+#define CameraPos g_vec4_2
 
 struct VS_IN
 {
@@ -54,15 +55,10 @@ void GS_DreamParticle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStre
     // 파티클의 ViewSpace 상에서의 중심 포지션 구하기
     float4 vViewPos = mul(float4(vWorldPos, 1.f), g_matView);
     
-    float3 vCenterWorldPos = ParticleSystemCenterPos.xyz;
-    float4 vCenterViewPos = mul(float4(vCenterWorldPos, 1.f), g_matView);
     
     // 0 -- 1	     
 	// | \  |	     
 	// 3 -- 2
-    float4 vClip[2];
-    vClip[0] = float4((ParticleSystemCenterScale.x * -0.5f), (ParticleSystemCenterScale.y * 0.5f), 0.f, 1.f);
-    vClip[1] = float4((ParticleSystemCenterScale.x *  0.5f), (ParticleSystemCenterScale.y * -0.5f), 0.f, 1.f);
    
     output[0].vPosition = float4((particle.vWorldScale.x * -0.5f), (particle.vWorldScale.y * 0.5f), 0.f, 1.f);
     output[1].vPosition = float4((particle.vWorldScale.x * 0.5f), (particle.vWorldScale.y * 0.5f), 0.f, 1.f);
@@ -104,7 +100,15 @@ void GS_DreamParticle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStre
             }
         }
     }
-    
+    float4 vClip[2];
+    float squarebydepth = 1.f;
+    float3 vCenterWorldPos = ParticleSystemCenterPos.xyz;
+    float leftoffset = (CameraPos.x - vCenterWorldPos.x) / ParticleSystemCenterScale.x;
+    float topoffset = (CameraPos.y - vCenterWorldPos.y) / ParticleSystemCenterScale.y;
+    float4 vCenterViewPos = mul(float4(vCenterWorldPos, 1.f), g_matView);
+    //vCenterViewPos = mul(vCenterViewPos, g_matProj);
+    vClip[0] = float4((ParticleSystemCenterScale.x * (-squarebydepth - leftoffset)), (ParticleSystemCenterScale.y * (squarebydepth - topoffset)), 0.f, 1.f);
+    vClip[1] = float4((ParticleSystemCenterScale.x * (squarebydepth - leftoffset)), (ParticleSystemCenterScale.y * (-squarebydepth - topoffset)), 0.f, 1.f);
     //center view 좌표로이동, 투영행렬 적용
     for (int k = 0;k < 2; ++k)
     {
@@ -124,17 +128,15 @@ void GS_DreamParticle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStre
         output[i].InstID = _in[0].InstID;
         output_cross[i].InstID = _in[0].InstID;
 
-        //output[i].ClipDistance = 1;
-        //output[i].ClipDistance = (vClip[0].x > output[i].vPosition.x) ? -1 : 1;
-        //output[i].ClipDistance = (vClip[1].x < output[i].vPosition.x) || (-1 == output[i].ClipDistance) ? -1 : 1;
-        //output[i].ClipDistance = (vClip[0].y < output[i].vPosition.y) || (-1 == output[i].ClipDistance) ? -1 : 1;
-        //output[i].ClipDistance = (vClip[1].y > output[i].vPosition.y) || (-1 == output[i].ClipDistance) ? -1 : 1;
+        output[i].ClipDistance = (vClip[0].x > output[i].vPosition.x) ? -1 : 1;
+        output[i].ClipDistance = (vClip[1].x < output[i].vPosition.x) || (-1 == output[i].ClipDistance) ? -1 : 1;
+        output[i].ClipDistance = (vClip[0].y < output[i].vPosition.y) || (-1 == output[i].ClipDistance) ? -1 : 1;
+        output[i].ClipDistance = (vClip[1].y > output[i].vPosition.y) || (-1 == output[i].ClipDistance) ? -1 : 1;
         
-        //output_cross[i].ClipDistance = 1;
-        //output_cross[i].ClipDistance = (vClip[0].x > output_cross[i].vPosition.x) ? -1 : 1;
-        //output_cross[i].ClipDistance = (vClip[1].x < output_cross[i].vPosition.x) || (-1 == output_cross[i].ClipDistance) ? -1 : 1;
-        //output_cross[i].ClipDistance = (vClip[0].y < output_cross[i].vPosition.y) || (-1 == output_cross[i].ClipDistance) ? -1 : 1;
-        //output_cross[i].ClipDistance = (vClip[1].y > output_cross[i].vPosition.y) || (-1 == output_cross[i].ClipDistance) ? -1 : 1;
+        output_cross[i].ClipDistance = (vClip[0].x > output_cross[i].vPosition.x) ? -1 : 1;
+        output_cross[i].ClipDistance = (vClip[1].x < output_cross[i].vPosition.x) || (-1 == output_cross[i].ClipDistance) ? -1 : 1;
+        output_cross[i].ClipDistance = (vClip[0].y < output_cross[i].vPosition.y) || (-1 == output_cross[i].ClipDistance) ? -1 : 1;
+        output_cross[i].ClipDistance = (vClip[1].y > output_cross[i].vPosition.y) || (-1 == output_cross[i].ClipDistance) ? -1 : 1;
     }
       
     _OutStream.Append(output[0]);

@@ -10,6 +10,7 @@
 #include "CDevice.h"
 #include "CAssetMgr.h"
 #include "components.h"
+#include "CComponent.h"
 
 
 CRenderMgr::CRenderMgr()
@@ -66,6 +67,13 @@ void CRenderMgr::DirectionalShake(Vec2 _dir, float _time)
 		m_vecCam[0]->m_LastDirectionalShake = 0;
 		m_vecCam[0]->m_ShakeTimer = max(m_vecCam[0]->m_ShakeTimer, _time);
 	}
+}
+
+Vec3 CRenderMgr::GetCameraPos()
+{
+	if (0 == m_vecCam.size())
+		return Vec3();
+	return m_vecCam[0]->Transform()->GetWorldPos();
 }
 
 void CRenderMgr::render_play()

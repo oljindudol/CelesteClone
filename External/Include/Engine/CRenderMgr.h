@@ -63,6 +63,7 @@ public:
     void init();
     void tick();
     void DirectionalShake(Vec2 _dir, float _time = 0.3f);
+    Vec3 GetCameraPos();
 
 private:
     void render_play();
