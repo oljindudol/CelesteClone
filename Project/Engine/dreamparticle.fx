@@ -76,30 +76,6 @@ void GS_DreamParticle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStre
     output_cross[3].vUV = output[3].vUV = float2(0.f, 1.f);
         
     
-    // 렌더모듈 기능
-    if (g_ParticleModule[0].arrModuleCheck[6])
-    {
-        // 속도에 따른 정렬 기능
-        if (g_ParticleModule[0].VelocityAlignment)
-        {
-            float3 vR = normalize(mul(float4(particle.vVelocity.xyz, 0.f), g_matView).xyz);
-            float3 vF = normalize(cross(vR, float3(0.f, 1.f, 0.f)));
-            float3 vU = normalize(cross(vF, vR));
-            
-            float3x3 vRot =
-            {
-                vR,
-                vU,
-                vF
-            };
-            
-            for (int i = 0; i < 4; ++i)
-            {
-                output[i].vPosition.xyz = mul(output[i].vPosition.xyz, vRot);
-                output_cross[i].vPosition.xyz = mul(output_cross[i].vPosition.xyz, vRot);
-            }
-        }
-    }
     float4 vClip[2];
     float squarebydepth = 1.5f;// 0=0.5 90=1 180 = 1.5
     float3 vCenterWorldPos = ParticleSystemCenterPos.xyz;
@@ -149,22 +125,6 @@ void GS_DreamParticle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStre
     _OutStream.Append(output[2]);
     _OutStream.RestartStrip();
         
-    if (g_ParticleModule[0].arrModuleCheck[6])
-    {
-        // 속도에 따른 정렬 기능
-        if (g_ParticleModule[0].VelocityAlignment)
-        {
-            _OutStream.Append(output_cross[0]);
-            _OutStream.Append(output_cross[2]);
-            _OutStream.Append(output_cross[3]);
-            _OutStream.RestartStrip();
-    
-            _OutStream.Append(output_cross[0]);
-            _OutStream.Append(output_cross[1]);
-            _OutStream.Append(output_cross[2]);
-            _OutStream.RestartStrip();
-        }
-    }
 }
 
 
@@ -190,15 +150,11 @@ float4 PS_DreamParticle(GS_OUT _in) : SV_Target
     
     // 출력 색상
     float4 vOutColor;
-    if (module.arrModuleCheck[9])
-    {
-        vOutColor = float4(1.f, 1.f, 1.f, 1.f);
-    }
-    else
-    {
-        vOutColor = particle.vColor;
-        vOutColor.a = 1.f;
-    }
+
+    vOutColor = particle.vColor;
+    vOutColor.a = 1.f;
+
+
     
     //if (g_btex_0)
     //{
@@ -221,20 +177,6 @@ float4 PS_DreamParticle(GS_OUT _in) : SV_Target
     vOutColor.rgb *= vSampleColor.rgb;
     vOutColor.a = vSampleColor.a;
     
-    
-    // 렌더모듈이 켜져 있으면
-    if (module.arrModuleCheck[6])
-    {
-        if (1 == module.AlphaBasedLife)
-        {
-            vOutColor.a *= saturate(1.f - clamp(particle.NomalizedAge, 0.f, 1.f));
-        }
-        else if (2 == module.AlphaBasedLife)
-        {
-            float fRatio = particle.Age / module.AlphaMaxAge;
-            vOutColor.a *= saturate(1.f - clamp(fRatio, 0.f, 1.f));
-        }
-    }
     
     return vOutColor;
 }
