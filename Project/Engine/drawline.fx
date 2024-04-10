@@ -50,14 +50,44 @@ float LineAmplitude(float seed, float index)
     return (float) (sin((double) (seed + index / 16.f) + sin((double) (seed * 2.f + index / 32.f)) * 6.2831854820251465) + 1.0f) * 1.5f;
 }
 
-//void DrawLine(float2 _start, float2 _end, inout TriangleStream<GS_OUT> _OutStream)
-//{
-//    GS_OUT output[4] = { (GS_OUT) 0.f, (GS_OUT) 0.f, (GS_OUT) 0.f, (GS_OUT) 0.f };
-//    
-//    
-//    
-//    
-//}
+void DrawLine(float2 _start, float2 _end, int _color, bool _vertical,inout TriangleStream<GS_OUT> _OutStream)
+{
+    GS_OUT output[4] = { (GS_OUT) 0.f, (GS_OUT) 0.f, (GS_OUT) 0.f, (GS_OUT) 0.f };
+    
+    float len = distance(_end, _start);
+    
+    //로컬포지션    
+    float ver = (true == _vertical) ? len : linewidth;
+    float hor = (true == _vertical) ? linewidth : len;
+    
+    output[0].vPosition = float4(hor * -0.5f, (ver * 0.5f), 0.f, 1.f);
+    output[1].vPosition = float4(hor * 0.5f, (ver * 0.5f), 0.f, 1.f);
+    output[2].vPosition = float4(hor * 0.5f, (ver * -0.5f), 0.f, 1.f);
+    output[3].vPosition = float4(hor * -0.5f, (ver * -0.5f), 0.f, 1.f);
+    
+    // ViewSpace 상에서의 중심 포지션 구하기
+    float4 centerpos = float4((_start + _end) / 2.f, from.z, 0.f);
+    float3 vCenterWorldPos = centerpos.xyz;
+    float4 vViewPos = mul(float4(vCenterWorldPos.xyz, 1.f), g_matView);
+    
+    // View 좌표로 이동, 투영행렬 적용
+    for (int j = 0; j < 4; ++j)
+    {
+        output[j].vPosition.xyz += vViewPos.xyz;
+        output[j].vPosition = mul(output[j].vPosition, g_matProj);
+        output[j].color = _color;
+    }
+    
+    _OutStream.Append(output[0]);
+    _OutStream.Append(output[2]);
+    _OutStream.Append(output[3]);
+    _OutStream.RestartStrip();
+    
+    _OutStream.Append(output[0]);
+    _OutStream.Append(output[1]);
+    _OutStream.Append(output[2]);
+    _OutStream.RestartStrip();
+}
 
 
 
@@ -101,41 +131,41 @@ void GS_DrawLine(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
         float len = min((float) interval, length - 2.f - (float) i);
         float2 start= from.xy + normal * (float) i + perp * lastAmp;
         float2 end = from.xy + normal * ((float) i + len) + perp * amp;
-        
-        float l = distance(end, start);
-        //Draw.Line(start, end, line);
-        
-        //로컬포지션    
-        float ver = (true == vertical) ? l : linewidth;
-        float hor = (true == vertical) ? linewidth : l;
-    
-        output[0].vPosition = float4(hor * -0.5f, (ver * 0.5f), 0.f, 1.f);
-        output[1].vPosition = float4(hor * 0.5f, (ver * 0.5f), 0.f, 1.f);
-        output[2].vPosition = float4(hor * 0.5f, (ver * -0.5f), 0.f, 1.f);
-        output[3].vPosition = float4(hor * -0.5f, (ver * -0.5f), 0.f, 1.f);
-    
-        // ViewSpace 상에서의 중심 포지션 구하기
-        float4 centerpos = float4((start + end) / 2.f, from.z,0.f);
-        float3 vCenterWorldPos = centerpos.xyz;
-        float4 vViewPos = mul(float4(vCenterWorldPos.xyz, 1.f), g_matView);
-    
-    // View 좌표로 이동, 투영행렬 적용
-        for (int j = 0; j < 4; ++j)
-        {
-            output[j].vPosition.xyz += vViewPos.xyz;
-            output[j].vPosition = mul(output[j].vPosition, g_matProj);
-            output[j].color = 1;
-        }
 
-        _OutStream.Append(output[0]);
-        _OutStream.Append(output[2]);
-        _OutStream.Append(output[3]);
-        _OutStream.RestartStrip();
-    
-        _OutStream.Append(output[0]);
-        _OutStream.Append(output[1]);
-        _OutStream.Append(output[2]);
-        _OutStream.RestartStrip();
+
+        DrawLine(start, end, 1, vertical, _OutStream);
+        
+        ////로컬포지션    
+        //float ver = (true == vertical) ? len : linewidth;
+        //float hor = (true == vertical) ? linewidth : len;
+        //
+        //output[0].vPosition = float4(hor * -0.5f, (ver * 0.5f), 0.f, 1.f);
+        //output[1].vPosition = float4(hor * 0.5f, (ver * 0.5f), 0.f, 1.f);
+        //output[2].vPosition = float4(hor * 0.5f, (ver * -0.5f), 0.f, 1.f);
+        //output[3].vPosition = float4(hor * -0.5f, (ver * -0.5f), 0.f, 1.f);
+        //
+        //// ViewSpace 상에서의 중심 포지션 구하기
+        //float4 centerpos = float4((start + end) / 2.f, from.z,0.f);
+        //float3 vCenterWorldPos = centerpos.xyz;
+        //float4 vViewPos = mul(float4(vCenterWorldPos.xyz, 1.f), g_matView);
+        //
+        //// View 좌표로 이동, 투영행렬 적용
+        //for (int j = 0; j < 4; ++j)
+        //{
+        //    output[j].vPosition.xyz += vViewPos.xyz;
+        //    output[j].vPosition = mul(output[j].vPosition, g_matProj);
+        //    output[j].color = 1;
+        //}
+        //
+        //_OutStream.Append(output[0]);
+        //_OutStream.Append(output[2]);
+        //_OutStream.Append(output[3]);
+        //_OutStream.RestartStrip();
+        //
+        //_OutStream.Append(output[0]);
+        //_OutStream.Append(output[1]);
+        //_OutStream.Append(output[2]);
+        //_OutStream.RestartStrip();
     
         lastAmp = amp;
         i += interval;
