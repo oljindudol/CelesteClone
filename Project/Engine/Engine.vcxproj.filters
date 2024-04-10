@@ -603,5 +603,8 @@
     <FxCompile Include="particle.fx">
       <Filter>ShaderCode\Compute\ParticleUpdate</Filter>
     </FxCompile>
+    <FxCompile Include="drawline.fx">
+      <Filter>ShaderCode\Render</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
