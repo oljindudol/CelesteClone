@@ -304,6 +304,12 @@ int RandomInt(int _MaxValue)
 	return dis(gen);
 }
 
+float RandomFloat(float _MaxValue)
+{
+	std::uniform_real_distribution<float> dis(0.0f, _MaxValue);
+	return dis(gen);
+}
+
 void GamePlayStatic::InitLayerString()
 {
 

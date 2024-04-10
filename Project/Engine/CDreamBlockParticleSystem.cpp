@@ -172,6 +172,14 @@ void CDreamBlockParticleSystem::render()
 	float up = pos.y + scale.y * 0.5f;
 	float bottom = pos.y - scale.y * 0.5f;
 
+	wobbleEase += DT * 2.f;
+	if (wobbleEase > 1.f)
+	{
+		wobbleEase = 0.f;
+		wobbleFrom = wobbleTo;
+		wobbleTo   = RandomFloat(6.2831855f);
+	}
+
 	//from
 	m_LineMat->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4(left, bottom, pos.z, 0.f));
 	//to
@@ -182,6 +190,12 @@ void CDreamBlockParticleSystem::render()
 	m_LineMat->SetScalarParam(SCALAR_PARAM::FLOAT_0, 10.f);
 	//Wooble Line
 	m_LineMat->SetScalarParam(SCALAR_PARAM::INT_0, 1);
+	//Wooble from
+	m_LineMat->SetScalarParam(SCALAR_PARAM::FLOAT_1, wobbleFrom);
+	//Wooble To
+	m_LineMat->SetScalarParam(SCALAR_PARAM::FLOAT_2, wobbleTo);
+	//Wooble Ease
+	m_LineMat->SetScalarParam(SCALAR_PARAM::FLOAT_2, wobbleEase);
 
 	m_LineMat->UpdateData();
 	GetMesh()->render_point();

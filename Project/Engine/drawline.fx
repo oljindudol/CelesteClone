@@ -9,6 +9,9 @@
 #define linecolor    g_vec4_2
 #define linewidth    g_float_0
 #define b_woobleline g_int_0
+#define wobbleFrom   g_float_1
+#define wobbleTo     g_float_2
+#define wobbleEase   g_float_3
 
 struct VS_IN
 {
@@ -41,11 +44,23 @@ VS_OUT VS_DrawLine(VS_IN _in)
 }
 
 
+float LineAmplitude(float seed, float index)
+{
+    return (float) (sin((double) (seed + index / 16f) + sin((double) (seed * 2f + index / 32f)) * 6.2831854820251465) + 1.0) * 1.5f;
+}
+
 //138 = (320픽셀(화면가로최대) / 16픽셀씩라인그리기) * 라인당 6개의 정점생성
 [maxvertexcount(138)]
 void GS_DrawLine(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
 {
     GS_OUT output[4] = { (GS_OUT) 0.f, (GS_OUT) 0.f, (GS_OUT) 0.f, (GS_OUT) 0.f };
+    
+    
+    
+    
+    
+    
+    
     
     //가로 or 세로 판정
     float4 posdiff = abs(to - from);
@@ -65,6 +80,7 @@ void GS_DrawLine(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
     //로컬포지션    
     float ver = (true == vertical) ? length : linewidth;
     float hor = (true == vertical) ? linewidth : length;
+    
     output[0].vPosition = float4(hor * -0.5f, (ver * 0.5f), 0.f, 1.f);
     output[1].vPosition = float4(hor * 0.5f, (ver * 0.5f), 0.f, 1.f);
     output[2].vPosition = float4(hor * 0.5f, (ver * -0.5f), 0.f, 1.f);
@@ -91,6 +107,9 @@ void GS_DrawLine(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
     _OutStream.Append(output[1]);
     _OutStream.Append(output[2]);
     _OutStream.RestartStrip();
+    
+    
+    
     
 }
 
