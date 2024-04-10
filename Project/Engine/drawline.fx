@@ -30,6 +30,7 @@ struct GS_OUT
 {
     float4 vPosition : SV_Position;
     float2 vUV : TEXCOORD;
+    int    color  : col;
 };
 
 
@@ -48,6 +49,17 @@ float LineAmplitude(float seed, float index)
 {
     return (float) (sin((double) (seed + index / 16.f) + sin((double) (seed * 2.f + index / 32.f)) * 6.2831854820251465) + 1.0f) * 1.5f;
 }
+
+//void DrawLine(float2 _start, float2 _end, inout TriangleStream<GS_OUT> _OutStream)
+//{
+//    GS_OUT output[4] = { (GS_OUT) 0.f, (GS_OUT) 0.f, (GS_OUT) 0.f, (GS_OUT) 0.f };
+//    
+//    
+//    
+//    
+//}
+
+
 
 //138 = (320픽셀(화면가로최대) / 16픽셀씩라인그리기) * 라인당 6개의 정점생성
 [maxvertexcount(138)]
@@ -90,12 +102,12 @@ void GS_DrawLine(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
         float2 start= from.xy + normal * (float) i + perp * lastAmp;
         float2 end = from.xy + normal * ((float) i + len) + perp * amp;
         
-        
+        float l = distance(end, start);
         //Draw.Line(start, end, line);
         
         //로컬포지션    
-        float ver = (true == vertical) ? len : linewidth;
-        float hor = (true == vertical) ? linewidth : len;
+        float ver = (true == vertical) ? l : linewidth;
+        float hor = (true == vertical) ? linewidth : l;
     
         output[0].vPosition = float4(hor * -0.5f, (ver * 0.5f), 0.f, 1.f);
         output[1].vPosition = float4(hor * 0.5f, (ver * 0.5f), 0.f, 1.f);
@@ -112,6 +124,7 @@ void GS_DrawLine(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
         {
             output[j].vPosition.xyz += vViewPos.xyz;
             output[j].vPosition = mul(output[j].vPosition, g_matProj);
+            output[j].color = 1;
         }
 
         _OutStream.Append(output[0]);
@@ -134,7 +147,11 @@ void GS_DrawLine(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
 
 float4 PS_DrawLine(GS_OUT _in) : SV_Target
 {
-    return linecolor;
+    if(1 == _in.color)
+    {
+        return linecolor;
+    }
+    return float4(0.f, 0.f, 0.f, 1.f);
 }
 
 #endif
