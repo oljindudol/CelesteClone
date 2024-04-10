@@ -95,6 +95,13 @@ void CMesh::render()
 	CONTEXT->DrawIndexed(m_IdxCount, 0, 0);
 }
 
+void CMesh::render_point()
+{
+	UpdateData();
+
+	CONTEXT->Draw(1, 0);
+}
+
 void CMesh::render_asparticle(UINT _ParticleCount)
 {
 	UpdateData();

@@ -49,6 +49,11 @@ CDreamBlockParticleSystem::CDreamBlockParticleSystem() :
 		, STR_FILE_PATH_DREAMBLOCK_PARTICLE);
 
 	m_Module.FrameDuration = 0.3f;
+
+	//m_LineMesh = CAssetMgr::GetInst()->FindAsset<CMesh>(STR_KEY_RectMesh);
+	//m_LineMat = CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_Std2dMeterial);
+	m_LineMat = CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_DrawLineMeterial);
+
 }
 
 CDreamBlockParticleSystem::CDreamBlockParticleSystem(const CDreamBlockParticleSystem& _OriginParticle)
@@ -153,14 +158,33 @@ void CDreamBlockParticleSystem::render()
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_2, Vec4(camerapos.x, camerapos.y, camerapos.z, 0.f));
 
 	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_ParticleTex);
-	//GetMaterial()->SetTexParam(TEX_PARAM::TEXARR_0, m_ParticleArrTex);
 	GetMaterial()->UpdateData();
 
+	//GetMesh()->render();
 	GetMesh()->render_asparticle(m_MaxParticleCount);
 
 	// 렌더링때 사용한 리소스 바인딩 Clear
 	m_ParticleBuffer->Clear(20);
 	m_ParticleModuleBuffer->Clear(21);
+
+	float left = pos.x - scale.x * 0.5f;
+	float right = pos.x + scale.x * 0.5f;
+	float up = pos.y + scale.y * 0.5f;
+	float bottom = pos.y - scale.y * 0.5f;
+
+	//from
+	m_LineMat->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4(left, bottom, pos.z, 0.f));
+	//to
+	m_LineMat->SetScalarParam(SCALAR_PARAM::VEC4_1, Vec4(left, up, pos.z, 0.f));
+	//Line Color
+	m_LineMat->SetScalarParam(SCALAR_PARAM::VEC4_2, Vec4(1.f,1.f,1.f, 1.f));
+	//Line Width
+	m_LineMat->SetScalarParam(SCALAR_PARAM::FLOAT_0, 10.f);
+	//Wooble Line
+	m_LineMat->SetScalarParam(SCALAR_PARAM::INT_0, 1);
+
+	m_LineMat->UpdateData();
+	GetMesh()->render_point();
 }
 
 void CDreamBlockParticleSystem::begin()

@@ -12,6 +12,7 @@
 
 struct VS_IN
 {
+    float4 vColor : COLOR;
     float3 vPos : POSITION;
     float2 vUV : TEXCOORD;
 };
@@ -29,6 +30,18 @@ struct GS_OUT
 };
 
 
+VS_OUT VS_DrawLine(VS_IN _in)
+{
+    VS_OUT output = (VS_OUT) 0.f;
+    
+    output.vPos = _in.vPos;
+    output.vUV = _in.vUV;
+    
+    return output;
+}
+
+
+//138 = (320픽셀(화면가로최대) / 16픽셀씩라인그리기) * 라인당 6개의 정점생성
 [maxvertexcount(138)]
 void GS_DrawLine(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
 {
@@ -48,7 +61,6 @@ void GS_DrawLine(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
         vertical = false;
         length = posdiff.x;
     }
-    
 
     //로컬포지션    
     float ver = (true == vertical) ? length : linewidth;

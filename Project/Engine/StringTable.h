@@ -69,6 +69,7 @@
 #define STR_FILE_PATH_ParticleUpdateShader L"shader\\particle_update.fx"
 #define STR_FILE_PATH_DreamParticleUpdateShader L"shader\\dreamparticle_update.fx"
 #define STR_FILE_PATH_DreamParticleShader L"shader\\dreamparticle.fx"
+#define STR_FILE_PATH_DrawLine L"shader\\drawline.fx"
 
 
 // std2.fx functions name
@@ -103,7 +104,6 @@
 #define STR_FUNC_NAME_VTXShaderDistorton "VS_ShockWave"
 #define STR_FUNC_NAME_PIXShaderDistorton "PS_ShockWave"
 
-
 // debug.fx functions name
 #define STR_FUNC_NAME_VTXShaderDebugShape "VS_DebugShape"
 #define STR_FUNC_NAME_PIXShaderDebugShape "PS_DebugShape"
@@ -112,11 +112,14 @@
 #define STR_FUNC_NAME_GEOShaderDreamParticle "GS_DreamParticle"
 #define STR_FUNC_NAME_PIXShaderDreamParticle "PS_DreamParticle"
 
-
 // computershader.fx functions name
 #define STR_FUNC_NAME_CSShaderSetColor "CS_SetColor"
 #define STR_FUNC_NAME_CSShaderParticleUpdate "CS_ParticleUpdate"
 #define STR_FUNC_NAME_CSShaderDreamParticleUpdate "CS_DreamParticleUpdate"
+
+#define STR_FUNC_NAME_VTXShaderDrawLine "VS_DrawLine"
+#define STR_FUNC_NAME_GEOShaderDrawLine "GS_DrawLine"
+#define STR_FUNC_NAME_PIXShaderDrawLine "PS_DrawLine"
 
 
 ////////// Resource Key ///////////////
@@ -153,6 +156,7 @@
 #define STR_KEY_CustomParticleRenderShader L"CustomParticleRenderShader"
 #define STR_KEY_AnimatedParticleRenderShader L"AnimatedParticleRenderShader"
 #define STR_KEY_DreamParticleRenderShader L"DreamParticleRenderShader"
+#define STR_KEY_DrawLineRenderShader L"DrawLineRenderShader"
 
 
 // Material
@@ -170,6 +174,7 @@
 #define STR_KEY_CustomParticleMeterial L"CustomParticleMtrl"
 #define STR_KEY_AnimatedParticleMeterial L"AnimatedParticleMtrl"
 #define STR_KEY_DreamParticleMeterial L"DreamParticleMtrl"
+#define STR_KEY_DrawLineMeterial L"DrawLineMtrl"
 
 
 

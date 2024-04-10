@@ -25,6 +25,8 @@ private:
     bool                    m_bThisFrameDelete = false;
     bool                    m_bDebug = true;
 
+    //Ptr<CMesh>              m_LineMesh;
+    Ptr<CMaterial>          m_LineMat;
 
 public:
     void GenerateParticle() {
