@@ -585,9 +585,6 @@
     <FxCompile Include="setcolor.fx">
       <Filter>ShaderCode\Compute\SetColor</Filter>
     </FxCompile>
-    <FxCompile Include="particle.fx">
-      <Filter>ShaderCode\Render</Filter>
-    </FxCompile>
     <FxCompile Include="particle_update.fx">
       <Filter>ShaderCode\Compute\ParticleUpdate</Filter>
     </FxCompile>
@@ -602,6 +599,9 @@
     </FxCompile>
     <FxCompile Include="dreamparticle.fx">
       <Filter>ShaderCode\Compute\DreamParticleUpdate</Filter>
+    </FxCompile>
+    <FxCompile Include="particle.fx">
+      <Filter>ShaderCode\Compute\ParticleUpdate</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
