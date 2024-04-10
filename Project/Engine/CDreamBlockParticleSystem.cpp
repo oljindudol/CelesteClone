@@ -180,14 +180,11 @@ void CDreamBlockParticleSystem::render()
 		wobbleTo   = RandomFloat(6.2831855f);
 	}
 
-	//from
-	m_LineMat->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4(left, bottom, pos.z, 0.f));
-	//to
-	m_LineMat->SetScalarParam(SCALAR_PARAM::VEC4_1, Vec4(left, up, pos.z, 0.f));
+
 	//Line Color
 	m_LineMat->SetScalarParam(SCALAR_PARAM::VEC4_2, Vec4(1.f,1.f,1.f, 1.f));
 	//Line Width
-	m_LineMat->SetScalarParam(SCALAR_PARAM::FLOAT_0, 10.f);
+	m_LineMat->SetScalarParam(SCALAR_PARAM::FLOAT_0, 1.f);
 	//Wooble Line
 	m_LineMat->SetScalarParam(SCALAR_PARAM::INT_0, 1);
 	//Wooble from
@@ -197,6 +194,15 @@ void CDreamBlockParticleSystem::render()
 	//Wooble Ease
 	m_LineMat->SetScalarParam(SCALAR_PARAM::FLOAT_2, wobbleEase);
 
+	DrawWoobleLine(Vec2(left, bottom), Vec2(left ,up), pos.z);
+}
+
+void CDreamBlockParticleSystem::DrawWoobleLine(Vec2 _from, Vec2 _to, float _z)
+{
+	//from
+	m_LineMat->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4(_from.x, _from.y, _z, 0.f));
+	//to
+	m_LineMat->SetScalarParam(SCALAR_PARAM::VEC4_1, Vec4(_to.x, _to.y, _z, 0.f));
 	m_LineMat->UpdateData();
 	GetMesh()->render_point();
 }
@@ -218,6 +224,8 @@ void CDreamBlockParticleSystem::UpdateParallaxCorrection()
 		m_Module.ScaleMultibyDepth[i] = m_Module.vSpawnDepth[i] / 90.f;
 	}
 }
+
+
 
 void CDreamBlockParticleSystem::CreateDreamFab()
 {

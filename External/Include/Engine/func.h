@@ -133,4 +133,5 @@ float Lerp(float A, float B, float Alpha);
 Color Lerp(Vec4 A, Vec4 B, float Alpha);
 
 //0~_MaxValue-1 까지의 무작위 정수하나뽑기.
-int RandomInt(int _MaxValue);
+int	  RandomInt(int _MaxValue);
+float RandomFloat(float _MaxValue = 1.f);

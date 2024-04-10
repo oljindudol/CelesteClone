@@ -48,6 +48,7 @@ public:
     virtual void render() override;
     virtual void begin() override;
     void UpdateParallaxCorrection() ;
+    void DrawWoobleLine(Vec2 _from,Vec2 _to , float _z);
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;

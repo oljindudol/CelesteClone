@@ -25,6 +25,10 @@ private:
     bool                    m_bThisFrameDelete = false;
     bool                    m_bDebug = true;
 
+    float                   wobbleEase = 0.f;
+    float                   wobbleFrom = 0.f;
+    float                   wobbleTo = 0.f;
+
     //Ptr<CMesh>              m_LineMesh;
     Ptr<CMaterial>          m_LineMat;
 
@@ -44,6 +48,7 @@ public:
     virtual void render() override;
     virtual void begin() override;
     void UpdateParallaxCorrection() ;
+    void DrawWoobleLine(Vec2 _from,Vec2 _to , float _z);
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;

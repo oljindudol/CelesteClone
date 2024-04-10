@@ -46,7 +46,7 @@ VS_OUT VS_DrawLine(VS_IN _in)
 
 float LineAmplitude(float seed, float index)
 {
-    return (float) (sin((double) (seed + index / 16f) + sin((double) (seed * 2f + index / 32f)) * 6.2831854820251465) + 1.0) * 1.5f;
+    return (float) (sin((double) (seed + index / 16.f) + sin((double) (seed * 2.f + index / 32.f)) * 6.2831854820251465) + 1.0f) * 1.5f;
 }
 
 //138 = (320픽셀(화면가로최대) / 16픽셀씩라인그리기) * 라인당 6개의 정점생성
@@ -56,59 +56,77 @@ void GS_DrawLine(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStream)
     GS_OUT output[4] = { (GS_OUT) 0.f, (GS_OUT) 0.f, (GS_OUT) 0.f, (GS_OUT) 0.f };
     
     
-    
-    
-    
-    
+    float length = distance(to.xyz , from.xyz);
+    float2 normal = normalize(to.xy - from.xy);
+    float2 perp = float2(normal.y, -normal.x);
+
+    float lastAmp = 0.f;
+    int interval = 16;
+    int i = 2;
     
     
     //가로 or 세로 판정
     float4 posdiff = abs(to - from);
     bool vertical;
-    float length;
     if(posdiff.x < posdiff.y)
     {
         vertical = true;
-        length = posdiff.y;
+        //length = posdiff.y;
     }
     else
     {
         vertical = false;
-        length = posdiff.x;
+        //length = posdiff.x;
     }
-
-    //로컬포지션    
-    float ver = (true == vertical) ? length : linewidth;
-    float hor = (true == vertical) ? linewidth : length;
     
-    output[0].vPosition = float4(hor * -0.5f, (ver * 0.5f), 0.f, 1.f);
-    output[1].vPosition = float4(hor * 0.5f, (ver * 0.5f), 0.f, 1.f);
-    output[2].vPosition = float4(hor * 0.5f, (ver * -0.5f), 0.f, 1.f);
-    output[3].vPosition = float4(hor * -0.5f, (ver * -0.5f), 0.f, 1.f);
+    while ((float) i < length - 2.f)
+    {
+        float amp = lerp(LineAmplitude(wobbleFrom, (float) i), LineAmplitude(wobbleTo, (float) i), wobbleEase);
+        if ((float) (i + interval) >= length)
+        {
+            amp = 0.f;
+        }
+        float len = min((float) interval, length - 2.f - (float) i);
+        float2 start= from.xy + normal * (float) i + perp * lastAmp;
+        float2 end = from.xy + normal * ((float) i + len) + perp * amp;
+        
+        
+        //Draw.Line(start, end, line);
+        
+        //로컬포지션    
+        float ver = (true == vertical) ? len : linewidth;
+        float hor = (true == vertical) ? linewidth : len;
     
-    // ViewSpace 상에서의 중심 포지션 구하기
-    float4 centerpos = (to + from) / 2.f;
-    float3 vCenterWorldPos = centerpos.xyz;
-    float4 vViewPos = mul(float4(vCenterWorldPos.xyz, 1.f), g_matView);
+        output[0].vPosition = float4(hor * -0.5f, (ver * 0.5f), 0.f, 1.f);
+        output[1].vPosition = float4(hor * 0.5f, (ver * 0.5f), 0.f, 1.f);
+        output[2].vPosition = float4(hor * 0.5f, (ver * -0.5f), 0.f, 1.f);
+        output[3].vPosition = float4(hor * -0.5f, (ver * -0.5f), 0.f, 1.f);
+    
+        // ViewSpace 상에서의 중심 포지션 구하기
+        float4 centerpos = float4((start + end) / 2.f, from.z,0.f);
+        float3 vCenterWorldPos = centerpos.xyz;
+        float4 vViewPos = mul(float4(vCenterWorldPos.xyz, 1.f), g_matView);
     
     // View 좌표로 이동, 투영행렬 적용
-    for (int i = 0; i < 4; ++i)
-    {
-        output[i].vPosition.xyz += vViewPos.xyz;
-        output[i].vPosition = mul(output[i].vPosition, g_matProj);
-    }
+        for (int j = 0; j < 4; ++j)
+        {
+            output[j].vPosition.xyz += vViewPos.xyz;
+            output[j].vPosition = mul(output[j].vPosition, g_matProj);
+        }
 
-    _OutStream.Append(output[0]);
-    _OutStream.Append(output[2]);
-    _OutStream.Append(output[3]);
-    _OutStream.RestartStrip();
+        _OutStream.Append(output[0]);
+        _OutStream.Append(output[2]);
+        _OutStream.Append(output[3]);
+        _OutStream.RestartStrip();
     
-    _OutStream.Append(output[0]);
-    _OutStream.Append(output[1]);
-    _OutStream.Append(output[2]);
-    _OutStream.RestartStrip();
+        _OutStream.Append(output[0]);
+        _OutStream.Append(output[1]);
+        _OutStream.Append(output[2]);
+        _OutStream.RestartStrip();
     
-    
+        lastAmp = amp;
+        i += interval;
+    }
     
     
 }
