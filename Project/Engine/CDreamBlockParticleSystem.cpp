@@ -147,7 +147,7 @@ void CDreamBlockParticleSystem::render()
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 0);
 	auto pos = Transform()->GetWorldPos();
 	auto scale = Transform()->GetWorldScale();
-	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4( pos.x,pos.y,0.f,0.f));
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4( pos.x,pos.y, pos.z,0.f));
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_1, Vec4(scale.x,scale.y, scale.z,0.f));
 	auto camerapos = CRenderMgr::GetInst()->GetCameraPos();
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_2, Vec4(camerapos.x, camerapos.y, camerapos.z, 0.f));
