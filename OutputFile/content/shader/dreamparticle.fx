@@ -134,21 +134,12 @@ void GS_DreamParticle(point VS_OUT _in[1], inout TriangleStream<GS_OUT> _OutStre
     _OutStream.Append(output[1]);
     _OutStream.Append(output[2]);
     _OutStream.RestartStrip();
- 
     
-    _OutStream.Append(output[0]);
-    _OutStream.Append(output[2]);
-    _OutStream.Append(output[3]);
-    _OutStream.RestartStrip();
-    
-    _OutStream.Append(output[0]);
-    _OutStream.Append(output[1]);
-    _OutStream.Append(output[2]);
-    _OutStream.RestartStrip();
 }
 
 
-
+
+
 // DreamParticle Àü¿ë PS
 float4 PS_DreamParticle(GS_OUT _in) : SV_Target
 {
