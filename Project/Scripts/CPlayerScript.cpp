@@ -323,6 +323,10 @@ void CPlayerScript::tick()
     //}
     //GetPhysics()->Update();
 
+    if (DreamDashCheck())
+    {
+        StateMachine->SetCurState(StDreamDash);
+    }
     StateMachine->Update();
     Update();
 
@@ -475,7 +479,7 @@ void CPlayerScript::Update()
         //Jump Grace
         if (onGround)
         {
-            //dreamJump = false;
+            dreamJump = false;
             jumpGraceTimer = JumpGraceTime;
         }
         else if (jumpGraceTimer > 0)
@@ -1776,13 +1780,125 @@ void CPlayerScript::SetShockWaveEvent()
 
 void CPlayerScript::DreamDashBegin()
 {
-}
-int CPlayerScript::DreamDashUpdate()
-{
-    return 0;
+    //if (dreamSfxLoop == null)
+    //    Add(dreamSfxLoop = new SoundSource());
+
+    Speed = DashDir * DreamDashSpeed;
+    //TreatNaive = true;
+    //Depth = Depths.PlayerDreamDashing;
+    dreamDashCanEndTimer = DreamDashMinTime;
+    Stamina = ClimbMaxStamina;
+    dreamJump = false;
+
+    //Play(Sfxs.char_mad_dreamblock_enter);
+    //Loop(dreamSfxLoop, Sfxs.char_mad_dreamblock_travel);
 }
 void CPlayerScript::DreamDashEnd()
 {
+    //Depth = Depths.Player;
+    if (!dreamJump)
+    {
+        AutoJump = true;
+        AutoJumpTimer = 0;
+    }
+    //if (!Inventory.NoRefills)
+        RefillDash();
+    RefillStamina();
+    //TreatNaive = false;
+
+    //if (dreamBlock != null)
+    //{
+        if (DashDir.x != 0)
+        {
+            jumpGraceTimer = JumpGraceTime;
+            dreamJump = true;
+        }
+        else
+            jumpGraceTimer = 0;
+
+        //dreamBlock.OnPlayerExit(this);
+        //dreamBlock = null;
+    //}
+
+    //Stop(dreamSfxLoop);
+    //Play(Sfxs.char_mad_dreamblock_exit);
+    //Input.Rumble(RumbleStrength.Medium, RumbleLength.Short);
+}
+int CPlayerScript::DreamDashUpdate()
+{
+    //Input.Rumble(RumbleStrength.Light, RumbleLength.Medium);
+
+    auto oldPos = Position;
+    //NaiveMove(Speed * Engine.DeltaTime);
+    Position += Speed * DT;
+    if (dreamDashCanEndTimer > 0)
+        dreamDashCanEndTimer -= DT;
+
+    //var block = CollideFirst<DreamBlock>();
+    //if (block == null)
+    if (false == DreamDashCheck())
+    {
+        //드림대쉬중 죽는경우
+        //if (DreamDashedIntoSolid())
+        //{
+        //    if (SaveData.Instance.AssistMode && SaveData.Instance.Assists.Invincible)
+        //    {
+        //        Position = oldPos;
+        //        Speed *= -1;
+        //        Play(Sfxs.game_assist_dreamblockbounce);
+        //    }
+        //    else
+        //        Die(Vector2.Zero);
+        //}
+        //else if (dreamDashCanEndTimer <= 0)
+        if (dreamDashCanEndTimer <= 0)
+        {
+            Celeste->Freeze(.05f);
+
+            if (JUMPKEY && DashDir.x != 0)
+            {
+                dreamJump = true;
+                jump();
+            }
+            else
+            {
+                //bool left = ClimbCheck(-1);
+                //bool right = ClimbCheck(1);
+
+                //if (Input.Grab.Check && (DashDir.Y >= 0 || DashDir.X != 0) && ((moveX == 1 && right) || (moveX == -1 && left)))
+                //{
+                //    Facing = (Facings)moveX;
+                //    return StClimb;
+                //}
+            }
+
+            return StNormal;
+        }
+    }
+    else
+    {
+        //dreamBlock = block;
+     
+        //if (Scene.OnInterval(0.1f))
+            //CreateTrail();
+        static float acctime = 0.f;
+        acctime += DT;
+        if (acctime > 0.1f)
+        {
+            acctime = 0.f;
+            CreateTrail();
+        }
+
+        // 왜곡효과
+        //if (level.OnInterval(0.04f))
+        //{
+            //var displacement = level.Displacement.AddBurst(Center, .3f, 0f, 40f);
+            //displacement.WorldClipCollider = dreamBlock.Collider;
+            //displacement.WorldClipPadding = 2;
+        //}
+    }
+
+    return StDreamDash;
 }
 
 #pragma endregion

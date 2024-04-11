@@ -355,6 +355,23 @@ public:
     void CallDashEvents();
     void CreateTrail();
 
+private:
+    void RefillStamina()
+    {
+        Stamina = ClimbMaxStamina;
+    }
+    bool dreamJump;
+    bool DreamDashCheck()
+    {
+        if (DreamBlockColCnt > 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+public:
+    int  DreamBlockColCnt = 0;
     void DreamDashBegin();
     int DreamDashUpdate();
     void DreamDashEnd();
