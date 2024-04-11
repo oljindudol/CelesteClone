@@ -24,6 +24,15 @@ void Inspector::CreateChildUI()
 
 void Inspector::CreateComponentUI()
 {
+	for (int i = 0; i < 4; ++i)
+	{
+		ScriptUI* pScriptUI = new ScriptUI;
+		AddChildUI(pScriptUI);
+		m_vecScriptUI.push_back(pScriptUI);
+		pScriptUI->Deactivate();
+	}
+
+
 	m_arrComUI[(UINT)COMPONENT_TYPE::TRANSFORM] = new TransformUI;
 	m_arrComUI[(UINT)COMPONENT_TYPE::TRANSFORM]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::TRANSFORM]);

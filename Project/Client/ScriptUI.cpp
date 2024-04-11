@@ -9,6 +9,7 @@ ScriptUI::ScriptUI()
 	: ComponentUI("Script", "##Script", COMPONENT_TYPE::LIGHT2D)
 	, m_TargetScript(nullptr)
 {
+	SetSize(ImVec2(0,100));
 }
 
 ScriptUI::~ScriptUI()

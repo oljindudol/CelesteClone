@@ -24,6 +24,7 @@ Animator2DUI::~Animator2DUI()
 
 void Animator2DUI::render_update()
 {
+	
 	ComponentUI::render_update();
 
 	//static CGameObject* pPrevTarget = nullptr;
@@ -37,6 +38,7 @@ void Animator2DUI::render_update()
 
 	if (0 == refMapAnim.size())
 	{
+		SetSize(ImVec2(0.f, 0.f));
 		return;
 	}
 
@@ -119,6 +121,15 @@ void Animator2DUI::render_update()
 	
 	ImGui::Text(CurAnimName.c_str());
 
+	static bool visible = false; 
+	if (ImGui::Button("View More"))
+	{
+		visible = !visible;
+	}
+	if (false == visible)
+	{
+		return;
+	}
 
 	//if (ImGui::Button("ADD"))
 	//{

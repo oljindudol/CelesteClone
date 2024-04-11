@@ -5,6 +5,7 @@ class Animator2DUI :
 {
     virtual void render_update() override;
 public:
+    bool visible = false;
     Animator2DUI();
     ~Animator2DUI();
 };

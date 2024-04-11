@@ -31,6 +31,7 @@
 #include "CTraceState.h"
 #include <Scripts/CPlatFormScript.h>
 #include <Engine\CDreamBlockParticleSystem.h>
+#include <Scripts\CDreamBlockScript.h>
 
 
 void CCreateTempLevel::Init()
@@ -175,7 +176,8 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CCollider2D);
 	pObj->Collider2D()->SetOffsetScale(Vec2(1, 1));
 	pObj->AddComponent(new CDreamBlockParticleSystem);
-	pTempLevel->AddObject(pObj, LAYER_FORETILE);
+	pObj->AddComponent(new CDreamBlockScript);
+	pTempLevel->AddObject(pObj, LAYER_TILECOL);
 
 
 	pObj = nullptr;
