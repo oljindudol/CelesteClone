@@ -172,19 +172,15 @@ void CDreamBlockParticleSystem::render()
 	float up = pos.y + scale.y * 0.5f;
 	float bottom = pos.y - scale.y * 0.5f;
 
-	wobbleEase += DT * 2.f;
-	if (wobbleEase > 1.f)
-	{
-		wobbleEase = 0.f;
-		wobbleFrom = wobbleTo;
-		wobbleTo   = RandomFloat(6.2831855f);
-	}
 
+	WoolbeUpdate();
+
+	const float linewidth = 1.f;
 
 	//Line Color
-	m_LineMat->SetScalarParam(SCALAR_PARAM::VEC4_2, Vec4(1.f,1.f,1.f, 1.f));
+	m_LineMat->SetScalarParam(SCALAR_PARAM::VEC4_2, Vec4(1.f, 1.f, 1.f, 1.f));
 	//Line Width
-	m_LineMat->SetScalarParam(SCALAR_PARAM::FLOAT_0, 1.f);
+	m_LineMat->SetScalarParam(SCALAR_PARAM::FLOAT_0, linewidth);
 	//Wooble Line
 	m_LineMat->SetScalarParam(SCALAR_PARAM::INT_0, 1);
 	//Wooble from
@@ -194,11 +190,244 @@ void CDreamBlockParticleSystem::render()
 	//Wooble Ease
 	m_LineMat->SetScalarParam(SCALAR_PARAM::FLOAT_2, wobbleEase);
 
-	DrawWoobleLine(Vec2(left, bottom), Vec2(left ,up), pos.z);
+	static vector<float> v1from;
+	static vector<float> v1to1;
+	static vector<float> v1to2;
+
+	static vector<float> v2from;
+	static vector<float> v2to1;
+	static vector<float> v2to2;
+
+	static vector<float> v3from;
+	static vector<float> v3to1;
+	static vector<float> v3to2;
+
+	static vector<float> v4from;
+	static vector<float> v4to1;
+	static vector<float> v4to2;
+	m_randomtime += DT;
+	if (m_randomtime > (2.f))
+	{
+		m_randomtime = 0.f;
+		v1to1.swap(v1to2);
+		v2to1.swap(v2to2);
+		v3to1.swap(v3to2);
+		v4to1.swap(v4to2);
+
+	}
+	DrawWoobleLineGenerateCPU(Vec2(left, bottom), Vec2(left, up), pos.z , v1from, v1to1);
+	DrawWoobleLineGenerateCPU(Vec2(left, up), Vec2(right, up), pos.z, v2from, v2to1);
+	DrawWoobleLineGenerateCPU(Vec2(right, up), Vec2(right, bottom), pos.z, v3from, v3to1);
+	DrawWoobleLineGenerateCPU(Vec2(right, bottom), Vec2(left, bottom), pos.z, v4from, v4to1);
+	
+	m_LineMat->SetScalarParam(SCALAR_PARAM::INT_0, 0);	
+	float bs = 2.f;
+	m_LineMat->SetScalarParam(SCALAR_PARAM::FLOAT_0, bs);
+
+	DrawLine(Vec2(left, bottom), Vec2(left+ bs, bottom+ bs), pos.z);
+	DrawLine(Vec2(right- bs, bottom), Vec2(right, bottom+ bs), pos.z);
+	DrawLine(Vec2(left, up- bs), Vec2(left+ bs, up), pos.z);
+	DrawLine(Vec2(right- bs, up- bs), Vec2(right, up), pos.z);
 }
 
-void CDreamBlockParticleSystem::DrawWoobleLine(Vec2 _from, Vec2 _to, float _z)
+
+void CDreamBlockParticleSystem::DrawWoobleLineGenerateGPU(Vec2 _from, Vec2 _to, float _z)
 {
+	//GpuWooble =true;
+	m_LineMat->SetScalarParam(SCALAR_PARAM::INT_0, 1);
+
+	//from
+	m_LineMat->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4(_from.x, _from.y, _z, 0.f));
+	//to
+	m_LineMat->SetScalarParam(SCALAR_PARAM::VEC4_1, Vec4(_to.x, _to.y, _z, 0.f));
+	m_LineMat->UpdateData();
+	GetMesh()->render_point();
+}
+
+
+float CDreamBlockParticleSystem::RandomInterVal()
+{
+	// 가중치 선택 1,2,2,1
+	const vector<float> w = { 1.f,2.f,10.f,10.f };
+	const vector<std::pair<float, float>> val =
+	{
+		{1,4}
+		,{5,8}
+		,{9,12}
+		,{13,16}
+	};
+	float r = RandomFloat() * (w[0]+w[1]+w[2]+w[3]);
+	//1~4
+	if (w[0] > r)
+	{
+		return val[0].first + RandomFloat() * (val[0].second- val[0].first);
+	}
+	//5~8
+	else if ((w[0]+w[1]) > r)
+	{
+		return val[1].first + RandomFloat() * (val[1].second - val[1].first);
+	}
+	//9~12
+	else if ((w[0] + w[1] + w[2]) > r)
+	{
+		return val[2].first + RandomFloat() * (val[2].second - val[2].first);
+	}
+	//13~16
+	else
+	{
+		return val[3].first + RandomFloat() * (val[3].second - val[3].first);
+	}
+}
+
+void CDreamBlockParticleSystem::WoolbeUpdate()
+{
+	wobbleEase += DT * 2.f;
+	if (wobbleEase > 1.f)
+	{
+		wobbleEase = 0.f;
+		wobbleFrom = wobbleTo;
+		wobbleTo = RandomFloat(6.2831855f);
+	}
+}
+
+float LineAmplitude(float seed, float index)
+{
+	return (float)(sin((double)(seed + index / 16.f) + sin((double)(seed * 2.f + index / 32.f)) * 6.2831854820251465f) + 1.0f) * 1.5f;
+}
+
+void CDreamBlockParticleSystem::DrawWoobleLineGenerateCPU(Vec2 from, Vec2 to, float _z, vector<float>& _out_from , vector<float>& _out_to)
+{
+	//가로 or 세로 판정
+	Vec2 posdiff = Vec2(to.x - from.x, to.y - from.y);
+	Vec2 normal = posdiff;
+	normal.Normalize();
+	posdiff.x = abs(posdiff.x);
+	posdiff.y = abs(posdiff.y);
+
+	bool vertical;
+	if (posdiff.x < posdiff.y)
+	{
+		vertical = true;
+	}
+	else
+	{
+		vertical = false;
+	}
+	//Wooble =false;
+	m_LineMat->SetScalarParam(SCALAR_PARAM::INT_0, 0);
+	m_LineMat->SetScalarParam(SCALAR_PARAM::INT_1, vertical ? 1 : 0);
+
+	float length = Vector2::Distance(from, to);
+	Vec2 perp = Vec2(normal.y, -normal.x);
+	float lastAmp = 0.f;
+	int   interval = 10;
+	int   i = 2;
+	int n = 0;
+	float lastdiff = 0.f;
+	while ((float)i < length - 2.f)
+	{
+		float amp = Lerp(LineAmplitude(wobbleFrom, (float)i), LineAmplitude(wobbleTo, (float)i), wobbleEase) / 1.5f;
+
+		float thisinterval;  
+		if (n == _out_from.size())
+		{
+			thisinterval = RandomInterVal();
+			_out_from.push_back(thisinterval);
+		}
+		while (_out_to.size() <= n)
+		{
+			_out_to.push_back(RandomInterVal());
+		}
+
+		float lerp = Lerp(_out_from[n], _out_to[n], DT*5.f );
+		float thisdiff = lerp - _out_from[n];
+		_out_from[n] = thisinterval = (lerp - lastdiff);
+		lastdiff = thisdiff;
+
+		if ((float)(i + thisinterval) >= length)
+		{
+			amp = 0.f;
+		}
+		float len = min((float)thisinterval, length - 2.f - (float)i);
+		Vec2 start = from + normal * (float)i + perp * lastAmp;
+		Vec2 end = from + normal * ((float)i + len) + perp * amp;
+
+		//DrawLine(start - perp, end - perp, 2, vertical, _OutStream);
+		//DrawLine(start - perp * 2.f, end - perp * 2.f, 3, vertical, _OutStream);
+		//DrawLine(start, end, 1, vertical, _OutStream);
+
+		//from
+		m_LineMat->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4(start.x, start.y, _z, 0.f));
+		//to
+		m_LineMat->SetScalarParam(SCALAR_PARAM::VEC4_1, Vec4(end.x, end.y, _z, 0.f));
+		m_LineMat->UpdateData();
+		GetMesh()->render_point();
+
+		lastAmp = amp;
+		i += thisinterval;
+		n++;
+	}
+}
+
+void CDreamBlockParticleSystem::DrawWoobleLineGenerateCPU(Vec2 from, Vec2 to, float _z)
+{
+	//가로 or 세로 판정
+	Vec2 posdiff = Vec2(to.x - from.x , to.y- from.y);
+	Vec2 normal = posdiff;
+	normal.Normalize();
+	posdiff.x = abs(posdiff.x);
+	posdiff.y = abs(posdiff.y);
+
+	bool vertical;
+	if (posdiff.x < posdiff.y)
+	{
+		vertical = true;
+	}
+	else
+	{
+		vertical = false;
+	}
+	//Wooble =false;
+	m_LineMat->SetScalarParam(SCALAR_PARAM::INT_0, 0);
+	m_LineMat->SetScalarParam(SCALAR_PARAM::INT_1, vertical ? 1 :0);
+
+	float length = Vector2::Distance(from,to);
+	Vec2 perp = Vec2(normal.y, -normal.x);
+	float lastAmp = 0.f;
+	int   interval = 10;
+	int   i = 2;
+
+	while ((float)i < length - 2.f)
+	{
+		float amp = Lerp(LineAmplitude(wobbleFrom, (float)i), LineAmplitude(wobbleTo, (float)i), wobbleEase) / 1.5f;
+		if ((float)(i + interval) >= length)
+		{
+			amp = 0.f;
+		}
+		float len = min((float)interval, length - 2.f - (float)i);
+		Vec2 start = from + normal * (float)i + perp * lastAmp;
+		Vec2 end = from + normal * ((float)i + len) + perp * amp;
+
+		//DrawLine(start - perp, end - perp, 2, vertical, _OutStream);
+		//DrawLine(start - perp * 2.f, end - perp * 2.f, 3, vertical, _OutStream);
+		//DrawLine(start, end, 1, vertical, _OutStream);
+		
+		//from
+		m_LineMat->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4(start.x, start.y, _z, 0.f));
+		//to
+		m_LineMat->SetScalarParam(SCALAR_PARAM::VEC4_1, Vec4(end.x, end.y, _z, 0.f));
+		m_LineMat->UpdateData();
+		GetMesh()->render_point();
+
+		lastAmp = amp;
+		i += interval;
+	}
+}
+
+void CDreamBlockParticleSystem::DrawLine(Vec2 _from, Vec2 _to, float _z)
+{
+	//Wooble =false;
+	m_LineMat->SetScalarParam(SCALAR_PARAM::INT_0, 0);
 	//from
 	m_LineMat->SetScalarParam(SCALAR_PARAM::VEC4_0, Vec4(_from.x, _from.y, _z, 0.f));
 	//to
@@ -224,8 +453,6 @@ void CDreamBlockParticleSystem::UpdateParallaxCorrection()
 		m_Module.ScaleMultibyDepth[i] = m_Module.vSpawnDepth[i] / 90.f;
 	}
 }
-
-
 
 void CDreamBlockParticleSystem::CreateDreamFab()
 {

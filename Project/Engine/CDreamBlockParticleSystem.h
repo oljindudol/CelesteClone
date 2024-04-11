@@ -25,6 +25,8 @@ private:
     bool                    m_bThisFrameDelete = false;
     bool                    m_bDebug = true;
 
+    float                   m_randomtime = 0.f;
+
     float                   wobbleEase = 0.f;
     float                   wobbleFrom = 0.f;
     float                   wobbleTo = 0.f;
@@ -48,7 +50,12 @@ public:
     virtual void render() override;
     virtual void begin() override;
     void UpdateParallaxCorrection() ;
-    void DrawWoobleLine(Vec2 _from,Vec2 _to , float _z);
+    void WoolbeUpdate();
+    void DrawWoobleLineGenerateCPU(Vec2 from, Vec2 to, float _z);
+    void DrawWoobleLineGenerateCPU(Vec2 from, Vec2 to, float _z, vector<float>& _out_from, vector<float>& _out_to);
+    void DrawWoobleLineGenerateGPU(Vec2 _from, Vec2 _to, float _z);
+    void DrawLine(Vec2 _from,Vec2 _to , float _z);
+    float RandomInterVal();
 
     virtual void SaveToFile(FILE* _File) override;
     virtual void LoadFromFile(FILE* _File) override;
