@@ -254,8 +254,15 @@ void CPlayerScript::begin()
         Animator2D()->CreateFromFolder(rel, f, 0.08f, Vec2(0.f, -0.375f));
     }
     GetRenderComponent()->GetDynamicMaterial();
-    auto a = Animator2D();
     Animator2D()->Play(L"idle");
+
+    auto a = Animator2D();
+    auto dreamanim = a->GetAnim(ToWString( Sprite->DreamDashIn));
+    if (nullptr != dreamanim && (3<dreamanim->GetVecFrm().size()))
+    {
+        dreamanim->SetRoop(2);
+    }
+
 
     //ÇÇÁ÷½º
     //SetPhysics(new CPhysics(GetOwner()));

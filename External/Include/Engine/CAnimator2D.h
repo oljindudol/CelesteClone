@@ -19,6 +19,16 @@ private:
 public:
     void SetMulScale(Vec2 _MulScale) { m_MulScale = _MulScale; }
     Vec2 GetMulScale() { return m_MulScale; }
+    CAnim* GetAnim(wstring _name) 
+    {  
+        auto iter = m_mapAnim.find(_name);
+        if (m_mapAnim.end() != iter)
+        {
+            return iter->second;
+        }
+
+        return nullptr;
+    }
 
     virtual void finaltick() override;
 

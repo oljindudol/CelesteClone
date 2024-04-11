@@ -36,6 +36,11 @@ public:
 
     void finaltick();
     void UpdateData();
+    // -1 루프안함, 루프할 프레임
+    void SetRoop(int _rooptarget)
+    {
+        m_iRoop = _rooptarget;
+    }
 
     bool IsFinish() { return m_bFinish; }
     void Reset()
