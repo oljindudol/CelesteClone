@@ -288,8 +288,6 @@ void CPlayerScript::tick()
     Vec3 vPos = Transform()->GetRelativePos();
     Vec3 vRot = Transform()->GetRelativeRotation();
 
-
-
     Transform()->SetRelativePos(vPos);
     Transform()->SetRelativeRotation(vRot);
 

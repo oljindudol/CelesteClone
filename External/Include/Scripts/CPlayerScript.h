@@ -355,6 +355,10 @@ public:
     void CallDashEvents();
     void CreateTrail();
 
+    void DreamDashBegin();
+    int DreamDashUpdate();
+    void DreamDashEnd();
+
     //Vec2 LiftBoost()
     //{
     //    Vector2 val = LiftSpeed;

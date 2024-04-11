@@ -67,7 +67,7 @@ bool CPlayerSprite::Running()
 
 bool CPlayerSprite::DreamDashing()
 {
-	return false;
+	return LastAnimationID != "" &&  (0 == LastAnimationID.find("dreamDash",0));
 }
 
 void CPlayerSprite::Play(string _animid)

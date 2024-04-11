@@ -439,7 +439,8 @@ void CDreamBlockParticleSystem::DrawLine(Vec2 _from, Vec2 _to, float _z)
 void CDreamBlockParticleSystem::begin()
 {
 	CRenderComponent::begin();
-	//LoadDreamFab();
+	LoadDreamFab();
+	m_bThisFrameGenerate = true;
 }
 
 void CDreamBlockParticleSystem::UpdateParallaxCorrection()
