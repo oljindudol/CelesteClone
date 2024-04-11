@@ -290,51 +290,6 @@ void CPlayerScript::tick()
 
 
 
-
-    auto a = Animator2D();
-    if (KEY_PRESSED(KEY::UP))
-        //vPos.y += DT * m_Speed;	
-        if (KEY_TAP(KEY::UP))
-            Animator2D()->Play(L"MOVE_UP");
-    if (KEY_RELEASED(UP))
-        Animator2D()->Play(L"IDLE_UP");
-
-    if (KEY_PRESSED(KEY::DOWN))
-        //vPos.y -= DT * m_Speed;
-        if (KEY_TAP(KEY::DOWN))
-            Animator2D()->Play(L"MOVE_DOWN");
-    if (KEY_RELEASED(DOWN))
-        Animator2D()->Play(L"IDLE_DOWN");
-
-    if (KEY_PRESSED(KEY::LEFT))
-        //vPos.x -= DT * m_Speed;
-        if (KEY_TAP(KEY::LEFT))
-            Animator2D()->Play(L"MOVE_LEFT");
-    if (KEY_RELEASED(LEFT))
-        Animator2D()->Play(L"IDLE_LEFT");
-
-    if (KEY_PRESSED(KEY::RIGHT))
-        //vPos.x += DT * m_Speed;
-        if (KEY_TAP(KEY::RIGHT))
-            Animator2D()->Play(L"MOVE_RIGHT");
-    if (KEY_RELEASED(RIGHT))
-        Animator2D()->Play(L"IDLE_RIGHT");
-
-    if (KEY_PRESSED(KEY::X))
-    {
-        vRot.x += DT * XM_PI;
-    }
-
-    if (KEY_PRESSED(KEY::Y))
-    {
-        vRot.y += DT * XM_PI;
-    }
-
-    if (KEY_PRESSED(KEY::Z))
-    {
-        vRot.z += DT * XM_PI;
-    }
-
     Transform()->SetRelativePos(vPos);
     Transform()->SetRelativeRotation(vRot);
 
@@ -1482,7 +1437,7 @@ void CPlayerScript::NormalEnd()
 #pragma endregion
 
 
-#pragma region About Dash
+#pragma region About Dash State
 
 void CPlayerScript::CallDashEvents()
 {
@@ -1810,7 +1765,25 @@ void CPlayerScript::SetShockWaveEvent()
     m_ShockWave->PushShockEvent(SE);
 }
 
+#pragma endregion 
+
+#pragma region About Dream Dash State
+
+void CPlayerScript::DreamDashBegin()
+{
+}
+int CPlayerScript::DreamDashUpdate()
+{
+    return 0;
+}
+void CPlayerScript::DreamDashEnd()
+{
+}
+
 #pragma endregion
+
+
+
 
 
 #pragma region FrameWork Script Legacy
