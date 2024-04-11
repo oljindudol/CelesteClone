@@ -4,7 +4,7 @@
 #include "CPlayerScript.h"
 
 CPlatFormScript::CPlatFormScript()
-	: CScript((UINT)SCRIPT_TYPE::PLATFORMSCRIPT)
+	: CScript((UINT)SCRIPT_TYPE::DREAMBLOCKSCRIPT)
 {
 }
 

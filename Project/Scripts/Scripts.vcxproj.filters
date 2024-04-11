@@ -38,6 +38,7 @@
     <ClInclude Include="CPlayerSprite.h">
       <Filter>About Player</Filter>
     </ClInclude>
+    <ClInclude Include="CDreamBlockScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -77,6 +78,7 @@
     <ClCompile Include="CPlayerSprite.cpp">
       <Filter>About Player</Filter>
     </ClCompile>
+    <ClCompile Include="CDreamBlockScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">

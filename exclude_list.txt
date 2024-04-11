@@ -5,3 +5,4 @@ CPhysics.h
 CustomStateMachine.h
 CPlayerSprite.h
 CPlayerHairUpdate.h
+CRandomScript.h
