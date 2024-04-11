@@ -233,7 +233,7 @@ void AnimEditor::render_update()
     ImGui::SameLine();
     ImGui::BeginChild("Sprite View", ImVec2(ImGui::GetWindowSize().x - 550, 500), true);
 
-    if (0 == m_selectedfrm.size())
+    if (m_selectedfrm.size() < vecFrm.size())
     {
         m_selectedfrm.resize(vecFrm.size(), false);
     }
