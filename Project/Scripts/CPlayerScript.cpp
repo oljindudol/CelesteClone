@@ -913,7 +913,7 @@ void CPlayerScript::UpdateSprite()
     SpriteScale.y = Approach(SpriteScale.y, 1.f, 1.75f * DT);
 
     Animator2D()->SetMulScale(SpriteScale);
-
+    static float outtimmer = 0.f;
     //Animation
     if (InControl() && Sprite->CurrentAnimationID != Sprite->Throw && StateMachine->GetCurState() != StTempleFall &&
         StateMachine->GetCurState() != StReflectionFall && StateMachine->GetCurState() != StStarFly && StateMachine->GetCurState() != StCassetteFly)
@@ -942,8 +942,10 @@ void CPlayerScript::UpdateSprite()
                 Sprite->Play(Sprite->SwimIdle);
         }
         // dream dashing
+
         else if (StateMachine->GetCurState() == StDreamDash)
         {
+            outtimmer = .3f;
             if (Sprite->CurrentAnimationID != Sprite->DreamDashIn && Sprite->CurrentAnimationID != Sprite->DreamDashLoop)
                 Sprite->Play(Sprite->DreamDashIn);
         }
@@ -951,7 +953,8 @@ void CPlayerScript::UpdateSprite()
         {
             Sprite->Play(Sprite->DreamDashOut);
         }
-        else if (Sprite->CurrentAnimationID != Sprite->DreamDashOut)
+        //else if (Sprite->CurrentAnimationID != Sprite->DreamDashOut)
+        else
         {
             //// during dash
             //if (DashAttacking())
