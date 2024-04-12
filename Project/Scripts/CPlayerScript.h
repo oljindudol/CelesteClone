@@ -327,7 +327,7 @@ private:
     void PushAfterImageEvent();
     class CShockWave* m_ShockWave;
     class CCustomParticleSystem* m_Particle;
-    void SetShockWaveEvent();
+    void SetShockWaveEvent(float _TimeAccel, float _MaxDist);
     float gliderBoostTimer;
 
 #pragma region functions

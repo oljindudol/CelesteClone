@@ -6,6 +6,8 @@ struct tShockEvent
 {
     Matrix ShockMat;
     float AccTime;
+    float TimeAccel;
+    float MaxDist;
 };
 
 

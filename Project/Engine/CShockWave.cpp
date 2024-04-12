@@ -19,13 +19,13 @@ CShockWave::~CShockWave()
 
 void CShockWave::finaltick()
 {
-	static const float accel = 1.5f;
+	//static const float accel = 3.f;
 
 	static const float ShockDuration = 1.f  ;
 
 	for (auto iter = m_ShockEventList.begin(); iter != m_ShockEventList.end(); )
 	{
-		iter->AccTime = iter->AccTime + DT * accel;
+		iter->AccTime = iter->AccTime + DT * iter->TimeAccel;
 
 		if (ShockDuration < iter->AccTime)
 		{
@@ -70,6 +70,7 @@ void CShockWave::render()
 		tShock s = {};
 		s.ShockAccTime = e.AccTime;
 
+		GetMaterial()->SetScalarParam(SCALAR_PARAM::FLOAT_0, e.MaxDist);
 		Transform()->UpdateData(e.ShockMat);
 
 		pCB->SetData(&s);

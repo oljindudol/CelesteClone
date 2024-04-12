@@ -2,6 +2,7 @@
 #define _POSTPROCESS
 
 #include "value.fx"
+#define  _maxdist g_float_0 
 
 // mesh : RectMesh
 struct VS_IN
@@ -83,7 +84,7 @@ float4 PS_ShockWave(VS_OUT _in) : SV_Target
 	
     float4 Color = g_postprocess.Sample(g_sam_0, texCoord);
     float minDist = 0.045f;
-    float maxDist = .1f;
+    float maxDist = _maxdist;
     float fadeOutFactor = 1.0 - (Dist / maxDist);
     
     //Only distort the pixels within the parameter distance from the centre

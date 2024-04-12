@@ -1626,7 +1626,7 @@ int CPlayerScript::DashUpdate()
 
         DashDir = dir;
         CRenderMgr::GetInst()->DirectionalShake(DashDir, .2f);
-        SetShockWaveEvent();
+        SetShockWaveEvent(1.5f ,.1f);
 
         if (DashDir.x != 0)
             Facing = (Facings)Sign(DashDir.x);
@@ -1805,12 +1805,14 @@ void CPlayerScript::PushAfterImageEvent()
     m_AfterImage->PushEvent(Event);
     m_bAfterImageRequest = false;
 }
-void CPlayerScript::SetShockWaveEvent()
+void CPlayerScript::SetShockWaveEvent(float _TimeAccel, float _MaxDist)
 {
     tShockEvent SE= {};
     
     SE.ShockMat = m_ShockWave->Transform()->GetWorldMat();
     SE.AccTime = 0.f;
+    SE.TimeAccel = _TimeAccel;
+    SE.MaxDist = _MaxDist;
 
     m_ShockWave->PushShockEvent(SE);
 }
@@ -1933,12 +1935,20 @@ int CPlayerScript::DreamDashUpdate()
      
         //if (Scene.OnInterval(0.1f))
             //CreateTrail();
-        static float acctime = 0.f;
-        acctime += DT;
-        if (acctime > 0.1f)
+        static float trailacctime = 0.f;
+        trailacctime += DT;
+        if (trailacctime > 0.1f)
         {
-            acctime = 0.f;
+            trailacctime = 0.f;
             CreateTrail();
+        }
+
+        static float shockwaveacctime = 0.f;
+        shockwaveacctime += DT;
+        if (shockwaveacctime > 0.03f)
+        {
+            shockwaveacctime = 0.f;
+            SetShockWaveEvent(3.f, .05f);
         }
 
         // ¿Ö°îÈ¿°ú
