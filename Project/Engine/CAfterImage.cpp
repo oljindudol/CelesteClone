@@ -90,16 +90,18 @@ void CAfterImage::render()
 			GetMaterial()->UpdateData();
 			RenderPlayer(HC, iter->facing, Vec3(iter->vMult, 1.f));
 
+			if (false == iter->bDreamDash)
+			{
+				//헤어 랜더
+				m_RenderInfo = iter->HairInfo;
 
-			//헤어 랜더
-			m_RenderInfo = iter->HairInfo;
-
-			//RenderHair(BC, Vec3(OutLineWidth, 0.0f, OutLineDepth));
-			//RenderHair(BC, Vec3(-OutLineWidth, 0.0f, OutLineDepth));
-			//RenderHair(BC, Vec3(0.0f, OutLineWidth, OutLineDepth));
-			//RenderHair(BC, Vec3(0.0f, -OutLineWidth, OutLineDepth));
-			Transform()->UpdateData(iter->HairWorldMat);
-			RenderHair(HC ,Vec3(0.0f, 0.f, HairDepth));
+				//RenderHair(BC, Vec3(OutLineWidth, 0.0f, OutLineDepth));
+				//RenderHair(BC, Vec3(-OutLineWidth, 0.0f, OutLineDepth));
+				//RenderHair(BC, Vec3(0.0f, OutLineWidth, OutLineDepth));
+				//RenderHair(BC, Vec3(0.0f, -OutLineWidth, OutLineDepth));
+				Transform()->UpdateData(iter->HairWorldMat);
+				RenderHair(HC, Vec3(0.0f, 0.f, HairDepth));
+			}
 
 			++iter;
 		}

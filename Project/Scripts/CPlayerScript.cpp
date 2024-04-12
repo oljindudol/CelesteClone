@@ -1785,6 +1785,7 @@ void CPlayerScript::PushAfterImageEvent()
 
     Color c = wasDashB ? Normal : Used;
 
+    Event.bDreamDash = (StDreamDash == StateMachine->GetCurState()) ? true : false;
 
     Event.Color = c;
     //플레이어 텍스쳐

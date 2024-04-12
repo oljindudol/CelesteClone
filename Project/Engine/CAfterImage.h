@@ -20,6 +20,9 @@ struct tAfterImageEvent
 
     //헤어 정보.
     tRenderInfo HairInfo;
+    
+    //드림대쉬
+    bool bDreamDash;
 };
 
 
