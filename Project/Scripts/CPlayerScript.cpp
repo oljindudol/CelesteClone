@@ -68,6 +68,7 @@ CPlayerScript::CPlayerScript()
     StateMachine = new CCustomStateMachine<CPlayerScript>(this, (int)PLAYER_STATE::StEND);
     StateMachine->SetCallbacks(StNormal, ToString(magic_enum::enum_name(StNormal)), &CPlayerScript::NormalUpdate, &CPlayerScript::NormalBegin, &CPlayerScript::NormalEnd, nullptr);
     StateMachine->SetCallbacks(StDash, ToString(magic_enum::enum_name(StDash)), &CPlayerScript::DashUpdate, &CPlayerScript::DashBegin, &CPlayerScript::DashEnd, nullptr);
+    StateMachine->SetCallbacks(StDreamDash, ToString(magic_enum::enum_name(StDreamDash)), &CPlayerScript::DreamDashUpdate, &CPlayerScript::DreamDashBegin, &CPlayerScript::DreamDashEnd, nullptr);
 
     // other stuff
     // Leader = 아이템따라오는것 , wind,light 
@@ -292,11 +293,11 @@ void CPlayerScript::StartHair()
 
 void CPlayerScript::tick()
 {
-    Vec3 vPos = Transform()->GetRelativePos();
-    Vec3 vRot = Transform()->GetRelativeRotation();
+    //Vec3 vPos = Transform()->GetRelativePos();
+    //Vec3 vRot = Transform()->GetRelativeRotation();
 
-    Transform()->SetRelativePos(vPos);
-    Transform()->SetRelativeRotation(vRot);
+    //Transform()->SetRelativePos(vPos);
+    //Transform()->SetRelativeRotation(vRot);
 
     //if (KEY_TAP(KEY::SPACE))
     //{
@@ -332,9 +333,16 @@ void CPlayerScript::tick()
 
     //Script Debug
     {
-        static string curstatename = "";
+        static string curstatename;
         curstatename = magic_enum::enum_name((PLAYER_STATE)StateMachine->GetCurState());
-        AppendScriptParam("curstate", SCRIPT_PARAM::STRING, (void*)&curstatename);
+        AppendScriptParam("CurState", SCRIPT_PARAM::STRING, (void*)&curstatename);
+
+        static string animname;
+        animname = ToString (Animator2D()->GetCurAnimName());
+        AppendScriptParam("AnimName", SCRIPT_PARAM::STRING, (void*)&animname);
+
+        AppendScriptParam("DreamColCnt", SCRIPT_PARAM::INT, (void*)&DreamBlockColCnt);
+
     }
 
 
@@ -741,8 +749,6 @@ void CPlayerScript::Update()
     if (StateMachine->GetCurState() != StDreamDash && StateMachine->GetCurState() != StAttract)
         Transform()->SetRelativePos(Vec3(newx, newy, V3Pos.z));
     //    MoveH(Speed.x * DT, onCollideH);
-    if (StateMachine->GetCurState() != StDreamDash && StateMachine->GetCurState() != StAttract)
-        Transform()->SetRelativePos(Vec3(newx, newy, V3Pos.z));
     if (0 != inputx)
     {
         GetOwner()->m_facing = (Facings)inputx;
@@ -1733,6 +1739,10 @@ void CPlayerScript::CreateTrail()
 {
     m_bAfterImageRequest = true;
 }
+int CPlayerScript::GetCurState()
+{
+    return StateMachine->GetCurState();
+}
 void CPlayerScript::PushAfterImageEvent()
 {
     if (false == m_bAfterImageRequest)
@@ -1841,7 +1851,13 @@ int CPlayerScript::DreamDashUpdate()
 
     auto oldPos = Position;
     //NaiveMove(Speed * Engine.DeltaTime);
-    Position += Speed * DT;
+    //Position += Speed * DT;
+    //Physics
+    float newx = Position.x + Speed.x * DT;
+    float newy = Position.y - Speed.y * DT;
+    Transform()->SetRelativePos(Vec3(newx, newy, Transform()->GetRelativePos().z));
+
+
     if (dreamDashCanEndTimer > 0)
         dreamDashCanEndTimer -= DT;
 

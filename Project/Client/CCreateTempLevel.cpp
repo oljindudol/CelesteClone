@@ -171,7 +171,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj = new CGameObject;
 	pObj->SetName(L"DreamBlock");
 	pObj->AddComponent(new CTransform);
-	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 91.f));
+	pObj->Transform()->SetRelativePos(Vec3(100.f, 0.f, 91.f));
 	pObj->Transform()->SetRelativeScale(Vec3(100.f, 100.f, 0.f));
 	pObj->AddComponent(new CCollider2D);
 	pObj->Collider2D()->SetOffsetScale(Vec2(1, 1));

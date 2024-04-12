@@ -32,15 +32,29 @@ void CDreamBlockScript::BeginOverlap(CCollider2D* _Collider, CGameObject* _Other
 			break;
 		}
 	}
-
-	if (nullptr != ps)
+	if (nullptr != ps && 0.f < ps->dashAttackTimer) // StDash == ps->GetCurState())
 	{
 		++ps->DreamBlockColCnt;
 	}
+
 }
 
 void CDreamBlockScript::Overlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
 {
+	auto vs = _OtherObj->GetScripts();
+	CPlayerScript* ps = nullptr;
+	for (auto& s : vs)
+	{
+		ps = dynamic_cast<CPlayerScript*>(s);
+		if (nullptr != ps)
+		{
+			break;
+		}
+	}
+	if (nullptr != ps && 0.f < ps->dashAttackTimer) // StDash == ps->GetCurState())
+	{
+		++ps->DreamBlockColCnt;
+	}
 }
 
 void CDreamBlockScript::EndOverlap(CCollider2D* _Collider, CGameObject* _OtherObj, CCollider2D* _OtherCollider)
@@ -56,7 +70,7 @@ void CDreamBlockScript::EndOverlap(CCollider2D* _Collider, CGameObject* _OtherOb
 		}
 	}
 
-	if (nullptr != ps)
+	if (nullptr != ps && StDreamDash == ps->GetCurState())
 	{
 		int newcnt = ps->DreamBlockColCnt -1 ;
 		if(-1 < newcnt)

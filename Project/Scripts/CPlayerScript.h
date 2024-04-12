@@ -371,6 +371,7 @@ private:
     }
 
 public:
+    int  GetCurState();
     int  DreamBlockColCnt = 0;
     void DreamDashBegin();
     int DreamDashUpdate();
