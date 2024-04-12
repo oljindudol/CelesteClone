@@ -82,6 +82,11 @@ void CHair::render()
         return;
     Animator2D()->Clear();
 
+    auto AN = ToString(GetOwner()->GetParent()->Animator2D()->GetCurAnimName());
+    if(0 == AN.find("dreamDash", 0))
+        return;
+    //an.find
+
     //UpdateData();
 
     //if (nullptr != GetMaterial())
