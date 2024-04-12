@@ -326,7 +326,18 @@ void CPlayerScript::tick()
     if (DreamDashCheck())
     {
         StateMachine->SetCurState(StDreamDash);
+        dashAttackTimer = 0.f;
+        gliderBoostTimer = 0.f;
     }
+
+    //Script Debug
+    {
+        static string curstatename = "";
+        curstatename = magic_enum::enum_name((PLAYER_STATE)StateMachine->GetCurState());
+        AppendScriptParam("curstate", SCRIPT_PARAM::STRING, (void*)&curstatename);
+    }
+
+
     StateMachine->Update();
     Update();
 

@@ -329,7 +329,7 @@ private:
     class CShockWave* m_ShockWave;
     class CCustomParticleSystem* m_Particle;
     void SetShockWaveEvent();
-
+    float gliderBoostTimer;
 
 #pragma region functions
 public:

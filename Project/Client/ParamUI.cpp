@@ -67,6 +67,22 @@ bool ParamUI::Param_VEC4(Vec4* _Data, const string& _Desc)
 	}
 }
 
+bool ParamUI::Param_STRING(string* _Data, const string& _Desc)
+{
+	ImGui::Text(_Desc.c_str());
+	ImGui::SameLine();
+
+	char szID[256] = {};
+	sprintf_s(szID, "##String%d", g_ID++);
+
+	ImGui::Text((*_Data).c_str());
+	//if (ImGui::InputText(szID, (*_Data).c_str()))
+	//{
+	//	return true;
+	//}
+	return true;
+}
+
 bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _Inst, Delegate_1 _Func)
 {
 	// 파라미터의 Description 정보 출력

@@ -30,25 +30,34 @@ void ScriptUI::render_update()
 {
 	ComponentUI::render_update();
 
-	const vector<tScriptParam>& vecParam = m_TargetScript->GetScriptParam();
+	const auto& umParam = m_TargetScript->GetScriptParam();
 
-	for (size_t i = 0; i < vecParam.size(); ++i)
+	
+	//for (size_t i = 0; i < vecParam.size(); ++i)
+	for (auto& p : umParam)
 	{
-		switch (vecParam[i].Type)
+		auto t = p.second;
+		switch (t.Type)
 		{
 		case SCRIPT_PARAM::INT:
+			ParamUI::Param_INT((int*)t.pData, p.first);
 			break;
 		case SCRIPT_PARAM::FLOAT:
-			ParamUI::Param_FLOAT((float*)vecParam[i].pData, vecParam[i].Desc);
+			ParamUI::Param_FLOAT((float*)t.pData, p.first);
 			break;
 		case SCRIPT_PARAM::VEC2:
+			ParamUI::Param_VEC2((Vec2*)t.pData, p.first);
 			break;
 		case SCRIPT_PARAM::VEC3:
 			break;
 		case SCRIPT_PARAM::VEC4:
+			ParamUI::Param_VEC4((Vec4*)t.pData, p.first);
 			break;
 		case SCRIPT_PARAM::OBJECT:
 			break;		
+		case SCRIPT_PARAM::STRING:
+			ParamUI::Param_STRING((string*)t.pData, p.first);
+			break;
 		}		
 	}
 }
