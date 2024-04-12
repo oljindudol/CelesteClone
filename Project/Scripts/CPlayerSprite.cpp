@@ -72,7 +72,7 @@ bool CPlayerSprite::DreamDashing()
 
 void CPlayerSprite::Play(string _animid)
 {
-	if (LastAnimationID == _animid)
+	if (CurrentAnimationID == _animid)
 	{
 		return;
 	}

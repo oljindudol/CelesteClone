@@ -166,7 +166,13 @@ tPlayerHairInfo CHair::GettHairInfo()
     string key = ToString(AnimName) + std::to_string(AnimIdx);
     auto iter = m_umHairInfo.find(key);
     if (m_umHairInfo.end() != iter)
+    {
         ret = iter->second;
+    }
+    else
+    {
+        int a = 0;
+    }
 
     return ret;
 }

@@ -945,17 +945,25 @@ void CPlayerScript::UpdateSprite()
 
         else if (StateMachine->GetCurState() == StDreamDash)
         {
-            outtimmer = .3f;
             if (Sprite->CurrentAnimationID != Sprite->DreamDashIn && Sprite->CurrentAnimationID != Sprite->DreamDashLoop)
                 Sprite->Play(Sprite->DreamDashIn);
         }
         else if (Sprite->DreamDashing() && Sprite->LastAnimationID != Sprite->DreamDashOut)
         {
+            outtimmer = .3f;
             Sprite->Play(Sprite->DreamDashOut);
+        }
+        else if (Sprite->LastAnimationID == Sprite->DreamDashOut&& 0.f < outtimmer)
+        {
+            outtimmer -= DT;
         }
         //else if (Sprite->CurrentAnimationID != Sprite->DreamDashOut)
         else
         {
+            if (Sprite->DreamDashOut == Sprite->CurrentAnimationID)
+            {
+                Sprite->Play(Sprite->Idle);
+            }
             //// during dash
             //if (DashAttacking())
             //{
@@ -1099,6 +1107,10 @@ void CPlayerScript::UpdateHair(bool applyGravity)
     {
         m_pHairUpdate->Color = Sprite->Color;
         applyGravity = false;
+    }
+    else if (StateMachine->GetCurState() == PLAYER_STATE::StDreamDash)
+    {
+        m_pHairUpdate->Color = Vec4(0.f, 0.f, 0.f, 0.f);
     }
     else if (Dashes == 0 && Dashes < MaxDashes)
     {
