@@ -36,6 +36,7 @@ public:
     const Matrix& GetColliderWorldMat() { return m_matColWorld; }
 
 public:
+    static void onoffcoldebug();
     virtual void finaltick() override;
 
 private:

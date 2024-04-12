@@ -26,6 +26,16 @@ CCollider2D::~CCollider2D()
 {
 }
 
+static bool debug = false;
+
+void CCollider2D::onoffcoldebug()
+{
+	if (KEY_TAP(P))
+	{
+		debug = !debug;
+	}
+}
+
 void CCollider2D::finaltick()
 {
 	// 충돌체의 로컬 행렬 계산
@@ -50,11 +60,6 @@ void CCollider2D::finaltick()
 		m_matColWorld *= matObjWorld;
 	}	
 
-	static bool debug = false;
-	if (KEY_TAP(P))
-	{
-		debug = !debug;
-	}
 
 	if(debug)
 	{

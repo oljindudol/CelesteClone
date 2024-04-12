@@ -21,6 +21,8 @@ CCollisionMgr::~CCollisionMgr()
 
 void CCollisionMgr::tick()
 {
+	CCollider2D::onoffcoldebug();
+
 	for (UINT iRow = 0; iRow < LAYER_MAX; ++iRow)
 	{
 		for (UINT iCol = iRow; iCol < LAYER_MAX; ++iCol)
