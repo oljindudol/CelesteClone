@@ -113,10 +113,19 @@ void TileMapEditor::render_update()
 	ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
 
 	//에디터카메라 오쏘뷰고정
-	CCamera* pEditorCam = CRenderMgr::GetInst()->GetEditorCamera();
-	if (pEditorCam) {
-		if (PROJ_TYPE::PERSPECTIVE == pEditorCam->GetProjType())
-			pEditorCam->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
+	CCamera* pCam;
+	if (LEVEL_STATE::PLAY == CLevelMgr::GetInst()->GetCurrentLevel()->GetState())
+	{
+		pCam = CRenderMgr::GetInst()->GetFirstCamera();
+	}
+	else
+	{
+		pCam = CRenderMgr::GetInst()->GetEditorCamera();
+	}
+
+	if (pCam) {
+		if (PROJ_TYPE::PERSPECTIVE == pCam->GetProjType())
+			pCam->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
 	}
 
 	//===============1. 타일맵 정보==============
@@ -201,11 +210,15 @@ void TileMapEditor::render_update()
 	//===============5. 레벨 클릭 판정기=============
 	ImGui::Separator();
 	auto MousePosition = CKeyMgr::GetInst()->GetMousePos();
-	Vector3 vMouseWorldPos = pEditorCam->GetScreenToWorld2DPosition(MousePosition);
-	ImGui::Text("Abs Mouse X:%d  Y:%d", int(vMouseWorldPos.x), int(vMouseWorldPos.y));
+	//Vector3 vMouseWorldPos = pEditorCam->GetScreenToWorld2DPosition(MousePosition);
+	//ImGui::Text("Abs Mouse X:%d  Y:%d", int(vMouseWorldPos.x), int(vMouseWorldPos.y));
 
-	if (!pEditorCam) {
-		assert(pEditorCam);
+
+	Vector3 vMouseWorldPos;
+	vMouseWorldPos = pCam->GetScreenToWorld2DPosition(MousePosition);
+
+	if (!pCam) {
+		assert(pCam);
 	}
 	else {
 
@@ -214,7 +227,6 @@ void TileMapEditor::render_update()
 		if (!ImGui::IsWindowFocused()) {
 			m_bDeleteMode = false;
 			// TODO(Jang) : 타일 클릭 충돌했는지 구하는 코드를 CollisionManager에 넣기
-			Vector3 vMouseWorldPos = pEditorCam->GetScreenToWorld2DPosition(MousePosition);
 	
 			Vector3 vObjWorldPos = GetTargetObject()->Transform()->GetWorldPos();
 			Vector3 vScale = GetTargetObject()->Transform()->GetWorldScale();

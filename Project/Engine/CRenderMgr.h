@@ -58,6 +58,12 @@ public:
     }
 
     CCamera* GetEditorCamera() { return m_EditorCam; }
+    CCamera* GetFirstCamera() {
+        if (0 < m_vecCam.size())
+            return m_vecCam[0];
+        else
+            return nullptr;
+    }
 
 public:
     void init();
