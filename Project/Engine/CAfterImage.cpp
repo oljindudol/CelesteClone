@@ -86,6 +86,7 @@ void CAfterImage::render()
 			//플레이어 랜더
 			//static const float PlayerYOffset = (0.5f) * 32.f;
 			Transform()->UpdateData(iter->PlayerWorldMat);
+			GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, (true == iter->bDreamDash) ? 1 : 0 );
 			GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, iter->PlayerAnimTex );
 			GetMaterial()->UpdateData();
 			RenderPlayer(HC, iter->facing, Vec3(iter->vMult, 1.f));
@@ -114,6 +115,7 @@ void CAfterImage::RenderHair(Color _Color, Vec3 _offset)
 	static CConstBuffer* pCB = CDevice::GetInst()->GetConstBuffer(CB_TYPE::HAIR);
 
 
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 0);
 	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_HairTex);
 	GetMaterial()->UpdateData();
 
@@ -135,6 +137,7 @@ void CAfterImage::RenderHair(Color _Color, Vec3 _offset)
 
 
 	//bang render
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 0);
 	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_vecBangTex[m_RenderInfo.ThisFrameBangIdx]);
 	GetMaterial()->UpdateData();
 	tHair data = {};

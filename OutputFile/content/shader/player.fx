@@ -4,6 +4,7 @@
 #include "value.fx"
 #include "func.fx"
 
+#define dreamdashcolororigin g_int_0
 struct VS_IN
 {
     float4 vColor : COLOR;
@@ -83,7 +84,15 @@ float4 PS_Hair(VS_OUT _in) : SV_Target
         else
         {
         
-            vColor = g_HairColor;
+            if (1 == dreamdashcolororigin)
+            {
+                vColor.a = g_HairColor.a;
+
+            }
+            else
+            {
+                vColor = g_HairColor;
+            }
         //if (1 == g_Int_Bang)
         //{
         //    vColor.a = 0.1f;

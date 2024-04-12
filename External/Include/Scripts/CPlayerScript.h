@@ -322,7 +322,6 @@ private:
     class CEngine* Celeste;
 
     bool  m_bAfterImageRequest = false;
-    const float  DashAfterImageTime = 1.f;
 
     class CAfterImage* m_AfterImage;
     void PushAfterImageEvent();

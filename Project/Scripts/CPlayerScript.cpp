@@ -1766,8 +1766,13 @@ void CPlayerScript::PushAfterImageEvent()
 
     tAfterImageEvent Event= {};
 
+    static const float  DashAfterImageTime = 1.f;
+    static const float  DreamDashAfterImageTime = 0.3f;
+
     //공통
-    Event.Duration = DashAfterImageTime;
+    bool bDreamDash = (StDreamDash == StateMachine->GetCurState()) ? true : false;
+    Event.bDreamDash = bDreamDash;
+    Event.Duration = (true == bDreamDash) ? DreamDashAfterImageTime : DashAfterImageTime;
     Event.AccTime = 0.0f;
 
     //플레이어
@@ -1784,8 +1789,6 @@ void CPlayerScript::PushAfterImageEvent()
     static const Color Used = HexToColor("44B7FF");
 
     Color c = wasDashB ? Normal : Used;
-
-    Event.bDreamDash = (StDreamDash == StateMachine->GetCurState()) ? true : false;
 
     Event.Color = c;
     //플레이어 텍스쳐

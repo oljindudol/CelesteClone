@@ -57,6 +57,7 @@ void CHair::RenderHair(Color _Color, Vec3 _offset)
 
 
     //bang render
+    GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 0);
     GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_vecBangTex[m_RenderInfo.ThisFrameBangIdx]);
     GetMaterial()->UpdateData();
     tHair data = {};
@@ -89,6 +90,7 @@ void CHair::render()
     //}
 
     //hair render
+    GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 0);
     GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_HairTex);
     GetMaterial()->UpdateData();
 
