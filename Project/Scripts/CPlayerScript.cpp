@@ -324,12 +324,7 @@ void CPlayerScript::tick()
     //}
     //GetPhysics()->Update();
 
-    if (DreamDashCheck())
-    {
-        StateMachine->SetCurState(StDreamDash);
-        dashAttackTimer = 0.f;
-        gliderBoostTimer = 0.f;
-    }
+
 
     //Script Debug
     {
@@ -346,7 +341,13 @@ void CPlayerScript::tick()
     }
 
 
-    StateMachine->Update();
+    StateMachine->Update();    
+    if (DreamDashCheck())
+    {
+        StateMachine->SetCurState(StDreamDash);
+        dashAttackTimer = 0.f;
+        gliderBoostTimer = 0.f;
+    }
     Update();
 
     UpdateHair(true);
@@ -1803,6 +1804,11 @@ void CPlayerScript::DreamDashBegin()
 {
     //if (dreamSfxLoop == null)
     //    Add(dreamSfxLoop = new SoundSource());
+
+    if (Vec2(0, 0) == DashDir)
+    {
+        DashDir = lastAim;
+    }
 
     Speed = DashDir * DreamDashSpeed;
     //TreatNaive = true;

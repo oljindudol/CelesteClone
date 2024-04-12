@@ -202,7 +202,7 @@ CGameObject* CLevelSaveLoad::LoadGameObject(FILE* _File)
 			pComponent = new CParticleSystem;
 			break;
 		default:
-			assert(nullptr);
+			//assert(nullptr);
 			break;
 		}
 
