@@ -13,6 +13,10 @@
 #include <Engine/CTransform.h>
 #include <Engine/CRenderMgr.h>
 #include <Engine/CTexture.h>
+#include <Engine\CCollider2D.h>
+#include <Engine\CLevelMgr.h>
+#include <Engine\CLevel.h>
+#include <Engine\CTaskMgr.h>
 //#include <Engine\CObjectManager.h>
 //#include <Engine\CCursor.h>
 //#include <Engine\CSceneManager.h>
@@ -289,16 +293,16 @@ void TileMapEditor::render_update()
 				//vecTiles[idx].idx = m_iSelectedTileIdx;
 		}
 
-		for (int i=0; i < vecTiles.size();++i)
-		{
-			ImGui::Text(("Tile" + std::to_string(i) + ":"+ std::to_string(vecTiles[i].TileIdx) +std::to_string(vecTiles[i].AtlasIdx)).c_str());
-		}
+		//for (int i=0; i < vecTiles.size();++i)
+		//{
+		//	ImGui::Text(("Tile" + std::to_string(i) + ":"+ std::to_string(vecTiles[i].TileIdx) +std::to_string(vecTiles[i].AtlasIdx)).c_str());
+		//}
 	}
 
 	//===============6. 컬라이더 생성기=============
 	//if (ImGui::Button("CollderCreate##TileMap2D")) {
 	//	CGameObject* pObj = CObjectManager::GetInstance()->CreateEmptyGameObject();
-	//	pObj->SetName(_T("new Collders"));
+	//	pObj->SetName(L"new Collders");
 	//	vector<TTileInfo>& vecTiles = m_pTileMap->GetTilesInfo();
 	//	int iCol = m_pTileMap->GetCol();
 	//	int iRow = m_pTileMap->GetRow();
@@ -318,9 +322,9 @@ void TileMapEditor::render_update()
 	//		}
 	//	}
 	//}
-	//if (ImGui::Button("OptimizeCollider##TileMap2D")) {
-	//	_OptimizeCollisionArea();
-	//}
+	if (ImGui::Button("OptimizeCollider##TileMap2D")) {
+		_OptimizeCollisionArea();
+	}
 }
 
 void TileMapEditor::_RenderPalette()
@@ -449,7 +453,6 @@ void TileMapEditor::_RenderPalette()
 }
 
 
-
 void TileMapEditor::_SelectTexture(DWORD_PTR _strKey, DWORD_PTR _NONE)
 {
 }
@@ -464,12 +467,174 @@ void TileMapEditor::_Clear()
 	m_iSelectedTileIdx = -1;
 }
 
+enum class E_VisitedState { not_visited, visited };
+
 void TileMapEditor::_OptimizeCollisionArea()
 {
+	CGameObject* pObj = new CGameObject;
+	pObj->SetName(L"new Collders");
+	pObj->AddComponent(new CTransform);
+	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+	pObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
+
+	auto ownpos = m_pTileMap->Transform()->GetWorldPos();
+	auto ownscale = m_pTileMap->Transform()->GetWorldScale();
+
+	auto TilePixelSize = m_pTileMap->GetTileSize();
+
+	Vec2 TobjLT = Vec2(ownpos.x, ownpos.y) - Vec2(ownscale.x, -ownscale.y) * 0.5f;
+	//test
+	//CGameObject* pChild = new CGameObject;
+	//pChild->SetName(L"child");
+	//pChild->AddComponent(new CTransform);
+	//pChild->AddComponent(new CCollider2D);
+
+	//pChild->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+	//pChild->Transform()->SetRelativeScale(Vec3(0.f, 0.f, 0.f));
+	//pChild->Collider2D()->SetOffsetScale(Vec2(1, 1));
+	//pChild->Collider2D()->SetOffsetPos(Vec2(0, 0));
+	//pObj->AddChild(pChild);
+	//
+	//GamePlayStatic::SpawnGameObject(pObj, LAYER_TILECOL);
+	//return;
+
+	const vector<tTileInfo>& vecTiles = m_pTileMap->GetTilesInfo();
+	//int iCol = m_pTileMap->GetCol();
+	//int iRow = m_pTileMap->GetRow();
+
+	int iRow = m_pTileMap->GetCol();
+	int iCol = m_pTileMap->GetRow();
+
+	// 최적화를 하기 위해서 map 생성
+
+	// 2차원 배열 동적할당.
+	int** grid = new int* [iRow];
+	for (int i = 0; i < (int)iRow; ++i)
+		grid[i] = new int[(int)iCol];
+
+	for (int i = 0; i < (int)iRow; ++i)
+		memset(grid[i], 0, sizeof(int) * iCol);
+
+	// 잡힌 영역을 저장할 벡터
+
+	// grid type -> 0 : not visited, 1: visited
+	vector<std::pair<RECT, Vector2>> vecPos; // 콜라이더를 생성시킬 벡터 ( second : 위치)
+	// collider 영역 잡기.
+	int startPosX = 0;
+	int startPosY = 0;
+	int endPosX = 0;
+	int endPosY = 0;
+	for (int y = 0; y < (int)iRow; ++y) {
+		for (int x = 0; x < (int)iCol; ++x) {
+			endPosX = startPosX = x;
+			endPosY = startPosY = y;
+
+			const tTileInfo& pTile = vecTiles[startPosY * iCol + startPosX];
+			if ((-1 < pTile.TileIdx) && (int)E_VisitedState::not_visited == grid[startPosY][startPosX]) {
+				GetEndIdxOfRectArea(grid, startPosX, startPosY, endPosX, endPosY);
+				vecPos.push_back(std::make_pair(RECT{ startPosX,startPosY,endPosX,endPosY }, Vector2(x, y)));
+			}
+			grid[startPosY][startPosX] = (int)E_VisitedState::visited;
+		}
+	}
+
+	// 콜라이더 설정
+	for (UINT i = 0; i < vecPos.size(); ++i) {
+		RECT tRect = vecPos[i].first;
+		Vector2 vPos = vecPos[i].second;
+
+		const tTileInfo& pTile = vecTiles[tRect.top * iCol + tRect.left];
+
+
+		// 콜라이더 오브젝트 생성
+		CGameObject* pColObj = new CGameObject;
+		auto trans = new CTransform;
+		pColObj->AddComponent(trans);
+		pColObj->AddComponent(new CCollider2D);
+		WCHAR strName[255];
+		swprintf_s(strName, 255, L"Col[%d,%d]", (int)vPos.x, (int)vPos.y);
+		pColObj->SetName(strName);
+
+		//Vector2 offset{ 0.5f, -y - 0.5f };
+		//pColObj->Transform()->SetLocalPosition(Vector3(x + 0.5f, iRow - y - 0.5f, 0));
+		pObj->AddChild(pColObj);
+
+		float scaleX = (float)(tRect.right + 1 - tRect.left)* TilePixelSize.x;
+		float scaleY = (float)(tRect.bottom + 1 - tRect.top) * TilePixelSize.y;
+
+		//trans->SetAbsolute(true);
+		//Vector2 vOffsetPos = Vector2(scaleX * 0.5f, scaleY * 0.5f);
+		//float maxX = iCol * 0.5f;
+		//float maxY = iRow * 0.5f;
+		//vOffsetPos.x -= maxX;
+		//vOffsetPos.y -= maxY;
+		//Vector3 vResultPos = Vector3(vPos.x + vOffsetPos.x, vPos.y + vOffsetPos.y, ownpos.z);
+		Vector3 vResultPos = Vector3(TobjLT.x + (vPos.x * TilePixelSize.x + scaleX *0.5f)
+			, TobjLT.y - (vPos.y * TilePixelSize.y + scaleY *0.5f) , ownpos.z);
+
+		//pColObj->Collider2D()->SetAbsolute(false);
+		trans->SetRelativeScale(Vector3(scaleX, scaleY, 0.f));
+		trans->SetRelativePos(vResultPos);
+		pColObj->Collider2D()->SetOffsetPos(Vec2(0, 0));
+		pColObj->Collider2D()->SetOffsetScale(Vector2(1, 1));
+	}
+
+	for (int i = 0; i < (int)iRow; ++i) {
+		delete[] grid[i];
+	}
+	delete[] grid;
+
+	GamePlayStatic::SpawnGameObject(pObj, LAYER_TILECOL);
+	//CLevelMgr::GetInst()->GetCurrentLevel()->AddObject(pObj,LAYER_TILECOL,false);
+	//pObj->begin();
+	//CTaskMgr::GetInst()->TriggetObjectEvent();
 }
 
 void TileMapEditor::GetEndIdxOfRectArea(int** _grid, int _startX, int _startY, int& _endX, int& _endY)
 {
+	const vector<tTileInfo>& vecTiles = m_pTileMap->GetTilesInfo();
+	//int iCol = m_pTileMap->GetCol();
+	//int iRow = m_pTileMap->GetRow();
+
+	int iCol = m_pTileMap->GetRow();
+	int iRow = m_pTileMap->GetCol();
+	const tTileInfo& tTile = vecTiles[_startY * iCol + _startX];
+
+	// get min size of column and row
+	int minX = (int)iCol - 1;
+	int minY = (int)iRow - 1;
+	int y = _startY;
+	int x = _startX;
+	for (; y < (int)iRow; ++y) {
+		x = _startX;
+
+		const tTileInfo& tTile = vecTiles[y * iCol + x];
+		if (!(-1 < tTile.TileIdx) || (int)E_VisitedState::visited == _grid[y][x]) {
+			minY = y - 1;
+			break;
+		}
+
+		for (; x <= minX; ++x) {
+			const tTileInfo& tTile = vecTiles[y * iCol + x];
+			if (!(-1 < tTile.TileIdx) || (int)E_VisitedState::visited == _grid[y][x]) {
+				if (minX > x - 1) {
+					minX = x - 1;
+				}
+			}
+		}
+	}
+
+	// 잡힌 영역을 방문했다고 표시한다.
+	for (int y = _startY; y <= minY; ++y) {
+		for (int x = _startX; x <= minX; ++x) {
+			_grid[y][x] = 1;
+		}
+	}
+	x = _startX;
+	y = _startY;
+
+	_endX = minX;
+	_endY = minY;
 }
 
 void TileMapEditor::Activate()

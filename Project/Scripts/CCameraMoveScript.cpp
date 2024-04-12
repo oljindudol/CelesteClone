@@ -13,16 +13,16 @@ CCameraMoveScript::~CCameraMoveScript()
 
 void CCameraMoveScript::tick()
 {
-	if (KEY_TAP(KEY::P))
-	{
-		if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
-			Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
-		else
-		{
-			Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
-			Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
-		}		
-	}
+	//if (KEY_TAP(KEY::P))
+	//{
+	//	if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
+	//		Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
+	//	else
+	//	{
+	//		Camera()->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
+	//		Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+	//	}		
+	//}
 
 
 	if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
