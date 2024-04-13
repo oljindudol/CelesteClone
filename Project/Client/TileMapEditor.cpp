@@ -322,8 +322,11 @@ void TileMapEditor::render_update()
 				//else
 				//	vecTiles[idx].TileIdx = m_iSelectedTileIdx;
 	
-				for (int y = iMinY; y <= iMaxY; ++y) {
-					for (int x = iMinX; x <= iMaxX; ++x) {
+				//for (int y = iMinY; y <= iMaxY; ++y) {
+				//	for (int x = iMinX; x <= iMaxX; ++x) {
+						int y = iMinY;
+						int x = iMinX;
+
 						int idx = y * m_pTileMap->GetCol() + x;
 
 						m_pTileMap->SetIdxHighLight(idx);
@@ -335,8 +338,8 @@ void TileMapEditor::render_update()
 							vecTiles[idx].TileIdx = m_iSelectedTileIdx;
 							vecTiles[idx].AtlasIdx = m_IdxAtlas;
 						}
-					}
-				}
+				//	}
+				//}
 				//int idx = iClickY * m_pTileMap->GetCol() + iClickX;
 				//vecTiles[idx].idx = m_iSelectedTileIdx;
 		}
@@ -618,12 +621,14 @@ tTileInfo* TileMapEditor::_GetTile(int _x, int _y)
 	if(_x < 0 || _y <  0 )
 		return nullptr;
 
-	int MaxCol = m_pTileMap->GetRow();
-	int MaRow = m_pTileMap->GetCol();
-	//if(_x>MaxCol || _y >Maxrow)
+	int MaxCol = m_pTileMap->GetCol();
+	int MaRow = m_pTileMap->GetRow();
+	if (_x > MaxCol || _y > MaRow)
+		return nullptr;
 	
 
 	auto vecInfo = m_pTileMap->GetTilesInfo();
+	return &vecInfo[MaxCol*_y + _x ];
 
 }
 

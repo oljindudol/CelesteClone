@@ -28,9 +28,9 @@ class CTileMap :
     public CRenderComponent
 {
 private:
-    // 가로 타일 개수
-    UINT                m_Col;            
     // 세로 타일 개수
+    UINT                m_Col;
+    // 가로 타일 개수    
     UINT                m_Row;            
     // 타일 1칸 사이즈
     Vec2                m_vTileRenderSize;  
