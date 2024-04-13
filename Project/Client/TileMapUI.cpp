@@ -16,6 +16,11 @@ TileMapUI::~TileMapUI()
 {
 }
 
+void TileMapUI::Deactivate()
+{
+	ComponentUI::Deactivate();
+}
+
 void TileMapUI::render_update()
 {
 	if (nullptr == GetTargetObject())
@@ -44,29 +49,36 @@ void TileMapUI::render_update()
 	static int FacePrev[2] = { 0, 0 };
 
 
-	auto visible = GetTargetObject()->TileMap()->GetGridVisible();
-	ImGui::Text("Grid Visible"); ImGui::SameLine();
-	ImGui::Checkbox("##Grid Visible", &visible);
-	GetTargetObject()->TileMap()->SetGridVisible(visible);
+	//auto visible = GetTargetObject()->TileMap()->GetGridVisible();
+	//ImGui::Text("Grid Visible"); ImGui::SameLine();
+	//ImGui::Checkbox("##Grid Visible", &visible);
+	//GetTargetObject()->TileMap()->SetGridVisible(visible);
 
 
 
 
 	Face[0] = (int)GetTargetObject()->TileMap()->GetCol();
 	Face[1] = (int)GetTargetObject()->TileMap()->GetRow();
+	int NewFace[2] = { Face[0] , Face[1] };
 
-	ImGui::Text("Face"); ImGui::SameLine();  ImGui::DragInt2("##Face", Face);
+
+	ImGui::Text("Face"); ImGui::SameLine();  ImGui::DragInt2("##Face", NewFace);
 
 	int min = 1;
 
-	if (Face[0] < min)
+	if (NewFace[0] < min)
 	{
-		Face[0] = min;
+		NewFace[0] = min;
 	}
 
-	if (Face[1] < min)
+	if (NewFace[1] < min)
 	{
-		Face[1] = min;
+		NewFace[1] = min;
+	}
+	if (Face[0] != NewFace[0] || Face[1] != NewFace[1])
+	{
+		GetTargetObject()->TileMap()->SetColRow(NewFace[0], NewFace[1]);
+		GetTargetObject()->TileMap()->GridInit();
 	}
 
 

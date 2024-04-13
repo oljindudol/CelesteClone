@@ -24,7 +24,7 @@ CTileMap::CTileMap()
 
 	m_TileInfoBuffer = new CStructuredBuffer;
 
-	SetRowCol(m_Col, m_Row);
+	SetColRow(m_Col, m_Row);
 
 	if (!m_pGrid)
 		m_pGrid = new CTileMapGrid(this);
@@ -133,10 +133,10 @@ void CTileMap::SetTileAtlas(Ptr<CTexture> _Atlas, Vec2 _TilePixelSize)
 
 
 
-void CTileMap::SetRowCol(UINT _Row, UINT _Col)
+void CTileMap::SetColRow(UINT _Col, UINT _Row)
 {
-	m_Col = _Row;
-	m_Row = _Col;
+	m_Col = _Col;
+	m_Row = _Row;
 
 	vector<tTileInfo> vecTemp;
 	m_vecTileInfo.swap(vecTemp);

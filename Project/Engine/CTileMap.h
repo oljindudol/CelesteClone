@@ -59,7 +59,7 @@ public:
         m_bGridVisible = _bGridVisible;
     }
 
-    void SetRowCol(UINT _Row, UINT _Col);
+    void SetColRow(UINT _Col, UINT _Row);
     UINT GetCol() { return m_Col; }
     UINT GetRow() { return m_Row; }
 

@@ -11,5 +11,6 @@ public:
 public:
     TileMapUI();
     ~TileMapUI();
+    virtual void Deactivate() override;
 };
 

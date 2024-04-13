@@ -222,7 +222,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->TileMap()->SetArrAtlas(pTileAtlas);
 
 	pTempLevel->AddObject(pObj, LAYER_FORETILE, false);
-	pObj->TileMap()->SetRowCol(40, 23);
+	pObj->TileMap()->SetColRow(40, 23);
 
 	//auto& ti = pObj->TileMap()->GetTilesInfo();
 	//for (int i = 840; i < 880; ++i)
