@@ -115,15 +115,10 @@ void TileMapEditor::render_update()
 	}
 #pragma endregion
 
-	//===============7. 오토타일링     =============
-#pragma region Auto Tile
-
-
-	if (ImGui::Button("Auto Tiling##TileMap2D")) {
-		_AutoTile();
-	}
-
-#pragma endregion
+	auto visible = GetTargetObject()->TileMap()->GetGridVisible();
+	ImGui::Text("Grid Visible"); ImGui::SameLine();
+	ImGui::Checkbox("##Grid Visible", &visible);
+	GetTargetObject()->TileMap()->SetGridVisible(visible);
 
 	//===============6. 컬라이더 생성기=============
 #pragma region ColliderGenerator
