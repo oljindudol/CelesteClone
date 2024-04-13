@@ -6,6 +6,20 @@ class CTileMap;
 #define IMGUI_COLOR_GREEN IM_COL32(10, 240, 10, 128)
 #define IMGUI_COLOR_RED IM_COL32(240, 10, 10, 128)
 
+struct MaskInfo
+{
+	int neighbourMask;
+	int neighbourCount;
+	int extendedNeighbourCount;
+	int emptyNeighbourSlot;
+
+	MaskInfo():neighbourMask(0), neighbourCount(0), extendedNeighbourCount(0), emptyNeighbourSlot(0){}
+
+};
+
+
+
+
 class TileMapEditor :
     public UI
 {
@@ -43,6 +57,7 @@ private:
 	void _SelectTexture(DWORD_PTR _strKey, DWORD_PTR _NONE);
 	void _Clear();
 	void _OptimizeCollisionArea(); // 충돌영역 타일 최적화하기
+	MaskInfo& _GetMaskInfo(int _x, int _y);
 	tTileInfo* _GetTile(int _x, int _y);
 	void _AutoTile(); // 오토타일
 	void GetEndIdxOfRectArea(int** _grid, int _startX, int _startY, int& _endX, int& _endY);

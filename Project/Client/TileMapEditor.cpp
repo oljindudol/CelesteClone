@@ -627,6 +627,46 @@ void TileMapEditor::_OptimizeCollisionArea()
 	//CTaskMgr::GetInst()->TriggetObjectEvent();
 }
 
+MaskInfo& TileMapEditor::_GetMaskInfo(int _x, int _y)
+{
+	// Neighbouring Tiles        Top    Left      Right       Bottom  
+	static const int neighbourOffsets[24] = { 0,-1,  -1, 0,     1, 0,       0, 1,
+		//                          Topleft Topright Bottomleft Bottomright
+									-1,-1,   1,-1,    -1, 1,       1, 1,
+		//                           Top2   Left2     Right2      Bottom2
+									0,-2,  -2, 0,     2, 0,       0, 2 };
+
+
+	MaskInfo ret = {};
+
+	// Look at the sorrounding 12 Neighbours
+	for (int n = 0; n < 12; n++)
+	{
+		tTileInfo* neighbour = _GetTile(_x + neighbourOffsets[n * 2],
+			_y + neighbourOffsets[n * 2 + 1]);
+
+		// No neighbour means the edge of the world
+		if ((nullptr != neighbour) || ( - 1 != neighbour->TileIdx))
+		{
+			ret.neighbourMask |= 1 << n;
+			if (n < 8) // Counting direct neighbours
+			{
+				ret.neighbourCount++;
+			}
+			else // Counting neighbours 1 Tile away
+			{
+				ret.extendedNeighbourCount++;
+			}
+		}
+		else if (n < 8)
+		{
+			ret.emptyNeighbourSlot = n;
+		}
+	}
+
+	return ret;
+}
+
 tTileInfo* TileMapEditor::_GetTile(int _x, int _y)
 {
 	if(_x < 0 || _y <  0 )
