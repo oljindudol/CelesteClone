@@ -162,6 +162,19 @@ void CCamera::ShakeEventInit()
 	m_LastDirectionalShake = 0;
 }
 
+void CCamera::InitializePos()
+{
+	auto trans = Transform();
+	if (nullptr == trans)
+		return;
+
+
+	Transform()->SetRelativePos(Vec3(0.f, 0.f, Transform()->GetRelativePos().z));
+	Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
+	//m_Scale = 0.25f;
+}
+
+
 void CCamera::SetCameraPriority(int _Priority)
 {
 	m_CameraPriority = _Priority;

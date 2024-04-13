@@ -17,12 +17,13 @@ int g_KeySync[KEY::KEY_END] =
 	VK_TAB, VK_LSHIFT, VK_LMENU, VK_LCONTROL, VK_SPACE,
 	VK_ESCAPE, VK_RETURN, VK_BACK, VK_DELETE,
 	VK_LEFT, VK_RIGHT, VK_UP, VK_DOWN, 
-	VK_LBUTTON, VK_RBUTTON,
+	VK_LBUTTON, VK_RBUTTON, VK_MBUTTON,
 };
 
 
 CKeyMgr::CKeyMgr()
 {
+	_inWheel = WHEEL_NONE;
 }
 
 CKeyMgr::~CKeyMgr()
@@ -45,6 +46,10 @@ void CKeyMgr::init()
 
 void CKeyMgr::tick()
 {	 
+	//Wheel
+	m_ThisFrameWheel = _inWheel;
+	_inWheel = WHEEL_NONE;
+
 	if (nullptr == GetFocus())
 	{
 		for (size_t i = 0; i < m_vecKeyData.size(); ++i)

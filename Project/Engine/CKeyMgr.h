@@ -16,7 +16,7 @@ enum KEY
 	ESC, ENTER, BACK, DEL,
 	LEFT, RIGHT, UP, DOWN,
 
-	LBTN, RBTN,
+	LBTN, RBTN, MBTN,
 
 	KEY_END,
 };
@@ -27,6 +27,13 @@ enum KEY_STATE
 	TAP,
 	PRESSED,
 	RELEASED,
+};
+
+enum WHEEL_STATE
+{
+	WHEEL_NONE,
+	WHEEL_UP,
+	WHEEL_DOWN,
 };
 
 struct FKeyData
@@ -47,11 +54,15 @@ private:
 	Vec2				m_vMousePrevPos;
 
 	Vec2				m_vMouseDrag;
+	WHEEL_STATE			_inWheel;
+	WHEEL_STATE			m_ThisFrameWheel;
 
 public:
 	KEY_STATE GetKeyState(KEY _Key) { return m_vecKeyData[_Key].eState; }
 	Vec2 GetMousePos() { return m_vMousePos; }
 	Vec2 GetMouseDrag() { return m_vMouseDrag; }
+	void SetWheel(WHEEL_STATE _in) { _inWheel = _in; }
+	WHEEL_STATE GetWheel() { return m_ThisFrameWheel; }
 
 public:
 	void init();

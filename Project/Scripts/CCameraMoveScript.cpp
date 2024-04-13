@@ -2,7 +2,7 @@
 #include "CCameraMoveScript.h"
 
 CCameraMoveScript::CCameraMoveScript()
-	: m_CamSpeed(200.f)
+	: m_CamSpeed(300.f)
 	, CScript((UINT)SCRIPT_TYPE::CAMERAMOVESCRIPT)
 {
 }
@@ -23,7 +23,10 @@ void CCameraMoveScript::tick()
 	//		Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
 	//	}		
 	//}
-
+	if (KEY_TAP(KEY::MBTN))
+	{
+		Camera()->InitializePos();
+	}
 
 	if (Camera()->GetProjType() == PROJ_TYPE::ORTHOGRAPHIC)
 	{
@@ -56,6 +59,15 @@ void CCameraMoveScript::MoveOrthographic()
 {
 	Vec3 vPos = Transform()->GetRelativePos();
 
+	if (WHEEL_STATE::WHEEL_UP == CKeyMgr::GetInst()->GetWheel())
+	{
+		Camera()->SetScale(Camera()->GetScale() * (1 - DT_ENGINE * m_CamSpeed/7.5f));
+	}
+	if (WHEEL_STATE::WHEEL_DOWN == CKeyMgr::GetInst()->GetWheel())
+	{
+		Camera()->SetScale(Camera()->GetScale() * (1 + DT_ENGINE * m_CamSpeed /7.5f));
+	}
+
 	if (KEY_PRESSED(KEY::W))
 	{
 		vPos.y += DT_ENGINE * m_CamSpeed;
@@ -86,6 +98,16 @@ void CCameraMoveScript::MovePerspective()
 
 	Vec3 vUp = Transform()->GetWorldDir(DIR_TYPE::UP);
 	Vec3 vRight = Transform()->GetWorldDir(DIR_TYPE::RIGHT);
+	Vec3 vFront = Transform()->GetWorldDir(DIR_TYPE::FRONT);
+
+	if (WHEEL_STATE::WHEEL_UP == CKeyMgr::GetInst()->GetWheel())
+	{
+		vPos += DT_ENGINE * m_CamSpeed *10.f* vFront;
+	}
+	if (WHEEL_STATE::WHEEL_DOWN == CKeyMgr::GetInst()->GetWheel())
+	{
+		vPos += DT_ENGINE * m_CamSpeed * 10.f * -vFront;
+	}
 
 	if (KEY_PRESSED(KEY::W))
 	{

@@ -48,6 +48,7 @@ private:
     int   m_LastDirectionalShake;
 
 public:
+    void InitializePos();
     PROJ_TYPE GetProjType() { return m_ProjType; }
     void SetProjType(PROJ_TYPE _Type) { m_ProjType = _Type; }
 
