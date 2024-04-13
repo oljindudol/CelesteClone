@@ -58,17 +58,14 @@ private:
 	int m_iGridColor;
 
 private:
-	// Tile Canvas를 위한 멤버 변수
+	int neighbourOffsets[24];
+	//idx, 랜덤 아틀라스 갯수
+	std::pair<int, int> IdxPair[21];
 
 public:
 	virtual void render_update() override;
 	virtual void Activate() override;
 	// Neighbouring Tiles	
-	int neighbourOffsets[24];
-		//                  
-							
-		//                  
-							
 
 private:
 	bool _IsTileSelectedInCanvas() { 
@@ -78,7 +75,7 @@ private:
 	void _SelectTexture(DWORD_PTR _strKey, DWORD_PTR _NONE);
 	void _Clear();
 	void _OptimizeCollisionArea(); // 충돌영역 타일 최적화하기
-	MaskInfo& _GetMaskInfo(int _x, int _y);
+	MaskInfo& _GetMaskInfo(int _x, int _y , bool _bSimplify =true);
 	string ToBinaryString(int _Mask);
 	void ReflectMaskInfo(int _Mask);
 	tTileInfo* _GetTile(int _x, int _y);

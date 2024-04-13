@@ -46,6 +46,30 @@ TileMapEditor::TileMapEditor()
     Deactivate();
     SetModal(false);
 
+	IdxPair[0] = { 60 ,4 };
+	IdxPair[1] = { 42 ,4 };
+	IdxPair[2] = { 54 ,4 };
+	IdxPair[3] = { 84,4 };
+	IdxPair[4] = { 48 ,4 };
+	IdxPair[5] = { 78,4 };
+	IdxPair[6] = { 24 ,4 };
+	IdxPair[7] = { 6 ,4 };
+	IdxPair[8] = { 36 ,4 };
+	IdxPair[9] = { 30 ,4 };
+	IdxPair[10] = { 72 ,4 };
+	IdxPair[11] = { 18 ,4 };
+	IdxPair[12] = { 66 ,4 };
+	IdxPair[13] = { 12,4 };
+	IdxPair[14] = { 0,4 };
+	//center
+	IdxPair[15] = {71,1 };
+	//padding
+	IdxPair[16] = {22 ,1 };
+	IdxPair[17] = { 10,1 };
+	IdxPair[18] = {16 ,1 };
+	IdxPair[19] = { 4,1 };
+	//black
+	IdxPair[20] = {89 ,1 };
 }
 
 TileMapEditor::~TileMapEditor()
@@ -96,7 +120,7 @@ void TileMapEditor::render_update()
 
 
 	if (ImGui::Button("Auto Tiling##TileMap2D")) {
-		
+		_AutoTile();
 	}
 
 #pragma endregion
@@ -345,23 +369,49 @@ void TileMapEditor::render_update()
 
 				int idx = y * m_pTileMap->GetCol() + x;
 
+				static int previdx = -1;
+				static int prevatlasidx =-1;
 	
 				m_pTileMap->SetIdxHighLight(idx);
 				// 클릭했을 경우
 				if (bIsTileClicked) {
+					int nextidx;
 					if (m_bDeleteMode)
-						vecTiles[idx].TileIdx = -1;
+					{
+						nextidx = -1;
+					}
 					else
-						vecTiles[idx].TileIdx = m_iSelectedTileIdx;
-					vecTiles[idx].AtlasIdx = m_IdxAtlas;
+					{
+						nextidx = m_iSelectedTileIdx;
+					}
+
+					if ((previdx != idx || prevatlasidx != m_IdxAtlas) &&(nextidx != vecTiles[idx].TileIdx || m_IdxAtlas != vecTiles[idx].AtlasIdx))
+					{
+						vecTiles[idx].TileIdx = nextidx;
+						vecTiles[idx].AtlasIdx = m_IdxAtlas;
+
+						//if (previdx != idx|| prevatlasidx != m_IdxAtlas)
+						//{
+							_AutoTile();
+							previdx = idx;
+							prevatlasidx = m_IdxAtlas;
+						//}
+
+
+					}
 				}
+
+
 				ImGui::Text(("Tile ( " + std::to_string(iMinX) + ", " + std::to_string(iMinY) + " ) " ).c_str());
 				ImGui::Text(("AtlasIdx : " + std::to_string(vecTiles[idx].AtlasIdx)).c_str());
 				ImGui::Text(("TileIdx : " + std::to_string(vecTiles[idx].TileIdx)).c_str());
 				//masking info
 				auto MaskInfo = _GetMaskInfo(x, y);
-				ImGui::Text(("neighbourMask : 0b" + ToBinaryString(MaskInfo.neighbourMask)).c_str()); 
+				ImGui::Text((("neighbourMask :"+ MaskInfo.neighbourMask) +("0b" + ToBinaryString(MaskInfo.neighbourMask))).c_str());
 				ReflectMaskInfo(MaskInfo.neighbourMask);
+				ImGui::Separator();
+				//auto MaskInfof = _GetMaskInfo(x, y,false);
+				//ReflectMaskInfo(MaskInfof.neighbourMask);
 				ImGui::Text(("neighbourCount : " + std::to_string(MaskInfo.neighbourCount)).c_str());
 				ImGui::Text(("extendedNeighbourCount : " + std::to_string(MaskInfo.extendedNeighbourCount)).c_str());
 				ImGui::Text(("emptyNeighbourSlot : " + std::to_string(MaskInfo.emptyNeighbourSlot)).c_str());
@@ -688,7 +738,7 @@ void TileMapEditor::ReflectMaskInfo(int _Mask)
 	}
 }
 
-MaskInfo& TileMapEditor::_GetMaskInfo(int _x, int _y)
+MaskInfo& TileMapEditor::_GetMaskInfo(int _x, int _y, bool _bSimplify)
 {
 
 	MaskInfo ret = {};
@@ -718,6 +768,23 @@ MaskInfo& TileMapEditor::_GetMaskInfo(int _x, int _y)
 		}
 	}
 
+	if (true == _bSimplify)
+	{
+		if (ret.neighbourCount == 7 && ret.emptyNeighbourSlot >= 4) //코너
+		{
+			ret.neighbourMask = 16 + (ret.emptyNeighbourSlot - 4);
+		}
+		else if (ret.neighbourCount == 8 && ret.extendedNeighbourCount == 4) //내부
+		{
+			ret.neighbourMask = 20;
+		}
+		else
+		{
+			ret.neighbourMask = ret.neighbourMask & 0b1111;
+		}
+	}
+
+
 	return ret;
 }
 
@@ -739,14 +806,44 @@ tTileInfo* TileMapEditor::_GetTile(int _x, int _y)
 
 void TileMapEditor::_AutoTile()
 {
-	//const auto& TileInfo = m_pTileMap->GetTilesInfo();
-	//for (size_t iRow = 0; iRow < TileInfo.size(); iRow++)
-	//{
-	//	for (size_t i = 0; i < length; i++)
-	//	{
+	auto& TileInfo = m_pTileMap->GetTilesInfo();
+	for (size_t i = 0; i < TileInfo.size(); i++)
+	{
+		//invisible
+		if (0 > TileInfo[i].TileIdx)
+			continue;
 
-	//	}
-	//}
+		auto MaxCol = m_pTileMap->GetCol();
+		auto MaxRow = m_pTileMap->GetRow();
+		int x = i % MaxCol;
+		int y = i / MaxCol;
+		auto MaskInfo = _GetMaskInfo(x, y);
+
+		auto pair = IdxPair[MaskInfo.neighbourMask];
+		
+		//padding center
+		if (15 == MaskInfo.neighbourMask)
+		{
+			auto randf = RandomFloat(12.f) - 0.01f;
+			TileInfo[i].TileIdx = 5 + ((int)randf) * 6;
+
+		}
+		//dark center
+		else if(20 == MaskInfo.neighbourMask)
+		{
+			auto randf = RandomFloat(3.f) - 0.01f;
+			TileInfo[i].TileIdx = 77 + ((int)randf) * 6;
+		}
+		else if (1 == pair.second)
+		{
+			TileInfo[i].TileIdx = pair.first;
+		}
+		else
+		{
+			auto randf = RandomFloat(pair.second ) - 0.01f;
+			TileInfo[i].TileIdx = (int)randf + pair.first;
+		}
+	}
 
 }
 
