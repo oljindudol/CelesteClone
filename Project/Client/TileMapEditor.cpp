@@ -342,10 +342,11 @@ void TileMapEditor::render_update()
 				ImGui::Text(("AtlasIdx : " + std::to_string(vecTiles[idx].AtlasIdx)).c_str());
 				ImGui::Text(("TileIdx : " + std::to_string(vecTiles[idx].TileIdx)).c_str());
 				//masking info
-				ImGui::Text(("neighbourMask : " + std::to_string(vecTiles[idx].TileIdx)).c_str());
-				ImGui::Text(("neighbourCount : " + std::to_string(vecTiles[idx].TileIdx)).c_str());
-				ImGui::Text(("extendedNeighbourCount : " + std::to_string(vecTiles[idx].TileIdx)).c_str());
-				ImGui::Text(("emptyNeighbourSlot : " + std::to_string(vecTiles[idx].TileIdx)).c_str());
+				auto MaskInfo = _GetMaskInfo(x, y);
+				ImGui::Text(("neighbourMask : " + std::to_string(MaskInfo.neighbourMask)).c_str());
+				ImGui::Text(("neighbourCount : " + std::to_string(MaskInfo.neighbourCount)).c_str());
+				ImGui::Text(("extendedNeighbourCount : " + std::to_string(MaskInfo.extendedNeighbourCount)).c_str());
+				ImGui::Text(("emptyNeighbourSlot : " + std::to_string(MaskInfo.emptyNeighbourSlot)).c_str());
 
 				//	}
 				//}
@@ -642,11 +643,11 @@ MaskInfo& TileMapEditor::_GetMaskInfo(int _x, int _y)
 	// Look at the sorrounding 12 Neighbours
 	for (int n = 0; n < 12; n++)
 	{
-		tTileInfo* neighbour = _GetTile(_x + neighbourOffsets[n * 2],
-			_y + neighbourOffsets[n * 2 + 1]);
+		tTileInfo* neighbour = _GetTile(_x + neighbourOffsets[n * 2+1],
+			_y + neighbourOffsets[n * 2 ]);
 
 		// No neighbour means the edge of the world
-		if ((nullptr != neighbour) || ( - 1 != neighbour->TileIdx))
+		if ((nullptr != neighbour) && (-1 < neighbour->TileIdx))
 		{
 			ret.neighbourMask |= 1 << n;
 			if (n < 8) // Counting direct neighbours
@@ -674,11 +675,11 @@ tTileInfo* TileMapEditor::_GetTile(int _x, int _y)
 
 	int MaxCol = m_pTileMap->GetCol();
 	int MaRow = m_pTileMap->GetRow();
-	if (_x > MaxCol || _y > MaRow)
+	if (_x >= MaxCol || _y >= MaRow)
 		return nullptr;
 	
 
-	auto vecInfo = m_pTileMap->GetTilesInfo();
+	auto& vecInfo = m_pTileMap->GetTilesInfo();
 	return &vecInfo[MaxCol*_y + _x ];
 
 }
