@@ -4,6 +4,7 @@
 #include <Engine/CGameObject.h>
 #include <Engine/CTileMap.h>
 #include "TileMapEditor.h"
+#include <Engine\CKeyMgr.h>
 
 TileMapUI::TileMapUI()
 	: ComponentUI("TileMap", "##TileMap", COMPONENT_TYPE::TILEMAP)
@@ -52,10 +53,12 @@ void TileMapUI::render_update()
 	//auto visible = GetTargetObject()->TileMap()->GetGridVisible();
 	//ImGui::Text("Grid Visible"); ImGui::SameLine();
 	//ImGui::Checkbox("##Grid Visible", &visible);
-	//GetTargetObject()->TileMap()->SetGridVisible(visible);
 
 
-
+	if (KEY_TAP(KEY::X))
+	{
+		GetTargetObject()->TileMap()->SetGridVisible(!GetTargetObject()->TileMap()->GetGridVisible());
+	}
 
 	Face[0] = (int)GetTargetObject()->TileMap()->GetCol();
 	Face[1] = (int)GetTargetObject()->TileMap()->GetRow();
