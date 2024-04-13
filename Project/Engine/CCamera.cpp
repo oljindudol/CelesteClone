@@ -169,9 +169,19 @@ void CCamera::InitializePos()
 		return;
 
 
-	Transform()->SetRelativePos(Vec3(0.f, 0.f, Transform()->GetRelativePos().z));
-	Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
-	//m_Scale = 0.25f;
+	auto CurPos = trans->GetRelativePos();
+
+	if ( Vec2() == Vec2(CurPos.x, CurPos.y) && Vec3() == trans->GetRelativeRotation())
+	{
+		trans->SetRelativePos(Vec3());
+		m_Scale = 0.25f;
+	}
+	else
+	{
+		trans->SetRelativePos(Vec3(0.f, 0.f, CurPos.z));
+		trans->SetRelativeRotation(Vec3());
+	}
+
 }
 
 
