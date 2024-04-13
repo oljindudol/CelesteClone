@@ -17,7 +17,23 @@ struct MaskInfo
 
 };
 
+enum class MaskInfoReflection
+{
+	TOP,
+	LEFT,
+	RIGHT,
+	BOTTOM,
 
+	TOPLEFT,
+	TOPRIGHT,
+	BOTTOMLEFT,
+	BOTTOMRIGHT,
+
+	TOP2,
+	LEFT2,
+	RIGHT2,
+	BOTTOM2,
+};
 
 
 class TileMapEditor :
@@ -47,7 +63,12 @@ private:
 public:
 	virtual void render_update() override;
 	virtual void Activate() override;
-
+	// Neighbouring Tiles	
+	int neighbourOffsets[24];
+		//                  
+							
+		//                  
+							
 
 private:
 	bool _IsTileSelectedInCanvas() { 
@@ -58,6 +79,8 @@ private:
 	void _Clear();
 	void _OptimizeCollisionArea(); // 충돌영역 타일 최적화하기
 	MaskInfo& _GetMaskInfo(int _x, int _y);
+	string ToBinaryString(int _Mask);
+	void ReflectMaskInfo(int _Mask);
 	tTileInfo* _GetTile(int _x, int _y);
 	void _AutoTile(); // 오토타일
 	void GetEndIdxOfRectArea(int** _grid, int _startX, int _startY, int& _endX, int& _endY);

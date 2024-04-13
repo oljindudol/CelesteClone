@@ -37,14 +37,22 @@ TileMapEditor::TileMapEditor()
 	m_IdxAtlas(0),
 	// canvas
 	m_iGridColor(IMGUI_COLOR_GREEN) // green
+	,neighbourOffsets{ 0,-1,  -1, 0,     1, 0,       0, 1,
+		//Topleft Topright Bottomleft Bottomright
+		-1,-1,   1,-1,    -1, 1,       1, 1,
+		//Top2   Left2     Right2      Bottom2
+	   0,-2,  -2, 0,     2, 0,       0, 2 }
 {
     Deactivate();
     SetModal(false);
+
 }
 
 TileMapEditor::~TileMapEditor()
 {
 }
+
+
 
 
 void TileMapEditor::render_update()
@@ -55,7 +63,8 @@ void TileMapEditor::render_update()
 		return;
 	if (!m_pTargetObject->TileMap())
 		return;
-
+	//===============0. 초기화     =============
+#pragma region init Variables
 
 	m_pTileMap = m_pTargetObject->TileMap();
 	auto& vecAtlases = m_pTileMap->GetTileAtlases();
@@ -80,14 +89,21 @@ void TileMapEditor::render_update()
 	{
 		validAtlasIdx = false;
 	}
+#pragma endregion
 
 	//===============7. 오토타일링     =============
+#pragma region Auto Tile
+
+
 	if (ImGui::Button("Auto Tiling##TileMap2D")) {
 		
 	}
 
+#pragma endregion
 
 	//===============6. 컬라이더 생성기=============
+#pragma region ColliderGenerator
+
 
 	//if (ImGui::Button("CollderCreate##TileMap2D")) {
 	//	CGameObject* pObj = CObjectManager::GetInstance()->CreateEmptyGameObject();
@@ -163,8 +179,11 @@ void TileMapEditor::render_update()
 		if (PROJ_TYPE::PERSPECTIVE == pCam->GetProjType())
 			pCam->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
 	}
+#pragma endregion
 
 	//===============1. 타일맵 정보==============
+#pragma region TileMapInfo
+
 	ImVec2 vAtlasTexResol = {};
 	if (m_pAtlasTileTex) {
 		ImVec2((float)m_pAtlasTileTex->GetWidth(), (float)m_pAtlasTileTex->GetHeight());
@@ -172,15 +191,15 @@ void TileMapEditor::render_update()
 	ImGui::Text("Atlas Texture Resolution [%d,%d]", vAtlasTexResol.x, vAtlasTexResol.x);
 
 	ImGui::Text("Tile Row:%d  Col:%d", m_pTileMap->GetRow() , m_pTileMap->GetCol());
-
+#pragma endregion
 
 	//===============2. 타일맵 재생성기==============
+#pragma region TileMap ReGenerate
 	//
 	//ImGui::InputInt2("##Tile Map Size", m_arrFaceTileCnt);
 	//m_arrFaceTileCnt[0] = 
 	// (m_arrFaceTileCnt[0], 0, INT_MAX);
 	//m_arrFaceTileCnt[1] = ClampInt(m_arrFaceTileCnt[1], 0, INT_MAX);
-
 	//ImGui::Spacing();
 	//
 	//ImGui::Text("Texture Tile Size");
@@ -203,8 +222,6 @@ void TileMapEditor::render_update()
 	//		m_pTileMap->CreateTile(m_arrFaceTileCnt[0], m_arrFaceTileCnt[1], bBlankCreate);
 	//	}
 	//}
-
-
 	//===============3. 아틀라스 선택기==============
 		//ImGui::Separator();
 	//
@@ -238,11 +255,11 @@ void TileMapEditor::render_update()
 	//		}
 	//	}
 	//}
-
-
+#pragma endregion
 
 
 	//===============5. 레벨 클릭 판정기=============
+#pragma region LevelClick Judge
 	ImGui::Separator();
 	auto MousePosition = CKeyMgr::GetInst()->GetMousePos();
 	//Vector3 vMouseWorldPos = pEditorCam->GetScreenToWorld2DPosition(MousePosition);
@@ -343,7 +360,7 @@ void TileMapEditor::render_update()
 				ImGui::Text(("TileIdx : " + std::to_string(vecTiles[idx].TileIdx)).c_str());
 				//masking info
 				auto MaskInfo = _GetMaskInfo(x, y);
-				ImGui::Text(("neighbourMask : " + std::to_string(MaskInfo.neighbourMask)).c_str());
+				ImGui::Text(("neighbourMask : 0b" + ToBinaryString(MaskInfo.neighbourMask)).c_str()); ReflectMaskInfo(MaskInfo.neighbourMask);
 				ImGui::Text(("neighbourCount : " + std::to_string(MaskInfo.neighbourCount)).c_str());
 				ImGui::Text(("extendedNeighbourCount : " + std::to_string(MaskInfo.extendedNeighbourCount)).c_str());
 				ImGui::Text(("emptyNeighbourSlot : " + std::to_string(MaskInfo.emptyNeighbourSlot)).c_str());
@@ -353,13 +370,12 @@ void TileMapEditor::render_update()
 				//int idx = iClickY * m_pTileMap->GetCol() + iClickX;
 				//vecTiles[idx].idx = m_iSelectedTileIdx;
 		}
+#pragma endregion
 
-		//===============4. 팔레트 선택기=============
+	//===============4. 팔레트 선택기=============
+#pragma region Palette Seletector
 		_RenderPalette();
-		//for (int i=0; i < vecTiles.size();++i)
-		//{
-		//	ImGui::Text(("Tile" + std::to_string(i) + ":"+ std::to_string(vecTiles[i].TileIdx) +std::to_string(vecTiles[i].AtlasIdx)).c_str());
-		//}
+#pragma endregion
 	}
 
 
@@ -628,14 +644,34 @@ void TileMapEditor::_OptimizeCollisionArea()
 	//CTaskMgr::GetInst()->TriggetObjectEvent();
 }
 
+void TileMapEditor::ReflectMaskInfo(int _Mask)
+{
+	if (0 == _Mask)
+	{
+		ImGui::Text("NONE");
+		return; 
+	}
+
+	ImGui::Text("{");
+
+	for (size_t i = 0; i < 12; i++)
+	{
+
+		if (_Mask&(1 << i))
+		{
+			ImGui::SameLine(); ImGui::Text(ToString( magic_enum::enum_name((MaskInfoReflection)i)).c_str() ); 
+			ImGui::SameLine(); ImGui::Text(",");
+		}
+
+	}
+	ImGui::SameLine(); ImGui::Text("}");
+}
+
+
+
 MaskInfo& TileMapEditor::_GetMaskInfo(int _x, int _y)
 {
-	// Neighbouring Tiles        Top    Left      Right       Bottom  
-	static const int neighbourOffsets[24] = { 0,-1,  -1, 0,     1, 0,       0, 1,
-		//                          Topleft Topright Bottomleft Bottomright
-									-1,-1,   1,-1,    -1, 1,       1, 1,
-		//                           Top2   Left2     Right2      Bottom2
-									0,-2,  -2, 0,     2, 0,       0, 2 };
+
 
 
 	MaskInfo ret = {};
@@ -643,8 +679,8 @@ MaskInfo& TileMapEditor::_GetMaskInfo(int _x, int _y)
 	// Look at the sorrounding 12 Neighbours
 	for (int n = 0; n < 12; n++)
 	{
-		tTileInfo* neighbour = _GetTile(_x + neighbourOffsets[n * 2+1],
-			_y + neighbourOffsets[n * 2 ]);
+		tTileInfo* neighbour = _GetTile(_x + neighbourOffsets[n * 2],
+			_y + neighbourOffsets[n * 2 +1]);
 
 		// No neighbour means the edge of the world
 		if ((nullptr != neighbour) && (-1 < neighbour->TileIdx))
@@ -665,6 +701,15 @@ MaskInfo& TileMapEditor::_GetMaskInfo(int _x, int _y)
 		}
 	}
 
+	return ret;
+}
+
+string TileMapEditor::ToBinaryString(int _Mask)
+{
+	string ret;
+
+	while (_Mask != 0) { ret = (_Mask % 2 == 0 ? "0" : "1") + ret; _Mask /= 2; }
+	while (ret.length() < 12) { ret = "0" + ret; } // 12자리 고정 길이를 위해 '0'을 추가합니다.
 	return ret;
 }
 
