@@ -239,8 +239,7 @@ void TileMapEditor::render_update()
 	//	}
 	//}
 
-	//===============4. 팔레트 선택기=============
-	_RenderPalette();
+
 
 
 	//===============5. 레벨 클릭 판정기=============
@@ -324,26 +323,38 @@ void TileMapEditor::render_update()
 	
 				//for (int y = iMinY; y <= iMaxY; ++y) {
 				//	for (int x = iMinX; x <= iMaxX; ++x) {
-						int y = iMinY;
-						int x = iMinX;
+				int x = min(iMinX, iMaxX);
+				int y = min(iMinY , iMaxY) ;
 
-						int idx = y * m_pTileMap->GetCol() + x;
+				int idx = y * m_pTileMap->GetCol() + x;
 
-						m_pTileMap->SetIdxHighLight(idx);
-						// 클릭했을 경우
-						if (bIsTileClicked) {
-						if (m_bDeleteMode)
-							vecTiles[idx].TileIdx = -1;
-						else
-							vecTiles[idx].TileIdx = m_iSelectedTileIdx;
-							vecTiles[idx].AtlasIdx = m_IdxAtlas;
-						}
+	
+				m_pTileMap->SetIdxHighLight(idx);
+				// 클릭했을 경우
+				if (bIsTileClicked) {
+					if (m_bDeleteMode)
+						vecTiles[idx].TileIdx = -1;
+					else
+						vecTiles[idx].TileIdx = m_iSelectedTileIdx;
+					vecTiles[idx].AtlasIdx = m_IdxAtlas;
+				}
+				ImGui::Text(("Tile ( " + std::to_string(iMinX) + ", " + std::to_string(iMinY) + " ) " ).c_str());
+				ImGui::Text(("AtlasIdx : " + std::to_string(vecTiles[idx].AtlasIdx)).c_str());
+				ImGui::Text(("TileIdx : " + std::to_string(vecTiles[idx].TileIdx)).c_str());
+				//masking info
+				ImGui::Text(("neighbourMask : " + std::to_string(vecTiles[idx].TileIdx)).c_str());
+				ImGui::Text(("neighbourCount : " + std::to_string(vecTiles[idx].TileIdx)).c_str());
+				ImGui::Text(("extendedNeighbourCount : " + std::to_string(vecTiles[idx].TileIdx)).c_str());
+				ImGui::Text(("emptyNeighbourSlot : " + std::to_string(vecTiles[idx].TileIdx)).c_str());
+
 				//	}
 				//}
 				//int idx = iClickY * m_pTileMap->GetCol() + iClickX;
 				//vecTiles[idx].idx = m_iSelectedTileIdx;
 		}
 
+		//===============4. 팔레트 선택기=============
+		_RenderPalette();
 		//for (int i=0; i < vecTiles.size();++i)
 		//{
 		//	ImGui::Text(("Tile" + std::to_string(i) + ":"+ std::to_string(vecTiles[i].TileIdx) +std::to_string(vecTiles[i].AtlasIdx)).c_str());
