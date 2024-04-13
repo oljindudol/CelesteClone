@@ -43,6 +43,8 @@ private:
 	void _SelectTexture(DWORD_PTR _strKey, DWORD_PTR _NONE);
 	void _Clear();
 	void _OptimizeCollisionArea(); // 충돌영역 타일 최적화하기
+	tTileInfo* _GetTile(int _x, int _y);
+	void _AutoTile(); // 오토타일
 	void GetEndIdxOfRectArea(int** _grid, int _startX, int _startY, int& _endX, int& _endY);
 
 public:

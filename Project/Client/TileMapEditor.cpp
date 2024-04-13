@@ -81,6 +81,42 @@ void TileMapEditor::render_update()
 		validAtlasIdx = false;
 	}
 
+	//===============7. 오토타일링     =============
+	if (ImGui::Button("Auto Tiling##TileMap2D")) {
+		
+	}
+
+
+	//===============6. 컬라이더 생성기=============
+
+	//if (ImGui::Button("CollderCreate##TileMap2D")) {
+	//	CGameObject* pObj = CObjectManager::GetInstance()->CreateEmptyGameObject();
+	//	pObj->SetName(L"new Collders");
+	//	vector<TTileInfo>& vecTiles = m_pTileMap->GetTilesInfo();
+	//	int iCol = m_pTileMap->GetCol();
+	//	int iRow = m_pTileMap->GetRow();
+	//	for (int y = 0; y < iRow; ++y) {
+	//		for (int x = 0; x < iCol; ++x) {
+	//			int idx = y * iCol + x;
+	//			if (vecTiles[idx].idx >= 0) {
+	//				// 생성
+	//				CGameObject* pColObj = CObjectManager::GetInstance()->CreateEmptyGameObject();
+	//				pColObj->AddComponent<CCollider2D>();
+	//				TCHAR strName[255];
+	//				_stprintf_s(strName, 255, _T("Col[%d,%d]"), x, y);
+	//				pColObj->SetName(strName);
+	//				pColObj->Transform()->SetLocalPosition(Vector3(x + 0.5f, iRow - y - 0.5f, 0));
+	//				CObject::AddChildGameObjectEvn(pObj, pColObj);
+	//			}
+	//		}
+	//	}
+	//}
+	if (ImGui::Button("Generate Collider##TileMap2D")) {
+		_OptimizeCollisionArea();
+	}
+
+	ImGui::Separator();
+
 	ImGui::SetNextItemWidth(150);
 	if (ImGui::BeginCombo("##combo", items[m_IdxAtlas].c_str())) {
 		for (int i = 0; i < items.size(); i++) {
@@ -135,7 +171,7 @@ void TileMapEditor::render_update()
 	}
 	ImGui::Text("Atlas Texture Resolution [%d,%d]", vAtlasTexResol.x, vAtlasTexResol.x);
 
-	ImGui::Text("Tile Row:%d  Col:%d", m_pTileMap->GetRow(), m_pTileMap->GetCol());
+	ImGui::Text("Tile Row:%d  Col:%d", m_pTileMap->GetRow() , m_pTileMap->GetCol());
 
 
 	//===============2. 타일맵 재생성기==============
@@ -262,7 +298,7 @@ void TileMapEditor::render_update()
 
 				Vector2 vOriginMousePos = Vector2(vMouseWorldPos.x + vOffsetLB.x, vScale.y - (vMouseWorldPos.y + vOffsetLB.y));
 	
-				Vector2 vOffsetScale = Vector2(m_pTileMap->GetRow() / vScale.x, m_pTileMap->GetCol() / vScale.y);
+				Vector2 vOffsetScale = Vector2(m_pTileMap->GetCol() / vScale.x, m_pTileMap->GetRow() / vScale.y);
 	
 				vOriginMousePos *= vOffsetScale;
 	
@@ -277,8 +313,8 @@ void TileMapEditor::render_update()
 				iMaxY = iClickY + m_iBrushSize;
 				iMinX = max(0, iMinX);
 				iMinY = max(0, iMinY);
-				iMaxX = min(m_pTileMap->GetRow() - 1, iMaxX);
-				iMaxY = min(m_pTileMap->GetCol() - 1, iMaxY);
+				iMaxX = min(m_pTileMap->GetCol() - 1, iMaxX);
+				iMaxY = min(m_pTileMap->GetRow() - 1, iMaxY);
 
 
 				//if (m_bDeleteMode)
@@ -288,7 +324,7 @@ void TileMapEditor::render_update()
 	
 				for (int y = iMinY; y <= iMaxY; ++y) {
 					for (int x = iMinX; x <= iMaxX; ++x) {
-						int idx = y * m_pTileMap->GetRow() + x;
+						int idx = y * m_pTileMap->GetCol() + x;
 
 						m_pTileMap->SetIdxHighLight(idx);
 						// 클릭했을 경우
@@ -311,32 +347,7 @@ void TileMapEditor::render_update()
 		//}
 	}
 
-	//===============6. 컬라이더 생성기=============
-	//if (ImGui::Button("CollderCreate##TileMap2D")) {
-	//	CGameObject* pObj = CObjectManager::GetInstance()->CreateEmptyGameObject();
-	//	pObj->SetName(L"new Collders");
-	//	vector<TTileInfo>& vecTiles = m_pTileMap->GetTilesInfo();
-	//	int iCol = m_pTileMap->GetCol();
-	//	int iRow = m_pTileMap->GetRow();
-	//	for (int y = 0; y < iRow; ++y) {
-	//		for (int x = 0; x < iCol; ++x) {
-	//			int idx = y * iCol + x;
-	//			if (vecTiles[idx].idx >= 0) {
-	//				// 생성
-	//				CGameObject* pColObj = CObjectManager::GetInstance()->CreateEmptyGameObject();
-	//				pColObj->AddComponent<CCollider2D>();
-	//				TCHAR strName[255];
-	//				_stprintf_s(strName, 255, _T("Col[%d,%d]"), x, y);
-	//				pColObj->SetName(strName);
-	//				pColObj->Transform()->SetLocalPosition(Vector3(x + 0.5f, iRow - y - 0.5f, 0));
-	//				CObject::AddChildGameObjectEvn(pObj, pColObj);
-	//			}
-	//		}
-	//	}
-	//}
-	if (ImGui::Button("OptimizeCollider##TileMap2D")) {
-		_OptimizeCollisionArea();
-	}
+
 }
 
 void TileMapEditor::_RenderPalette()
@@ -514,8 +525,8 @@ void TileMapEditor::_OptimizeCollisionArea()
 	//int iCol = m_pTileMap->GetCol();
 	//int iRow = m_pTileMap->GetRow();
 
-	int iRow = m_pTileMap->GetCol();
-	int iCol = m_pTileMap->GetRow();
+	int iRow = m_pTileMap->GetRow();
+	int iCol = m_pTileMap->GetCol();
 
 	// 최적화를 하기 위해서 map 생성
 
@@ -602,14 +613,41 @@ void TileMapEditor::_OptimizeCollisionArea()
 	//CTaskMgr::GetInst()->TriggetObjectEvent();
 }
 
+tTileInfo* TileMapEditor::_GetTile(int _x, int _y)
+{
+	if(_x < 0 || _y <  0 )
+		return nullptr;
+
+	int MaxCol = m_pTileMap->GetRow();
+	int MaRow = m_pTileMap->GetCol();
+	//if(_x>MaxCol || _y >Maxrow)
+	
+
+	auto vecInfo = m_pTileMap->GetTilesInfo();
+
+}
+
+void TileMapEditor::_AutoTile()
+{
+	//const auto& TileInfo = m_pTileMap->GetTilesInfo();
+	//for (size_t iRow = 0; iRow < TileInfo.size(); iRow++)
+	//{
+	//	for (size_t i = 0; i < length; i++)
+	//	{
+
+	//	}
+	//}
+
+}
+
 void TileMapEditor::GetEndIdxOfRectArea(int** _grid, int _startX, int _startY, int& _endX, int& _endY)
 {
 	const vector<tTileInfo>& vecTiles = m_pTileMap->GetTilesInfo();
 	//int iCol = m_pTileMap->GetCol();
 	//int iRow = m_pTileMap->GetRow();
 
-	int iCol = m_pTileMap->GetRow();
-	int iRow = m_pTileMap->GetCol();
+	int iCol = m_pTileMap->GetCol();
+	int iRow = m_pTileMap->GetRow();
 	const tTileInfo& tTile = vecTiles[_startY * iCol + _startX];
 
 	// get min size of column and row

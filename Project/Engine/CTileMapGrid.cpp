@@ -44,8 +44,8 @@ void CTileMapGrid::Init()
 	int iCol, iRow;
 	Vector3 vTileMapScale = m_pTargetTileMap->Transform()->GetRelativeScale(); // width height
 	Vector3 vObjPos = m_pTargetTileMap->Transform()->GetRelativePos();
-	iRow = m_pTargetTileMap->GetCol();
-	iCol = m_pTargetTileMap->GetRow();
+	iRow = m_pTargetTileMap->GetRow();
+	iCol = m_pTargetTileMap->GetCol();
 
 	Vector2 vGridSize{ 1.f,1.f };
 	Vector3 vScale = vTileMapScale;

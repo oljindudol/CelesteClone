@@ -52,8 +52,8 @@ void TileMapUI::render_update()
 
 
 
-	Face[0] = (int)GetTargetObject()->TileMap()->GetRow();
-	Face[1] = (int)GetTargetObject()->TileMap()->GetCol();
+	Face[0] = (int)GetTargetObject()->TileMap()->GetCol();
+	Face[1] = (int)GetTargetObject()->TileMap()->GetRow();
 
 	ImGui::Text("Face"); ImGui::SameLine();  ImGui::DragInt2("##Face", Face);
 

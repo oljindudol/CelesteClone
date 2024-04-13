@@ -11,8 +11,8 @@
 
 CTileMap::CTileMap()
 	: CRenderComponent(COMPONENT_TYPE::TILEMAP)
-	, m_Row(40)
-	, m_Col(23)
+	, m_Col(40)
+	, m_Row(23)
 	, m_vTileRenderSize(Vec2(8.f, 8.f))
 	, m_TileInfoBuffer(nullptr)
 	, m_bGridVisible(false)
@@ -24,7 +24,7 @@ CTileMap::CTileMap()
 
 	m_TileInfoBuffer = new CStructuredBuffer;
 
-	SetRowCol(m_Row, m_Col);
+	SetRowCol(m_Col, m_Row);
 
 	if (!m_pGrid)
 		m_pGrid = new CTileMapGrid(this);
@@ -33,8 +33,8 @@ CTileMap::CTileMap()
 
 CTileMap::CTileMap(const CTileMap& _OriginTileMap)
 	: CRenderComponent(_OriginTileMap)
-	, m_Row(_OriginTileMap.m_Row)
 	, m_Col(_OriginTileMap.m_Col)
+	, m_Row(_OriginTileMap.m_Row)
 	, m_vTileRenderSize(_OriginTileMap.m_vTileRenderSize)
 	, m_vecTileAtlas(_OriginTileMap.m_vecTileAtlas)
 	, m_vTilePixelSize(_OriginTileMap.m_vTilePixelSize)
@@ -67,7 +67,7 @@ CTileMap::~CTileMap()
 void CTileMap::finaltick()
 {
 	// (타일 개수 * 타일 사이즈) 로 사이즈를 변경처리한다.
-	Vec3 vTileMapSize = Vec3(m_Row * m_vTileRenderSize.x, m_Col * m_vTileRenderSize.y, 1.f);
+	Vec3 vTileMapSize = Vec3(m_Col * m_vTileRenderSize.x, m_Row * m_vTileRenderSize.y, 1.f);
 	Transform()->SetRelativeScale(vTileMapSize);
 }
 
@@ -78,8 +78,8 @@ void CTileMap::render()
 	//GetMaterial()->SetTexParam(TEX_PARAM::TEX_1, m_vecTileAtlas[1].first);
 	
 	// 타일의 가로 세로 개수
-	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, m_Row);
-	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_1, m_Col);
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, m_Col);
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_1, m_Row);
 		
 	// 아틀라스 이미지에서 타일 1개의 자르는 사이즈(UV 기준)
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC2_0, m_vecTileAtlas[0].second);
@@ -135,8 +135,8 @@ void CTileMap::SetTileAtlas(Ptr<CTexture> _Atlas, Vec2 _TilePixelSize)
 
 void CTileMap::SetRowCol(UINT _Row, UINT _Col)
 {
-	m_Row = _Row;
-	m_Col = _Col;
+	m_Col = _Row;
+	m_Row = _Col;
 
 	vector<tTileInfo> vecTemp;
 	m_vecTileInfo.swap(vecTemp);
@@ -150,7 +150,7 @@ void CTileMap::SetTileIndex(UINT _Row, UINT _Col, int _ImgIdx)
 	//if (0 == m_vecTileAtlas.size())
 	//	return;
 
-	UINT idx = _Row* m_Row + _Col;
+	UINT idx = _Row* m_Col + _Col;
 
 	// 렌더링할 타일 정보
 	UINT iRow = _ImgIdx / m_MaxCol;
@@ -174,7 +174,7 @@ void CTileMap::SetTileIndexWithOutGridInit(UINT _Row, UINT _Col, int _ImgIdx)
 	//if (nullptr == m_TileAtlas)
 	//	return;
 
-	UINT idx = _Row * m_Row + _Col;
+	UINT idx = _Row * m_Col + _Col;
 
 	// 렌더링할 타일 정보
 	UINT iRow = _ImgIdx / m_MaxCol;
@@ -200,8 +200,8 @@ void CTileMap::GridInit()
 void CTileMap::SaveToFile(FILE* _File)
 {
 	// TileMap 정보 저장
-	fwrite(&m_Row, sizeof(UINT), 1, _File);
 	fwrite(&m_Col, sizeof(UINT), 1, _File);
+	fwrite(&m_Row, sizeof(UINT), 1, _File);
 	fwrite(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
 	fwrite(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
 
@@ -228,8 +228,8 @@ void CTileMap::SaveToFile(FILE* _File)
 void CTileMap::LoadFromFile(FILE* _File)
 {
 	// TileMap 정보 저장
-	fread(&m_Row, sizeof(UINT), 1, _File);
 	fread(&m_Col, sizeof(UINT), 1, _File);
+	fread(&m_Row, sizeof(UINT), 1, _File);
 	fread(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
 	fread(&m_vTileRenderSize, sizeof(Vec2), 1, _File);
 
