@@ -360,7 +360,8 @@ void TileMapEditor::render_update()
 				ImGui::Text(("TileIdx : " + std::to_string(vecTiles[idx].TileIdx)).c_str());
 				//masking info
 				auto MaskInfo = _GetMaskInfo(x, y);
-				ImGui::Text(("neighbourMask : 0b" + ToBinaryString(MaskInfo.neighbourMask)).c_str()); ReflectMaskInfo(MaskInfo.neighbourMask);
+				ImGui::Text(("neighbourMask : 0b" + ToBinaryString(MaskInfo.neighbourMask)).c_str()); 
+				ReflectMaskInfo(MaskInfo.neighbourMask);
 				ImGui::Text(("neighbourCount : " + std::to_string(MaskInfo.neighbourCount)).c_str());
 				ImGui::Text(("extendedNeighbourCount : " + std::to_string(MaskInfo.extendedNeighbourCount)).c_str());
 				ImGui::Text(("emptyNeighbourSlot : " + std::to_string(MaskInfo.emptyNeighbourSlot)).c_str());
@@ -644,35 +645,51 @@ void TileMapEditor::_OptimizeCollisionArea()
 	//CTaskMgr::GetInst()->TriggetObjectEvent();
 }
 
+string TileMapEditor::ToBinaryString(int _Mask)
+{
+	string ret;
+
+	while (_Mask != 0) { ret = (_Mask % 2 == 0 ? "0" : "1") + ret; _Mask /= 2; }
+	while (ret.length() < 12) { ret = "0" + ret; } // 12자리 고정 길이를 위해 '0'을 추가합니다.
+	return ret;
+}
+
 void TileMapEditor::ReflectMaskInfo(int _Mask)
 {
 	if (0 == _Mask)
 	{
 		ImGui::Text("NONE");
+		ImGui::NewLine();
+		ImGui::NewLine();
 		return; 
 	}
 
 	ImGui::Text("{");
-
+	int size = 0;
 	for (size_t i = 0; i < 12; i++)
 	{
-
 		if (_Mask&(1 << i))
 		{
-			ImGui::SameLine(); ImGui::Text(ToString( magic_enum::enum_name((MaskInfoReflection)i)).c_str() ); 
+			++size;
+			if(0 != size%5)
+				ImGui::SameLine(); 
+			
+			ImGui::Text(ToString( magic_enum::enum_name((MaskInfoReflection)i)).c_str() ); 
 			ImGui::SameLine(); ImGui::Text(",");
 		}
-
 	}
 	ImGui::SameLine(); ImGui::Text("}");
+
+	int linepad = 2 - size / 5;
+
+	for (size_t i = 0; i < linepad; i++)
+	{
+		ImGui::NewLine();
+	}
 }
-
-
 
 MaskInfo& TileMapEditor::_GetMaskInfo(int _x, int _y)
 {
-
-
 
 	MaskInfo ret = {};
 
@@ -701,15 +718,6 @@ MaskInfo& TileMapEditor::_GetMaskInfo(int _x, int _y)
 		}
 	}
 
-	return ret;
-}
-
-string TileMapEditor::ToBinaryString(int _Mask)
-{
-	string ret;
-
-	while (_Mask != 0) { ret = (_Mask % 2 == 0 ? "0" : "1") + ret; _Mask /= 2; }
-	while (ret.length() < 12) { ret = "0" + ret; } // 12자리 고정 길이를 위해 '0'을 추가합니다.
 	return ret;
 }
 
