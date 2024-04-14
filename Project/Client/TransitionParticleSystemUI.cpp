@@ -32,39 +32,24 @@ void TransitionParticleSystemUI::render_update()
 	static ImVec4 ModuleColor = Burgundy;
 
 
-	bool bDebug = pPS->GetDebug();
-	ImGui::Text("Debug"); ImGui::SameLine();
-	ImGui::Checkbox("##Debug", &bDebug);
-	pPS->SetDebug(bDebug);
+	//bool bDebug = pPS->GetDebug();
+	//ImGui::Text("Debug"); ImGui::SameLine();
+	//ImGui::Checkbox("##Debug", &bDebug);
+	//pPS->SetDebug(bDebug);
 
+	float& fEventTime = pPS->GetEventTimeRef();
+	ImGui::DragFloat("EventTime", &fEventTime,0.1f,0.1f );
 
+	bool& bToRightEvent = pPS->GetToRightEventRef();
 
-	// VibColor
-	ImGui::Separator();
-	CreateStaticColorButton("VibColor Module", ModuleColor);
-	ImGui::SameLine();
-	if (1 == CurModule.arrModuleCheck[(UINT)PARTICLE_MODULE::VIBRATION]) {
-		ImGui::PushStyleColor(ImGuiCol_Button, Green);
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Green);
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, Green);
-		if (ImGui::Button("On##VibColor")) {
-			NewModule.arrModuleCheck[(UINT)PARTICLE_MODULE::VIBRATION] = 0;
-		}
-		ImGui::PopStyleColor(3);
+	ImGui::Checkbox("ToRightEvent", &bToRightEvent); ImGui::SameLine();
+
+	if (ImGui::Button("Push Event"))
+	{
+		pPS->ReFreshEvent();
 	}
-	else {
-		ImGui::PushStyleColor(ImGuiCol_Button, Gray);
-		ImGui::PushStyleColor(ImGuiCol_ButtonHovered, Gray);
-		ImGui::PushStyleColor(ImGuiCol_ButtonActive, Gray);
-		if (ImGui::Button("Off##VibColor")) {
-			NewModule.arrModuleCheck[(UINT)PARTICLE_MODULE::VIBRATION] = 1;
-		}
-		ImGui::PopStyleColor(3);
-	}
-	ImGui::Text("VibColorTerm"); ImGui::SameLine();
-	ImGui::DragFloat("##VibColorTerm", &NewModule.VibTime, 0.01f, 0.0f, 1.0f);
-	ImGui::Text("Vib Color"); ImGui::SameLine();
-	ImGui::ColorEdit4("##Vib Color", &NewModule.VibColor.x);
+
+
 
 	// Spawn Module
 	ImGui::Separator();
@@ -109,23 +94,6 @@ void TransitionParticleSystemUI::render_update()
 	ImGui::DragFloat("##Min Life", &NewModule.MinLife, 0.1f, 0.0f, 100.0f);
 	ImGui::Text("Max Life"); ImGui::SameLine();
 	ImGui::DragFloat("##Max Life", &NewModule.MaxLife, 0.1f, 0.0f, 100.0f);
-	ImGui::Text("Min Mass"); ImGui::SameLine();
-	ImGui::DragFloat("##Min Mass", &NewModule.MinMass, 0.1f, 0.0f, 100.0f);
-	ImGui::Text("Max Mass"); ImGui::SameLine();
-	ImGui::DragFloat("##Max Mass", &NewModule.MaxMass, 0.1f, 0.0f, 100.0f);
-	ImGui::Text("Spawn Shape"); ImGui::SameLine();
-	if (1 == CurModule.SpawnShape) {
-		if (ImGui::Button("Box")) {
-			NewModule.SpawnShape = 0;
-		}
-	}
-	else {
-		if (ImGui::Button("Sphere")) {
-			NewModule.SpawnShape = 1;
-		}
-	}
-	ImGui::Text("Radius"); ImGui::SameLine();
-	ImGui::DragFloat("##Radius", &NewModule.Radius, 1.0f, 0.0f, 1000.0f);
 	ImGui::Text("Box Scale"); ImGui::SameLine();
 	ImGui::DragFloat4("##Box Scale", &NewModule.vSpawnBoxScale.x, 0.1f, 0.0f, 1000.0f);
 	ImGui::Text("Spawn Rate"); ImGui::SameLine();
@@ -309,17 +277,7 @@ void TransitionParticleSystemUI::render_update()
 		}
 		ImGui::PopStyleColor(3);
 	}
-	ImGui::Text("VelocityAlignment"); ImGui::SameLine();
-	if (0 == CurModule.VelocityAlignment) {
-		if (ImGui::Button("Off")) {
-			NewModule.VelocityAlignment = 1;
-		}
-	}
-	else if (1 == CurModule.VelocityAlignment) {
-		if (ImGui::Button("On")) {
-			NewModule.VelocityAlignment = 0;
-		}
-	}
+
 	ImGui::Text("AlphaBasedLife"); ImGui::SameLine();
 	if (0 == CurModule.AlphaBasedLife) {
 		if (ImGui::Button("Off")) {

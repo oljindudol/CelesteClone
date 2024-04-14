@@ -1,5 +1,8 @@
 #pragma once
 #include "CComputeShader.h"
+
+
+
 class CTransitionParticleUpdate :
     public CComputeShader
 {
@@ -8,6 +11,9 @@ private:
     CStructuredBuffer* m_ParticleModuleBuffer;
     CStructuredBuffer* m_SpawnCountBuffer;
     Vec3               m_vParticleWorldPos;
+    bool               m_bToRightEvent = false;
+    float              m_EventDuration;
+    float              m_CurEventTime;
 
 public:
     void SetParticleBuffer(CStructuredBuffer* _ParticleBuffer) { m_ParticleBuffer = _ParticleBuffer; }
@@ -23,4 +29,7 @@ public:
 public:
     CTransitionParticleUpdate();
     ~CTransitionParticleUpdate();
+
+
+    friend class CTransitionParticleSystem;
 };

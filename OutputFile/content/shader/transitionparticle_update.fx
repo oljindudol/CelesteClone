@@ -14,6 +14,9 @@ RWStructuredBuffer<tSpawnCount> g_SpawnCount : register(u1);
 #define Particle    g_ParticleBuffer[id.x]
 #define Module      g_Module[0]
 #define CenterPos   g_vec4_0.xyz
+#define ToRight          g_int_1
+#define EventDuration    g_float_0
+#define EventCurTime     g_float_1
 
 
 [numthreads(32, 1, 1)]
@@ -78,7 +81,18 @@ void CS_TransitionParticleUpdate(uint3 id : SV_DispatchThreadID)
                 }
                 else
                 {
-                    Particle.vLocalPos.x = vRand[0] * Module.vSpawnBoxScale.x - (Module.vSpawnBoxScale.x / 2.f);
+                    //ToRight Event 라면
+                    if (1 == ToRight)
+                    {
+                        //지난시간을 Normalize한다.
+                        float nor = EventCurTime / EventDuration;
+                        float w = 15.f;
+                        Particle.vLocalPos.x = vRand[0] * w - (Module.vSpawnBoxScale.x ) * (nor - .5f);
+                    }
+                    else
+                    {
+                        Particle.vLocalPos.x = vRand[0] * Module.vSpawnBoxScale.x - (Module.vSpawnBoxScale.x / 2.f);
+                    }
                     Particle.vLocalPos.y = vRand[1] * Module.vSpawnBoxScale.y - (Module.vSpawnBoxScale.y / 2.f);
                     Particle.vLocalPos.z = vRand[2] * Module.vSpawnBoxScale.z - (Module.vSpawnBoxScale.z / 2.f);
                     //Particle.vLocalPos.z = 0.f;
@@ -174,19 +188,25 @@ void CS_TransitionParticleUpdate(uint3 id : SV_DispatchThreadID)
         Particle.NomalizedAge = Particle.Age / Particle.Life;
         
         // Scale 모듈
+        float a = 10.f;
         if (Module.arrModuleCheck[2])
         {
-            Particle.vWorldScale = Particle.vWorldInitScale * (1.f + (Module.vScaleRatio - 1.f) * Particle.NomalizedAge);
-            Particle.vWorldScale = Particle.vWorldInitScale * 4*  (0.f + (1- Module.vScaleRatio) * Particle.NomalizedAge);
-            if (1.f <= Particle.NomalizedAge || 0.f >= Particle.NomalizedAge || Particle.Life <0.1f)
+            if (0.5f > Particle.NomalizedAge)
             {
-                Particle.vWorldScale = float4(0.f, 0.f, 0.f, 0.f);
+                Particle.vWorldScale = Particle.vWorldInitScale * exp(a * Particle.NomalizedAge);
             }
             else
             {
-              Particle.vWorldScale = Particle.vWorldInitScale * (Particle.NomalizedAge) * (1 - Particle.NomalizedAge);
+                Particle.vWorldScale = Particle.vWorldInitScale * exp(a * (1 - Particle.NomalizedAge));
             }
-
+            //if (1.f <= Particle.NomalizedAge || 0.f >= Particle.NomalizedAge || Particle.Life <0.1f)
+            //{
+            //    Particle.vWorldScale = float4(0.f, 0.f, 0.f, 0.f);
+            //}
+            //else
+            //{
+            //  Particle.vWorldScale = Particle.vWorldInitScale * 4 *(Particle.NomalizedAge) * (1 - Particle.NomalizedAge);
+            //}
         }
         
         // 1. 색상진동 모듈이 켜져있으면

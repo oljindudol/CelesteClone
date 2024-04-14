@@ -25,8 +25,16 @@ private:
     bool                    m_bThisFrameGenerate;
     bool                    m_bDebug = true;
 
+    float                   m_CurTime = 0.f;
+    float                   m_EventTime = .3f;
+    bool                    m_bToRightEvent = false;
+
 
 public:
+    bool& GetToRightEventRef() { return m_bToRightEvent; }
+    float& GetEventTimeRef() { return m_EventTime; }
+    void ReFreshEvent() { m_CurTime = m_EventTime; }
+
     void GenerateParticle(const Vec4& _Color, const Vec4& _VibColor) {
         m_bThisFrameGenerate = true;
         m_Module.vSpawnColor = _Color;

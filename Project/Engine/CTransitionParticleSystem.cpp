@@ -62,17 +62,17 @@ CTransitionParticleSystem::CTransitionParticleSystem() :
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::SPAWN] = 1;
 
 	m_Module.SpaceType = 1;
-	m_Module.vSpawnColor = Vec4(1.f, 1.f, 1.f, 1.f);
-	m_Module.vSpawnMinScale = Vec4(20.f, 20.f, 1.f, 1.f);
-	m_Module.vSpawnMaxScale = Vec4(20.f, 20.f, 1.f, 1.f);
-	m_Module.MinLife = 1.f;
-	m_Module.MaxLife = 1.f;
+	m_Module.vSpawnColor = Vec4(0.f, 0.f, 0.f, 1.f);
+	m_Module.vSpawnMinScale = Vec4(1.f, 1.f, 1.f, 1.f);
+	m_Module.vSpawnMaxScale = Vec4(5.f, 5.f, 1.f, 1.f);
+	m_Module.MinLife = 3.5f;
+	m_Module.MaxLife = 3.5f;
 	m_Module.MinMass = 1.f;
 	m_Module.MaxMass = 1.f;
 	m_Module.SpawnShape = 1; // 0 : Sphere, 1 : Box
 	m_Module.Radius = 100.f;
 	m_Module.vSpawnBoxScale = Vec4(140, 75.f, 0.f, 0.f);
-	m_Module.SpawnRate = 11.f;
+	m_Module.SpawnRate = 200.f;
 
 	// Add Velocity Module
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ADD_VELOCITY] = 0;
@@ -92,11 +92,11 @@ CTransitionParticleSystem::CTransitionParticleSystem() :
 	m_Module.NoiseForceTerm = 0.3f;
 
 	// Drag Module
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG] = 1;
+	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::DRAG] = 0;
 	m_Module.DragTime = 60.f;
 
 	// Calculate Force
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::CALCULATE_FORCE] = 1;
+	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::CALCULATE_FORCE] = 0;
 
 	// Render 
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::RENDER] = 1;
@@ -132,7 +132,7 @@ CTransitionParticleSystem::CTransitionParticleSystem() :
 	m_Module.NumberOfFrame[1] = 8;
 	m_Module.NumberOfFrame[2] = 8;
 
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ORIGINALCOLOR] = 1;
+	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ORIGINALCOLOR] = 0;
 
 }
 
@@ -178,36 +178,39 @@ void CTransitionParticleSystem::finaltick()
 	//	m_bDebug = !m_bDebug;
 	//}
 
-	if (true == m_bDebug)
+	//if (true == m_bDebug)
+	//{
+	//	m_bThisFrameGenerate = true;
+	//}
+
+	tSpawnCount count;
+	if (m_CurTime <= 0.f)
 	{
-		m_bThisFrameGenerate = true;
+		count = tSpawnCount{ 0, 0, 0, 0 };
 	}
-
-	m_Time += DT;
-
-	if ((1.f / m_Module.SpawnRate) < m_Time)
+	else
 	{
-		// 누적 시간을 스폰 간격으로 나눈 값
-		float fSpawnCount = m_Time / (1.f / m_Module.SpawnRate);
+		m_Time += DT;
+		m_CurTime -= DT;
 
-		// 스폰 간격을 제외한 잔량을 남은 누적시간으로 설정
-		m_Time -= (1.f / m_Module.SpawnRate) * floorf(fSpawnCount);
-		tSpawnCount count;
-		if (true == m_bThisFrameGenerate)
+		if ((1.f / m_Module.SpawnRate) < m_Time)
 		{
+			// 누적 시간을 스폰 간격으로 나눈 값
+			float fSpawnCount = m_Time / (1.f / m_Module.SpawnRate);
+
+			// 스폰 간격을 제외한 잔량을 남은 누적시간으로 설정
+			m_Time -= (1.f / m_Module.SpawnRate) * floorf(fSpawnCount);
 			count = tSpawnCount{ (int)fSpawnCount, 0, 0, 0 };
+
 		}
 		else
 		{
 			count = tSpawnCount{ 0, 0, 0, 0 };
 		}
-		m_SpawnCountBuffer->SetData(&count);
 	}
-	else
-	{
-		tSpawnCount count = tSpawnCount{ 0, 0, 0, 0 };
-		m_SpawnCountBuffer->SetData(&count);
-	}
+	
+	m_SpawnCountBuffer->SetData(&count);
+
 
 
 	// 파티클 모듈정보 업데이트
@@ -219,6 +222,10 @@ void CTransitionParticleSystem::finaltick()
 	m_CSParticleUpdate->SetParticleModuleBuffer(m_ParticleModuleBuffer);
 	m_CSParticleUpdate->SetParticleSpawnCount(m_SpawnCountBuffer);
 	m_CSParticleUpdate->SetParticleWorldPos(Transform()->GetWorldPos());
+
+	m_CSParticleUpdate->m_bToRightEvent = m_bToRightEvent;
+	m_CSParticleUpdate->m_EventDuration = m_EventTime;
+	m_CSParticleUpdate->m_CurEventTime = m_CurTime;
 	m_CSParticleUpdate->Execute();
 
 	m_bThisFrameGenerate = false;

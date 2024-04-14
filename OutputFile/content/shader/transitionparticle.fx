@@ -136,8 +136,9 @@ float4 PS_TransitionParticle(GS_OUT _in) : SV_Target
     if (g_btex_0)
     {
         float4 vSampleColor = g_tex_0.Sample(g_sam_0, _in.vUV);
-        //vOutColor.rgb *= vSampleColor.rgb;
-        vOutColor.rgb = float3(0.f, 0.f, 0.f);
+        if (1 == module.arrModuleCheck[9])
+            vOutColor.rgb = vSampleColor.rgb;
+        //vOutColor.rgb = float3(0.f, 0.f, 0.f);
         vOutColor.a = vSampleColor.a;
     }
     
