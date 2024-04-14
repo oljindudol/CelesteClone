@@ -207,6 +207,7 @@
     <ClInclude Include="TileMapEditor.h" />
     <ClInclude Include="TileMapUI.h" />
     <ClInclude Include="TransformUI.h" />
+    <ClInclude Include="TransitionParticleSystemUI.h" />
     <ClInclude Include="TreeUI.h" />
     <ClInclude Include="UI.h" />
   </ItemGroup>
@@ -260,6 +261,7 @@
     <ClCompile Include="TileMapEditor.cpp" />
     <ClCompile Include="TileMapUI.cpp" />
     <ClCompile Include="TransformUI.cpp" />
+    <ClCompile Include="TransitionParticleSystemUI.cpp" />
     <ClCompile Include="TreeUI.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>

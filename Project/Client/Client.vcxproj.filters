@@ -128,8 +128,11 @@
     <Filter Include="02. UI\3. Inspector\ComponentUI\Camera">
       <UniqueIdentifier>{847d8c4b-9a6d-4389-bd10-67db414544a0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02. UI\3. Inspector\ComponentUI\DreamBlockParticleSystemUI">
+    <Filter Include="02. UI\3. Inspector\ComponentUI\DreamBlockParticleSystem">
       <UniqueIdentifier>{7f343dac-9bbe-4b1c-9b19-1a4939fc8b19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. UI\3. Inspector\ComponentUI\TransitionParticleSystemUI">
+      <UniqueIdentifier>{8def9506-3f3d-4886-861a-388c5701e25e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -284,7 +287,10 @@
       <Filter>02. UI\3. Inspector\ComponentUI\ParticleSystem</Filter>
     </ClInclude>
     <ClInclude Include="DreamBlockParticleSystemUI.h">
-      <Filter>02. UI\3. Inspector\ComponentUI\DreamBlockParticleSystemUI</Filter>
+      <Filter>02. UI\3. Inspector\ComponentUI\DreamBlockParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="TransitionParticleSystemUI.h">
+      <Filter>02. UI\3. Inspector\ComponentUI\TransitionParticleSystemUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -441,7 +447,10 @@
       <Filter>02. UI\3. Inspector\ComponentUI\ParticleSystem</Filter>
     </ClCompile>
     <ClCompile Include="DreamBlockParticleSystemUI.cpp">
-      <Filter>02. UI\3. Inspector\ComponentUI\DreamBlockParticleSystemUI</Filter>
+      <Filter>02. UI\3. Inspector\ComponentUI\DreamBlockParticleSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="TransitionParticleSystemUI.cpp">
+      <Filter>02. UI\3. Inspector\ComponentUI\TransitionParticleSystemUI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

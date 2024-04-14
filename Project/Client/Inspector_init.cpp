@@ -21,6 +21,7 @@ void Inspector::CreateChildUI()
 #include "CameraUI.h"
 #include "ParticleSystemUI.h"
 #include "DreamBlockParticleSystemUI.h"
+#include "TransitionParticleSystemUI.h"
 
 void Inspector::CreateComponentUI()
 {
@@ -69,6 +70,9 @@ void Inspector::CreateComponentUI()
 	m_arrComUI[(UINT)COMPONENT_TYPE::DREAMBLOCKPARTICLESYSTEM]->Deactivate();
 	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::DREAMBLOCKPARTICLESYSTEM]);
 
+	m_arrComUI[(UINT)COMPONENT_TYPE::TRANSITIONPARTICLESYSTEM] = new TransitionParticleSystemUI;
+	m_arrComUI[(UINT)COMPONENT_TYPE::TRANSITIONPARTICLESYSTEM]->Deactivate();
+	AddChildUI(m_arrComUI[(UINT)COMPONENT_TYPE::TRANSITIONPARTICLESYSTEM]);
 
 }
 

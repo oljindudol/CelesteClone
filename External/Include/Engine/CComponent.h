@@ -41,6 +41,7 @@ public:
     GET_OTHER_COMPONENT(CustomParticleSystem);
     GET_OTHER_COMPONENT(AnimatedParticleSystem);
     GET_OTHER_COMPONENT(DreamBlockParticleSystem);
+    GET_OTHER_COMPONENT(TransitionParticleSystem);
    
     CRenderComponent* GetRenderComponent() { return m_Owner->GetRenderComopnent();}
 
