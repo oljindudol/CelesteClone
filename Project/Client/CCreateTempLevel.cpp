@@ -86,18 +86,6 @@ void CCreateTempLevel::CreateTempLevel()
 		pTempLevel->GetLayer(i)->SetName(ToWString({ s.data(),s.size() }));
 	}
 
-	//pTempLevel->GetLayer(LAYER_DEFAULT)->SetName(LAYER_DEFAULT);
-	//pTempLevel->GetLayer(LAYER_BACKGROUND)->SetName(LAYER_BACKGROUND);
-	//pTempLevel->GetLayer(LAYER_BACKTILE)->SetName(LAYER_BACKTILE);
-	//pTempLevel->GetLayer(LAYER_TILECOL)->SetName(LAYER_TILECOL);
-	//pTempLevel->GetLayer(LAYER_FORETILE)->SetName(LAYER_FORETILE);
-	//pTempLevel->GetLayer(LAYER_PLAYER)->SetName(LAYER_PLAYER);
-	//pTempLevel->GetLayer(LAYER_MONSTER)->SetName(LAYER_MONSTER);
-	//pTempLevel->GetLayer(LAYER_LIGHT)->SetName(LAYER_LIGHT);
-	//pTempLevel->GetLayer(LAYER_UI)->SetName(LAYER_UI);
-
-
-
 
 	// ComputeShader 테스트
 	// 사용할 텍스쳐 생성
@@ -220,26 +208,6 @@ void CCreateTempLevel::CreateTempLevel()
 	pTempLevel->AddObject(pObj, LAYER_FORETILE, false);
 	pObj->TileMap()->SetColRow(40, 23);
 
-	//auto& ti = pObj->TileMap()->GetTilesInfo();
-	//for (int i = 840; i < 880; ++i)
-	//{
-	//	ti[i].TileIdx= 0;
-	//	ti[i].AtlasIdx = 17;
-	//}
-	//for (int i = 880; i < 920; ++i)
-	//{
-	//	ti[i].TileIdx = 6;
-	//	ti[i].AtlasIdx = 17;
-	//}
-
-	//for (int i = 0; i < 23; ++i)
-	//{
-	//	for (int j = 0; j < 40; ++j)
-	//	{
-	//		pObj->TileMap()->SetTileIndex(i, j, i * 40 + j);
-	//	}
-	//}
-
 	// Player Object 생성
 	pObj = new CGameObject;
 	pObj->SetName(L"Player");
@@ -263,42 +231,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(STR_KEY_RectMesh));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_Std2dMeterial));
 	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Strawberry.png", L"texture\\Strawberry.png"));
-
-	//auto pChidObj = new CGameObject;
-	//pChidObj->SetName(L"Rain");
-	//pChidObj->AddComponent(new CTransform);
-	//pChidObj->Transform()->SetRelativeScale(Vec3(1.f, 1.f, 1.f));
-	//pChidObj->AddComponent(new CAnimatedParticleSystem);
 	pTempLevel->AddObject(pObj, LAYER_PLAYER, false);
-	//pObj->AddChild(pChidObj);
-
-
-
-	// Monster Object 생성
-	//pObj = new CGameObject;
-	//pObj->SetName(L"Monster");
-
-	//pObj->AddComponent(new CTransform);
-	//pObj->AddComponent(new CMeshRender);
-	//pObj->AddComponent(new CCollider2D);
-	//pObj->AddComponent(new CStateMachine);
-	//pObj->AddComponent(new CMonsterScript);
-
-	//pObj->Transform()->SetRelativePos(Vec3(500.f, 0.f, 500.f));
-	//pObj->Transform()->SetRelativeScale(Vec3(32.f, 32.f, 1.f));
-
-	//pObj->Collider2D()->SetAbsolute(true);
-	//pObj->Collider2D()->SetOffsetScale(Vec2(120.f, 120.f));
-	//pObj->Collider2D()->SetOffsetPos(Vec2(0.f, 0.f));
-
-	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(STR_KEY_RectMesh));
-	//pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_Std2dMeterial));
-	//pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\badline.png", L"texture\\badline.png"));
-
-	//pObj->StateMachine()->SetFSM(CAssetMgr::GetInst()->FindAsset<CFSM>(L"NormalMonsterFSM"));
-
-	//pTempLevel->AddObject(pObj,LAYER_MONSTER, false);
-
 
 	//Platform Object 생성
 	pObj = new CGameObject;
