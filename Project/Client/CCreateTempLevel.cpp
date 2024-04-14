@@ -207,29 +207,29 @@ void CCreateTempLevel::CreateTempLevel()
 	pTempLevel->AddObject(pObj, LAYER_PLAYER, false);
 
 	//Platform Object 생성
-	pObj = new CGameObject;
-	pObj->SetName(L"Platform");
-
-	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CMeshRender);
-	pObj->AddComponent(new CCollider2D);
-	pObj->AddComponent(new CAnimator2D);
-	pObj->AddComponent(new CPlatFormScript);
-
-	Vec3 scale = Vec3(324.f, 30.f, 1.f);
-	pObj->Transform()->SetRelativePos(Vec3(0.f, -90.f, 90.f));
-	pObj->Transform()->SetRelativeScale(scale);
-
-	pObj->Collider2D()->SetAbsolute(false);
-	pObj->Collider2D()->SetOffsetScale(Vec2(1.f, 1.f));
-	pObj->Collider2D()->SetOffsetPos(Vec2(0.f, 0.f));
-	pObj->Collider2D()->SetColliderType(COLLIDER2D_TYPE::COL_TYPE_RECT);
-
-	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(STR_KEY_RectMesh));
-	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_DebugMeterial));
+	//pObj = new CGameObject;
+	//pObj->SetName(L"Platform");
+	//
+	//pObj->AddComponent(new CTransform);
+	//pObj->AddComponent(new CMeshRender);
+	//pObj->AddComponent(new CCollider2D);
+	//pObj->AddComponent(new CAnimator2D);
+	//pObj->AddComponent(new CPlatFormScript);
+	//
+	//Vec3 scale = Vec3(324.f, 30.f, 1.f);
+	//pObj->Transform()->SetRelativePos(Vec3(0.f, -90.f, 90.f));
+	//pObj->Transform()->SetRelativeScale(scale);
+	//
+	//pObj->Collider2D()->SetAbsolute(false);
+	//pObj->Collider2D()->SetOffsetScale(Vec2(1.f, 1.f));
+	//pObj->Collider2D()->SetOffsetPos(Vec2(0.f, 0.f));
+	//pObj->Collider2D()->SetColliderType(COLLIDER2D_TYPE::COL_TYPE_RECT);
+	//
+	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(STR_KEY_RectMesh));
+	//pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_DebugMeterial));
 	//pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Strawberry.png", L"texture\\Strawberry.png"));
 	
-	pTempLevel->AddObject(pObj, LAYER_TILECOL, false);
+	//pTempLevel->AddObject(pObj, LAYER_TILECOL, false);
 
 
 	// 충돌 설정
