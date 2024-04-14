@@ -26,11 +26,11 @@ CCollider2D::~CCollider2D()
 {
 }
 
-static bool debug = false;
+static bool debug = true;
 
 void CCollider2D::onoffcoldebug()
 {
-	if (KEY_TAP(Z))
+	if (KEY_TAP(KEY::Z))
 	{
 		debug = !debug;
 	}
