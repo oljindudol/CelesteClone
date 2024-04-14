@@ -33,6 +33,7 @@
 #include <Engine\CDreamBlockParticleSystem.h>
 #include <Scripts\CDreamBlockScript.h>
 #include "Scripts\CMainCameraScript.h"
+#include <Scripts\CTileMapScript.h>
 
 void CCreateTempLevel::Init()
 {
@@ -77,7 +78,9 @@ void CCreateTempLevel::CreateTempLevel()
 		pTempLevel->GetLayer(i)->SetName(ToWString({ s.data(),s.size() }));
 	}
 
+	CLevelMgr::GetInst()->ChangeLevel(pTempLevel, LEVEL_STATE::PLAY);
 
+#pragma region Main Camera
 	// Main Camera Object 생성
 	CGameObject* pCamObj = new CGameObject;
 	pCamObj->SetName(L"MainCamera");
@@ -98,7 +101,9 @@ void CCreateTempLevel::CreateTempLevel()
 
 	CGameObject* pChidObj;
 	pChidObj = nullptr;
+#pragma endregion
 
+#pragma region UI CAMERA
 	// UI 카메라 생성
 	pCamObj = new CGameObject;
 	pCamObj->SetName(L"UICamera");
@@ -112,7 +117,9 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->Camera()->LayerCheck(LAYER_UI, true);
 
 	pTempLevel->AddObject(pCamObj, LAYER_DEFAULT);
+#pragma endregion
 
+#pragma region Directional Light
 	// 전역 광원 추가
 	CGameObject* pLight = new CGameObject;
 	pLight->SetName(L"Directional Light");
@@ -124,7 +131,9 @@ void CCreateTempLevel::CreateTempLevel()
 	pTempLevel->AddObject(pLight, LAYER_LIGHT);
 
 	CGameObject* pObj = nullptr;
+#pragma endregion
 
+#pragma region DreamBlock
 	//드림블럭
 	pObj = new CGameObject;
 	pObj->SetName(L"DreamBlock");
@@ -138,8 +147,9 @@ void CCreateTempLevel::CreateTempLevel()
 	pTempLevel->AddObject(pObj, LAYER_SPCOL);
 	pObj = nullptr;
 	pChidObj = nullptr;
+#pragma endregion
 
-#pragma region background
+#pragma region Background
 	// Backgruond Object 생성
 //pObj = new CGameObject;
 //pObj->SetName(L"Background");
@@ -155,47 +165,19 @@ void CCreateTempLevel::CreateTempLevel()
 //pTempLevel->AddObject(pObj, LAYER_BACKGROUND, false);
 #pragma endregion
 
-
-#pragma region tilemap
+#pragma region TileMap
 
 	int TileNum = 0;
 	pObj = new CGameObject;
 	pObj->SetName(STR_KEY_TILEFAP);
 	pObj->AddComponent(new CTransform);
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 91.f));
-
-
-	// TileMap Object
-	pChidObj = new CGameObject;
-	pChidObj->SetName(STR_KEY_TILEFAP_FORE_GROUND);
-
-	pChidObj->AddComponent(new CTransform);
-	pChidObj->AddComponent(new CTileMap);
-
-	pChidObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
-
-	static const std::filesystem::path base_path = CPathMgr::GetContentPath();
-	wstring ForeTilePath = base_path;
-	ForeTilePath += STR_FOLDER_PATH_FORE_TILE;
-	auto files = getImagesFromDirectory(ForeTilePath);
-
-	for (auto& p : files)
-	{
-		std::filesystem::path relative_path = std::filesystem::relative(p, base_path);
-		Ptr<CTexture> pAtlasTex = CAssetMgr::GetInst()->Load<CTexture>(relative_path, relative_path);
-		pChidObj->TileMap()->SetTileAtlas(pAtlasTex);
-	}
-	Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->CreateArrayTexture(STR_KEY_TEXARR_FORE_TILE, pChidObj->TileMap()->GetTileAtlases(), 1);
-	pChidObj->TileMap()->SetArrAtlas(pTileAtlas);
-
-	pObj->AddChild(pChidObj);
-	pChidObj->TileMap()->SetColRow(40, 23);
-	pTempLevel->AddObject(pObj, LAYER_FORETILE, false);
+	pObj->AddComponent(new CTileMapScript);
+	pTempLevel->AddObject(pObj, LAYER_TILEMAP, false);
 
 	pObj = nullptr;
 	pChidObj = nullptr;
 #pragma endregion
-
 
 #pragma region Player Object 생성
 	pObj = new CGameObject;
@@ -254,7 +236,6 @@ void CCreateTempLevel::CreateTempLevel()
 	CCollisionMgr::GetInst()->LayerCheck(LAYER_TILECOL, LAYER_PLAYER);
 #pragma endregion
 
-	CLevelMgr::GetInst()->ChangeLevel(pTempLevel, LEVEL_STATE::PLAY);
 
 	//CLevelSaveLoad::SaveLevel(pTempLevel, L"level\\temp.lv");	
 }
