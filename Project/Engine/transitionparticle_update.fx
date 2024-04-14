@@ -41,8 +41,8 @@ void CS_TransitionParticleUpdate(uint3 id : SV_DispatchThreadID)
             // 이때 SpawnCount 를 오히려 늘려버리는 현상이 발생할 수 있다. 
             // InterlockedCompareExchange 를 통해서 예상한 값과 일치할 경우에만 
             // 교체를 하도록 하는 함수를 사용한다.
-            //InterlockedCompareExchange(SpawnCount, AliveCount, Exchange, Origin);
-            InterlockedExchange(SpawnCount, Exchange, Origin);
+            InterlockedCompareExchange(SpawnCount, AliveCount, Exchange, Origin);
+            //InterlockedExchange(SpawnCount, Exchange, Origin);
             
             if (AliveCount == Origin)
             {
@@ -90,8 +90,8 @@ void CS_TransitionParticleUpdate(uint3 id : SV_DispatchThreadID)
                 Particle.vColor = Module.vSpawnColor;
                 
                 // 스폰 크기 설정                
-                Particle.vWorldInitScale = Particle.vWorldScale = (Module.vSpawnMaxScale - Module.vSpawnMinScale) * vRand[2] + Module.vSpawnMinScale;
-                                
+                Particle.vWorldInitScale = (Module.vSpawnMaxScale - Module.vSpawnMinScale) * vRand[2] + Module.vSpawnMinScale;
+                Particle.vWorldScale = float4(0.f, 0.f, 0.f, 0.f);
                 // 스폰 Life 설정
                 Particle.Age = 0.f;
                 Particle.Life = (Module.MaxLife - Module.MinLife) * vRand[0] + Module.MaxLife;
@@ -177,6 +177,16 @@ void CS_TransitionParticleUpdate(uint3 id : SV_DispatchThreadID)
         if (Module.arrModuleCheck[2])
         {
             Particle.vWorldScale = Particle.vWorldInitScale * (1.f + (Module.vScaleRatio - 1.f) * Particle.NomalizedAge);
+            Particle.vWorldScale = Particle.vWorldInitScale * 4*  (0.f + (1- Module.vScaleRatio) * Particle.NomalizedAge);
+            if (1.f <= Particle.NomalizedAge || 0.f >= Particle.NomalizedAge || Particle.Life <0.1f)
+            {
+                Particle.vWorldScale = float4(0.f, 0.f, 0.f, 0.f);
+            }
+            else
+            {
+              Particle.vWorldScale = Particle.vWorldInitScale * (Particle.NomalizedAge) * (1 - Particle.NomalizedAge);
+            }
+
         }
         
         // 1. 색상진동 모듈이 켜져있으면
