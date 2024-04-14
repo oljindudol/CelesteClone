@@ -38,6 +38,33 @@ void CTileMapScript::begin()
 	GetOwner()->AddChild(pChidObj);
 	pChidObj->TileMap()->SetColRow(40, 23);
 	GamePlayStatic::SpawnGameObject(pChidObj, LAYER_FORETILE);
+
+
+	// BACK TILE OBJ
+	pChidObj = new CGameObject;
+	pChidObj->SetName(STR_KEY_TILEFAP_BACK_GROUND);
+
+	pChidObj->AddComponent(new CTransform);
+	pChidObj->AddComponent(new CTileMap);
+
+	pChidObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
+
+	wstring BackTilePath = base_path;
+	BackTilePath += STR_FOLDER_PATH_BACK_TILE;
+	files = getImagesFromDirectory(BackTilePath);
+
+	for (auto& p : files)
+	{
+		std::filesystem::path relative_path = std::filesystem::relative(p, base_path);
+		Ptr<CTexture> pAtlasTex = CAssetMgr::GetInst()->Load<CTexture>(relative_path, relative_path);
+		pChidObj->TileMap()->SetTileAtlas(pAtlasTex);
+	}
+	pTileAtlas = CAssetMgr::GetInst()->CreateArrayTexture(STR_KEY_TEXARR_BACK_TILE, pChidObj->TileMap()->GetTileAtlases(), 1);
+	pChidObj->TileMap()->SetArrAtlas(pTileAtlas);
+
+	GetOwner()->AddChild(pChidObj);
+	pChidObj->TileMap()->SetColRow(40, 23);
+	GamePlayStatic::SpawnGameObject(pChidObj, LAYER_BACKTILE);
 }
 
 void CTileMapScript::SaveToFile(FILE* _File)
