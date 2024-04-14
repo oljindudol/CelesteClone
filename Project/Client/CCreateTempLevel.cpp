@@ -32,7 +32,7 @@
 #include <Scripts/CPlatFormScript.h>
 #include <Engine\CDreamBlockParticleSystem.h>
 #include <Scripts\CDreamBlockScript.h>
-
+#include "Scripts\CMainCameraScript.h"
 
 void CCreateTempLevel::Init()
 {
@@ -119,6 +119,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->AddComponent(new CTransform);
 	pCamObj->AddComponent(new CCamera);
 	pCamObj->AddComponent(new CCameraMoveScript);
+	pCamObj->AddComponent(new CMainCameraScript);
 
 	pCamObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 	pCamObj->Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
@@ -127,16 +128,11 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->Camera()->SetCameraPriority(0);
 	pCamObj->Camera()->LayerCheckAll();
 	pCamObj->Camera()->LayerCheck(LAYER_UI, false);
-
 	pTempLevel->AddObject(pCamObj, LAYER_DEFAULT);
 
-	auto pChidObj = new CGameObject;
-	pChidObj->SetName(L"Rain");
-	pChidObj->AddComponent(new CTransform);
-	pChidObj->Transform()->SetRelativePos(Vec3(1.f, 160.f, 130.f));
-	//pChidObj->AddComponent(new CAnimatedParticleSystem);
 
-	pCamObj->AddChild(pChidObj);
+
+	CGameObject* pChidObj;
 	pChidObj = nullptr;
 
 

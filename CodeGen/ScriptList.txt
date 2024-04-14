@@ -1,6 +1,7 @@
 CBackgroundScript
 CCameraMoveScript
 CDreamBlockScript
+CMainCameraScript
 CMissileScript
 CMonsterScript
 CPhysics

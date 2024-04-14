@@ -39,6 +39,7 @@
       <Filter>About Player</Filter>
     </ClInclude>
     <ClInclude Include="CDreamBlockScript.h" />
+    <ClInclude Include="CMainCameraScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -79,6 +80,7 @@
       <Filter>About Player</Filter>
     </ClCompile>
     <ClCompile Include="CDreamBlockScript.cpp" />
+    <ClCompile Include="CMainCameraScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
