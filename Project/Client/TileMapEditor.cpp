@@ -17,6 +17,8 @@
 #include <Engine\CLevelMgr.h>
 #include <Engine\CLevel.h>
 #include <Engine\CTaskMgr.h>
+
+#include <Scripts\CPlatFormScript.h>
 //#include <Engine\CObjectManager.h>
 //#include <Engine\CCursor.h>
 //#include <Engine\CSceneManager.h>
@@ -75,9 +77,6 @@ TileMapEditor::TileMapEditor()
 TileMapEditor::~TileMapEditor()
 {
 }
-
-
-
 
 void TileMapEditor::render_update()
 {
@@ -556,7 +555,6 @@ void TileMapEditor::_RenderPalette()
 	draw_list->PopClipRect();
 }
 
-
 void TileMapEditor::_SelectTexture(DWORD_PTR _strKey, DWORD_PTR _NONE)
 {
 }
@@ -655,8 +653,9 @@ void TileMapEditor::_OptimizeCollisionArea()
 		auto trans = new CTransform;
 		pColObj->AddComponent(trans);
 		pColObj->AddComponent(new CCollider2D);
+		pColObj->AddComponent(new CPlatFormScript);
 		WCHAR strName[255];
-		swprintf_s(strName, 255, L"Col[%d,%d]", (int)vPos.x, (int)vPos.y);
+		swprintf_s(strName, 255, L"[X:%d,Y:%d]", (int)vPos.x, (int)vPos.y);
 		pColObj->SetName(strName);
 
 		//Vector2 offset{ 0.5f, -y - 0.5f };
