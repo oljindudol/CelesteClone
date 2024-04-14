@@ -40,6 +40,7 @@
     </ClInclude>
     <ClInclude Include="CDreamBlockScript.h" />
     <ClInclude Include="CMainCameraScript.h" />
+    <ClInclude Include="CTileMapScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -81,6 +82,7 @@
     </ClCompile>
     <ClCompile Include="CDreamBlockScript.cpp" />
     <ClCompile Include="CMainCameraScript.cpp" />
+    <ClCompile Include="CTileMapScript.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">

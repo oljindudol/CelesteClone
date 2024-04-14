@@ -8,3 +8,4 @@ CPhysics
 CPlatFormScript
 CPlayerScript
 CRandomScript
+CTileMapScript
