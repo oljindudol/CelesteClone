@@ -25,6 +25,15 @@ namespace GamePlayStatic
 	//std::unordered_map<int, wstring> LayerString;
 	void InitLayerString();
 
+
+	static const Vec4 White = Vec4(1.f, 1.f, 1.f, 1.f);
+	static const Vec4 Black = Vec4(0.f, 0.f, 0.f, 1.f);
+	static const Vec4 Red = Vec4(1.f, 1.f, 1.f, 1.f);
+	static const Vec4 Green = Vec4(0.f, 1.f, 0.f, 1.f);
+	static const Vec4 Blue = Vec4(0.f, 0.f, 1.f, 1.f);
+	static const Vec4 Yellow = Vec4(1.f, 1.f, 0.f, 1.f);
+	static const Vec4 Mazenta = Vec4(1.f, 0.f, 1.f, 1.f);
+
 	//void DrawDebugCube();
 	//void DrawDebugSphere();
 }

@@ -64,8 +64,11 @@ public:
         else
             return nullptr;
     }
+private:
+    Vec4 m_ClearColor;
 
 public:
+    Vec4& GetClearColorRef() { return m_ClearColor; }
     void init();
     void tick();
     void DirectionalShake(Vec2 _dir, float _time = 0.3f);
