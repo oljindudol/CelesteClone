@@ -115,15 +115,12 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
 	pCamObj->Camera()->SetCameraPriority(0);
 	pCamObj->Camera()->LayerCheckAll();
-	pCamObj->Camera()->LayerCheck(LAYER_UI, false);
+	pCamObj->Camera()->LayerCheck(LAYER_BACKEFFECT, false);
+	pCamObj->Camera()->LayerCheck(LAYER_SPCOL, false);
 	pTempLevel->AddObject(pCamObj, LAYER_DEFAULT);
-
-
 
 	CGameObject* pChidObj;
 	pChidObj = nullptr;
-
-
 
 	// UI 카메라 생성
 	pCamObj = new CGameObject;
@@ -161,7 +158,7 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->Collider2D()->SetOffsetScale(Vec2(1, 1));
 	pObj->AddComponent(new CDreamBlockParticleSystem);
 	pObj->AddComponent(new CDreamBlockScript);
-	pTempLevel->AddObject(pObj, LAYER_TILECOL);
+	pTempLevel->AddObject(pObj, LAYER_SPCOL);
 
 
 	pObj = nullptr;
@@ -255,11 +252,12 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(STR_KEY_RectMesh));
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_DebugMeterial));
 	//pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Strawberry.png", L"texture\\Strawberry.png"));
-
+	
 	pTempLevel->AddObject(pObj, LAYER_TILECOL, false);
 
 
 	// 충돌 설정
+	CCollisionMgr::GetInst()->LayerCheck(LAYER_SPCOL, LAYER_PLAYER);
 	CCollisionMgr::GetInst()->LayerCheck(LAYER_TILECOL, LAYER_PLAYER);
 
 	CLevelMgr::GetInst()->ChangeLevel(pTempLevel, LEVEL_STATE::PLAY);
