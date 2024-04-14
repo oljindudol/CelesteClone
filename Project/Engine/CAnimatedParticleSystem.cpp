@@ -11,7 +11,7 @@
 
 
 CAnimatedParticleSystem::CAnimatedParticleSystem() : 
-	CRenderComponent(COMPONENT_TYPE::TRANSITIONPARTICLESYSTEM)
+	CRenderComponent(COMPONENT_TYPE::AIMATEDPARTICLESYSTEM)
 , m_ParticleBuffer(nullptr)
 , m_MaxParticleCount(1000)
 {
@@ -211,6 +211,9 @@ void CAnimatedParticleSystem::finaltick()
 
 void CAnimatedParticleSystem::render()
 {
+	if (false == m_bDebug)
+		return;
+
 	// View, Proj 행렬 전달
 	Transform()->UpdateData();
 

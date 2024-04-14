@@ -95,7 +95,6 @@ void CCreateTempLevel::CreateTempLevel()
 	pCamObj->Camera()->SetProjType(PROJ_TYPE::PERSPECTIVE);
 	pCamObj->Camera()->SetCameraPriority(0);
 	pCamObj->Camera()->LayerCheckAll();
-	pCamObj->Camera()->LayerCheck(LAYER_BACKEFFECT, false);
 	pCamObj->Camera()->LayerCheck(LAYER_SPCOL, false);
 	pTempLevel->AddObject(pCamObj, LAYER_DEFAULT);
 
