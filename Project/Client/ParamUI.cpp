@@ -153,3 +153,32 @@ bool ParamUI::Param_TEXTURE(Ptr<CTexture>& _Texture, const string& _Desc, UI* _I
 
 	return false;
 }
+
+bool ParamUI::Param_BOOL(bool* _Data, const string& _Desc)
+{
+	ImGui::Text(_Desc.c_str());
+	ImGui::SameLine();
+
+	char szID[256] = {};
+	sprintf_s(szID, "##Bool%d", g_ID++);
+
+	if (ImGui::Checkbox(szID, _Data))
+	{
+		return true;
+	}
+	return false;
+}
+
+bool ParamUI::Param_INT_READONLY(int* _Data, const string& _Desc)
+{
+	ImGui::Text(_Desc.c_str());
+	ImGui::SameLine();
+
+	char szID[256] = {};
+	sprintf_s(szID, "##String%d", g_ID++);
+
+	ImGui::Text(std::to_string((*_Data)).c_str());
+
+	return false;
+	return true;
+}

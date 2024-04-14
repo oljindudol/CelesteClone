@@ -336,7 +336,15 @@ void CPlayerScript::tick()
         animname = ToString (Animator2D()->GetCurAnimName());
         AppendScriptParam("AnimName", SCRIPT_PARAM::STRING, (void*)&animname);
 
-        AppendScriptParam("DreamColCnt", SCRIPT_PARAM::INT, (void*)&DreamBlockColCnt);
+        AppendScriptParam("DreamColCnt", SCRIPT_PARAM::INT_READONLY, (void*)&DreamBlockColCnt);
+
+        static string vis = "";
+        AppendScriptParam("<Visibility.>", SCRIPT_PARAM::STRING, (void*)&vis);
+        AppendScriptParam("Dash Particle", SCRIPT_PARAM::BOOL, (void*)&m_bDashParticleVisible);
+        AppendScriptParam("After Image", SCRIPT_PARAM::BOOL, (void*)&m_bAfterImageVisible);
+        AppendScriptParam("Distortion", SCRIPT_PARAM::BOOL, (void*)&m_bDistortionVisible);
+
+        //AppendScriptParam("")
 
     }
 
@@ -1712,7 +1720,8 @@ int CPlayerScript::DashUpdate()
 
         Color c = wasDashB ? Normal : Used;
         Color c2 = wasDashB ? NormalVib : UsedVib;
-        m_Particle->GenerateParticle(c,c2);
+        if(true == m_bDashParticleVisible)
+            m_Particle->GenerateParticle(c,c2);
         //level.ParticlesFG.Emit(wasDashB ? P_DashB : P_DashA, Center + Calc.Random.Range(Vector2.One * -2, Vector2.One * 2), DashDir.Angle());
     }
     return StDash;
@@ -1761,7 +1770,7 @@ int CPlayerScript::GetCurState()
 }
 void CPlayerScript::PushAfterImageEvent()
 {
-    if (false == m_bAfterImageRequest)
+    if (false == m_bAfterImageRequest || false == m_bAfterImageVisible)
         return;
 
     tAfterImageEvent Event= {};
@@ -1807,6 +1816,9 @@ void CPlayerScript::PushAfterImageEvent()
 }
 void CPlayerScript::SetShockWaveEvent(float _TimeAccel, float _MaxDist)
 {
+    if (false == m_bDistortionVisible)
+        return;
+
     tShockEvent SE= {};
     
     SE.ShockMat = m_ShockWave->Transform()->GetWorldMat();

@@ -324,11 +324,13 @@ private:
     bool  m_bAfterImageRequest = false;
 
     class CAfterImage* m_AfterImage;
-    void PushAfterImageEvent();
     class CShockWave* m_ShockWave;
     class CCustomParticleSystem* m_Particle;
-    void SetShockWaveEvent(float _TimeAccel, float _MaxDist);
     float gliderBoostTimer;
+    void CreateSplitParticles();
+    void CreateTrail();
+    void PushAfterImageEvent();
+    void SetShockWaveEvent(float _TimeAccel, float _MaxDist);
 
 #pragma region functions
 public:
@@ -338,9 +340,7 @@ public:
     void UpdateRender();
     void UpdateSprite();
     void StartHair();
-    void CreateSplitParticles();
     void RefillDash() { Dashes = MaxDashes; }
-
     void NormalBegin();
     int NormalUpdate();
     void NormalEnd();
@@ -352,7 +352,6 @@ public:
     Vec2 beforeDashSpeed;
     bool demoDashed = false;
     void CallDashEvents();
-    void CreateTrail();
 
 private:
     void RefillStamina()
@@ -482,8 +481,19 @@ public:
     void SetGround();
     void UnSetGround();
 
+#pragma endregion
+
+#pragma region DebugVariables
+
+//Visibility
+private:
+    bool m_bDashParticleVisible = false;
+    bool m_bAfterImageVisible = false;
+    bool m_bDistortionVisible = false;
 
 #pragma endregion
+
+
 
 
 

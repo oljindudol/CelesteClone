@@ -9,7 +9,7 @@ ScriptUI::ScriptUI()
 	: ComponentUI("Script", "##Script", COMPONENT_TYPE::LIGHT2D)
 	, m_TargetScript(nullptr)
 {
-	SetSize(ImVec2(0,100));
+	SetSize(ImVec2(0,300));
 }
 
 ScriptUI::~ScriptUI()
@@ -57,6 +57,12 @@ void ScriptUI::render_update()
 			break;		
 		case SCRIPT_PARAM::STRING:
 			ParamUI::Param_STRING((string*)t.pData, p.first);
+			break;
+		case SCRIPT_PARAM::INT_READONLY:
+			ParamUI::Param_INT_READONLY((int*)t.pData, p.first);
+			break;
+		case SCRIPT_PARAM::BOOL:
+			ParamUI::Param_BOOL((bool*)t.pData, p.first);
 			break;
 		}		
 	}
