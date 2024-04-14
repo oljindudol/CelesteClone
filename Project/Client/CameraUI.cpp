@@ -8,6 +8,7 @@
 #include <Engine/CLevel.h>
 #include <Engine/CLayer.h>
 #include <Engine\CTransform.h>
+#include <Engine\CRenderMgr.h>
 
 
 #include "CImGuiMgr.h"
@@ -36,6 +37,9 @@ void CameraUI::render_update()
     CGameObject* pTarget = GetTargetObject();
 
     CCamera* pCamera = pTarget->Camera();
+
+    auto& CColor = CRenderMgr::GetInst()->GetClearColorRef();
+    ImGui::ColorEdit4("Clear Color", CColor);
 
     // 투영 방식
     PROJ_TYPE ProjType = pCamera->GetProjType();
