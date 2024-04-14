@@ -30,7 +30,7 @@ static bool debug = true;
 
 void CCollider2D::onoffcoldebug()
 {
-	if (KEY_TAP(KEY::Z))
+	if (KEY_TAP(KEY::C))
 	{
 		debug = !debug;
 	}

@@ -23,6 +23,17 @@ void CCameraMoveScript::tick()
 	//		Transform()->SetRelativeRotation(Vec3(0.f, 0.f, 0.f));
 	//	}		
 	//}
+
+	if (KEY_TAP(KEY::Z))
+	{
+		Camera()->LayerCheckToggle(LAYER_FORETILE);
+	}	
+	
+	if (KEY_TAP(KEY::X))
+	{
+		Camera()->LayerCheckToggle(LAYER_BACKTILE);
+	}
+
 	if (KEY_TAP(KEY::MBTN))
 	{
 		Camera()->InitializePos();
