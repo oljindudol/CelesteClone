@@ -214,7 +214,6 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CCollider2D);
 	pObj->AddComponent(new CAnimator2D);
 	pObj->AddComponent(new CPlayerScript);
-	pObj->AddComponent(new CMissileScript);
 
 	Vec3 playerscale = Vec3(32.f, 32.f, 1.f);
 
