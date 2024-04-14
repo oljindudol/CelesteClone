@@ -500,6 +500,7 @@ void CAssetMgr::CreateDefaultMaterial()
 #include "CDreamParticleUpdate.h"
 #include "CSetColorShader.h"
 #include "CParticleUpdate.h"
+#include "CTransitionParticleUpdate.h"
 void CAssetMgr::CreateDefaultComputeShader()
 {
 	Ptr<CComputeShader> pShader = nullptr;
@@ -515,6 +516,10 @@ void CAssetMgr::CreateDefaultComputeShader()
 	// DreamParticleUpdateShader
 	pShader = new CDreamParticleUpdate;
 	AddAsset(STR_KEY_DreamParticleUpdateShader, pShader.Get());
+
+	// TransitionParticleUpdateShader
+	pShader = new CTransitionParticleUpdate;
+	AddAsset(STR_KEY_TransitionParticleUpdateShader, pShader.Get());
 }
 
 

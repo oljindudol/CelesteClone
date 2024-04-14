@@ -1,6 +1,7 @@
 #pragma once
 #include "CRenderComponent.h"
 #include "CParticleUpdate.h"
+#include "CTransitionParticleUpdate.h"
 
 class CAnimatedParticleSystem :
     public CRenderComponent
@@ -15,7 +16,7 @@ private:
     CStructuredBuffer* m_SpawnCountBuffer;
 
     //Ptr<CParticleUpdate>    m_CSParticleUpdate;
-    Ptr<CParticleUpdate>    m_CSParticleUpdate;
+    Ptr<CTransitionParticleUpdate>    m_CSParticleUpdate;
 
     Ptr<CTexture>           m_ParticleTex;
     vector<Ptr<CTexture>>   m_vecParticleTex;

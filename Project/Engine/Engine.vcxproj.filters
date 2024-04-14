@@ -193,6 +193,7 @@
     <ClInclude Include="CDreamBlockParticleSystem.h">
       <Filter>08. Component\RenderComponent\09. DreamBlockParticleSystem</Filter>
     </ClInclude>
+    <ClInclude Include="CTransitionParticleUpdate.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -372,6 +373,7 @@
     <ClCompile Include="CDreamBlockParticleSystem.cpp">
       <Filter>08. Component\RenderComponent\09. DreamBlockParticleSystem</Filter>
     </ClCompile>
+    <ClCompile Include="CTransitionParticleUpdate.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
