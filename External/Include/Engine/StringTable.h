@@ -130,6 +130,7 @@
 #define STR_FUNC_NAME_CSShaderTransitionParticleUpdate "CS_TransitionParticleUpdate"
 
 #define STR_FUNC_NAME_GEOShaderTransition "GS_TransitionParticle"
+#define STR_FUNC_NAME_PIXShaderTransitionParticle "PS_TransitionParticle"
 ////////// Resource Key ///////////////
 // Mesh
 #define STR_KEY_PointMesh L"PointMesh"
