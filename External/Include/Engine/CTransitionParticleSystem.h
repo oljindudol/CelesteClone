@@ -32,6 +32,17 @@ private:
 
 
 public:
+    string GetTextureName() {
+        if (nullptr == m_ParticleTex)
+        {
+            return "";
+        }
+        else
+        {
+            return ToString( m_ParticleTex->GetKey());
+        }
+    }
+    void SetTexture(Ptr<CTexture> _Tex) { m_ParticleTex = _Tex;  }
     float& GetScaleIncreaseRatioRef() { return m_ScaleIncreaseRatio; }
     bool& GetToRightEventRef() { return m_bToRightEvent; }
     float& GetEventTimeRef() { return m_EventTime; }

@@ -36,6 +36,28 @@ void TransitionParticleSystemUI::render_update()
 	//ImGui::Text("Debug"); ImGui::SameLine();
 	//ImGui::Checkbox("##Debug", &bDebug);
 	//pPS->SetDebug(bDebug);
+	ImGui::Text("Texture");
+	ImGui::SameLine();
+	auto Texname = pPS->GetTextureName();
+	ImGui::InputText("##Texture", (char*)Texname.c_str(), Texname.length(), ImGuiInputTextFlags_ReadOnly);
+
+	// Material Drop üũ
+	if (ImGui::BeginDragDropTarget())
+	{
+		const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ContentTree");
+
+		if (payload)
+		{
+			DWORD_PTR data = *((DWORD_PTR*)payload->Data);
+			CAsset* pAsset = (CAsset*)data;
+			if (ASSET_TYPE::TEXTURE == pAsset->GetType())
+			{
+				pPS->SetTexture((CTexture*)pAsset);
+			}
+		}
+		ImGui::EndDragDropTarget();
+	}
+
 
 	float& fEventTime = pPS->GetEventTimeRef();
 	ImGui::Text("EventTime"); ImGui::SameLine();
