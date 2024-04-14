@@ -2,6 +2,7 @@
 
 
 //About Tile Map
+#define STR_KEY_TILEFAP L"TileMap"
 #define STR_KEY_TILEFAP_FORE_GROUND L"TileFore"
 #define STR_KEY_TILEFAP_Back_GROUND L"TileBack"
 

@@ -136,34 +136,43 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->AddComponent(new CDreamBlockParticleSystem);
 	pObj->AddComponent(new CDreamBlockScript);
 	pTempLevel->AddObject(pObj, LAYER_SPCOL);
-
-
 	pObj = nullptr;
 	pChidObj = nullptr;
-	// Backgruond Object 积己
-	//pObj = new CGameObject;
-	//pObj->SetName(L"Background");
-	//pObj->AddComponent(new CTransform);
-	//pObj->AddComponent(new CMeshRender);
-	//pObj->AddComponent(new CBackgroundScript);
-	//pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 300.f));
-	//pObj->Transform()->SetRelativeScale(Vec3(1600.f, 800.f, 1.f));
-	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
-	//pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_BackGroundMeterial));
-	//Ptr<CTexture> pTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.png");
-	//pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, pTex);
 
-	//pTempLevel->AddObject(pObj, LAYER_BACKGROUND, false);
+#pragma region background
+	// Backgruond Object 积己
+//pObj = new CGameObject;
+//pObj->SetName(L"Background");
+//pObj->AddComponent(new CTransform);
+//pObj->AddComponent(new CMeshRender);
+//pObj->AddComponent(new CBackgroundScript);
+//pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 300.f));
+//pObj->Transform()->SetRelativeScale(Vec3(1600.f, 800.f, 1.f));
+//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(L"RectMesh"));
+//pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_BackGroundMeterial));
+//Ptr<CTexture> pTex = CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.png");
+//pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, pTex);
+//pTempLevel->AddObject(pObj, LAYER_BACKGROUND, false);
+#pragma endregion
+
+
+#pragma region tilemap
 
 	int TileNum = 0;
-	// TileMap Object
 	pObj = new CGameObject;
-	pObj->SetName(STR_KEY_TILEFAP_FORE_GROUND);
-
+	pObj->SetName(STR_KEY_TILEFAP);
 	pObj->AddComponent(new CTransform);
-	pObj->AddComponent(new CTileMap);
-
 	pObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 91.f));
+
+
+	// TileMap Object
+	pChidObj = new CGameObject;
+	pChidObj->SetName(STR_KEY_TILEFAP_FORE_GROUND);
+
+	pChidObj->AddComponent(new CTransform);
+	pChidObj->AddComponent(new CTileMap);
+
+	pChidObj->Transform()->SetRelativePos(Vec3(0.f, 0.f, 0.f));
 
 	static const std::filesystem::path base_path = CPathMgr::GetContentPath();
 	wstring ForeTilePath = base_path;
@@ -174,15 +183,21 @@ void CCreateTempLevel::CreateTempLevel()
 	{
 		std::filesystem::path relative_path = std::filesystem::relative(p, base_path);
 		Ptr<CTexture> pAtlasTex = CAssetMgr::GetInst()->Load<CTexture>(relative_path, relative_path);
-		pObj->TileMap()->SetTileAtlas(pAtlasTex);
+		pChidObj->TileMap()->SetTileAtlas(pAtlasTex);
 	}
-	Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->CreateArrayTexture(STR_KEY_TEXARR_FORE_TILE, pObj->TileMap()->GetTileAtlases() , 1);
-	pObj->TileMap()->SetArrAtlas(pTileAtlas);
+	Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->CreateArrayTexture(STR_KEY_TEXARR_FORE_TILE, pChidObj->TileMap()->GetTileAtlases(), 1);
+	pChidObj->TileMap()->SetArrAtlas(pTileAtlas);
 
+	pObj->AddChild(pChidObj);
+	pChidObj->TileMap()->SetColRow(40, 23);
 	pTempLevel->AddObject(pObj, LAYER_FORETILE, false);
-	pObj->TileMap()->SetColRow(40, 23);
 
-	// Player Object 积己
+	pObj = nullptr;
+	pChidObj = nullptr;
+#pragma endregion
+
+
+#pragma region Player Object 积己
 	pObj = new CGameObject;
 	pObj->SetName(L"Player");
 
@@ -205,36 +220,39 @@ void CCreateTempLevel::CreateTempLevel()
 	pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_Std2dMeterial));
 	pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Strawberry.png", L"texture\\Strawberry.png"));
 	pTempLevel->AddObject(pObj, LAYER_PLAYER, false);
+#pragma endregion
 
-	//Platform Object 积己
-	//pObj = new CGameObject;
-	//pObj->SetName(L"Platform");
-	//
-	//pObj->AddComponent(new CTransform);
-	//pObj->AddComponent(new CMeshRender);
-	//pObj->AddComponent(new CCollider2D);
-	//pObj->AddComponent(new CAnimator2D);
-	//pObj->AddComponent(new CPlatFormScript);
-	//
-	//Vec3 scale = Vec3(324.f, 30.f, 1.f);
-	//pObj->Transform()->SetRelativePos(Vec3(0.f, -90.f, 90.f));
-	//pObj->Transform()->SetRelativeScale(scale);
-	//
-	//pObj->Collider2D()->SetAbsolute(false);
-	//pObj->Collider2D()->SetOffsetScale(Vec2(1.f, 1.f));
-	//pObj->Collider2D()->SetOffsetPos(Vec2(0.f, 0.f));
-	//pObj->Collider2D()->SetColliderType(COLLIDER2D_TYPE::COL_TYPE_RECT);
-	//
-	//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(STR_KEY_RectMesh));
-	//pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_DebugMeterial));
-	//pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Strawberry.png", L"texture\\Strawberry.png"));
-	
-	//pTempLevel->AddObject(pObj, LAYER_TILECOL, false);
+#pragma region Platform Object积己
+//pObj = new CGameObject;
+//pObj->SetName(L"Platform");
+//
+//pObj->AddComponent(new CTransform);
+//pObj->AddComponent(new CMeshRender);
+//pObj->AddComponent(new CCollider2D);
+//pObj->AddComponent(new CAnimator2D);
+//pObj->AddComponent(new CPlatFormScript);
+//
+//Vec3 scale = Vec3(324.f, 30.f, 1.f);
+//pObj->Transform()->SetRelativePos(Vec3(0.f, -90.f, 90.f));
+//pObj->Transform()->SetRelativeScale(scale);
+//
+//pObj->Collider2D()->SetAbsolute(false);
+//pObj->Collider2D()->SetOffsetScale(Vec2(1.f, 1.f));
+//pObj->Collider2D()->SetOffsetPos(Vec2(0.f, 0.f));
+//pObj->Collider2D()->SetColliderType(COLLIDER2D_TYPE::COL_TYPE_RECT);
+//
+//pObj->MeshRender()->SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(STR_KEY_RectMesh));
+//pObj->MeshRender()->SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_DebugMeterial));
+//pObj->MeshRender()->GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Strawberry.png", L"texture\\Strawberry.png"));
 
+//pTempLevel->AddObject(pObj, LAYER_TILECOL, false);
+#pragma endregion
 
+#pragma region 面倒汲沥
 	// 面倒 汲沥
 	CCollisionMgr::GetInst()->LayerCheck(LAYER_SPCOL, LAYER_PLAYER);
 	CCollisionMgr::GetInst()->LayerCheck(LAYER_TILECOL, LAYER_PLAYER);
+#pragma endregion
 
 	CLevelMgr::GetInst()->ChangeLevel(pTempLevel, LEVEL_STATE::PLAY);
 

@@ -55,7 +55,7 @@ void TileMapUI::render_update()
 	//ImGui::Checkbox("##Grid Visible", &visible);
 
 
-	if (KEY_TAP(KEY::G))
+	if (KEY_TAP(KEY::V))
 	{
 		GetTargetObject()->TileMap()->SetGridVisible(!GetTargetObject()->TileMap()->GetGridVisible());
 	}
