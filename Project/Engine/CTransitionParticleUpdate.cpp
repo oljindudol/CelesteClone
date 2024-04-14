@@ -5,7 +5,7 @@
 CTransitionParticleUpdate::CTransitionParticleUpdate()
 	: CComputeShader(32, 1, 1)
 {
-	Create(STR_FILE_PATH_ParticleUpdateShader, STR_FUNC_NAME_CSShaderParticleUpdate);
+	Create(STR_FILE_PATH_TransitionParticleUpdateShader, STR_FUNC_NAME_CSShaderTransitionParticleUpdate);
 }
 
 CTransitionParticleUpdate::~CTransitionParticleUpdate()

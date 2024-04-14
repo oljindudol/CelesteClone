@@ -72,6 +72,7 @@
 #define STR_FILE_PATH_DreamParticleShader L"shader\\dreamparticle.fx"
 #define STR_FILE_PATH_DrawLine L"shader\\drawline.fx"
 
+#define STR_FILE_PATH_TransitionParticleUpdateShader L"shader\\transitionparticle_update.fx"
 
 // std2.fx functions name
 #define STR_FUNC_NAME_VTXShaderHair "VS_Hair"
@@ -122,6 +123,7 @@
 #define STR_FUNC_NAME_GEOShaderDrawLine "GS_DrawLine"
 #define STR_FUNC_NAME_PIXShaderDrawLine "PS_DrawLine"
 
+#define STR_FUNC_NAME_CSShaderTransitionParticleUpdate "CS_TransitionParticleUpdate"
 
 ////////// Resource Key ///////////////
 // Mesh

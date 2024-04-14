@@ -193,7 +193,9 @@
     <ClInclude Include="CDreamBlockParticleSystem.h">
       <Filter>08. Component\RenderComponent\09. DreamBlockParticleSystem</Filter>
     </ClInclude>
-    <ClInclude Include="CTransitionParticleUpdate.h" />
+    <ClInclude Include="CTransitionParticleUpdate.h">
+      <Filter>ShaderCode\Compute\TransitionParticleUpdate</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -373,7 +375,9 @@
     <ClCompile Include="CDreamBlockParticleSystem.cpp">
       <Filter>08. Component\RenderComponent\09. DreamBlockParticleSystem</Filter>
     </ClCompile>
-    <ClCompile Include="CTransitionParticleUpdate.cpp" />
+    <ClCompile Include="CTransitionParticleUpdate.cpp">
+      <Filter>ShaderCode\Compute\TransitionParticleUpdate</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Default">
@@ -559,6 +563,9 @@
     <Filter Include="08. Component\RenderComponent\09. DreamBlockParticleSystem">
       <UniqueIdentifier>{a2d02f4a-4be1-49f8-a898-fccce934221a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ShaderCode\Compute\TransitionParticleUpdate">
+      <UniqueIdentifier>{bb37fb2b-cdd6-4566-a944-a9da76e8a2dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">
@@ -607,6 +614,9 @@
     </FxCompile>
     <FxCompile Include="drawline.fx">
       <Filter>ShaderCode\Render</Filter>
+    </FxCompile>
+    <FxCompile Include="transitionparticle_update.fx">
+      <Filter>ShaderCode\Compute\TransitionParticleUpdate</Filter>
     </FxCompile>
   </ItemGroup>
 </Project>
