@@ -39,7 +39,8 @@ void Inspector::render_update()
 	if (nullptr != m_TargetObject)
 	{
 		string strName = string(m_TargetObject->GetName().begin(), m_TargetObject->GetName().end());
-		ImGui::Text(strName.c_str());
+		CreateStaticColorButton(strName, ImVec4(.7f, .7f, 0.f, 1.f));
+		CreateStaticColorButton(ToString(magic_enum::enum_name((LAYER)m_TargetObject->GetLayerIdx())), ImVec4(0.f,0.f,1.f,1.f)  );
 	}
 }
 
