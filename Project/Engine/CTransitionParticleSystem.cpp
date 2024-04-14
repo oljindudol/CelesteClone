@@ -90,7 +90,7 @@ CTransitionParticleSystem::CTransitionParticleSystem() :
 	m_Module.AlphaBasedLife = 1; // 0 : off, 1 : NomrlizedAge, 2: Age
 	m_Module.AlphaMaxAge = 2.8f;
 
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::VIBRATION] = 1;
+	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::VIBRATION] = 0;
 	m_Module.VibTime = 0.3f;
 	m_Module.VibColor = Vec4(1.f, 1.f, 1.f, 1.f);
 
@@ -110,7 +110,7 @@ CTransitionParticleSystem::CTransitionParticleSystem() :
 	m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(STR_FILE_PATH_PARTICLE_STARS
 		, STR_FILE_PATH_PARTICLE_STARS);
 
-	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ANIMATION] = 1;
+	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ANIMATION] = 0;
 	m_Module.FrameDuration = 0.3f;
 	m_Module.NumberOfAtlas = 3;
 	m_Module.NumberOfFrame[0] = 8;
@@ -226,7 +226,7 @@ void CTransitionParticleSystem::render()
 	// 파티클 개별 랜더링 -> 인스턴싱
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::INT_0, 0);
 	GetMaterial()->SetTexParam(TEX_PARAM::TEX_0, m_ParticleTex);
-	GetMaterial()->SetTexParam(TEX_PARAM::TEXARR_0, m_ParticleArrTex);
+	//GetMaterial()->SetTexParam(TEX_PARAM::TEXARR_0, m_ParticleArrTex);
 	GetMaterial()->UpdateData();
 
 	GetMesh()->render_asparticle(m_MaxParticleCount);
