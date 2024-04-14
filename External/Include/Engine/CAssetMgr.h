@@ -140,13 +140,11 @@ Ptr<T> CAssetMgr::Load(const wstring& _strKey, const wstring& _strRelativePath)
 {
     Ptr<T> pAsset = FindAsset<T>(_strKey);
 
-    return (T*)pAsset.Get();
-
     // 로딩할 때 사용할 키로 이미 다른 에셋이 있다면
-    //if (nullptr != pAsset)
-    //{
-    //    return (T*)pAsset.Get();
-    //}      
+    if (nullptr != pAsset)
+    {
+        return (T*)pAsset.Get();
+    }      
 
     wstring strFilePath = CPathMgr::GetContentPath();
     strFilePath += _strRelativePath;

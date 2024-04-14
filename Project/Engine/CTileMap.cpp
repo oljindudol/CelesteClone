@@ -8,6 +8,8 @@
 
 #include "CTransform.h"
 #include "CTileMapGrid.h"
+#include "CRenderMgr.h"
+#include "CCamera.h"
 
 CTileMap::CTileMap()
 	: CRenderComponent(COMPONENT_TYPE::TILEMAP)
@@ -104,7 +106,7 @@ void CTileMap::render()
 
 	if (!m_pGrid->DidInit())
 		m_pGrid->Init();
-	if (m_bGridVisible && m_pGrid)
+	if (m_bGridVisible && m_pGrid )//&& CRenderMgr::GetInst()->GetFirstCamera()->GetLayerCheck((UINT)GetOwner()->GetLayerIdx()))
 		m_pGrid->UpdateData();
 }
 

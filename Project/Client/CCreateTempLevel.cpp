@@ -261,5 +261,5 @@ void CCreateTempLevel::CreateTempLevel()
 
 	CLevelMgr::GetInst()->ChangeLevel(pTempLevel, LEVEL_STATE::PLAY);
 
-	CLevelSaveLoad::SaveLevel(pTempLevel, L"level\\temp.lv");	
+	//CLevelSaveLoad::SaveLevel(pTempLevel, L"level\\temp.lv");	
 }
