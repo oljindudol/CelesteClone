@@ -162,12 +162,11 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 	Ptr<CGraphicsShader> pShader = nullptr;
 	//PS_TransitionParticle
 	// ====================
-	// TransitionParticleShader 기본VS+트랜지션GS+기본PS
+	// TransitionParticleShader 기본VS+트랜지션GS+트랜지션PS
 	// ====================
 	pShader = new CGraphicsShader;
 	pShader->CreateVertexShader(STR_FILE_PATH_ParticleShader, STR_FUNC_NAME_VTXShaderParticle);
 	pShader->CreateGeometryShader(STR_FILE_PATH_TransitionParticleShader, STR_FUNC_NAME_GEOShaderTransition);
-	//pShader->CreateGeometryShader(STR_FILE_PATH_ParticleShader, STR_FUNC_NAME_GEOShaderParticle);
 	pShader->CreatePixelShader(STR_FILE_PATH_TransitionParticleShader, STR_FUNC_NAME_PIXShaderTransitionParticle);
 
 	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);

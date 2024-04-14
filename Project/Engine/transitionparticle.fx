@@ -136,23 +136,11 @@ float4 PS_TransitionParticle(GS_OUT _in) : SV_Target
     if (g_btex_0)
     {
         float4 vSampleColor = g_tex_0.Sample(g_sam_0, _in.vUV);
-        vOutColor.rgb *= vSampleColor.rgb;
+        //vOutColor.rgb *= vSampleColor.rgb;
+        vOutColor.rgb = float3(0.f, 0.f, 0.f);
         vOutColor.a = vSampleColor.a;
     }
     
-    // 렌더모듈이 켜져 있으면
-    if (module.arrModuleCheck[6])
-    {
-        if (1 == module.AlphaBasedLife)
-        {
-            vOutColor.a *= saturate(1.f - clamp(particle.NomalizedAge, 0.f, 1.f));
-        }
-        else if (2 == module.AlphaBasedLife)
-        {
-            float fRatio = particle.Age / module.AlphaMaxAge;
-            vOutColor.a *= saturate(1.f - clamp(fRatio, 0.f, 1.f));
-        }
-    }
     if (0.01f > vOutColor.a)
         discard;
     

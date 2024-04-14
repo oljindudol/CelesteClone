@@ -19,7 +19,7 @@ CRenderMgr::CRenderMgr()
 	, m_DebugPosition(true)
 	, m_EditorCam(nullptr)
 	, m_RenderFunc(nullptr)
-	, m_ClearColor(GamePlayStatic::Black)
+	, m_ClearColor(GamePlayStatic::Mazenta)
 {	
 	m_RenderFunc = &CRenderMgr::render_play;
 }
