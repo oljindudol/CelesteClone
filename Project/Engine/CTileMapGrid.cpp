@@ -97,7 +97,10 @@ void CTileMapGrid::Clear()
 
 void CTileMapGrid::UpdateData()
 {
-	m_pMtrl->SetScalarParam(SCALAR_PARAM::VEC4_0, &m_vGridColor);
+	// Grid 색상
+	auto LayerIdx =  m_pTargetTileMap->GetOwner()->GetLayerIdx();
+	m_pMtrl->SetScalarParam(SCALAR_PARAM::VEC4_0, (LAYER_FORETILE == LayerIdx) ? GamePlayStatic::Yellow : GamePlayStatic::Mazenta);
+
 	m_pMtrl->UpdateData();
 	for (size_t i = 0; i < m_vecMesh.size(); ++i)
 		m_vecMesh[i]->render(); // TODO (Jang) : Instancing Rendering을 바꾸기

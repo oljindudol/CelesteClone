@@ -36,4 +36,6 @@ public:
 	CTileMapGrid(CTileMap* _pTargetTileMap);
 	CTileMapGrid(const CTileMapGrid& _origin);
 	virtual ~CTileMapGrid();
+
+	friend class CTileMap;
 };

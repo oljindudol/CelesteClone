@@ -87,6 +87,10 @@ void CTileMap::render()
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC2_0, m_vecTileAtlas[0].second);
 	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC2_1, m_vecTileAtlas[1].second);
 
+	// Grid 색상
+	auto LayerIdx = GetOwner()->GetLayerIdx();
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_0, (LAYER_FORETILE == LayerIdx) ? GamePlayStatic::Yellow : GamePlayStatic::Mazenta) ;
+
 	// 각 타일 정보를 구조화 버퍼로 이동
 	m_TileInfoBuffer->SetData(m_vecTileInfo.data(), (int)m_vecTileInfo.size());
 
@@ -106,8 +110,28 @@ void CTileMap::render()
 
 	if (!m_pGrid->DidInit())
 		m_pGrid->Init();
-	if (m_bGridVisible && m_pGrid )//&& CRenderMgr::GetInst()->GetFirstCamera()->GetLayerCheck((UINT)GetOwner()->GetLayerIdx()))
+	if (m_bGridVisible && m_pGrid)//&& CRenderMgr::GetInst()->GetFirstCamera()->GetLayerCheck((UINT)GetOwner()->GetLayerIdx()))
+	{
 		m_pGrid->UpdateData();
+	}
+}
+
+void CTileMap::begin()
+{
+	CRenderComponent::begin();
+	if (nullptr == m_pGrid)
+		return;
+	
+	auto LayerIdx = GetOwner()->GetLayerIdx();
+
+	if (LAYER_FORETILE == LayerIdx)
+	{
+		m_pGrid->m_vGridColor = GamePlayStatic::Yellow;
+	}
+	else
+	{
+		m_pGrid->m_vGridColor = GamePlayStatic::Mazenta;
+	}
 }
 
 

@@ -17,6 +17,7 @@
 //#define TileAtlas0   g_tex_0
 //#define TileAtlas1   g_tex_1
 #define ArrTileAtlas   g_texarr_0
+#define gridcolor      g_vec4_0 
 
 
 StructuredBuffer<tTileInfo> g_TileInfo : register(t20);
@@ -112,7 +113,7 @@ float4 PS_TileMap(VS_OUT _in) : SV_Target
     
     if (IDX_HightLight == bufferidx)
     {
-        vColor = vColor * 0.5 + float4(0.9f, 0.9f, 0.f, 1.f) * 0.5;
+        vColor = vColor * 0.5f + gridcolor * 0.5f;
     }
     return vColor;
 }
@@ -136,7 +137,7 @@ VS_OUT VS_Grid(VS_IN _in)
 /////////////
 float4 PS_Grid(VS_OUT _in) : SV_Target
 {
-    return float4(0.9f, 0.9f, 0.f, 1.f);
+    return gridcolor;
 }
 
 #endif
