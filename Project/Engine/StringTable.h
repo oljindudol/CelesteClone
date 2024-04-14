@@ -70,9 +70,10 @@
 #define STR_FILE_PATH_ParticleUpdateShader L"shader\\particle_update.fx"
 #define STR_FILE_PATH_DreamParticleUpdateShader L"shader\\dreamparticle_update.fx"
 #define STR_FILE_PATH_DreamParticleShader L"shader\\dreamparticle.fx"
-#define STR_FILE_PATH_DrawLine L"shader\\drawline.fx"
+#define STR_FILE_PATH_DrawLineShader L"shader\\drawline.fx"
 
 #define STR_FILE_PATH_TransitionParticleUpdateShader L"shader\\transitionparticle_update.fx"
+#define STR_FILE_PATH_TransitionParticleShader L"shader\\transitionparticle.fx"
 
 // std2.fx functions name
 #define STR_FUNC_NAME_VTXShaderHair "VS_Hair"
@@ -125,6 +126,7 @@
 
 #define STR_FUNC_NAME_CSShaderTransitionParticleUpdate "CS_TransitionParticleUpdate"
 
+#define STR_FUNC_NAME_GEOShaderTransition "GS_TransitionParticle"
 ////////// Resource Key ///////////////
 // Mesh
 #define STR_KEY_PointMesh L"PointMesh"
@@ -161,6 +163,7 @@
 #define STR_KEY_AnimatedParticleRenderShader L"AnimatedParticleRenderShader"
 #define STR_KEY_DreamParticleRenderShader L"DreamParticleRenderShader"
 #define STR_KEY_DrawLineRenderShader L"DrawLineRenderShader"
+#define STR_KEY_TransitionRenderShader L"TransitionRenderShader"
 
 
 // Material
@@ -179,6 +182,7 @@
 #define STR_KEY_AnimatedParticleMeterial L"AnimatedParticleMtrl"
 #define STR_KEY_DreamParticleMeterial L"DreamParticleMtrl"
 #define STR_KEY_DrawLineMeterial L"DrawLineMtrl"
+#define STR_KEY_TransitionParticleMeterial L"TransitionParticleMtrl"
 
 
 

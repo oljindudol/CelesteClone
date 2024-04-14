@@ -627,5 +627,8 @@
     <FxCompile Include="transitionparticle_update.fx">
       <Filter>ShaderCode\Compute\TransitionParticleUpdate</Filter>
     </FxCompile>
+    <FxCompile Include="transitionparticle.fx">
+      <Filter>ShaderCode\Compute\TransitionParticleUpdate</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

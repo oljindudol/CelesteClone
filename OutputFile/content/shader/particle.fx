@@ -328,6 +328,8 @@ float4 PS_Particle(GS_OUT _in) : SV_Target
             vOutColor.a *= saturate(1.f - clamp(fRatio, 0.f, 1.f));
         }
     }
+    if ( 0.01f > vOutColor.a)
+        discard;
     
     return vOutColor;
 }

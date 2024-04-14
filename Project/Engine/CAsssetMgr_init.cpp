@@ -161,14 +161,32 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 {
 	Ptr<CGraphicsShader> pShader = nullptr;
 
+	// ====================
+	// TransitionParticleShader 기본VS+트랜지션GS+기본PS
+	// ====================
+	pShader = new CGraphicsShader;
+	pShader->CreateVertexShader(STR_FILE_PATH_ParticleShader, STR_FUNC_NAME_VTXShaderParticle);
+	pShader->CreateGeometryShader(STR_FILE_PATH_TransitionParticleShader, STR_FUNC_NAME_GEOShaderTransition);
+	//pShader->CreateGeometryShader(STR_FILE_PATH_ParticleShader, STR_FUNC_NAME_GEOShaderParticle);
+	pShader->CreatePixelShader(STR_FILE_PATH_ParticleShader, STR_FUNC_NAME_PIXShaderParticle);
+
+	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
+	pShader->SetRSType(RS_TYPE::CULL_NONE);
+	pShader->SetDSType(DS_TYPE::LESS);		// 깊이 테스트는 진행, 깊이는 기록 X
+	pShader->SetBSType(BS_TYPE::ALPHA_BLEND);
+
+	pShader->SetDomain(SHADER_DOMAIN::DOMAIN_OPAQUE);
+
+	AddAsset(STR_KEY_TransitionRenderShader, pShader.Get());
+
 
 	// ====================
 	// DrawLineShader 기본GS+애니메이터PS
 	// ====================
 	pShader = new CGraphicsShader;
-	pShader->CreateVertexShader(STR_FILE_PATH_DrawLine, STR_FUNC_NAME_VTXShaderDrawLine);
-	pShader->CreateGeometryShader(STR_FILE_PATH_DrawLine, STR_FUNC_NAME_GEOShaderDrawLine);
-	pShader->CreatePixelShader(STR_FILE_PATH_DrawLine, STR_FUNC_NAME_PIXShaderDrawLine);
+	pShader->CreateVertexShader(STR_FILE_PATH_DrawLineShader, STR_FUNC_NAME_VTXShaderDrawLine);
+	pShader->CreateGeometryShader(STR_FILE_PATH_DrawLineShader, STR_FUNC_NAME_GEOShaderDrawLine);
+	pShader->CreatePixelShader(STR_FILE_PATH_DrawLineShader, STR_FUNC_NAME_PIXShaderDrawLine);
 
 	pShader->SetTopology(D3D11_PRIMITIVE_TOPOLOGY_POINTLIST);
 	pShader->SetRSType(RS_TYPE::CULL_NONE);
@@ -411,6 +429,11 @@ void CAssetMgr::CreateDefaultGraphicsShader()
 void CAssetMgr::CreateDefaultMaterial()
 {
 	CMaterial* pMtrl = nullptr;
+
+	// TransitionParticleMtrl
+	pMtrl = new CMaterial(true);
+	pMtrl->SetShader(FindAsset<CGraphicsShader>(STR_KEY_TransitionRenderShader));
+	AddAsset<CMaterial>(STR_KEY_TransitionParticleMeterial, pMtrl);
 
 	// DrawLineMtrl
 	pMtrl = new CMaterial(true);
