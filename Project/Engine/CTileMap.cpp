@@ -89,7 +89,10 @@ void CTileMap::render()
 
 	// Grid 색상
 	auto LayerIdx = GetOwner()->GetLayerIdx();
-	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_0, (LAYER_FORETILE == LayerIdx) ? GamePlayStatic::Yellow : GamePlayStatic::Mazenta) ;
+	static Vec4 color = GamePlayStatic::White;
+	if (nullptr != m_pGrid)
+		color = m_pGrid->m_vGridColor;
+	GetMaterial()->SetScalarParam(SCALAR_PARAM::VEC4_0, color) ;
 
 	// 각 타일 정보를 구조화 버퍼로 이동
 	m_TileInfoBuffer->SetData(m_vecTileInfo.data(), (int)m_vecTileInfo.size());
@@ -121,17 +124,6 @@ void CTileMap::begin()
 	CRenderComponent::begin();
 	if (nullptr == m_pGrid)
 		return;
-	
-	auto LayerIdx = GetOwner()->GetLayerIdx();
-
-	if (LAYER_FORETILE == LayerIdx)
-	{
-		m_pGrid->m_vGridColor = GamePlayStatic::Yellow;
-	}
-	else
-	{
-		m_pGrid->m_vGridColor = GamePlayStatic::Mazenta;
-	}
 }
 
 
@@ -158,6 +150,11 @@ void CTileMap::SetTileAtlas(Ptr<CTexture> _Atlas, Vec2 _TilePixelSize)
 }
 
 
+
+void CTileMap::SetGridColor(const Vec4& _Color)
+{
+	if (nullptr != m_pGrid) { m_pGrid->m_vGridColor = _Color; }
+}
 
 void CTileMap::SetColRow(UINT _Col, UINT _Row)
 {

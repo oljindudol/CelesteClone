@@ -58,6 +58,8 @@ public:
     void SetGridVisible(bool _bGridVisible) {
         m_bGridVisible = _bGridVisible;
     }
+    void ToggleGridVisible() { m_bGridVisible = !m_bGridVisible; }
+    void SetGridColor(const Vec4& _Color);
 
     void SetColRow(UINT _Col, UINT _Row);
     UINT GetCol() { return m_Col; }

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CTileMapScript.h"
+#include <Engine\CTileMap.h>
 
 CTileMapScript::CTileMapScript()
 	: CScript((UINT)SCRIPT_TYPE::TILEMAPSCRIPT)
@@ -34,9 +35,11 @@ void CTileMapScript::begin()
 	}
 	Ptr<CTexture> pTileAtlas = CAssetMgr::GetInst()->CreateArrayTexture(STR_KEY_TEXARR_FORE_TILE, pChidObj->TileMap()->GetTileAtlases(), 1);
 	pChidObj->TileMap()->SetArrAtlas(pTileAtlas);
+	pChidObj->TileMap()->SetColRow(40, 23);
+	pChidObj->TileMap()->SetGridColor(GamePlayStatic::Yellow);
+	pChidObj->TileMap()->SetGridVisible(true);
 
 	GetOwner()->AddChild(pChidObj);
-	pChidObj->TileMap()->SetColRow(40, 23);
 	GamePlayStatic::SpawnGameObject(pChidObj, LAYER_FORETILE);
 
 
@@ -61,9 +64,11 @@ void CTileMapScript::begin()
 	}
 	pTileAtlas = CAssetMgr::GetInst()->CreateArrayTexture(STR_KEY_TEXARR_BACK_TILE, pChidObj->TileMap()->GetTileAtlases(), 1);
 	pChidObj->TileMap()->SetArrAtlas(pTileAtlas);
+	pChidObj->TileMap()->SetColRow(40, 23);
+	pChidObj->TileMap()->SetGridColor(GamePlayStatic::Mazenta);
+	pChidObj->TileMap()->SetGridVisible(false);
 
 	GetOwner()->AddChild(pChidObj);
-	pChidObj->TileMap()->SetColRow(40, 23);
 	GamePlayStatic::SpawnGameObject(pChidObj, LAYER_BACKTILE);
 }
 
