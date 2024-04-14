@@ -113,6 +113,23 @@ void TileMapEditor::render_update()
 	{
 		validAtlasIdx = false;
 	}
+
+	//에디터카메라 오쏘뷰고정
+	CCamera* pCam;
+	if (LEVEL_STATE::PLAY == CLevelMgr::GetInst()->GetCurrentLevel()->GetState())
+	{
+		pCam = CRenderMgr::GetInst()->GetFirstCamera();
+	}
+	else
+	{
+		pCam = CRenderMgr::GetInst()->GetEditorCamera();
+	}
+
+	if (pCam) {
+		if (PROJ_TYPE::PERSPECTIVE == pCam->GetProjType())
+			pCam->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
+	}
+
 #pragma endregion
 
 	auto visible = GetTargetObject()->TileMap()->GetGridVisible();
@@ -120,10 +137,8 @@ void TileMapEditor::render_update()
 	ImGui::Checkbox("##Grid Visible", &visible);
 	GetTargetObject()->TileMap()->SetGridVisible(visible);
 
-	//===============6. 컬라이더 생성기=============
+	//===============1. 컬라이더 생성기=============
 #pragma region ColliderGenerator
-
-
 	//if (ImGui::Button("CollderCreate##TileMap2D")) {
 	//	CGameObject* pObj = CObjectManager::GetInstance()->CreateEmptyGameObject();
 	//	pObj->SetName(L"new Collders");
@@ -149,58 +164,9 @@ void TileMapEditor::render_update()
 	if (ImGui::Button("Generate Collider##TileMap2D")) {
 		_OptimizeCollisionArea();
 	}
-
-	ImGui::Separator();
-
-	ImGui::SetNextItemWidth(150);
-	if (ImGui::BeginCombo("##combo", items[m_IdxAtlas].c_str())) {
-		for (int i = 0; i < items.size(); i++) {
-			const bool isSelected = (m_IdxAtlas == i);
-			if (ImGui::Selectable(items[i].c_str(), isSelected)) {
-				m_IdxAtlas = i;
-			}
-
-			// 항목 선택 시 자동으로 스크롤
-			if (isSelected) {
-				ImGui::SetItemDefaultFocus();
-			}
-		}
-		ImGui::EndCombo();
-	}
-
-	vector<std::pair<Ptr<CTexture>, Vec2>> pair;
-
-
-	if (true == validAtlasIdx)
-	{
-		m_pAtlasTileTex = m_pTileMap->GetTileAtlas(m_IdxAtlas).Get();
-		m_vAtlasTileUvSize = m_pTileMap->GetAtlasTileSize(m_IdxAtlas);
-	}
-	else
-	{
-		m_pAtlasTileTex = nullptr;
-	}
-
-	ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
-
-	//에디터카메라 오쏘뷰고정
-	CCamera* pCam;
-	if (LEVEL_STATE::PLAY == CLevelMgr::GetInst()->GetCurrentLevel()->GetState())
-	{
-		pCam = CRenderMgr::GetInst()->GetFirstCamera();
-	}
-	else
-	{
-		pCam = CRenderMgr::GetInst()->GetEditorCamera();
-	}
-
-	if (pCam) {
-		if (PROJ_TYPE::PERSPECTIVE == pCam->GetProjType())
-			pCam->SetProjType(PROJ_TYPE::ORTHOGRAPHIC);
-	}
 #pragma endregion
 
-	//===============1. 타일맵 정보==============
+	//===============2. 타일맵 정보==============
 #pragma region TileMapInfo
 
 	ImVec2 vAtlasTexResol = {};
@@ -212,9 +178,9 @@ void TileMapEditor::render_update()
 	ImGui::Text("Tile Row:%d  Col:%d", m_pTileMap->GetRow() , m_pTileMap->GetCol());
 #pragma endregion
 
-	//===============2. 타일맵 재생성기==============
-#pragma region TileMap ReGenerate
-	//
+	//===============3. 타일맵 재생성기==============
+#pragma region TileMapReGenerate
+
 	//ImGui::InputInt2("##Tile Map Size", m_arrFaceTileCnt);
 	//m_arrFaceTileCnt[0] = 
 	// (m_arrFaceTileCnt[0], 0, INT_MAX);
@@ -276,9 +242,10 @@ void TileMapEditor::render_update()
 	//}
 #pragma endregion
 
-
-	//===============5. 레벨 클릭 판정기=============
+	//===============4. 레벨 클릭 판정기=============
 #pragma region LevelClick Judge
+	auto winsize = ImVec2(500, 500);
+ImGui::BeginChild("#Level Click Info", winsize, true);
 	ImGui::Separator();
 	auto MousePosition = CKeyMgr::GetInst()->GetMousePos();
 	//Vector3 vMouseWorldPos = pEditorCam->GetScreenToWorld2DPosition(MousePosition);
@@ -404,9 +371,6 @@ void TileMapEditor::render_update()
 				auto MaskInfo = _GetMaskInfo(x, y);
 				ImGui::Text((("neighbourMask :"+ MaskInfo.neighbourMask) +("0b" + ToBinaryString(MaskInfo.neighbourMask))).c_str());
 				ReflectMaskInfo(MaskInfo.neighbourMask);
-				ImGui::Separator();
-				//auto MaskInfof = _GetMaskInfo(x, y,false);
-				//ReflectMaskInfo(MaskInfof.neighbourMask);
 				ImGui::Text(("neighbourCount : " + std::to_string(MaskInfo.neighbourCount)).c_str());
 				ImGui::Text(("extendedNeighbourCount : " + std::to_string(MaskInfo.extendedNeighbourCount)).c_str());
 				ImGui::Text(("emptyNeighbourSlot : " + std::to_string(MaskInfo.emptyNeighbourSlot)).c_str());
@@ -416,10 +380,44 @@ void TileMapEditor::render_update()
 				//int idx = iClickY * m_pTileMap->GetCol() + iClickX;
 				//vecTiles[idx].idx = m_iSelectedTileIdx;
 		}
+ImGui::EndChild();
 #pragma endregion
 
-	//===============4. 팔레트 선택기=============
+	//===============5. 팔레트 선택기=============
 #pragma region Palette Seletector
+
+		ImGui::Separator();
+		ImGui::SetNextItemWidth(150);
+		if (ImGui::BeginCombo("##combo", items[m_IdxAtlas].c_str())) {
+			for (int i = 0; i < items.size(); i++) {
+				const bool isSelected = (m_IdxAtlas == i);
+				if (ImGui::Selectable(items[i].c_str(), isSelected)) {
+					m_IdxAtlas = i;
+				}
+
+				// 항목 선택 시 자동으로 스크롤
+				if (isSelected) {
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+
+		vector<std::pair<Ptr<CTexture>, Vec2>> pair;
+
+
+		if (true == validAtlasIdx)
+		{
+			m_pAtlasTileTex = m_pTileMap->GetTileAtlas(m_IdxAtlas).Get();
+			m_vAtlasTileUvSize = m_pTileMap->GetAtlasTileSize(m_IdxAtlas);
+		}
+		else
+		{
+			m_pAtlasTileTex = nullptr;
+		}
+
+		ImGui::SetNextWindowSize(ImVec2(500, 440), ImGuiCond_FirstUseEver);
+
 		_RenderPalette();
 #pragma endregion
 	}
