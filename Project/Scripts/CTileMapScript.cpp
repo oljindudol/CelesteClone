@@ -37,7 +37,7 @@ void CTileMapScript::begin()
 	pChidObj->TileMap()->SetArrAtlas(pTileAtlas);
 	pChidObj->TileMap()->SetColRow(40, 23);
 	pChidObj->TileMap()->SetGridColor(GamePlayStatic::Yellow);
-	pChidObj->TileMap()->SetGridVisible(true);
+	//pChidObj->TileMap()->SetGridVisible(false);
 
 	GetOwner()->AddChild(pChidObj);
 	GamePlayStatic::SpawnGameObject(pChidObj, LAYER_FORETILE);
@@ -66,7 +66,7 @@ void CTileMapScript::begin()
 	pChidObj->TileMap()->SetArrAtlas(pTileAtlas);
 	pChidObj->TileMap()->SetColRow(40, 23);
 	pChidObj->TileMap()->SetGridColor(GamePlayStatic::Mazenta);
-	pChidObj->TileMap()->SetGridVisible(false);
+	//pChidObj->TileMap()->SetGridVisible(false);
 
 	GetOwner()->AddChild(pChidObj);
 	GamePlayStatic::SpawnGameObject(pChidObj, LAYER_BACKTILE);

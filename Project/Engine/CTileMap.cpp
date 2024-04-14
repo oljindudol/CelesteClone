@@ -17,7 +17,7 @@ CTileMap::CTileMap()
 	, m_Row(23)
 	, m_vTileRenderSize(Vec2(8.f, 8.f))
 	, m_TileInfoBuffer(nullptr)
-	, m_bGridVisible(true)
+	, m_bGridVisible(false)
 	, m_pGrid(nullptr)
 	, m_IdxHighLight(-1)
 {

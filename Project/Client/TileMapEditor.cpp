@@ -896,5 +896,5 @@ void TileMapEditor::Activate()
 {
 	UI::Activate();
 
-	GetTargetObject()->TileMap()->SetGridVisible(true);
+	//GetTargetObject()->TileMap()->SetGridVisible(true);
 }
