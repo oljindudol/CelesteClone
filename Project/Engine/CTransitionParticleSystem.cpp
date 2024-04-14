@@ -14,6 +14,20 @@ CTransitionParticleSystem::CTransitionParticleSystem() :
 	, m_ParticleBuffer(nullptr)
 	, m_MaxParticleCount(1000)
 {
+	wstring path = L"";
+	path += STR_FILE_PATH_TRANSITION;
+	path += STR_FILE_TRANSITION_STAR;
+	path += STAR_FILE_EXTENSION_PNG;
+	CAssetMgr::GetInst()->Load<CTexture>(STR_FILE_TRANSITION_STAR, path);
+	path = L"";
+
+
+
+
+
+
+
+
 	// 전용 메쉬와 전용 재질 사용
 	SetMesh(CAssetMgr::GetInst()->FindAsset<CMesh>(STR_KEY_PointMesh));
 	SetMaterial(CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_TransitionParticleMeterial));
@@ -106,9 +120,10 @@ CTransitionParticleSystem::CTransitionParticleSystem() :
 		m_vecParticleTex.push_back(tex);
 	}
 	m_ParticleArrTex = CAssetMgr::GetInst()->CreateArrayTexture(STR_KEY_TEXARR_ANIMATED_PARTICLE, m_vecParticleTex, 1);
+	
 
-	m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(STR_FILE_PATH_PARTICLE_STARS
-		, STR_FILE_PATH_PARTICLE_STARS);
+	m_ParticleTex = CAssetMgr::GetInst()->Load<CTexture>(STR_FILE_TRANSITION_STAR
+		, L"" );
 
 	m_Module.arrModuleCheck[(UINT)PARTICLE_MODULE::ANIMATION] = 0;
 	m_Module.FrameDuration = 0.3f;
