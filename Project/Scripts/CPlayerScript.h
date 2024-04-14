@@ -234,7 +234,7 @@ private:
     //Collision onCollideH;
     //Collision onCollideV;
 public:
-    bool onGround;
+    bool onGround = true;
     bool OnSafeGround;
     bool wasOnGround;
     int moveX;

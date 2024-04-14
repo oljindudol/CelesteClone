@@ -364,7 +364,7 @@ void CPlayerScript::tick()
     PushAfterImageEvent();
 
     //DEBUG STATE
-    static bool DEBUG_STATE = false;
+    static bool DEBUG_STATE = true;
     if (KEY_TAP(KEY::SPACE))
     {
         DEBUG_STATE = !DEBUG_STATE;

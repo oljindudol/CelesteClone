@@ -68,15 +68,6 @@ void CCreateTempLevel::Init()
 
 void CCreateTempLevel::CreateTempLevel()
 {		
-	/*Ptr<CMaterial> pBackgroudMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_BackGroundMeterial);
-	Ptr<CMaterial> pStd2DMtrl = CAssetMgr::GetInst()->FindAsset<CMaterial>(STR_KEY_Std2dMeterial);
-
-	pBackgroudMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Background.jpg", L"texture\\Background.jpg"));
-	pStd2DMtrl->SetTexParam(TEX_PARAM::TEX_0, CAssetMgr::GetInst()->Load<CTexture>(L"texture\\Fighter.bmp", L"texture\\Fighter.bmp"));*/
-
-	/*CLevel* pLevel = CLevelSaveLoad::LoadLevel(L"level\\temp.lv");
-	CLevelMgr::GetInst()->ChangeLevel(pLevel, LEVEL_STATE::STOP);
-	return;*/
 
 	CLevel* pTempLevel = new CLevel;
 
@@ -86,20 +77,6 @@ void CCreateTempLevel::CreateTempLevel()
 		pTempLevel->GetLayer(i)->SetName(ToWString({ s.data(),s.size() }));
 	}
 
-
-	// ComputeShader 테스트
-	// 사용할 텍스쳐 생성
-	Ptr<CTexture> pTestTex = CAssetMgr::GetInst()->CreateTexture(L"TestTex"
-		, 1024, 1024, DXGI_FORMAT_R8G8B8A8_UNORM
-		, D3D11_BIND_SHADER_RESOURCE | D3D11_BIND_UNORDERED_ACCESS);
-
-	Ptr<CSetColorShader> pCS = (CSetColorShader*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(STR_KEY_SetColorShader).Get();
-	pCS->SetColor(Vec3(1.f, 0.f, 0.f));
-	pCS->SetTargetTexture(pTestTex);
-	pCS->Execute();
-
-	tPixel* pPixel = pTestTex->GetPixels();
-	tPixel pixel = pPixel[pTestTex->GetWidth() * 1 + 5];
 
 	// Main Camera Object 생성
 	CGameObject* pCamObj = new CGameObject;
