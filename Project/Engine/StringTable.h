@@ -35,8 +35,9 @@
 #define STR_FILE_PATH_DREAMBLOCK_PARTICLE L"\\texture\\Gameplay\\dreamblock\\particles.png"
 
 #define STR_FILE_PATH_TRANSITION L"\\texture\\Gameplay\\transition\\"
-#define STR_FILE_TRANSITION_STAR L"STAR"
 #define STAR_FILE_EXTENSION_PNG L".png"
+#define STR_FILE_TRANSITION_STAR L"STAR"
+#define STR_FILE_TRANSITION_CIRCLE L"CIRCLE"
 
 // Imgui UI String
 

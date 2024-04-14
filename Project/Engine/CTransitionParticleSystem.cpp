@@ -22,7 +22,11 @@ CTransitionParticleSystem::CTransitionParticleSystem() :
 	path = L"";
 
 
-
+	path += STR_FILE_PATH_TRANSITION;
+	path += STR_FILE_TRANSITION_CIRCLE;
+	path += STAR_FILE_EXTENSION_PNG;
+	CAssetMgr::GetInst()->Load<CTexture>(STR_FILE_TRANSITION_CIRCLE, path);
+	path = L"";
 
 
 
