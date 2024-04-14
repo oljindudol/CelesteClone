@@ -38,7 +38,8 @@ void TransitionParticleSystemUI::render_update()
 	//pPS->SetDebug(bDebug);
 
 	float& fEventTime = pPS->GetEventTimeRef();
-	ImGui::DragFloat("EventTime", &fEventTime,0.1f,0.1f );
+	ImGui::Text("EventTime"); ImGui::SameLine();
+	ImGui::DragFloat("##EventTime", &fEventTime,0.1f,0.1f );
 
 	bool& bToRightEvent = pPS->GetToRightEventRef();
 
@@ -49,6 +50,10 @@ void TransitionParticleSystemUI::render_update()
 		pPS->ReFreshEvent();
 	}
 
+	float& ScaleIncreaseRatio = pPS->GetScaleIncreaseRatioRef();
+	ImGui::Text("ScaleIncreaseRatio"); ImGui::SameLine();
+	ImGui::DragFloat("##ScaleIncreaseRatio", &ScaleIncreaseRatio, 0.1f, 0.1f);
+	
 
 
 	// Spawn Module

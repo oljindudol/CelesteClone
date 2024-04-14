@@ -22,6 +22,7 @@ int CTransitionParticleUpdate::UpdateData()
 	m_Const.iArr[1] = (true == m_bToRightEvent) ? 1 : 0;
 	m_Const.fArr[0] = m_EventDuration;
 	m_Const.fArr[1] = m_CurEventTime;
+	m_Const.fArr[2] = m_ScaleIncreaseRatio;
 
 
 

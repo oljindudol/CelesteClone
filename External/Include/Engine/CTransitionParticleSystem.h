@@ -28,9 +28,11 @@ private:
     float                   m_CurTime = 0.f;
     float                   m_EventTime = .3f;
     bool                    m_bToRightEvent = false;
+    float                   m_ScaleIncreaseRatio = 10.f;
 
 
 public:
+    float& GetScaleIncreaseRatioRef() { return m_ScaleIncreaseRatio; }
     bool& GetToRightEventRef() { return m_bToRightEvent; }
     float& GetEventTimeRef() { return m_EventTime; }
     void ReFreshEvent() { m_CurTime = m_EventTime; }

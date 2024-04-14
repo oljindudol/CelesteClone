@@ -14,6 +14,7 @@ private:
     bool               m_bToRightEvent = false;
     float              m_EventDuration;
     float              m_CurEventTime;
+    float              m_ScaleIncreaseRatio;
 
 public:
     void SetParticleBuffer(CStructuredBuffer* _ParticleBuffer) { m_ParticleBuffer = _ParticleBuffer; }

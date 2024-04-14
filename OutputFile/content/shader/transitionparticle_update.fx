@@ -14,9 +14,10 @@ RWStructuredBuffer<tSpawnCount> g_SpawnCount : register(u1);
 #define Particle    g_ParticleBuffer[id.x]
 #define Module      g_Module[0]
 #define CenterPos   g_vec4_0.xyz
-#define ToRight          g_int_1
-#define EventDuration    g_float_0
-#define EventCurTime     g_float_1
+#define ToRight             g_int_1
+#define EventDuration       g_float_0
+#define EventCurTime        g_float_1
+#define ScaleIncreaseRatio  g_float_2
 
 
 [numthreads(32, 1, 1)]
@@ -188,7 +189,7 @@ void CS_TransitionParticleUpdate(uint3 id : SV_DispatchThreadID)
         Particle.NomalizedAge = Particle.Age / Particle.Life;
         
         // Scale ¸ðµâ
-        float a = 10.f;
+        float a = ScaleIncreaseRatio;
         if (Module.arrModuleCheck[2])
         {
             if (0.5f > Particle.NomalizedAge)

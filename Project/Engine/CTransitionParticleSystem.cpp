@@ -226,6 +226,7 @@ void CTransitionParticleSystem::finaltick()
 	m_CSParticleUpdate->m_bToRightEvent = m_bToRightEvent;
 	m_CSParticleUpdate->m_EventDuration = m_EventTime;
 	m_CSParticleUpdate->m_CurEventTime = m_CurTime;
+	m_CSParticleUpdate->m_ScaleIncreaseRatio = m_ScaleIncreaseRatio;
 	m_CSParticleUpdate->Execute();
 
 	m_bThisFrameGenerate = false;
