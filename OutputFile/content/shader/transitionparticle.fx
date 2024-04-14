@@ -141,9 +141,6 @@ float4 PS_TransitionParticle(GS_OUT _in) : SV_Target
         vOutColor.a = vSampleColor.a;
     }
     
-    if (0.01f > vOutColor.a)
-        discard;
-    
     return vOutColor;
 }
 
