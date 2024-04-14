@@ -139,7 +139,9 @@ void TileMapEditor::render_update()
 
 	//===============1. 컬라이더 생성기=============
 #pragma region ColliderGenerator
-	//if (ImGui::Button("CollderCreate##TileMap2D")) {
+	if(LAYER_FORETILE == m_pTargetObject->GetLayerIdx())
+	{
+		//if (ImGui::Button("CollderCreate##TileMap2D")) {
 	//	CGameObject* pObj = CObjectManager::GetInstance()->CreateEmptyGameObject();
 	//	pObj->SetName(L"new Collders");
 	//	vector<TTileInfo>& vecTiles = m_pTileMap->GetTilesInfo();
@@ -161,9 +163,11 @@ void TileMapEditor::render_update()
 	//		}
 	//	}
 	//}
-	if (ImGui::Button("Generate Collider##TileMap2D")) {
-		_OptimizeCollisionArea();
+		if (ImGui::Button("Generate Collider##TileMap2D")) {
+			_OptimizeCollisionArea();
+		}
 	}
+
 #pragma endregion
 
 	//===============2. 타일맵 정보==============
@@ -244,9 +248,8 @@ void TileMapEditor::render_update()
 
 	//===============4. 레벨 클릭 판정기=============
 #pragma region LevelClick Judge
-	auto winsize = ImVec2(500, 500);
+	auto winsize = ImVec2(0, 250);
 ImGui::BeginChild("#Level Click Info", winsize, true);
-	ImGui::Separator();
 	auto MousePosition = CKeyMgr::GetInst()->GetMousePos();
 	//Vector3 vMouseWorldPos = pEditorCam->GetScreenToWorld2DPosition(MousePosition);
 	//ImGui::Text("Abs Mouse X:%d  Y:%d", int(vMouseWorldPos.x), int(vMouseWorldPos.y));
@@ -364,12 +367,15 @@ ImGui::BeginChild("#Level Click Info", winsize, true);
 				}
 
 
+				ImGui::Text("<Tile Info>");
 				ImGui::Text(("Tile ( " + std::to_string(iMinX) + ", " + std::to_string(iMinY) + " ) " ).c_str());
 				ImGui::Text(("AtlasIdx : " + std::to_string(vecTiles[idx].AtlasIdx)).c_str());
 				ImGui::Text(("TileIdx : " + std::to_string(vecTiles[idx].TileIdx)).c_str());
 				//masking info
+				ImGui::Text("<Neghbour Info>");
 				auto MaskInfo = _GetMaskInfo(x, y);
-				ImGui::Text((("neighbourMask :"+ MaskInfo.neighbourMask) +("0b" + ToBinaryString(MaskInfo.neighbourMask))).c_str());
+				ImGui::Text("neighbourMask :"); ImGui::SameLine();
+				ImGui::Text((("0b" + ToBinaryString(MaskInfo.neighbourMask))).c_str());
 				ReflectMaskInfo(MaskInfo.neighbourMask);
 				ImGui::Text(("neighbourCount : " + std::to_string(MaskInfo.neighbourCount)).c_str());
 				ImGui::Text(("extendedNeighbourCount : " + std::to_string(MaskInfo.extendedNeighbourCount)).c_str());
