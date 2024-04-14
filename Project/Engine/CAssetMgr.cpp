@@ -33,7 +33,7 @@ Ptr<CTexture> CAssetMgr::CreateArrayTexture(const wstring& _strKey ,const vector
 {
 	// 생성하려는 텍스쳐와 동일한 키의 텍스쳐가 이미 AssetMgr 에 있다면
 	Ptr<CTexture> pTex = FindAsset<CTexture>(_strKey);
-	assert(!pTex.Get());
+	return pTex;
 
 	pTex = new CTexture(true);
 
