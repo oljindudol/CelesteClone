@@ -196,6 +196,9 @@
     <ClInclude Include="CTransitionParticleUpdate.h">
       <Filter>ShaderCode\Compute\TransitionParticleUpdate</Filter>
     </ClInclude>
+    <ClInclude Include="CTransitionParticleSystem.h">
+      <Filter>08. Component\RenderComponent\10. TransitionParticleSystem</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine.cpp">
@@ -377,6 +380,9 @@
     </ClCompile>
     <ClCompile Include="CTransitionParticleUpdate.cpp">
       <Filter>ShaderCode\Compute\TransitionParticleUpdate</Filter>
+    </ClCompile>
+    <ClCompile Include="CTransitionParticleSystem.cpp">
+      <Filter>08. Component\RenderComponent\10. TransitionParticleSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -565,6 +571,9 @@
     </Filter>
     <Filter Include="ShaderCode\Compute\TransitionParticleUpdate">
       <UniqueIdentifier>{bb37fb2b-cdd6-4566-a944-a9da76e8a2dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Component\RenderComponent\10. TransitionParticleSystem">
+      <UniqueIdentifier>{df1e9fd2-9626-4d89-a410-f639e6042a48}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

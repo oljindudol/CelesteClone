@@ -11,7 +11,7 @@
 
 
 CAnimatedParticleSystem::CAnimatedParticleSystem() : 
-	CRenderComponent(COMPONENT_TYPE::AIMATEDPARTICLESYSTEM)
+	CRenderComponent(COMPONENT_TYPE::TRANSITIONPARTICLESYSTEM)
 , m_ParticleBuffer(nullptr)
 , m_MaxParticleCount(1000)
 {

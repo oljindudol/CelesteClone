@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CMainCameraScript.h"
 #include "Engine\CLevelMgr.h"
+#include <Engine\CTransitionParticleSystem.h>
 
 CMainCameraScript::CMainCameraScript()
 	: CScript((UINT)SCRIPT_TYPE::MAINCAMERASCRIPT)
@@ -19,7 +20,7 @@ void CMainCameraScript::begin()
 	pChidObj->SetName(L"Rain");
 	pChidObj->AddComponent(new CTransform);
 	pChidObj->Transform()->SetRelativePos(Vec3(1.f, 160.f, 130.f));
-	pChidObj->AddComponent(new CAnimatedParticleSystem);
+	pChidObj->AddComponent(new CTransitionParticleSystem);
 	GetOwner()->AddChild(pChidObj);
 
 	GamePlayStatic::SpawnGameObject(pChidObj, LAYER_BACKEFFECT);
