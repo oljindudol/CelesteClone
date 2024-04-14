@@ -262,7 +262,7 @@ void CCreateTempLevel::CreateTempLevel()
 	// 충돌 설정
 	CCollisionMgr::GetInst()->LayerCheck(LAYER_TILECOL, LAYER_PLAYER);
 
-	CLevelMgr::GetInst()->ChangeLevel(pTempLevel, LEVEL_STATE::STOP);
+	CLevelMgr::GetInst()->ChangeLevel(pTempLevel, LEVEL_STATE::PLAY);
 
 	CLevelSaveLoad::SaveLevel(pTempLevel, L"level\\temp.lv");	
 }
