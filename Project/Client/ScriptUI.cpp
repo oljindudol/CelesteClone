@@ -9,7 +9,7 @@ ScriptUI::ScriptUI()
 	: ComponentUI("Script", "##Script", COMPONENT_TYPE::LIGHT2D)
 	, m_TargetScript(nullptr)
 {
-	SetSize(ImVec2(0,300));
+	SetSize(ImVec2(0,30));
 }
 
 ScriptUI::~ScriptUI()
@@ -28,11 +28,10 @@ void ScriptUI::SetScript(CScript* _Script)
 
 void ScriptUI::render_update()
 {
-	ComponentUI::render_update();
 
 	const auto& umParam = m_TargetScript->GetScriptParam();
-
-	
+	SetSize(ImVec2(0, umParam.size() *25));
+	ComponentUI::render_update();
 	//for (size_t i = 0; i < vecParam.size(); ++i)
 	for (auto& p : umParam)
 	{
