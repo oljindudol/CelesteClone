@@ -122,6 +122,7 @@ void CTileMap::render()
 void CTileMap::begin()
 {
 	CRenderComponent::begin();
+	LoadTileFab();
 	if (nullptr == m_pGrid)
 		return;
 }
