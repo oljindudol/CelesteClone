@@ -183,6 +183,9 @@ CPlayerScript::~CPlayerScript()
 }
 void CPlayerScript::begin()
 {
+
+        //GamePlayStatic::Play2DBGM(L"sound\\DM.wav", 0.5f);
+    GamePlayStatic::Play2DBGM(L"sound\\farewell.mp3", 0.5f);
     //Hair
     Sprite = new CPlayerSprite(this, PlayerSpriteMode::Madeline);
     startHairCount = Sprite->HairCount;
