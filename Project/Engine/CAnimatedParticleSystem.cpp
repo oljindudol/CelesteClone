@@ -37,7 +37,7 @@ CAnimatedParticleSystem::CAnimatedParticleSystem() :
 
 	// 파티클 업데이트용 컴퓨트 쉐이더 참조
 	//m_CSParticleUpdate = (CParticleUpdate*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(STR_KEY_TransitionParticleUpdateShader).Get();
-	m_CSParticleUpdate = (CTransitionParticleUpdate*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(STR_KEY_TransitionParticleUpdateShader).Get();
+	m_CSParticleUpdate = (CParticleUpdate*)CAssetMgr::GetInst()->FindAsset<CComputeShader>(STR_KEY_ParticleUpdateShader).Get();
 
 
 	// SpawnCount 전달용 구조화버퍼
