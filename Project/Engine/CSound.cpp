@@ -110,7 +110,7 @@ int CSound::Load(const wstring& _strFilePath)
 
 	if (FMOD_OK != g_pFMOD->createSound(path.c_str(), FMOD_DEFAULT, nullptr, &m_pSound))
 	{
-		assert(nullptr);
+		//assert(nullptr);
 	}
 
 	return S_OK;
